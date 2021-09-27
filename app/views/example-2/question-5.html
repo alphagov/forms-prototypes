@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+  What is your National Insurance number?
+{% endblock %}
+
+{% block beforeContent %}
+  <a class="govuk-back-link" href="question-4">Back</a>
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" action="question-6" method="post">
+
+        {{ govukInput({
+          label: {
+            text: "What is your National Insurance number?",
+            classes: "govuk-label--l",
+            isPageHeading: true
+          },
+          hint: {
+            text: "It’s on your National Insurance card, benefit letter, payslip or P60. For example, ‘QQ 12 34 56 C’."
+          },
+          classes: "govuk-input--width-10",
+          id: "national-insurance-number",
+          name: "national-insurance-number",
+          spellcheck: false
+        }) }}
+
+        {{ govukDetails({
+          summaryText: "Help with this question",
+          text: "Lorem ipsum"
+        }) }}
+
+        <button class="govuk-button" data-module="govuk-button">Continue</button>
+
+      </form>
+
+    </div>
+  </div>
+
+{% endblock %}

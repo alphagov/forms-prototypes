@@ -1,0 +1,87 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+  What kind of pet do you have?
+{% endblock %}
+
+{% block beforeContent %}
+  <a class="govuk-back-link" href="question-6">Back</a>
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" action="question-8" method="post">
+
+        {% set otherHtml %}
+        {{ govukInput({
+          id: "pet-type-other",
+          name: "pet-type-other",
+          type: "text",
+          spellcheck: false,
+          classes: "govuk-!-width-one-third",
+          label: {
+            text: "Species name"
+          }
+        }) }}
+        {% endset -%}
+
+        {{ govukRadios({
+          idPrefix: "pet-type",
+          name: "pet-type",
+          fieldset: {
+            legend: {
+              text: "What kind of pet do you have?",
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--l"
+            }
+          },
+          hint: {
+            text: "Select one option"
+          },
+          items: [
+            {
+              value: "Cat",
+              text: "Cat"
+            },
+            {
+              value: "Dog",
+              text: "Dog"
+            },
+            {
+              value: "Gerbil",
+              text: "Gerbil"
+            },
+            {
+              value: "Rabbit",
+              text: "Rabbit"
+            },
+            {
+              value: "Tortoise",
+              text: "Tortoise"
+            },
+            {
+              value: "",
+              text: "Other",
+              conditional: {
+                html: otherHtml
+              }
+            }
+          ]
+        }) }}
+
+        {{ govukDetails({
+          summaryText: "Help with this question",
+          text: "Lorem ipsum"
+        }) }}
+
+        <button class="govuk-button" data-module="govuk-button">Continue</button>
+
+      </form>
+
+    </div>
+  </div>
+
+{% endblock %}

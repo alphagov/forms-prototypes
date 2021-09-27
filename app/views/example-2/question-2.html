@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+  What is your date of birth?
+{% endblock %}
+
+{% block beforeContent %}
+  <a class="govuk-back-link" href="question-1">Back</a>
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" action="question-3" method="post">
+
+        {{ govukDateInput({
+          id: "date-of-birth",
+          namePrefix: "date-of-birth",
+          fieldset: {
+            legend: {
+              text: "What is your date of birth?",
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--l"
+            }
+          },
+          hint: {
+            text: "For example, 27 3 2007"
+          }
+        }) }}
+
+        {{ govukDetails({
+          summaryText: "Help with this question",
+          text: "Lorem ipsum"
+        }) }}
+
+        <button class="govuk-button" data-module="govuk-button">Continue</button>
+
+      </form>
+
+    </div>
+  </div>
+
+{% endblock %}

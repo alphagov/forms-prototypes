@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+  Provide a description of your pet
+{% endblock %}
+
+{% block beforeContent %}
+  <a class="govuk-back-link" href="question-7">Back</a>
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" action="check-your-answers" method="post">
+
+        {{ govukCharacterCount({
+          name: "pet-description",
+          id: "pet-description",
+          maxlength: 500,
+          label: {
+            text: "Provide a description of your pet",
+            classes: "govuk-label--l",
+            isPageHeading: true
+          },
+          hint: {
+            text: "Include information about size, colouring and any distinguishing features"
+          }
+        }) }}
+
+        {{ govukDetails({
+          summaryText: "Help with this question",
+          text: "Lorem ipsum"
+        }) }}
+
+        <button class="govuk-button" data-module="govuk-button">Continue</button>
+
+      </form>
+
+    </div>
+  </div>
+
+{% endblock %}
