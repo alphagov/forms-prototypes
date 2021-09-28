@@ -1,0 +1,147 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+  Edit question
+{% endblock %}
+
+{% block beforeContent %}
+  <a class="govuk-back-link" href="start">Back</a>
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-half">
+
+      <h1 class="govuk-heading-l">Create a question page</h1>
+
+      <form class="form" action="edit-question" method="post">
+
+        {% call govukFieldset({
+          legend: {
+            text: "Page title",
+            classes: "govuk-fieldset__legend--m"
+          }
+        }) %}
+
+        {{ govukInput({
+          label: {
+            text: "Long version - for example, What is your name?"
+          },
+          id: "long-title",
+          name: "long-title",
+          value: data['long-title']
+        }) }}
+
+        {{ govukInput({
+          label: {
+            text: "Short version - for example, Name"
+          },
+          id: "short-title",
+          name: "short-title",
+          value: data['short-title']
+        }) }}
+
+        {% endcall %}
+
+        {{ govukTextarea({
+          name: "intro-text",
+          id: "intro-text",
+          value: data['intro-text'],
+          label: {
+            text: "Page intro",
+            classes: "govuk-label--m"
+          },
+          hint: {
+            text: "An optional introductory paragraph. Only use it if people need some extra context to help them understand the question."
+          }
+        }) }}
+
+        {{ govukTextarea({
+          name: "help-text",
+          id: "help-text",
+          value: data['help-text'],
+          label: {
+            text: "Page help",
+            classes: "govuk-label--m"
+          },
+          hint: {
+            text: "Optional help text at the bottom of the page. Use it if some people need extra help to answer the question."
+          }
+        }) }}
+
+      <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+
+
+        {{ govukRadios({
+          idPrefix: "type",
+          name: "type",
+          classes: "govuk-radios--small",
+          fieldset: {
+            legend: {
+              text: "Question type",
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          hint: {
+            text: "How the user will answer the question"
+          },
+          items: [
+            {
+              value: "date",
+              text: "A date or date range",
+              checked: checked("type", "date")
+            },
+            {
+              value: "radio-checkbox",
+              text: "Choosing from a list of options",
+              checked: checked("type", "radio-checkbox")
+            },
+            {
+              value: "text",
+              text: "A single line of text",
+              checked: checked("type", "text")
+            },
+            {
+              value: "textarea",
+              text: "One or more paragraphs of text",
+              checked: checked("type", "textarea")
+            },
+            {
+              value: "file-upload",
+              text: "Uploading one or more files",
+              checked: checked("type", "file-upload")
+            }
+          ]
+        }) }}
+
+        {{ govukInput({
+          label: {
+            text: "Question hint",
+            classes: "govuk-label--m"
+          },
+          hint: {
+            text: "An optional hint to help the user answer the question"
+          },
+          id: "hint-text",
+          name: "hint-text",
+          value: data['hint-text']
+        }) }}
+
+
+        {{ govukButton({
+          text: "Update preview"
+        }) }}
+
+      </form>
+
+    </div>
+
+    <div class="govuk-grid-column-one-half">
+      <!--<h2 class="govuk-heading-m">Preview</h2>-->
+      <iframe title="Character count example" data-module="app-example-frame" class="app-example__frame app-example__frame--resizable" src="question-preview" frameborder="1" loading="lazy" id="iFrameResizer0" scrolling="no" style="overflow: hidden; height: 1300px; width: 100%; border: 1px solid black"></iframe>
+    </div>
+
+  </div>
+
+{% endblock %}
