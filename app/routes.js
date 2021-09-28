@@ -13,7 +13,7 @@ router.post('/example-2/eligibility-check-answer', function (req, res) {
   var whereDoYouLive = req.session.data['where-do-you-live']
 
   // Check whether the variable matches a condition
-  if (whereDoYouLive == "northern-ireland"){
+  if (whereDoYouLive == "Northern Ireland"){
     // Send user to ineligible page
     res.redirect('/example-2/ineligible')
   } else {
