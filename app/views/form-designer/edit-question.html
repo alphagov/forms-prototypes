@@ -13,16 +13,71 @@
 
       <form class="form" action="edit-question" method="post">
 
-        {% call govukFieldset({
-          legend: {
-            text: "Page title",
-            classes: "govuk-fieldset__legend--m"
-          }
-        }) %}
+
+        {% set textareaHtml %}
+        {{ govukInput({
+          label: {
+            text: "Character limit",
+            classes: "govuk-label--s"
+          },
+          hint: {
+            text: "Leave blank for no limit"
+          },
+          classes: "govuk-input--width-4",
+          id: "char-limit",
+          name: "char-limit",
+          value: data['char-limit']
+        }) }}
+        {% endset -%}
+
+        {% set textHtml %}
+        {{ govukSelect({
+          id: "unit",
+          name: "unit",
+          label: {
+            text: "Unit",
+            classes: "govuk-label--s"
+          },
+          items: [
+            {
+              value: "text",
+              text: "Text",
+              selected: checked("unit", "text")
+            },
+            {
+              value: "pounds",
+              text: "Currency (£)",
+              selected: checked("unit", "pounds")
+            },
+            {
+              value: "kg",
+              text: "Weight (kg)",
+              selected: checked("unit", "kg")
+            },
+            {
+              value: "km",
+              text: "Distance (km)",
+              selected: checked("unit", "km")
+            },
+            {
+              value: "m",
+              text: "Length (m)",
+              selected: checked("unit", "m")
+            }
+          ]
+        }) }}
+        {% endset -%}
 
         {{ govukInput({
           label: {
+            text: "Page title",
+            classes: "govuk-label--m"
+          },
+          hint: {
             text: "Long version — for example, What is your name?"
+          },
+          formGroup: {
+            classes: "govuk-!-margin-bottom-3"
           },
           id: "long-title",
           name: "long-title",
@@ -31,14 +86,16 @@
 
         {{ govukInput({
           label: {
+            text: "Short page title",
+            classes: "govuk-visually-hidden"
+          },
+          hint: {
             text: "Short version — for example, Name"
           },
           id: "short-title",
           name: "short-title",
           value: data['short-title']
         }) }}
-
-        {% endcall %}
 
         {{ govukTextarea({
           name: "intro-text",
@@ -66,9 +123,6 @@
           }
         }) }}
 
-      <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
-
-
         {{ govukRadios({
           idPrefix: "type",
           name: "type",
@@ -84,9 +138,20 @@
           },
           items: [
             {
-              value: "date",
-              text: "A date or date range",
-              checked: checked("type", "date")
+              value: "text",
+              text: "A single line",
+              checked: checked("type", "text"),
+              conditional: {
+                html: textHtml
+              }
+            },
+            {
+              value: "textarea",
+              text: "One or more paragraphs",
+              checked: checked("type", "textarea"),
+              conditional: {
+                html: textareaHtml
+              }
             },
             {
               value: "radio-checkbox",
@@ -94,22 +159,18 @@
               checked: checked("type", "radio-checkbox")
             },
             {
-              value: "text",
-              text: "A single line of text",
-              checked: checked("type", "text")
-            },
-            {
-              value: "textarea",
-              text: "One or more paragraphs of text",
-              checked: checked("type", "textarea")
+              value: "date",
+              text: "A date or date range",
+              checked: checked("type", "date")
             },
             {
               value: "file-upload",
-              text: "Uploading one or more files",
+              text: "Uploading files",
               checked: checked("type", "file-upload")
             }
           ]
         }) }}
+
 
         {{ govukInput({
           label: {
