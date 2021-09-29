@@ -92,7 +92,7 @@
 
         {{ govukInput({
           label: {
-            text: "Page title",
+            text: "Title",
             classes: "govuk-label--m"
           },
           hint: {
@@ -124,7 +124,7 @@
           id: "intro-text",
           value: data['intro-text'],
           label: {
-            text: "Page intro",
+            text: "Introduction",
             classes: "govuk-label--m"
           },
           hint: {
@@ -132,17 +132,17 @@
           }
         }) }}
 
-        {{ govukTextarea({
-          name: "help-text",
-          id: "help-text",
-          value: data['help-text'],
+        {{ govukInput({
           label: {
-            text: "Page help",
+            text: "Hint",
             classes: "govuk-label--m"
           },
           hint: {
-            text: "Only add help text if some people get stuck and need help to answer the question."
-          }
+            text: "An optional hint to help the user answer the question"
+          },
+          id: "hint-text",
+          name: "hint-text",
+          value: data['hint-text']
         }) }}
 
         {{ govukRadios({
@@ -193,20 +193,18 @@
           ]
         }) }}
 
-
-        {{ govukInput({
+        {{ govukTextarea({
+          name: "help-text",
+          id: "help-text",
+          value: data['help-text'],
           label: {
-            text: "Hint",
+            text: "Help",
             classes: "govuk-label--m"
           },
           hint: {
-            text: "An optional hint to help the user answer the question"
-          },
-          id: "hint-text",
-          name: "hint-text",
-          value: data['hint-text']
+            text: "Only add help text if some people get stuck and need help to answer the question."
+          }
         }) }}
-
 
         {{ govukButton({
           text: "Update preview"

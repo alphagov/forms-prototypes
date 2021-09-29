@@ -20,7 +20,7 @@
         <h1 class="govuk-heading-l">{{ data['long-title'] }}</h1>
         <p>{{ data['intro-text'] }}</p>
 
-        {% if data['type'] == 'text' %}
+        {% if data['type'] == 'text' and data['unit'] == 'text' %}
         {{ govukInput({
           label: {
             text: data['short-title']
@@ -30,6 +30,38 @@
           },
           id: "question-1",
           name: "question-1"
+        }) }}
+        {% elseif data['type'] == 'text' and data['unit'] == 'pounds' %}
+        {{ govukInput({
+          label: {
+            text: data['short-title']
+          },
+          hint: {
+            text: data['hint-text']
+          },
+          id: "question-1",
+          name: "question-1",
+          prefix: {
+            text: "£"
+          },
+          classes: "govuk-input--width-5",
+          spellcheck: false
+        }) }}
+        {% elseif data['type'] == 'text'  %}
+        {{ govukInput({
+          label: {
+            text: data['short-title']
+          },
+          hint: {
+            text: data['hint-text']
+          },
+          id: "question-1",
+          name: "question-1",
+          suffix: {
+            text: data['unit']
+          },
+          classes: "govuk-input--width-5",
+          spellcheck: false
         }) }}
         {% endif %}
 
@@ -65,7 +97,7 @@
 
       {% else %}
 
-      {% if data['type'] == 'text' %}
+      {% if data['type'] == 'text' and data['unit'] == 'text' %}
       {{ govukInput({
         label: {
           text: data['long-title'],
@@ -77,6 +109,42 @@
         },
         id: "question-1",
         name: "question-1"
+      }) }}
+      {% elseif data['type'] == 'text' and data['unit'] == 'pounds' %}
+      {{ govukInput({
+        label: {
+          text: data['long-title'],
+          classes: "govuk-label--l",
+          isPageHeading: true
+        },
+        hint: {
+          text: data['hint-text']
+        },
+        id: "question-1",
+        name: "question-1",
+        prefix: {
+          text: "£"
+        },
+        classes: "govuk-input--width-5",
+        spellcheck: false
+      }) }}
+      {% elseif data['type'] == 'text'  %}
+      {{ govukInput({
+        label: {
+          text: data['long-title'],
+          classes: "govuk-label--l",
+          isPageHeading: true
+        },
+        hint: {
+          text: data['hint-text']
+        },
+        id: "question-1",
+        name: "question-1",
+        suffix: {
+          text: data['unit']
+        },
+        classes: "govuk-input--width-5",
+        spellcheck: false
       }) }}
       {% endif %}
 
