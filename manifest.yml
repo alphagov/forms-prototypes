@@ -1,7 +1,6 @@
 ---
 applications:
 - name: cifu-prototypes
-  command: node example.js
   memory: 256M
   buildpacks:
   - nodejs_buildpack
