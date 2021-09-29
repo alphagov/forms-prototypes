@@ -4,6 +4,11 @@
   This service is not currently available in Northern Ireland
 {% endblock %}
 
+{% block header %}
+  <!-- Blank header with no service name for the start page -->
+  {{ govukHeader() }}
+{% endblock %}
+
 {% block beforeContent %}
   <a class="govuk-back-link" href="start">Back</a>
 {% endblock %}

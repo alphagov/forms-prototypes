@@ -5,30 +5,22 @@
 {% endblock %}
 
 {% block header %}
-<div style="height: 40px; background-color: black">
-  <p style="color: white; padding: 10px 15px">Preview</p>
+<div class="preview-header">
+  <p class="preview-link govuk-body-s"><a href="question-preview" target="_blank">Open in a new tab</a></p>
 </div>
 {% endblock %}
-
 
 {% block content %}
 <form class="form" action="edit-question-save" method="post">
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-      <h1 class="govuk-heading-l">{{ data['long-title'] }}</h1>
-
       {% if data['intro-text'] %}
-      <!-- Intro text -->
-      <p>
-        {{ data['intro-text'] }}
-      </p>
-      {% endif %}
 
+        <h1 class="govuk-heading-l">{{ data['long-title'] }}</h1>
+        <p>{{ data['intro-text'] }}</p>
 
-
-        {% if (data['type'] == 'text') and (data['hint-text']) %}
-        <!-- Text field with hint -->
+        {% if data['type'] == 'text' %}
         {{ govukInput({
           label: {
             text: data['short-title']
@@ -41,37 +33,14 @@
         }) }}
         {% endif %}
 
-        {% if (data['type'] == 'text') and not (data['hint-text']) %}
-        <!-- Text field without hint -->
-        {{ govukInput({
-          label: {
-            text: data['short-title']
-          },
-          id: "question-1",
-          name: "question-1"
-        }) }}
-        {% endif %}
-
-
-        {% if data['type'] == 'textarea' and (data['hint-text']) %}
-        <!-- Textarea with hint -->
+        {% if data['type'] == 'textarea' %}
         {{ govukTextarea({
           label: {
-            text: data['short-title']
+            text: data['short-title'],
+            classes: "visuallyhidden"
           },
           hint: {
             text: data['hint-text']
-          },
-          id: "question-1",
-          name: "question-1"
-        }) }}
-        {% endif %}
-
-        {% if data['type'] == 'textarea' and not (data['hint-text']) %}
-        <!-- Textarea without hint -->
-        {{ govukTextarea({
-          label: {
-            text: data['short-title']
           },
           id: "question-1",
           name: "question-1"
@@ -84,17 +53,69 @@
           namePrefix: "question-1",
           fieldset: {
             legend: {
-              text: data['short-title']
+              text: data['short-title'],
+              classes: "govuk-fieldset__legend--s"
             }
           },
           hint: {
-            text: "For example, 12 11 2007"
+            text: data['hint-text']
           }
         }) }}
         {% endif %}
 
+      {% else %}
+
+      {% if data['type'] == 'text' %}
+      {{ govukInput({
+        label: {
+          text: data['long-title'],
+          classes: "govuk-label--l",
+          isPageHeading: true
+        },
+        hint: {
+          text: data['hint-text']
+        },
+        id: "question-1",
+        name: "question-1"
+      }) }}
+      {% endif %}
+
+      {% if data['type'] == 'textarea' %}
+      {{ govukTextarea({
+        label: {
+          text: data['long-title'],
+          classes: "govuk-label--l",
+          isPageHeading: true
+        },
+        hint: {
+          text: data['hint-text']
+        },
+        id: "question-1",
+        name: "question-1"
+      }) }}
+      {% endif %}
+
+      {% if data['type'] == 'date' %}
+      {{ govukDateInput({
+        id: "question-1",
+        namePrefix: "question-1",
+        fieldset: {
+          legend: {
+            text: data['long-title'],
+            isPageHeading: true,
+            classes: "govuk-fieldset__legend--l"
+          }
+        },
+        hint: {
+          text: data['hint-text']
+        }
+      }) }}
+      {% endif %}
+
+      {% endif %}
+
+
         {% if data['help-text'] %}
-        <!-- Help text -->
         {{ govukDetails({
           summaryText: "Help with this question",
           text: data['help-text']
