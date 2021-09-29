@@ -80,7 +80,7 @@
       }) }}
       {% endif %}
 
-      {% if (data['type'] == 'textarea') and not(data['char-limit']) %}
+      {% if (data['type'] == 'textarea') and (data['char-limit'] == 'none') %}
       {{ govukTextarea({
         label: {
           text: data['long-title'],
@@ -95,7 +95,7 @@
       }) }}
       {% endif %}
 
-      {% if (data['type'] == 'textarea') and data['char-limit'] %}
+      {% if (data['type'] == 'textarea') and not (data['char-limit'] == 'none') %}
       {{ govukCharacterCount({
         name: "question-1",
         id: "question-1",
