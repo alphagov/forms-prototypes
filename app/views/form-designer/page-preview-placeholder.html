@@ -1,0 +1,37 @@
+{% extends "layout-body-only.html" %}
+
+{% block pageTitle %}
+  Edit question
+{% endblock %}
+
+{% block header %}
+<!--
+<div class="preview-header">
+  <p class="preview-link govuk-body-s"><a href="question-preview" target="_blank">Open in a new tab</a></p>
+</div>
+-->
+{% endblock %}
+
+{% block content %}
+<form class="form" action="edit-question-save" method="post">
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+    <h1 class="govuk-heading-l">Page title</h1>
+
+    <p style="background: #f3f2f1">&nbsp;</p>
+    <p style="background: #f3f2f1">&nbsp;</p>
+    <p style="background: #f3f2f1">&nbsp;</p>
+    <p style="background: #f3f2f1">&nbsp;</p>
+    <p style="background: #f3f2f1">&nbsp;</p>
+
+
+        {{ govukButton({
+          text: "Continue",
+          disabled: true
+        }) }}
+
+    </div>
+  </div>
+</form>
+{% endblock %}

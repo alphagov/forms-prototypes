@@ -6,11 +6,12 @@
 
 {% block content %}
 
-<form id="form" class="form" action="edit-question" method="post">
+<form id="form" class="form" action="edit-page-1" method="post">
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-half">
 
-      <h1 class="govuk-heading-l">Question 1</h1>
+      <span class="govuk-caption-l">Page 1</span>
+      <h1 class="govuk-heading-l">Edit page</h1>
 
 
         {% set radioCheckboxHtml %}
@@ -241,7 +242,8 @@
         }) }}
 
         {{ govukButton({
-          text: "Save and continue"
+          text: "Add next page",
+          href: "choose-page-2-type"
         }) }}
 
 
@@ -253,10 +255,10 @@
         <div class="preview-header">
           <p class="preview-link govuk-body-s">
             <!-- <a href="#" target="_blank" onclick="document.getElementById('form').submit();">Refresh</a> &nbsp;|&nbsp; -->
-            <a href="question-preview-new-tab" target="_blank">Open in a new tab</a>
+            <a href="page-preview-new-tab" target="_blank">Open in a new tab</a>
           </p>
         </div>
-        <iframe title="Character count example" data-module="app-example-frame" class="preview-pane app-example__frame app-example__frame--resizable" src="question-preview" frameborder="1" loading="lazy" id="iFrameResizer0" scrolling="no" ></iframe>
+        <iframe title="Page preview" data-module="app-example-frame" class="preview-pane app-example__frame app-example__frame--resizable" src="page-preview" frameborder="1" loading="lazy" id="iFrameResizer0" scrolling="no" ></iframe>
         {{ govukButton({
           text: "Update preview",
           classes: "update-button"
