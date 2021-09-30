@@ -1,15 +1,12 @@
-{% extends "layout-body-only.html" %}
+{% extends "layout.html" %}
+
+{% block header %}
+  <!-- Blank header with no service name for the start page -->
+  {{ govukHeader() }}
+{% endblock %}
 
 {% block pageTitle %}
   Edit question
-{% endblock %}
-
-{% block header %}
-<!--
-<div class="preview-header">
-  <p class="preview-link govuk-body-s"><a href="question-preview" target="_blank">Open in a new tab</a></p>
-</div>
--->
 {% endblock %}
 
 {% block content %}

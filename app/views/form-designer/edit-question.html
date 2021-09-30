@@ -6,12 +6,11 @@
 
 {% block content %}
 
+<form id="form" class="form" action="edit-question" method="post">
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-half">
 
-      <h1 class="govuk-heading-l">Design a question page</h1>
-
-      <form class="form" action="edit-question" method="post">
+      <h1 class="govuk-heading-l">Question 1</h1>
 
 
         {% set radioCheckboxHtml %}
@@ -242,18 +241,31 @@
         }) }}
 
         {{ govukButton({
-          text: "Update preview"
+          text: "Save and continue"
         }) }}
 
-      </form>
+
 
     </div>
 
-    <div class="govuk-grid-column-one-half">
-      <!--<h2 class="govuk-heading-m">Preview</h2>-->
-      <iframe title="Character count example" data-module="app-example-frame" class="app-example__frame app-example__frame--resizable" src="question-preview" frameborder="1" loading="lazy" id="iFrameResizer0" scrolling="no" style="overflow: hidden; height: 1300px; width: 100%; border: 1px solid black"></iframe>
+    <div class="govuk-grid-column-one-half" style="height: 1462px;">
+      <div class="preview-pane-wrapper">
+        <div class="preview-header">
+          <p class="preview-link govuk-body-s">
+            <!-- <a href="#" target="_blank" onclick="document.getElementById('form').submit();">Refresh</a> &nbsp;|&nbsp; -->
+            <a href="question-preview-new-tab" target="_blank">Open in a new tab</a>
+          </p>
+        </div>
+        <iframe title="Character count example" data-module="app-example-frame" class="preview-pane app-example__frame app-example__frame--resizable" src="question-preview" frameborder="1" loading="lazy" id="iFrameResizer0" scrolling="no" ></iframe>
+        {{ govukButton({
+          text: "Update preview",
+          classes: "update-button"
+        }) }}
+      </div>
     </div>
 
   </div>
+
+</form>
 
 {% endblock %}
