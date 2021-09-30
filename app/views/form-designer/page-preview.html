@@ -17,16 +17,33 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-      {% if data['intro-text'] %}
+        {% if data['intro-text'] %}
 
-        {# If the page has an intro, the H1 appears outside of the form macros #}
-        <h1 class="govuk-heading-l">{{ data['long-title'] }}</h1>
-        <p>{{ data['intro-text'] }}</p>
+          {# If the page has an intro, set the heading outside of the macros #}
+          {# Use the short title as the field label #}
+          <h1 class="govuk-heading-l">{{ data['long-title'] }}</h1>
+          <p>{{ data['intro-text'] }}</p>
+          {% set label = {
+            text: data['short-title']
+          }%}
+
+        {% else %}
+
+          {# If the page has no intro, set the heading inside of the macros #}
+          {# The heading doubles up as the label #}
+          {% set label = {
+            text: data['long-title'],
+            classes: "govuk-label--l",
+            isPageHeading: true
+          }%}
+
+        {% endif %}
+
 
         {# Single line text fields #}
         {% if data['type'] == 'text' and data['unit'] == 'text' %}
         {{ govukInput({
-          label: {text: data['short-title']},
+          label: label,
           hint: {text: data['hint-text']},
           id: "question-1",
           name: "question-1"
@@ -35,7 +52,7 @@
         {# Currency fields #}
         {% elseif data['type'] == 'text' and data['unit'] == 'pounds' %}
         {{ govukInput({
-          label: {text: data['short-title']},
+          label: label,
           hint: {text: data['hint-text']},
           id: "question-1",
           name: "question-1",
@@ -47,7 +64,7 @@
         {# Weight, distance and length fields #}
         {% elseif data['type'] == 'text'  %}
         {{ govukInput({
-          label: {text: data['short-title']},
+          label: label,
           hint: {text: data['hint-text']},
           id: "question-1",
           name: "question-1",
@@ -60,7 +77,7 @@
         {# Textarea with character limit #}
         {% if (data['type'] == 'textarea') and (data['char-limit'] == 'none') %}
         {{ govukTextarea({
-          label: {text: data['short-title']},
+          label: label,
           hint: {text: data['hint-text']},
           id: "question-1",
           name: "question-1"
@@ -73,7 +90,7 @@
           name: "question-1",
           id: "question-1",
           maxlength: data['char-limit'],
-          label: {text: data['short-title']},
+          label: label,
           hint: {text: data['hint-text']}
         }) }}
         {% endif %}
@@ -84,16 +101,17 @@
           id: "question-1",
           namePrefix: "question-1",
           fieldset: {
-            legend: {
-              text: data['short-title'],
-              classes: "govuk-fieldset__legend--s"
-            }
+            legend: label
           },
           hint: {text: data['hint-text']}
         }) }}
         {% endif %}
 
-
+        {#
+          For radios and checkboxes I'm using straight HTML,
+          because I'm not smart enough to loop over the array
+          and build an object to stick into a macro.
+        #}
 
         {# Radios #}
         {% if data['type'] == 'radio-checkbox' and data['radios'] %}
@@ -102,8 +120,17 @@
 
         <div class="govuk-form-group">
           <fieldset class="govuk-fieldset" aria-describedby="question-1-hint">
+
+            {% if not data['intro-text'] %}
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+              <h1 class="govuk-fieldset__heading">
+                {{ data['long-title'] }}
+              </h1>
+            </legend>
+            {% endif %}
+
           <div id="question-1-hint" class="govuk-hint">
-            Select one option
+            {{ data['hint-text']}}
           </div>
           <div class="govuk-radios">
                 {% for item in itemsArray %}
@@ -126,8 +153,17 @@
 
         <div class="govuk-form-group">
           <fieldset class="govuk-fieldset" aria-describedby="question-1-hint">
+
+            {% if not data['intro-text'] %}
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+              <h1 class="govuk-fieldset__heading">
+                {{ data['long-title'] }}
+              </h1>
+            </legend>
+            {% endif %}
+
           <div id="question-1-hint" class="govuk-hint">
-            Select all that apply
+            {{ data['hint-text']}}
           </div>
           <div class="govuk-checkboxes">
                 {% for item in itemsArray %}
@@ -143,115 +179,7 @@
         </div>
         {% endif %}
 
-      {% else %}
-
-      {# If the page has no intro, the H1 appears inside the form macros #}
-
-      {% if data['type'] == 'text' and data['unit'] == 'text' %}
-
-      {{ govukInput({
-        label: {
-          text: data['long-title'],
-          classes: "govuk-label--l",
-          isPageHeading: true
-        },
-        hint: {
-          text: data['hint-text']
-        },
-        id: "question-1",
-        name: "question-1"
-      }) }}
-      {% elseif data['type'] == 'text' and data['unit'] == 'pounds' %}
-      {{ govukInput({
-        label: {
-          text: data['long-title'],
-          classes: "govuk-label--l",
-          isPageHeading: true
-        },
-        hint: {
-          text: data['hint-text']
-        },
-        id: "question-1",
-        name: "question-1",
-        prefix: {
-          text: "£"
-        },
-        classes: "govuk-input--width-5",
-        spellcheck: false
-      }) }}
-      {% elseif data['type'] == 'text'  %}
-      {{ govukInput({
-        label: {
-          text: data['long-title'],
-          classes: "govuk-label--l",
-          isPageHeading: true
-        },
-        hint: {
-          text: data['hint-text']
-        },
-        id: "question-1",
-        name: "question-1",
-        suffix: {
-          text: data['unit']
-        },
-        classes: "govuk-input--width-5",
-        spellcheck: false
-      }) }}
-      {% endif %}
-
-      {% if (data['type'] == 'textarea') and (data['char-limit'] == 'none') %}
-      {{ govukTextarea({
-        label: {
-          text: data['long-title'],
-          classes: "govuk-label--l",
-          isPageHeading: true
-        },
-        hint: {
-          text: data['hint-text']
-        },
-        id: "question-1",
-        name: "question-1"
-      }) }}
-      {% endif %}
-
-      {% if (data['type'] == 'textarea') and not (data['char-limit'] == 'none') %}
-      {{ govukCharacterCount({
-        name: "question-1",
-        id: "question-1",
-        maxlength: data['char-limit'],
-        label: {
-          text: data['long-title'],
-          classes: "govuk-label--l",
-          isPageHeading: true
-        },
-        hint: {
-          text: data['hint-text']
-        }
-      }) }}
-
-
-      {% endif %}
-
-      {% if data['type'] == 'date' %}
-      {{ govukDateInput({
-        id: "question-1",
-        namePrefix: "question-1",
-        fieldset: {
-          legend: {
-            text: data['long-title'],
-            isPageHeading: true,
-            classes: "govuk-fieldset__legend--l"
-          }
-        },
-        hint: {
-          text: data['hint-text']
-        }
-      }) }}
-      {% endif %}
-
-      {% endif %}
-
-
+        {# Help text #}
         {% if data['help-text'] %}
         {{ govukDetails({
           summaryText: "Help with this question",
@@ -259,6 +187,7 @@
         }) }}
         {% endif %}
 
+        {# Submit button #}
         {{ govukButton({
           text: "Continue",
           disabled: true
