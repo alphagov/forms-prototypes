@@ -26,6 +26,7 @@
           },
           id: "item-list",
           name: "item-list",
+          value: data['item-list'],
           classes: "govuk-!-margin-bottom-1",
           formGroup: {
             classes: "govuk-!-margin-bottom-1"
@@ -39,7 +40,8 @@
           items: [
             {
               value: "radios",
-              text: "Only let user select one option"
+              text: "Only let user select one option",
+              checked: checked("radios", "radios")
             }
           ]
         }) }}
