@@ -14,6 +14,38 @@
       <form class="form" action="edit-question" method="post">
 
 
+        {% set radioCheckboxHtml %}
+
+        {{ govukTextarea({
+          label: {
+            text: "Option list",
+            classes: "govuk-label--s"
+          },
+          hint: {
+            text: "Enter each item on a new line"
+          },
+          id: "item-list",
+          name: "item-list",
+          classes: "govuk-!-margin-bottom-1",
+          formGroup: {
+            classes: "govuk-!-margin-bottom-1"
+          }
+        }) }}
+
+        {{ govukCheckboxes({
+          idPrefix: "radios",
+          name: "radios",
+          classes: "govuk-checkboxes--small",
+          items: [
+            {
+              value: "radios",
+              text: "Only let user select one option"
+            }
+          ]
+        }) }}
+
+        {% endset -%}
+
         {% set textareaHtml %}
         {{ govukSelect({
           id: "char-limit",
@@ -151,12 +183,12 @@
           classes: "govuk-radios--small",
           fieldset: {
             legend: {
-              text: "Type of question",
+              text: "Response",
               classes: "govuk-fieldset__legend--m"
             }
           },
           hint: {
-            text: "Determines how the user will answer the question"
+            text: "What kind of response you want the user to give"
           },
           items: [
             {
@@ -178,7 +210,10 @@
             {
               value: "radio-checkbox",
               text: "Choosing from a list of options",
-              checked: checked("type", "radio-checkbox")
+              checked: checked("type", "radio-checkbox"),
+              conditional: {
+                html: radioCheckboxHtml
+              }
             },
             {
               value: "date",

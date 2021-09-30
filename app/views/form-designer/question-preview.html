@@ -65,17 +65,30 @@
         }) }}
         {% endif %}
 
-        {% if data['type'] == 'textarea' %}
+        {% if (data['type'] == 'textarea') and (data['char-limit'] == 'none') %}
         {{ govukTextarea({
           label: {
-            text: data['short-title'],
-            classes: "visuallyhidden"
+            text: data['short-title']
           },
           hint: {
             text: data['hint-text']
           },
           id: "question-1",
           name: "question-1"
+        }) }}
+        {% endif %}
+
+        {% if (data['type'] == 'textarea') and not (data['char-limit'] == 'none') %}
+        {{ govukCharacterCount({
+          name: "question-1",
+          id: "question-1",
+          maxlength: data['char-limit'],
+          label: {
+            text: data['short-title']
+          },
+          hint: {
+            text: data['hint-text']
+          }
         }) }}
         {% endif %}
 
