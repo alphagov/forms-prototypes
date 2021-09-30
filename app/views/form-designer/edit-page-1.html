@@ -126,7 +126,7 @@
 
         {{ govukInput({
           label: {
-            text: "Title",
+            text: "Question",
             classes: "govuk-label--m"
           },
           hint: {
@@ -153,31 +153,6 @@
           value: data['short-title']
         }) }}
 
-        {{ govukTextarea({
-          name: "intro-text",
-          id: "intro-text",
-          value: data['intro-text'],
-          label: {
-            text: "Introduction",
-            classes: "govuk-label--m"
-          },
-          hint: {
-            text: "Only add an introduction if people need extra information to help them understand the question."
-          }
-        }) }}
-
-        {{ govukInput({
-          label: {
-            text: "Hint",
-            classes: "govuk-label--m"
-          },
-          hint: {
-            text: "An optional hint to help the user answer the question"
-          },
-          id: "hint-text",
-          name: "hint-text",
-          value: data['hint-text']
-        }) }}
 
         {{ govukRadios({
           idPrefix: "type",
@@ -185,7 +160,7 @@
           classes: "govuk-radios--small",
           fieldset: {
             legend: {
-              text: "Response",
+              text: "Answer",
               classes: "govuk-fieldset__legend--m"
             }
           },
@@ -230,18 +205,82 @@
           ]
         }) }}
 
+        <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+
+        <details class="govuk-details govuk-!-margin-bottom-0" data-module="govuk-details">
+          <summary class="govuk-details__summary">
+            <span class="govuk-details__summary-text">
+              Add an introduction
+            </span>
+          </summary>
+          <div class="govuk-details__text govuk-!-padding-bottom-0">
+        {{ govukTextarea({
+          name: "intro-text",
+          id: "intro-text",
+          value: data['intro-text'],
+          classes: "govuk-!-margin-bottom-3",
+          label: {
+            text: "Introduction",
+            classes: "govuk-visually-hidden"
+          },
+          hint: {
+            text: "Only add an introduction if people need extra information to help them understand the question."
+          }
+        }) }}
+          </div>
+        </details>
+
+        <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+
+        <details class="govuk-details govuk-!-margin-bottom-0" data-module="govuk-details">
+          <summary class="govuk-details__summary">
+            <span class="govuk-details__summary-text">
+              Add hint text
+            </span>
+          </summary>
+          <div class="govuk-details__text govuk-!-padding-bottom-0">
+            {{ govukInput({
+              label: {
+                text: "Hint",
+                classes: "govuk-visually-hidden"
+              },
+              hint: {
+                text: "An optional hint to help the user answer the question"
+              },
+              id: "hint-text",
+              name: "hint-text",
+              value: data['hint-text']
+            }) }}
+          </div>
+        </details>
+
+        <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+
+        <details class="govuk-details govuk-!-margin-bottom-0" data-module="govuk-details">
+          <summary class="govuk-details__summary">
+            <span class="govuk-details__summary-text">
+              Add help text
+            </span>
+          </summary>
+          <div class="govuk-details__text govuk-!-padding-bottom-0">
         {{ govukTextarea({
           name: "help-text",
           id: "help-text",
           value: data['help-text'],
+          classes: "govuk-!-margin-bottom-1",
           label: {
             text: "Help",
-            classes: "govuk-label--m"
+            classes: "govuk-visually-hidden"
           },
           hint: {
             text: "Only add help text if some people get stuck and need help to answer the question."
           }
         }) }}
+          </div>
+        </details>
+
+        <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+
 
         {{ govukButton({
           text: "Add next page",
