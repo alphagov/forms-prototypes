@@ -13,7 +13,6 @@
       <span class="govuk-caption-l">Page {{pageId}}</span>
       <h1 class="govuk-heading-l">Edit page</h1>
 
-
         {% set radioCheckboxHtml %}
 
         {{ govukTextarea({
@@ -194,13 +193,8 @@
             },
             {
               value: "date",
-              text: "A date or date range",
+              text: "A date",
               checked: checked("type", "date")
-            },
-            {
-              value: "file-upload",
-              text: "Uploading files",
-              checked: checked("type", "file-upload")
             }
           ]
         }) }}
@@ -284,8 +278,8 @@
         <input type="hidden" id="pageId" name="pageId" value="p{{pageId}}">
 
         {{ govukButton({
-          text: "Add next page",
-          href: "choose-page-2-type"
+          text: "Save and create next page",
+          href: "../choose-page-type/" + (pageId | int + 1)
         }) }}
 
 
