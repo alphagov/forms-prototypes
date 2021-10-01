@@ -5,17 +5,15 @@
 {% endblock %}
 
 {% block header %}
-<!--
-<div class="preview-header">
-  <p class="preview-link govuk-body-s"><a href="question-preview" target="_blank">Open in a new tab</a></p>
-</div>
--->
+
 {% endblock %}
 
 {% block content %}
 <form class="form" action="edit-question-save" method="post">
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
+
+        {% set pageId = data['pageId'] %}
 
         {% if data['intro-text'] %}
 
@@ -45,8 +43,8 @@
         {{ govukInput({
           label: label,
           hint: {text: data['hint-text']},
-          id: "question-1",
-          name: "question-1"
+          id: pageId,
+          name: pageId
         }) }}
 
         {# Currency fields #}
@@ -54,8 +52,8 @@
         {{ govukInput({
           label: label,
           hint: {text: data['hint-text']},
-          id: "question-1",
-          name: "question-1",
+          id: pageId,
+          name: pageId,
           prefix: {text: "£"},
           classes: "govuk-input--width-5",
           spellcheck: false
@@ -66,8 +64,8 @@
         {{ govukInput({
           label: label,
           hint: {text: data['hint-text']},
-          id: "question-1",
-          name: "question-1",
+          id: pageId,
+          name: pageId,
           suffix: {text: data['unit']},
           classes: "govuk-input--width-5",
           spellcheck: false
@@ -79,16 +77,16 @@
         {{ govukTextarea({
           label: label,
           hint: {text: data['hint-text']},
-          id: "question-1",
-          name: "question-1"
+          id: pageId,
+          name: pageId
         }) }}
         {% endif %}
 
         {# Textarea with no character limit #}
         {% if (data['type'] == 'textarea') and not (data['char-limit'] == 'none') %}
         {{ govukCharacterCount({
-          name: "question-1",
-          id: "question-1",
+          name: pageId,
+          id: pageId,
           maxlength: data['char-limit'],
           label: label,
           hint: {text: data['hint-text']}
@@ -98,8 +96,8 @@
         {# Date field #}
         {% if data['type'] == 'date' %}
         {{ govukDateInput({
-          id: "question-1",
-          namePrefix: "question-1",
+          id: pageId,
+          namePrefix: pageId,
           fieldset: {
             legend: label
           },

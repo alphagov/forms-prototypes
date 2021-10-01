@@ -1,0 +1,103 @@
+{% extends "layout-govuk-forms.html" %}
+
+{% block pageTitle %}
+  Edit question
+{% endblock %}
+
+{% block content %}
+
+<form id="form" class="form" action="../edit-page/{{ pageId }}" method="post">
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-half">
+
+      <span class="govuk-caption-l">Page {{ pageId }}</span>
+
+      {{ govukRadios({
+        idPrefix: "page-type",
+        name: "type",
+        classes: "govuk-radios--small",
+        fieldset: {
+          legend: {
+            text: "Choose a page type",
+            classes: "govuk-fieldset__legend--l"
+          }
+        },
+        hint: {
+          text: "Pick from our list of editable templates:"
+        },
+        items: [
+          {
+            value: "Name",
+            text: "Name",
+            checked: checked("page-type", "Name")
+          },
+          {
+            value: "Address",
+            text: "Address",
+            checked: checked("page-type", "Address")
+          },
+          {
+            value: "Telephone number",
+            text: "Telephone number",
+            checked: checked("page-type", "Telephone Number")
+          },
+          {
+            value: "Email address",
+            text: "Email address",
+            checked: checked("page-type", "Email address")
+          },
+          {
+            value: "National Insurance Number",
+            text: "National Insurance Numbers",
+            checked: checked("page-type", "National Insurance Number")
+          },
+          {
+            value: "Bank details",
+            text: "Bank details",
+            checked: checked("page-type", "Bank details")
+          },
+          {
+            value: "Date of birth",
+            text: "Date of birth",
+            checked: checked("page-type", "Date of birth")
+          },
+          {
+            value: "Information page",
+            text: "Information page",
+            checked: checked("page-type", "Information page")
+          },
+          {
+            divider: "or"
+          },
+          {
+            value: "Custom",
+            text: "Create a new page from scratch",
+            checked: checked("page-type", "Custom")
+          }
+        ]
+      }) }}
+
+      {{ govukButton({
+        text: "Create page",
+        href: "../edit-page/" + pageId 
+      }) }}
+
+    </div>
+
+    <div class="govuk-grid-column-one-half" style="height: 700px;">
+      <div class="preview-pane-wrapper">
+        <div class="preview-header">
+          <p class="preview-link govuk-body-s">
+            <!-- <a href="#" target="_blank" onclick="document.getElementById('form').submit();">Refresh</a> &nbsp;|&nbsp;
+            <a href="question-preview-2-new-tab" target="_blank">Open in a new tab</a>-->
+          </p>
+        </div>
+        <iframe title="Page preview" data-module="app-example-frame" class="preview-pane app-example__frame app-example__frame--resizable" src="../page-preview-placeholder" frameborder="1" loading="lazy" id="iFrameResizer0" scrolling="no" ></iframe>
+      </div>
+    </div>
+
+  </div>
+
+</form>
+
+{% endblock %}

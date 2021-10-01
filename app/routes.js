@@ -22,3 +22,13 @@ router.post('/example-2/eligibility-check-answer', function (req, res) {
   }
 
 })
+
+// Renders the page editor, set to a specific page
+router.get('/form-designer/edit-page/:pageId', function(req, res) {
+    res.render('form-designer/edit-page', { 'pageId' : req.params.pageId });
+});
+
+// Renders the page type chooser, set to a specific page
+router.get('/form-designer/choose-page-type/:pageId', function(req, res) {
+    res.render('form-designer/choose-page-type', { 'pageId' : req.params.pageId });
+});
