@@ -25,7 +25,19 @@ router.post('/example-2/eligibility-check-answer', function (req, res) {
 
 // Renders the page editor, set to a specific page
 router.get('/form-designer/edit-page/:pageId', function(req, res) {
-    res.render('form-designer/edit-page', { 'pageId' : req.params.pageId });
+
+    var action = req.session.data['action'];
+    var pageId = req.params.pageId;
+    var nextPageId = parseInt(pageId) + 1;
+
+    // If user pressed the 'Create next page' button, redirect them instead
+    if (action == "createNextPage") {
+      res.redirect('/form-designer/choose-page-type/' + nextPageId);
+    // Otherwise, show them the page editor
+    } else {
+      res.render('form-designer/edit-page', { 'pageId' : pageId });
+    }
+
 });
 
 // Renders the page type chooser, set to a specific page
