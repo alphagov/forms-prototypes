@@ -22,10 +22,15 @@
             classes: "govuk-fieldset__legend--l"
           }
         },
-        hint: {
-          text: "Pick from our list of editable templates:"
-        },
         items: [
+          {
+            value: "Custom",
+            text: "Create a new page from scratch",
+            checked: true
+          },
+          {
+            divider: "Or"
+          },
           {
             value: "Name",
             text: "Name",
@@ -65,17 +70,11 @@
             value: "Information page",
             text: "Information page",
             checked: checked("page-type", "Information page")
-          },
-          {
-            divider: "or"
-          },
-          {
-            value: "Custom",
-            text: "Create a new page from scratch",
-            checked: checked("page-type", "Custom")
           }
         ]
       }) }}
+
+      <input type="hidden" id="pageId" name="pageId" value="p{{pageId}}">
 
       {{ govukButton({
         text: "Create",

@@ -13,6 +13,14 @@
       <span class="govuk-caption-l">Page {{pageId}}</span>
       <h1 class="govuk-heading-l">Edit page</h1>
 
+        {#
+
+        Every field id is prefixed with a unique page id.
+        So we can have separate configurations for every page.
+
+        #}
+        {% set pagePrefix = "p" + pageId + "-" %}
+
         {% set radioCheckboxHtml %}
 
         {{ govukTextarea({
@@ -23,9 +31,9 @@
           hint: {
             text: "Enter each item on a new line"
           },
-          id: "item-list",
-          name: "item-list",
-          value: data['item-list'],
+          id: pagePrefix + "item-list",
+          name: pagePrefix + "item-list",
+          value: data[pagePrefix + 'item-list'],
           classes: "govuk-!-margin-bottom-1",
           formGroup: {
             classes: "govuk-!-margin-bottom-1"
@@ -33,14 +41,14 @@
         }) }}
 
         {{ govukCheckboxes({
-          idPrefix: "radios",
-          name: "radios",
+          idPrefix: pagePrefix + "radios",
+          name: pagePrefix + "radios",
           classes: "govuk-checkboxes--small",
           items: [
             {
               value: "radios",
               text: "Only let people select one option",
-              checked: checked("radios", "radios")
+              checked: checked(pagePrefix + "radios", "radios")
             }
           ]
         }) }}
@@ -49,8 +57,8 @@
 
         {% set textareaHtml %}
         {{ govukSelect({
-          id: "char-limit",
-          name: "char-limit",
+          id: pagePrefix + "char-limit",
+          name: pagePrefix + "char-limit",
           label: {
             text: "Character limit",
             classes: "govuk-label--s"
@@ -59,27 +67,27 @@
             {
               value: "none",
               text: "None",
-              selected: checked("char-limit", "")
+              selected: checked(pagePrefix + "char-limit", "")
             },
             {
               value: "100",
               text: "100",
-              selected: checked("char-limit", "100")
+              selected: checked(pagePrefix + "char-limit", "100")
             },
             {
               value: "250",
               text: "250",
-              selected: checked("char-limit", "250")
+              selected: checked(pagePrefix + "char-limit", "250")
             },
             {
               value: "500",
               text: "500",
-              selected: checked("char-limit", "500")
+              selected: checked(pagePrefix + "char-limit", "500")
             },
             {
               value: "750",
               text: "750",
-              selected: checked("char-limit", "750")
+              selected: checked(pagePrefix + "char-limit", "750")
             }
           ]
         }) }}
@@ -87,8 +95,8 @@
 
         {% set textHtml %}
         {{ govukSelect({
-          id: "unit",
-          name: "unit",
+          id: pagePrefix + "unit",
+          name: pagePrefix + "unit",
           label: {
             text: "Unit",
             classes: "govuk-label--s"
@@ -97,27 +105,27 @@
             {
               value: "text",
               text: "Text",
-              selected: checked("unit", "text")
+              selected: checked(pagePrefix + "unit", "text")
             },
             {
               value: "pounds",
               text: "Currency (£)",
-              selected: checked("unit", "pounds")
+              selected: checked(pagePrefix + "unit", "pounds")
             },
             {
               value: "kg",
               text: "Weight (kg)",
-              selected: checked("unit", "kg")
+              selected: checked(pagePrefix + "unit", "kg")
             },
             {
               value: "km",
               text: "Distance (km)",
-              selected: checked("unit", "km")
+              selected: checked(pagePrefix + "unit", "km")
             },
             {
               value: "m",
               text: "Length (m)",
-              selected: checked("unit", "m")
+              selected: checked(pagePrefix + "unit", "m")
             }
           ]
         }) }}
@@ -134,9 +142,9 @@
           formGroup: {
             classes: "govuk-!-margin-bottom-3"
           },
-          id: "long-title",
-          name: "long-title",
-          value: data['long-title']
+          id: pagePrefix + "long-title",
+          name: pagePrefix + "long-title",
+          value: data[pagePrefix + 'long-title']
         }) }}
 
         {{ govukInput({
@@ -147,15 +155,15 @@
           hint: {
             text: "Short version — for example, Name"
           },
-          id: "short-title",
-          name: "short-title",
-          value: data['short-title']
+          id: pagePrefix + "short-title",
+          name: pagePrefix + "short-title",
+          value: data[pagePrefix + 'short-title']
         }) }}
 
 
         {{ govukRadios({
-          idPrefix: "type",
-          name: "type",
+          idPrefix: pagePrefix + "type",
+          name: pagePrefix + "type",
           classes: "govuk-radios--small",
           fieldset: {
             legend: {
@@ -170,7 +178,7 @@
             {
               value: "text",
               text: "A single line",
-              checked: checked("type", "text"),
+              checked: checked(pagePrefix + "type", "text"),
               conditional: {
                 html: textHtml
               }
@@ -178,7 +186,7 @@
             {
               value: "textarea",
               text: "One or more paragraphs",
-              checked: checked("type", "textarea"),
+              checked: checked(pagePrefix + "type", "textarea"),
               conditional: {
                 html: textareaHtml
               }
@@ -186,7 +194,7 @@
             {
               value: "radio-checkbox",
               text: "Choosing from a list of options",
-              checked: checked("type", "radio-checkbox"),
+              checked: checked(pagePrefix + "type", "radio-checkbox"),
               conditional: {
                 html: radioCheckboxHtml
               }
@@ -194,7 +202,7 @@
             {
               value: "date",
               text: "A date",
-              checked: checked("type", "date")
+              checked: checked(pagePrefix + "type", "date")
             }
           ]
         }) }}
@@ -209,9 +217,9 @@
           </summary>
           <div class="govuk-details__text govuk-!-padding-bottom-0">
         {{ govukTextarea({
-          name: "intro-text",
-          id: "intro-text",
-          value: data['intro-text'],
+          name: pagePrefix + "intro-text",
+          id: pagePrefix + "intro-text",
+          value: data[pagePrefix + 'intro-text'],
           classes: "govuk-!-margin-bottom-3",
           label: {
             text: "Introduction",
@@ -241,9 +249,9 @@
               hint: {
                 text: "An optional hint to help the person answer the question"
               },
-              id: "hint-text",
-              name: "hint-text",
-              value: data['hint-text']
+              id: pagePrefix + "hint-text",
+              name: pagePrefix + "hint-text",
+              value: data[pagePrefix + 'hint-text']
             }) }}
           </div>
         </details>
@@ -258,9 +266,9 @@
           </summary>
           <div class="govuk-details__text govuk-!-padding-bottom-0">
         {{ govukTextarea({
-          name: "help-text",
-          id: "help-text",
-          value: data['help-text'],
+          name: pagePrefix + "help-text",
+          id: pagePrefix + "help-text",
+          value: data[pagePrefix + 'help-text'],
           classes: "govuk-!-margin-bottom-1",
           label: {
             text: "Help",
@@ -292,10 +300,10 @@
         <div class="preview-header">
           <p class="preview-link govuk-body-s">
             <!-- <a href="#" target="_blank" onclick="document.getElementById('form').submit();">Refresh</a> &nbsp;|&nbsp; -->
-            <a href="page-preview-new-tab" target="_blank">Open in a new tab</a>
+            <a href="../page-preview-new-tab/{{pageId}}" target="_blank">Open in a new tab</a>
           </p>
         </div>
-        <iframe title="Page preview" data-module="app-example-frame" class="preview-pane app-example__frame app-example__frame--resizable" src="../page-preview" frameborder="1" loading="lazy" id="iFrameResizer0" scrolling="no" ></iframe>
+        <iframe title="Page preview" data-module="app-example-frame" class="preview-pane app-example__frame app-example__frame--resizable" src="../page-preview/{{pageId}}" frameborder="1" loading="lazy" id="iFrameResizer0" scrolling="no" ></iframe>
         {{ govukButton({
           text: "Update preview",
           classes: "update-button",

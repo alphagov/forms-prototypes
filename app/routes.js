@@ -44,3 +44,13 @@ router.get('/form-designer/edit-page/:pageId', function(req, res) {
 router.get('/form-designer/choose-page-type/:pageId', function(req, res) {
     res.render('form-designer/choose-page-type', { 'pageId' : req.params.pageId });
 });
+
+// Renders the in-page preview, set to a specific page
+router.get('/form-designer/page-preview/:pageId', function(req, res) {
+    res.render('form-designer/page-preview', { 'pageId' : req.params.pageId });
+});
+
+// Renders the new-tab page preview, set to a specific page
+router.get('/form-designer/page-preview-new-tab/:pageId', function(req, res) {
+    res.render('form-designer/page-preview-new-tab', { 'pageId' : req.params.pageId });
+});
