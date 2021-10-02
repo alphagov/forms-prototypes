@@ -205,9 +205,15 @@
         {% endif %}
 
         {# Submit button #}
+
+        {% set nextPageId = pageId | int + 1 %}
+
         {{ govukButton({
           text: "Continue",
-          disabled: true
+          href: "../edit-page/" + nextPageId,
+          attributes: {
+            target: "_parent"
+          }
         }) }}
 
     </div>

@@ -23,6 +23,13 @@ router.post('/example-2/eligibility-check-answer', function (req, res) {
 
 })
 
+
+var highestPageId = 0;
+// Keeps track of the highest page Id created so far.
+// Used to decide whether to let users CREATE a new page
+// or EDIT the next page in the sequence.
+// Assumes an unbroken sequence of page Ids.
+
 // Renders the page editor, set to a specific page
 router.get('/form-designer/edit-page/:pageId', function(req, res) {
 
@@ -30,12 +37,28 @@ router.get('/form-designer/edit-page/:pageId', function(req, res) {
     var pageId = req.params.pageId;
     var nextPageId = parseInt(pageId) + 1;
 
-    // If user pressed the 'Create next page' button, redirect them instead
+
+    if (pageId > highestPageId) {
+      highestPageId = pageId;
+    }
+
+    // If user pressed the 'Create next page' button...
     if (action == "createNextPage") {
       res.redirect('/form-designer/choose-page-type/' + nextPageId);
-    // Otherwise, show them the page editor
+
+    // If user pressed the 'Edit next page' button...
+    } else if (action == "editNextPage") {
+      // reset the action to avoid a loop
+      req.session.data['action'] = "";
+      
+      res.redirect('/form-designer/edit-page/' + nextPageId);
+
+    // If user pressed the 'Update preview' button or back link...
     } else {
-      res.render('form-designer/edit-page', { 'pageId' : pageId });
+      res.render('form-designer/edit-page', {
+        'pageId' : pageId,
+        'highestPageId' : highestPageId
+      });
     }
 
 });

@@ -283,7 +283,9 @@
 
         <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 
-        <input type="hidden" id="pageId" name="pageId" value="p{{pageId}}">
+        <input type="hidden" id="currentPageId" name="currentPageId" value="{{pageId}}">
+
+        {% if pageId == highestPageId %}
 
         {{ govukButton({
           text: "Save and create next page",
@@ -291,7 +293,15 @@
           value: "createNextPage"
         }) }}
 
+        {% else %}
 
+        {{ govukButton({
+          text: "Save and edit next page",
+          name: "action",
+          value: "editNextPage"
+        }) }}
+
+        {% endif %}
 
     </div>
 
