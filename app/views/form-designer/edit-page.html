@@ -285,7 +285,7 @@
 
         <input type="hidden" id="currentPageId" name="currentPageId" value="{{pageId}}">
 
-        {% if pageId == highestPageId %}
+        {% if pageId == data['highestPageId'] %}
 
         {{ govukButton({
           text: "Save and create next page",
@@ -302,6 +302,8 @@
         }) }}
 
         {% endif %}
+
+        <p><a href="../form-index">Back to page list</a></p>
 
     </div>
 

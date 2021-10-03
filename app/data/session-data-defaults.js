@@ -21,4 +21,6 @@ module.exports = {
 
   // Insert values here
 
+  highestPageId: 0
+
 }

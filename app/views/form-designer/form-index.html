@@ -1,0 +1,103 @@
+{% extends "layout-govuk-forms.html" %}
+
+{% block pageTitle %}
+  Form index
+{% endblock %}
+
+{% block content %}
+
+<form id="form" class="form" action="../edit-page/{{ pageId }}" method="post">
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <span class="govuk-caption-l">Form</span>
+      <h1 class="govuk-heading-l">New form</h1>
+
+
+
+      {% set nextPageId = data['highestPageId'] | int + 1 %}
+
+      <h2 class="govuk-heading-m">Page list</h2>
+
+      <dl class="govuk-summary-list">
+
+
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key govuk-!-font-weight-regular">
+                Start
+              </dt>
+              <dd class="govuk-summary-list__value govuk-!-width-one-quarter">
+              </dd>
+                <dd class="govuk-summary-list__actions">
+                    <a class="govuk-link" href="edit-start-page">
+                      Edit</a>
+                </dd>
+            </div>
+
+          {% for i in range(1, nextPageId) -%}
+
+            {% set questionTitle = "p" + (i) + "-short-title" %}
+
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key govuk-!-font-weight-regular">
+                {{data[questionTitle]}}
+              </dt>
+              <dd class="govuk-summary-list__value">
+              </dd>
+                <dd class="govuk-summary-list__actions">
+                    <a class="govuk-link" href="edit-page/{{i}}">
+                      Edit</a>
+                </dd>
+            </div>
+
+          {%- endfor %}
+
+
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key govuk-!-font-weight-regular">
+                Check your answers
+              </dt>
+              <dd class="govuk-summary-list__value">
+              </dd>
+                <dd class="govuk-summary-list__actions">
+                    <a class="govuk-link" href="edit-check-answers-page">
+                      Edit</a>
+                </dd>
+            </div>
+
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key govuk-!-font-weight-regular">
+                Confirmation
+              </dt>
+              <dd class="govuk-summary-list__value">
+              </dd>
+                <dd class="govuk-summary-list__actions">
+                    <a class="govuk-link" href="edit-confirmation-page">
+                      Edit</a>
+                </dd>
+            </div>
+      </dl>
+
+      {{ govukButton({
+        text: "Create a new page",
+        href: "choose-page-type/" + nextPageId
+      }) }}
+
+
+    </div>
+
+    <div class="govuk-grid-column-one-third" style="height: 700px;">
+      <div class="preview-pane-wrapper">
+        <div class="preview-header">
+          <p class="preview-link govuk-body-s">
+          </p>
+        </div>
+        <iframe title="Page preview" data-module="app-example-frame" class="preview-pane app-example__frame app-example__frame--resizable" src="page-preview-placeholder" frameborder="1" loading="lazy" id="iFrameResizer0" scrolling="no" ></iframe>
+      </div>
+    </div>
+
+  </div>
+
+</form>
+
+{% endblock %}
