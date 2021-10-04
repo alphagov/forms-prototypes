@@ -1,0 +1,47 @@
+{% extends "layout-body-only.html" %}
+
+{% block pageTitle %}
+  Start page
+{% endblock %}
+
+{% block header %}
+
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <h1 class="govuk-heading-xl">
+        {{data['formTitle']}}
+      </h1>
+
+      {% if data['formIntro'] %}
+      <p>{{ data['formIntro'] }}</p>
+      {% endif %}
+
+      {% if data['highestPageId'] == 0 %}
+        {% set disabledStart = true %}
+      {% else %}
+        {% set disabledStart = false %}
+      {% endif %}
+
+      {{ govukButton({
+        text: "Start now",
+        href: "edit-page/1",
+        attributes: {
+          target: "_parent"
+        },
+        isStartButton: true,
+        disabled: disabledStart
+      }) }}
+
+      {% if data['formBeforeStart'] %}
+      <h2 class="govuk-heading-m">Before you start</h2>
+      <p>{{ data['formBeforeStart'] }}</p>
+      {% endif %}
+
+    </div>
+
+  </div>
+{% endblock %}

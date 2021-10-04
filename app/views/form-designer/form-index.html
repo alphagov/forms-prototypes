@@ -11,7 +11,7 @@
     <div class="govuk-grid-column-two-thirds">
 
       <span class="govuk-caption-l">Form</span>
-      <h1 class="govuk-heading-l">New form</h1>
+      <h1 class="govuk-heading-l">{{ data['formTitle'] }}</h1>
 
 
 
@@ -29,7 +29,7 @@
               <dd class="govuk-summary-list__value govuk-!-width-one-quarter">
               </dd>
                 <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" href="edit-start-page">
+                    <a class="govuk-link" href="edit-page/0">
                       Edit</a>
                 </dd>
             </div>
@@ -81,10 +81,27 @@
             </div>
       </dl>
 
+      <div class="govuk-button-group">
+
+      {% if data['highestPageId'] > 0 %}
+
       {{ govukButton({
         text: "Create a new page",
         href: "choose-page-type/" + nextPageId
       }) }}
+
+      {% else %}
+
+      {{ govukButton({
+        text: "Edit start page",
+        href: "edit-page/0"
+      }) }}
+
+      {% endif %}
+      <p>
+        or <a class="govuk-link" href="form-settings">change form settings</a>
+      </p>
+      </div>
 
 
     </div>
@@ -95,7 +112,7 @@
           <p class="preview-link govuk-body-s">
           </p>
         </div>
-        <iframe title="Page preview" data-module="app-example-frame" class="preview-pane app-example__frame app-example__frame--resizable" src="page-preview-placeholder" frameborder="1" loading="lazy" id="iFrameResizer0" scrolling="no" ></iframe>
+        <iframe title="Page preview" data-module="app-example-frame" class="preview-pane app-example__frame app-example__frame--resizable" src="start-page-preview" frameborder="1" loading="lazy" id="iFrameResizer0" scrolling="no" ></iframe>
       </div>
     </div>
 

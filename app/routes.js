@@ -39,8 +39,11 @@ router.get('/form-designer/edit-page/:pageId', function(req, res) {
 
     }
 
+    if (pageId == 0 && (action == "update" || action == "")){
+      res.render('form-designer/edit-start-page');
+
     // If user pressed the 'Create next page' button...
-    if (action == "createNextPage") {
+    } else if (action == "createNextPage") {
       res.redirect('/form-designer/choose-page-type/' + nextPageId);
 
     // If user pressed the 'Edit next page' button...

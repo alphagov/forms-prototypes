@@ -9,14 +9,8 @@
 {% endblock %}
 
 {% block beforeContent %}
-
   {% set prevPageId = pageId -1 %}
-  {% if prevPageId > 0 %}
   <a class="govuk-back-link" href="../edit-page/{{prevPageId}}" target="_parent">Back</a>
-  {% else %}
-  <a class="govuk-back-link" href="#">Back</a>
-  {% endif %}
-
 {% endblock %}
 
 {% block content %}

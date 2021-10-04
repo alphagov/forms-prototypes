@@ -21,6 +21,8 @@ module.exports = {
 
   // Insert values here
 
-  highestPageId: 0
+  highestPageId: 0,
+  formTitle: "New form",
+  action: ""
 
 }
