@@ -285,6 +285,7 @@
 
         <input type="hidden" id="currentPageId" name="currentPageId" value="{{pageId}}">
 
+        <div class="govuk-button-group">
         {% if pageId == data['highestPageId'] %}
 
         {{ govukButton({
@@ -303,7 +304,11 @@
 
         {% endif %}
 
-        <p><a href="../form-index">Back to page list</a></p>
+        <p>
+          or <a class="govuk-link" href="../form-index">back to page list</a>
+        </p>
+        </div>
+
 
     </div>
 

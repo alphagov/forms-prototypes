@@ -23,13 +23,6 @@ router.post('/example-2/eligibility-check-answer', function (req, res) {
 
 })
 
-
-//var highestPageId = 0;
-// Keeps track of the highest page Id created so far.
-// Used to decide whether to let users CREATE a new page
-// or EDIT the next page in the sequence.
-// Assumes an unbroken sequence of page Ids.
-
 // Renders the page editor, set to a specific page
 router.get('/form-designer/edit-page/:pageId', function(req, res) {
 
@@ -38,9 +31,12 @@ router.get('/form-designer/edit-page/:pageId', function(req, res) {
     var nextPageId = parseInt(pageId) + 1;
     var highestPageId = req.session.data['highestPageId']
 
-
+    // Update the 'Highest page Id' if necessary
+    // Used to loop over the page list, tweak button text etc.
+    // This is a pretty fragile approach!
     if (pageId > highestPageId) {
       req.session.data['highestPageId'] = pageId;
+
     }
 
     // If user pressed the 'Create next page' button...
@@ -49,10 +45,9 @@ router.get('/form-designer/edit-page/:pageId', function(req, res) {
 
     // If user pressed the 'Edit next page' button...
     } else if (action == "editNextPage") {
+
       // reset the action to avoid a loop
       req.session.data['action'] = "";
-
-
 
       res.redirect('/form-designer/edit-page/' + nextPageId);
 
@@ -66,18 +61,20 @@ router.get('/form-designer/edit-page/:pageId', function(req, res) {
 });
 
 
-
 // Renders the page type chooser, set to a specific page
 router.get('/form-designer/choose-page-type/:pageId', function(req, res) {
+    req.session.data['action'] = "";
     res.render('form-designer/choose-page-type', { 'pageId' : req.params.pageId });
 });
 
 // Renders the in-page preview, set to a specific page
 router.get('/form-designer/page-preview/:pageId', function(req, res) {
+    req.session.data['action'] = "";
     res.render('form-designer/page-preview', { 'pageId' : req.params.pageId });
 });
 
 // Renders the new-tab page preview, set to a specific page
 router.get('/form-designer/page-preview-new-tab/:pageId', function(req, res) {
+    req.session.data['action'] = "";
     res.render('form-designer/page-preview-new-tab', { 'pageId' : req.params.pageId });
 });
