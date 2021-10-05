@@ -25,6 +25,6 @@ module.exports = {
   formTitle: "New form",
   action: "",
   publish: "GOV.UK",
-  authentication: "none"
+  authentication: "email"
 
 }

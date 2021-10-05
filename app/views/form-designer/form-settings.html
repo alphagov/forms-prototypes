@@ -30,12 +30,12 @@
         items: [
           {
             value: "GOV.UK",
-            text: "GOV.UK",
+            text: "On the GOV.UK website",
             checked: checked("publish", "GOV.UK")
           },
           {
             value: "org",
-            text: "Your organisation website",
+            text: "On your organisation's website",
             checked: checked("publish", "Org")
           }
           ]
@@ -52,19 +52,20 @@
             }
           },
           hint: {
-            text: "How will users verify their identity?"
+            text: "How will users access their form data?"
           },
           items: [
-            {
-              value: "none",
-              text: "No authentication required",
-              checked: checked("authentication", "none")
-            },{
-              value: "signIn",
-              text: "Authenticate with GOV.UK Sign In",
-              checked: checked("authentication", "signIn")
-            }
-            ]
+          {
+            value: "email",
+            text: "Using an email link",
+            checked: checked("authentication", "email")
+          },
+          {
+            value: "signIn",
+            text: "Using GOV.UK Sign In",
+            checked: checked("authentication", "signIn")
+          }
+          ]
           }) }}
 
 
