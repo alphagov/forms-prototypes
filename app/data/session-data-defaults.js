@@ -23,6 +23,8 @@ module.exports = {
 
   highestPageId: 0,
   formTitle: "New form",
-  action: ""
+  action: "",
+  publish: "GOV.UK",
+  authentication: "none"
 
 }

@@ -14,7 +14,58 @@
       <h1 class="govuk-heading-l">{{ data['formTitle'] }}</h1>
 
 
-      <p>[Settings go here]</p>
+      {{ govukRadios({
+        idPrefix: "publish",
+        name: "publish",
+        classes: "govuk-radios--small",
+        fieldset: {
+          legend: {
+            text: "Publishing",
+            classes: "govuk-label--m"
+          }
+        },
+        hint: {
+          text: "Where will the form live?"
+        },
+        items: [
+          {
+            value: "GOV.UK",
+            text: "GOV.UK",
+            checked: checked("publish", "GOV.UK")
+          },
+          {
+            value: "org",
+            text: "Your organisation website",
+            checked: checked("publish", "Org")
+          }
+          ]
+        }) }}
+
+        {{ govukRadios({
+          idPrefix: "authentication",
+          name: "authentication",
+          classes: "govuk-radios--small",
+          fieldset: {
+            legend: {
+              text: "Authentication",
+              classes: "govuk-label--m"
+            }
+          },
+          hint: {
+            text: "How will users verify their identity?"
+          },
+          items: [
+            {
+              value: "none",
+              text: "No authentication required",
+              checked: checked("authentication", "none")
+            },{
+              value: "signIn",
+              text: "Authenticate with GOV.UK Sign In",
+              checked: checked("authentication", "signIn")
+            }
+            ]
+          }) }}
 
 
       <div class="govuk-button-group">
