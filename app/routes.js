@@ -30,7 +30,7 @@ router.get('/form-designer/edit-page/:pageId', function(req, res) {
     var pageId = req.params.pageId;
     var highestPageId = req.session.data['highestPageId']
     var editNextPageId = parseInt(pageId) + 1;
-    var createNextPageId = highestPageId + 1;
+    var createNextPageId = parseInt(highestPageId) + 1;
 
     // Update the 'Highest page Id' if necessary
     // Used to loop over the page list, tweak button text etc.
