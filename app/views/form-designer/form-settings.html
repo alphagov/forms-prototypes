@@ -25,7 +25,7 @@
           }
         },
         hint: {
-          text: "Where will the form live?"
+          text: "Where will people find the form?"
         },
         items: [
           {
@@ -35,7 +35,7 @@
           },
           {
             value: "org",
-            text: "On your organisation's website",
+            text: "On my organisation's website",
             checked: checked("publish", "Org")
           }
           ]
@@ -52,7 +52,7 @@
             }
           },
           hint: {
-            text: "How will users access their form data?"
+            text: "How will people access their form?"
           },
           items: [
           {
@@ -67,6 +67,33 @@
           }
           ]
           }) }}
+
+          {{ govukRadios({
+            idPrefix: "payments",
+            name: "payments",
+            classes: "govuk-radios--small",
+            fieldset: {
+              legend: {
+                text: "Payments",
+                classes: "govuk-label--m"
+              }
+            },
+            hint: {
+              text: "How will people make any payments to you?"
+            },
+            items: [
+            {
+              value: "no",
+              text: "No payments are required",
+              checked: checked("payments", "no")
+            },
+            {
+              value: "yes",
+              text: "Using GOV.UK Pay",
+              checked: checked("authentication", "pay")
+            }
+            ]
+            }) }}
 
 
       <div class="govuk-button-group">
