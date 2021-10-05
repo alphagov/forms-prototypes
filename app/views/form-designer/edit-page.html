@@ -10,8 +10,16 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
+      {% set pagePrefix = "p" + pageId + "-" %}
+
       <span class="govuk-caption-l">Page {{pageId}}</span>
-      <h1 class="govuk-heading-l">Edit page</h1>
+      <h1 class="govuk-heading-l">
+        {% if data[pagePrefix + 'long-title'] %}
+        {{data[pagePrefix + 'long-title']}}
+        {% else %}
+        Edit page
+        {% endif %}
+      </h1>
 
         {#
 
@@ -19,7 +27,6 @@
         So we can have separate configurations for every page.
 
         #}
-        {% set pagePrefix = "p" + pageId + "-" %}
 
         {% set radioCheckboxHtml %}
 
@@ -297,7 +304,7 @@
         {% else %}
 
         {{ govukButton({
-          text: "Save and edit next page",
+          text: "Edit next page",
           name: "action",
           value: "editNextPage"
         }) }}
