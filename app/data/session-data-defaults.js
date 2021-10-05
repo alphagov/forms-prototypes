@@ -27,6 +27,8 @@ module.exports = {
   publish: "GOV.UK",
   authentication: "email",
   payments: "no",
-  status: "Draft"
+  status: "Draft",
+  confirmationNext: "We've sent you an email confirming that we have received your application.",
+  confirmationTitle: "Application complete"
 
 }

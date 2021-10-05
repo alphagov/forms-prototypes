@@ -28,23 +28,32 @@ router.get('/form-designer/edit-page/:pageId', function(req, res) {
 
     var action = req.session.data['action'];
     var pageId = req.params.pageId;
-    var nextPageId = parseInt(pageId) + 1;
     var highestPageId = req.session.data['highestPageId']
+    var editNextPageId = parseInt(pageId) + 1;
+    var createNextPageId = highestPageId + 1;
 
     // Update the 'Highest page Id' if necessary
     // Used to loop over the page list, tweak button text etc.
     // This is a pretty fragile approach!
-    if (pageId > highestPageId) {
+    if (pageId !== 'confirmation' && pageId > highestPageId) {
       req.session.data['highestPageId'] = pageId;
-
     }
 
-    if (pageId == 0 && (action == "update" || action == "")){
+    // If user is creating a page from the confirmation page...
+    if (pageId == 'confirmation' && action == "createNextPage"){
+      res.redirect('/form-designer/edit-page/' + createNextPageId);
+
+    // If user is updating the confirmation page...
+    } else if (pageId == 'confirmation' && (action == "update" || action == "")){
+      res.render('form-designer/edit-confirmation-page');
+
+    // If user is updating the start page...
+    } else if (pageId == 0 && (action == "update" || action == "")){
       res.render('form-designer/edit-start-page');
 
     // If user pressed the 'Create next page' button...
     } else if (action == "createNextPage") {
-      res.redirect('/form-designer/choose-page-type/' + nextPageId);
+      res.redirect('/form-designer/choose-page-type/' + createNextPageId);
 
     // If user pressed the 'Edit next page' button...
     } else if (action == "editNextPage") {
@@ -52,7 +61,7 @@ router.get('/form-designer/edit-page/:pageId', function(req, res) {
       // reset the action to avoid a loop
       req.session.data['action'] = "";
 
-      res.redirect('/form-designer/edit-page/' + nextPageId);
+      res.redirect('/form-designer/edit-page/' + editNextPageId);
 
     // If user pressed the 'Update preview' button or back link...
     } else {
