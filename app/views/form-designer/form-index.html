@@ -13,6 +13,13 @@
       <span class="govuk-caption-l">Form</span>
       <h1 class="govuk-heading-l">{{ data['formTitle'] }}</h1>
 
+      {% set nextPageId = data['highestPageId'] | int + 1 %}
+      {% set totalPageNum = data['highestPageId'] | int + 3 %}
+      {% if data['highestPageId'] > 0 %}
+        {% set publishLink %}
+           <a href="form-publish" class="form-publish">Publish</a>
+        {% endset -%}
+      {% endif %}
 
       {{ govukSummaryList({
         classes: 'govuk-summary-list--no-border govuk-!-margin-bottom-2 meta-data',
@@ -23,7 +30,7 @@
               classes: "govuk-body-s govuk-!-padding-top-0"
             },
             value: {
-              text: "Draft",
+              html: "Draft" + publishLink,
               classes: " govuk-body-s govuk-!-padding-top-0"
             }
           },
@@ -33,15 +40,12 @@
               classes: " govuk-body-s govuk-!-padding-top-0"
             },
             value: {
-              text: "3",
+              text: totalPageNum,
               classes: " govuk-body-s govuk-!-padding-top-0"
             }
           }
         ]
       }) }}
-
-      {% set nextPageId = data['highestPageId'] | int + 1 %}
-
 
       <dl class="govuk-summary-list">
             <div class="govuk-summary-list__row">

@@ -74,6 +74,11 @@ $govuk-assets-path: '/govuk/assets/';
   .govuk-summary-list__value{
       width: min-content;
   }
+  .form-publish{
+    border-left: 1px solid $govuk-border-colour;
+    margin-left: govuk-spacing(1);
+    padding-left: govuk-spacing(2);
+  }
 }
 
 
