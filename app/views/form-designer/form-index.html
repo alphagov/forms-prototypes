@@ -17,8 +17,10 @@
       {% set totalPageNum = data['highestPageId'] | int + 3 %}
       {% if data['highestPageId'] > 0 %}
         {% set publishLink %}
-           <a href="form-publish" class="form-publish">Publish</a>
+           <a href="form-publish" class="form-publish govuk-link--no-visited-state">Publish</a>
         {% endset -%}
+      {% else %}
+        {% set publishLink = "" %}
       {% endif %}
 
       {{ govukSummaryList({
@@ -55,7 +57,7 @@
               <dd class="govuk-summary-list__value govuk-!-width-one-quarter">
               </dd>
                 <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" href="edit-page/0">
+                    <a class="govuk-link govuk-link--no-visited-state" href="edit-page/0">
                       Edit</a>
                 </dd>
             </div>
@@ -73,7 +75,7 @@
               <dd class="govuk-summary-list__value">
               </dd>
                 <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" href="edit-page/{{i}}">
+                    <a class="govuk-link govuk-link--no-visited-state" href="edit-page/{{i}}">
                       Edit</a>
                 </dd>
             </div>
@@ -89,7 +91,7 @@
               <dd class="govuk-summary-list__value">
               </dd>
                 <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" href="edit-check-answers-page">
+                    <a class="govuk-link govuk-link--no-visited-state" href="edit-check-answers-page">
                       Edit</a>
                 </dd>
             </div>
@@ -101,7 +103,7 @@
               <dd class="govuk-summary-list__value">
               </dd>
                 <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" href="edit-confirmation-page">
+                    <a class="govuk-link govuk-link--no-visited-state" href="edit-confirmation-page">
                       Edit</a>
                 </dd>
             </div>
@@ -125,7 +127,7 @@
 
       {% endif %}
       <p>
-        or <a class="govuk-link" href="form-settings">change form settings</a>
+        or <a class="govuk-link govuk-link--no-visited-state" href="form-settings">change form settings</a>
       </p>
       </div>
 

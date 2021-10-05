@@ -26,6 +26,7 @@ module.exports = {
   action: "",
   publish: "GOV.UK",
   authentication: "email",
-  payments: "no"
+  payments: "no",
+  status: "Draft"
 
 }
