@@ -67,6 +67,15 @@ $govuk-assets-path: '/govuk/assets/';
   }
 }
 
+.govuk-summary-list.meta-data{
+  .govuk-summary-list__key{
+      width: 55px;
+  }
+  .govuk-summary-list__value{
+      width: min-content;
+  }
+}
+
 
 /*
 // Tweak details to make them more consistent with conditional reveals?

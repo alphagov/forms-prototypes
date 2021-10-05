@@ -14,17 +14,39 @@
       <h1 class="govuk-heading-l">{{ data['formTitle'] }}</h1>
 
 
+      {{ govukSummaryList({
+        classes: 'govuk-summary-list--no-border govuk-!-margin-bottom-2 meta-data',
+        rows: [
+          {
+            key: {
+              text: "Status:",
+              classes: "govuk-body-s govuk-!-padding-top-0"
+            },
+            value: {
+              text: "Draft",
+              classes: " govuk-body-s govuk-!-padding-top-0"
+            }
+          },
+          {
+            key: {
+              text: "Pages:",
+              classes: " govuk-body-s govuk-!-padding-top-0"
+            },
+            value: {
+              text: "3",
+              classes: " govuk-body-s govuk-!-padding-top-0"
+            }
+          }
+        ]
+      }) }}
 
       {% set nextPageId = data['highestPageId'] | int + 1 %}
 
-      <h2 class="govuk-heading-m">Page list</h2>
 
       <dl class="govuk-summary-list">
-
-
             <div class="govuk-summary-list__row">
               <dt class="govuk-summary-list__key govuk-!-font-weight-regular">
-                Start
+                Start page
               </dt>
               <dd class="govuk-summary-list__value govuk-!-width-one-quarter">
               </dd>
