@@ -67,28 +67,16 @@ $govuk-assets-path: '/govuk/assets/';
   }
 }
 
-.govuk-summary-list.meta-data{
+.new-pages{
+  display: block;
+  padding: 30px 0 10px;
   .govuk-summary-list__key{
-      width: 55px;
-  }
-  .govuk-summary-list__value{
-      width: min-content;
-  }
-  .form-publish{
-    border-left: 1px solid $govuk-border-colour;
-    margin-left: govuk-spacing(1);
-    padding-left: govuk-spacing(2);
+    width: 100%;
+    font-weight: 400;
+    font-size: 16px;
+    display: block;
+    border: 2px dotted #b1b4b6;
+    text-align: center;
+    color: #505a5f;
   }
 }
-
-
-/*
-// Tweak details to make them more consistent with conditional reveals?
-.govuk-details__summary{
-  padding-left: 30px;
-  margin-left: 5px;
-}
-.govuk-details__text{
-  border-left-width: 4px;
-}
-*/

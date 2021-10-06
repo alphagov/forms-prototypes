@@ -15,39 +15,10 @@
 
       {% set nextPageId = data['highestPageId'] | int + 1 %}
       {% set totalPageNum = data['highestPageId'] | int + 3 %}
-      {% if data['highestPageId'] > 0 %}
-        {% set publishLink %}
-           <a href="form-publish" class="form-publish govuk-link--no-visited-state">Publish</a>
-        {% endset -%}
-      {% else %}
-        {% set publishLink = "" %}
-      {% endif %}
 
-      {{ govukSummaryList({
-        classes: 'govuk-summary-list--no-border govuk-!-margin-bottom-2 meta-data',
-        rows: [
-          {
-            key: {
-              text: "Status:",
-              classes: "govuk-body-s govuk-!-padding-top-0"
-            },
-            value: {
-              html: "Draft" + publishLink,
-              classes: " govuk-body-s govuk-!-padding-top-0"
-            }
-          },
-          {
-            key: {
-              text: "Pages:",
-              classes: " govuk-body-s govuk-!-padding-top-0"
-            },
-            value: {
-              text: totalPageNum,
-              classes: " govuk-body-s govuk-!-padding-top-0"
-            }
-          }
-        ]
-      }) }}
+      <p class="govuk-body-s">{{totalPageNum}} page draft form{% if data['highestPageId'] > 0 %} —
+        <a href="form-publish" class="form-publish govuk-link--no-visited-state">Publish</a>{% endif %}.
+      </p>
 
       <dl class="govuk-summary-list">
             <div class="govuk-summary-list__row">
@@ -61,6 +32,15 @@
                       Edit</a>
                 </dd>
             </div>
+
+            <!-- Add this if users are confused about where their pages go -->
+            <!--
+            <div class="govuk-summary-list__row new-pages">
+              <dt class="govuk-summary-list__key">
+                New pages go here
+              </dt>
+            </div>
+            -->
 
           {% for i in range(1, nextPageId) -%}
 
