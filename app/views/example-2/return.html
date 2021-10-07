@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block pageTitle %}
-  Will you want to save your progress?
+  Continue your application
 {% endblock %}
 
 {% block header %}
@@ -18,12 +18,12 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-      <form class="form" action="save-progress-check" method="post">
+      <form class="form" action="return-check" method="post">
 
 {% set emailHtml %}
 {{ govukInput({
-  id: "save-by-email",
-  name: "save-by-email",
+  id: "return-email",
+  name: "return-email",
   type: "email",
   autocomplete: "email",
   spellcheck: false,
@@ -35,13 +35,13 @@
 
 {% set textHtml %}
 {{ govukInput({
-  id: "save-by-text",
-  name: "save-by-text",
+  id: "return-text",
+  name: "return-text",
   type: "tel",
   autocomplete: "tel",
   classes: "govuk-!-width-one-third",
   label: {
-    text: "Mobile phone number"
+    text: "Mobile number"
   }
 }) }}
 {% endset -%}
@@ -49,36 +49,29 @@
 <span class="govuk-caption-xl">Take your pet abroad</span>
 
 {{ govukRadios({
-  idPrefix: "save-progress",
-  name: "save-progress",
+  idPrefix: "return",
+  name: "return",
   fieldset: {
     legend: {
-      text: "Will you want to save your progress?",
+      text: "How did you save your application?",
       isPageHeading: true,
       classes: "govuk-fieldset__legend--l"
     }
   },
-  hint: {
-    text: "We'll send you a link or code so you can come back and finish later"
-  },
   items: [
     {
       value: "email",
-      text: "Yes, send a link to my email",
+      text: "Using my email address",
       conditional: {
         html: emailHtml
       }
     },
     {
       value: "text",
-      text: "Yes, send a code to my mobile",
+      text: "Using my mobile number",
       conditional: {
         html: textHtml
       }
-    },
-    {
-      value: "no",
-      text: "No, I'll complete the form in one go"
     }
   ]
 }) }}
