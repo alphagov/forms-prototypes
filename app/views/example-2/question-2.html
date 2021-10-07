@@ -20,6 +20,8 @@
 
       <form class="form" action="question-3" method="post">
 
+      <span class="govuk-caption-xl">About you</span>
+
         {{ govukDateInput({
           id: "date-of-birth",
           namePrefix: "date-of-birth",
@@ -40,7 +42,13 @@
           text: "Lorem ipsum"
         }) }}
 
-        <button class="govuk-button" data-module="govuk-button">Continue</button>
+        <div class="govuk-button-group">
+          {{ govukButton({
+            text: "Save and continue"
+          }) }}
+
+          <p>or <a class="govuk-link" href="task-list">save for later</a></p>
+        </div>
 
       </form>
 
