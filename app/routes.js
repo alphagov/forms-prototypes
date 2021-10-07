@@ -23,6 +23,23 @@ router.post('/example-2/eligibility-check-answer', function (req, res) {
 
 })
 
+// Run this code when a form is submitted to '/example-2/save-progress-check'
+router.post('/example-2/save-progress-check', function (req, res) {
+
+  // Make a variable and give it the value from 'save-progress'
+  var saveProgress = req.session.data['save-progress']
+
+  // Check whether the variable matches a condition
+  if (saveProgress == "no"){
+    // Send user to ineligible page
+    res.redirect('/example-2/task-list')
+  } else {
+    // Send user to next page
+    res.render('example-2/save-progress-check')
+  }
+
+})
+
 // Renders the page editor, set to a specific page
 router.get('/form-designer/edit-page/:pageId', function(req, res) {
 
