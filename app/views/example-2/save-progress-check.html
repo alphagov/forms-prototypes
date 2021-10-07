@@ -40,6 +40,8 @@
         }
       }) }}
 
+      <button class="govuk-button" data-module="govuk-button">This is correct - send me the link</button>
+
 {% elseif data['save-by-text'] %}
 
       {{ govukInput({
@@ -59,9 +61,10 @@
         }
       }) }}
 
+      <button class="govuk-button" data-module="govuk-button">This is correct - send me the code</button>
+
 {% endif %}
 
-        <button class="govuk-button" data-module="govuk-button">Continue</button>
 
       </form>
 

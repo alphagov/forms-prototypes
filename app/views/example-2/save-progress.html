@@ -1,0 +1,93 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+  Will you want to save your progress?
+{% endblock %}
+
+{% block header %}
+  <!-- Blank header with no service name for the start page -->
+  {{ govukHeader() }}
+{% endblock %}
+
+{% block beforeContent %}
+  <a class="govuk-back-link" href="start">Back</a>
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" action="save-progress-check" method="post">
+
+{% set emailHtml %}
+{{ govukInput({
+  id: "save-by-email",
+  name: "save-by-email",
+  type: "email",
+  autocomplete: "email",
+  spellcheck: false,
+  label: {
+    text: "Email address"
+  }
+}) }}
+{% endset -%}
+
+{% set textHtml %}
+{{ govukInput({
+  id: "save-by-text",
+  name: "save-by-text",
+  type: "tel",
+  autocomplete: "tel",
+  classes: "govuk-!-width-one-third",
+  label: {
+    text: "Mobile phone number"
+  }
+}) }}
+{% endset -%}
+
+<span class="govuk-caption-xl">Take your pet abroad</span>
+
+{{ govukRadios({
+  idPrefix: "save-progress",
+  name: "save-progress",
+  fieldset: {
+    legend: {
+      text: "Will you want to save your progress?",
+      isPageHeading: true,
+      classes: "govuk-fieldset__legend--l"
+    }
+  },
+  hint: {
+    text: "We'll send you a link or code so you can come back and finish later"
+  },
+  items: [
+    {
+      value: "email",
+      text: "Yes, send a link to my email",
+      conditional: {
+        html: emailHtml
+      }
+    },
+    {
+      value: "text",
+      text: "Yes, send a code to my mobile",
+      conditional: {
+        html: textHtml
+      }
+    },
+    {
+      value: "no",
+      text: "No, I'll complete the form in one go"
+    }
+  ]
+}) }}
+
+        <button class="govuk-button" data-module="govuk-button">Continue</button>
+
+      </form>
+
+    </div>
+  </div>
+
+{% endblock %}
