@@ -17,8 +17,10 @@
       {% set totalPageNum = data['highestPageId'] | int + 3 %}
       {% if data['highestPageId'] > 0 %}
         {% set publishLink %}
-           <a href="form-publish" class="form-publish">Publish</a>
+          <a href="form-publish" class="form-publish">Publish</a>
         {% endset -%}
+      {% else %}
+        {% set publishLink = "" %}
       {% endif %}
 
       {{ govukSummaryList({
