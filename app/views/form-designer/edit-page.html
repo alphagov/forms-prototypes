@@ -17,7 +17,7 @@
         {% if pageData['long-title'] %}
           {{pageData['long-title']}}
         {% else %}
-        Edit page
+          Edit page
         {% endif %}
       </h1>
 
@@ -282,8 +282,6 @@
         </details>
 
         <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
-
-        <input type="hidden" id="currentPageId" name="currentPageId" value="{{pageId}}">
 
         <div class="govuk-button-group">
         {% if pageId >= data['highestPageId'] %}
