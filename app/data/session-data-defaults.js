@@ -18,7 +18,7 @@ Example usage:
 */
 
 module.exports = {
-
+  
   // Insert values here
 
   highestPageId: 0,
@@ -26,6 +26,6 @@ module.exports = {
   action: "",
   publish: "GOV.UK",
   authentication: "email",
-  payments: "no"
-
-}
+  payments: "no",
+  pages: [],
+};

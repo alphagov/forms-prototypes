@@ -10,23 +10,16 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-      {% set pagePrefix = "p" + pageId + "-" %}
+      {% set namePrefix = "pages[" + pageIndex + "]" %}
 
       <span class="govuk-caption-l">Page {{pageId}}</span>
       <h1 class="govuk-heading-l">
-        {% if data[pagePrefix + 'long-title'] %}
-        {{data[pagePrefix + 'long-title']}}
+        {% if pageData['long-title'] %}
+          {{pageData['long-title']}}
         {% else %}
         Edit page
         {% endif %}
       </h1>
-
-        {#
-
-        Every field id is prefixed with a unique page id.
-        So we can have separate configurations for every page.
-
-        #}
 
         {% set radioCheckboxHtml %}
 
@@ -38,9 +31,9 @@
           hint: {
             text: "Enter each item on a new line"
           },
-          id: pagePrefix + "item-list",
-          name: pagePrefix + "item-list",
-          value: data[pagePrefix + 'item-list'],
+          id: "item-list",
+          name: namePrefix + "[item-list]",
+          value: pageData['item-list'],
           classes: "govuk-!-margin-bottom-1",
           formGroup: {
             classes: "govuk-!-margin-bottom-1"
@@ -48,14 +41,14 @@
         }) }}
 
         {{ govukCheckboxes({
-          idPrefix: pagePrefix + "radios",
-          name: pagePrefix + "radios",
+          idPrefix: "radios",
+          name: namePrefix + "[radios]",
           classes: "govuk-checkboxes--small",
           items: [
             {
               value: "radios",
               text: "Only let people select one option",
-              checked: checked(pagePrefix + "radios", "radios")
+              checked: checked(namePrefix + "['radios']", "radios")
             }
           ]
         }) }}
@@ -64,8 +57,8 @@
 
         {% set textareaHtml %}
         {{ govukSelect({
-          id: pagePrefix + "char-limit",
-          name: pagePrefix + "char-limit",
+          id: "char-limit",
+          name: namePrefix + "[char-limit]",
           label: {
             text: "Character limit",
             classes: "govuk-label--s"
@@ -74,27 +67,27 @@
             {
               value: "none",
               text: "None",
-              selected: checked(pagePrefix + "char-limit", "")
+              selected: checked(namePrefix + "['char-limit']", "")
             },
             {
               value: "100",
               text: "100",
-              selected: checked(pagePrefix + "char-limit", "100")
+              selected: checked(namePrefix + "['char-limit']", "100")
             },
             {
               value: "250",
               text: "250",
-              selected: checked(pagePrefix + "char-limit", "250")
+              selected: checked(namePrefix + "['char-limit']", "250")
             },
             {
               value: "500",
               text: "500",
-              selected: checked(pagePrefix + "char-limit", "500")
+              selected: checked(namePrefix + "['char-limit']", "500")
             },
             {
               value: "750",
               text: "750",
-              selected: checked(pagePrefix + "char-limit", "750")
+              selected: checked(namePrefix + "['char-limit']", "750")
             }
           ]
         }) }}
@@ -102,8 +95,8 @@
 
         {% set textHtml %}
         {{ govukSelect({
-          id: pagePrefix + "unit",
-          name: pagePrefix + "unit",
+          id: "unit",
+          name: namePrefix + "[unit]",
           label: {
             text: "Unit",
             classes: "govuk-label--s"
@@ -112,27 +105,27 @@
             {
               value: "text",
               text: "Text",
-              selected: checked(pagePrefix + "unit", "text")
+              selected: checked(namePrefix + "['unit']", "text")
             },
             {
               value: "pounds",
               text: "Currency (£)",
-              selected: checked(pagePrefix + "unit", "pounds")
+              selected: checked(namePrefix + "['unit']", "pounds")
             },
             {
               value: "kg",
               text: "Weight (kg)",
-              selected: checked(pagePrefix + "unit", "kg")
+              selected: checked(namePrefix + "['unit']", "kg")
             },
             {
               value: "km",
               text: "Distance (km)",
-              selected: checked(pagePrefix + "unit", "km")
+              selected: checked(namePrefix + "['unit']", "km")
             },
             {
               value: "m",
               text: "Length (m)",
-              selected: checked(pagePrefix + "unit", "m")
+              selected: checked(namePrefix + "['unit']", "m")
             }
           ]
         }) }}
@@ -149,9 +142,9 @@
           formGroup: {
             classes: "govuk-!-margin-bottom-3"
           },
-          id: pagePrefix + "long-title",
-          name: pagePrefix + "long-title",
-          value: data[pagePrefix + 'long-title']
+          id: "long-title",
+          name: namePrefix + "[long-title]",
+          value: pageData['long-title']
         }) }}
 
         {{ govukInput({
@@ -162,15 +155,15 @@
           hint: {
             text: "Short version — for example, Name"
           },
-          id: pagePrefix + "short-title",
-          name: pagePrefix + "short-title",
-          value: data[pagePrefix + 'short-title']
+          id: "short-title",
+          name: namePrefix + "[short-title]",
+          value: pageData['short-title']
         }) }}
 
 
         {{ govukRadios({
-          idPrefix: pagePrefix + "type",
-          name: pagePrefix + "type",
+          idPrefix: "type",
+          name: namePrefix + "[type]",
           classes: "govuk-radios--small",
           fieldset: {
             legend: {
@@ -185,7 +178,7 @@
             {
               value: "text",
               text: "A single line",
-              checked: checked(pagePrefix + "type", "text"),
+              checked: checked(namePrefix + "['type']", "text"),
               conditional: {
                 html: textHtml
               }
@@ -193,7 +186,7 @@
             {
               value: "textarea",
               text: "One or more paragraphs",
-              checked: checked(pagePrefix + "type", "textarea"),
+              checked: checked(namePrefix + "['type']", "textarea"),
               conditional: {
                 html: textareaHtml
               }
@@ -201,7 +194,7 @@
             {
               value: "radio-checkbox",
               text: "Choosing from a list of options",
-              checked: checked(pagePrefix + "type", "radio-checkbox"),
+              checked: checked(namePrefix + "['type']", "radio-checkbox"),
               conditional: {
                 html: radioCheckboxHtml
               }
@@ -209,7 +202,7 @@
             {
               value: "date",
               text: "A date",
-              checked: checked(pagePrefix + "type", "date")
+              checked: checked(namePrefix + "['type']", "date")
             }
           ]
         }) }}
@@ -224,9 +217,9 @@
           </summary>
           <div class="govuk-details__text govuk-!-padding-bottom-0">
         {{ govukTextarea({
-          name: pagePrefix + "intro-text",
-          id: pagePrefix + "intro-text",
-          value: data[pagePrefix + 'intro-text'],
+          id: "intro-text",
+          name: namePrefix + "[intro-text]",
+          value: pageData['intro-text'],
           classes: "govuk-!-margin-bottom-3",
           label: {
             text: "Introduction",
@@ -256,9 +249,9 @@
               hint: {
                 text: "A short hint to help people answer the question"
               },
-              id: pagePrefix + "hint-text",
-              name: pagePrefix + "hint-text",
-              value: data[pagePrefix + 'hint-text']
+              id: "hint-text",
+              name: namePrefix + "[hint-text]",
+              value: pageData['hint-text']
             }) }}
           </div>
         </details>
@@ -273,9 +266,9 @@
           </summary>
           <div class="govuk-details__text govuk-!-padding-bottom-0">
         {{ govukTextarea({
-          name: pagePrefix + "help-text",
-          id: pagePrefix + "help-text",
-          value: data[pagePrefix + 'help-text'],
+          id: "help-text",
+          name: namePrefix + "[help-text]",
+          value: pageData['help-text'],
           classes: "govuk-!-margin-bottom-1",
           label: {
             text: "Help",

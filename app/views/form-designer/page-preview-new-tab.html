@@ -31,14 +31,14 @@
 
         #}
 
-        {% if data["p" + pageId + '-intro-text'] %}
+        {% if pageData['intro-text'] %}
 
           {# If the page has an intro, set the heading outside of the macros #}
           {# Use the short title as the field label #}
-          <h1 class="govuk-heading-l">{{ data["p" + pageId + '-long-title'] }}</h1>
-          <p>{{ data["p" + pageId + '-intro-text'] }}</p>
+          <h1 class="govuk-heading-l">{{ pageData['long-title'] }}</h1>
+          <p>{{ pageData['intro-text'] }}</p>
           {% set label = {
-            text: data["p" + pageId + '-short-title']
+            text: pageData['short-title']
           }%}
 
         {% else %}
@@ -46,7 +46,7 @@
           {# If the page has no intro, set the heading inside of the macros #}
           {# The heading doubles up as the label #}
           {% set label = {
-            text: data["p" + pageId + '-long-title'],
+            text: pageData['long-title'],
             classes: "govuk-label--l",
             isPageHeading: true
           }%}
@@ -55,19 +55,19 @@
 
 
         {# Single line text fields #}
-        {% if data["p" + pageId + '-type'] == 'text' and data["p" + pageId + '-unit'] == 'text' %}
+        {% if pageData['type'] == 'text' and pageData['unit'] == 'text' %}
         {{ govukInput({
           label: label,
-          hint: {text: data["p" + pageId + '-hint-text']},
+          hint: {text: pageData['hint-text']},
           id: pageId,
           name: pageId
         }) }}
 
         {# Currency fields #}
-        {% elseif data["p" + pageId + '-type'] == 'text' and data["p" + pageId + '-unit'] == 'pounds' %}
+        {% elseif pageData['type'] == 'text' and pageData['unit'] == 'pounds' %}
         {{ govukInput({
           label: label,
-          hint: {text: data["p" + pageId + '-hint-text']},
+          hint: {text: pageData['hint-text']},
           id: pageId,
           name: pageId,
           prefix: {text: "£"},
@@ -76,48 +76,48 @@
         }) }}
 
         {# Weight, distance and length fields #}
-        {% elseif data["p" + pageId + '-type'] == 'text'  %}
+        {% elseif pageData['type'] == 'text'  %}
         {{ govukInput({
           label: label,
-          hint: {text: data["p" + pageId + '-hint-text']},
+          hint: {text: pageData['hint-text']},
           id: pageId,
           name: pageId,
-          suffix: {text: data["p" + pageId + '-unit']},
+          suffix: {text: pageData['unit']},
           classes: "govuk-input--width-5",
           spellcheck: false
         }) }}
         {% endif %}
 
         {# Textarea with character limit #}
-        {% if (data["p" + pageId + '-type'] == 'textarea') and (data["p" + pageId + '-char-limit'] == 'none') %}
+        {% if (pageData['type'] == 'textarea') and (pageData['char-limit'] == 'none') %}
         {{ govukTextarea({
           label: label,
-          hint: {text: data["p" + pageId + '-hint-text']},
+          hint: {text: pageData['hint-text']},
           id: pageId,
           name: pageId
         }) }}
         {% endif %}
 
         {# Textarea with no character limit #}
-        {% if (data["p" + pageId + '-type'] == 'textarea') and not (data["p" + pageId + '-char-limit'] == 'none') %}
+        {% if (pageData['type'] == 'textarea') and not (pageData['char-limit'] == 'none') %}
         {{ govukCharacterCount({
           name: pageId,
           id: pageId,
-          maxlength: data["p" + pageId + '-char-limit'],
+          maxlength: pageData['char-limit'],
           label: label,
-          hint: {text: data["p" + pageId + '-hint-text']}
+          hint: {text: pageData['hint-text']}
         }) }}
         {% endif %}
 
         {# Date field #}
-        {% if data["p" + pageId + '-type'] == 'date' %}
+        {% if pageData['type'] == 'date' %}
         {{ govukDateInput({
           id: pageId,
           namePrefix: pageId,
           fieldset: {
             legend: label
           },
-          hint: {text: data["p" + pageId + '-hint-text']}
+          hint: {text: pageData['hint-text']}
         }) }}
         {% endif %}
 
@@ -128,23 +128,23 @@
         #}
 
         {# Radios #}
-        {% if data["p" + pageId + '-type'] == 'radio-checkbox' and data["p" + pageId + '-radios'] %}
+        {% if pageData['type'] == 'radio-checkbox' and pageData['radios'] %}
 
-        {% set itemsArray = data["p" + pageId + '-item-list'].split('\n') %}
+        {% set itemsArray = pageData['item-list'].split('\n') %}
 
         <div class="govuk-form-group">
           <fieldset class="govuk-fieldset" aria-describedby="question-1-hint">
 
-            {% if not data["p" + pageId + '-intro-text'] %}
+            {% if not ['intro-text'] %}
             <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
               <h1 class="govuk-fieldset__heading">
-                {{ data["p" + pageId + '-long-title'] }}
+                {{ pageData['long-title'] }}
               </h1>
             </legend>
             {% endif %}
 
           <div id="question-1-hint" class="govuk-hint">
-            {{ data["p" + pageId + '-hint-text']}}
+            {{ pageData['hint-text']}}
           </div>
           <div class="govuk-radios">
                 {% for item in itemsArray %}
@@ -161,23 +161,23 @@
         {% endif %}
 
         {# Checkboxes #}
-        {% if data["p" + pageId + '-type'] == 'radio-checkbox' and not data["p" + pageId + '-radios'] %}
+        {% if pageData['type'] == 'radio-checkbox' and not pageData['radios'] %}
 
-        {% set itemsArray = data["p" + pageId + '-item-list'].split('\n') %}
+        {% set itemsArray = pageData['item-list'].split('\n') %}
 
         <div class="govuk-form-group">
           <fieldset class="govuk-fieldset" aria-describedby="question-1-hint">
 
-            {% if not data["p" + pageId + '-intro-text'] %}
+            {% if not pageData['intro-text'] %}
             <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
               <h1 class="govuk-fieldset__heading">
-                {{ data["p" + pageId + '-long-title'] }}
+                {{ pageData['long-title'] }}
               </h1>
             </legend>
             {% endif %}
 
           <div id="question-1-hint" class="govuk-hint">
-            {{ data["p" + pageId + '-hint-text']}}
+            {{ pageData['hint-text']}}
           </div>
           <div class="govuk-checkboxes">
                 {% for item in itemsArray %}
@@ -194,10 +194,10 @@
         {% endif %}
 
         {# Help text #}
-        {% if data["p" + pageId + '-help-text'] %}
+        {% if pageData['help-text'] %}
         {{ govukDetails({
           summaryText: "Help with this question",
-          text: data["p" + pageId + '-help-text']
+          text: pageData['help-text']
         }) }}
         {% endif %}
 

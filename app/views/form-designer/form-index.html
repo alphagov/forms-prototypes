@@ -60,20 +60,20 @@
                 </dd>
             </div>
 
-          {% for i in range(1, nextPageId) -%}
+          {% for page in data.pages -%}
 
-            {% set questionTitle = "p" + (i) + "-short-title" %}
+            {% set questionTitle = page["short-title"] %}
 
-            {% if data[questionTitle] %}
+            {% if questionTitle %}
 
             <div class="govuk-summary-list__row">
               <dt class="govuk-summary-list__key govuk-!-font-weight-regular">
-                {{data[questionTitle]}}
+                {{questionTitle}}
               </dt>
               <dd class="govuk-summary-list__value">
               </dd>
                 <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" href="edit-page/{{i}}">
+                    <a class="govuk-link" href="edit-page/{{loop.index}}">
                       Edit</a>
                 </dd>
             </div>
