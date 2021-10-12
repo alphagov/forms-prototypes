@@ -45,12 +45,11 @@ router.get('/form-designer/edit-page/:pageId', function(req, res) {
 
     var action = req.session.data['action'];
     var pageId = req.params.pageId;
-    var highestPageId = req.session.data['highestPageId']
     var editNextPageId = parseInt(pageId) + 1;
-    var createNextPageId = parseInt(highestPageId) + 1;
 
     // Update the 'Highest page Id'
     req.session.data['highestPageId'] = req.session.data.pages.length;
+    var createNextPageId = parseInt(req.session.data['highestPageId']) + 1;
 
     // If user is creating a page from the confirmation page...
     if (pageId == 'confirmation' && action == "createNextPage"){
