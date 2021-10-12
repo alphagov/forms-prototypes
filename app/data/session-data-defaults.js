@@ -28,4 +28,7 @@ module.exports = {
   authentication: "email",
   payments: "no",
   pages: [],
-};
+  status: "Draft",
+  confirmationNext: "We've sent you an email confirming that we have received your application.",
+  confirmationTitle: "Application complete"
+}

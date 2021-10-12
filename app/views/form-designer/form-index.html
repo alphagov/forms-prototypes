@@ -15,39 +15,10 @@
 
       {% set nextPageId = data['highestPageId'] | int + 1 %}
       {% set totalPageNum = data['highestPageId'] | int + 3 %}
-      {% if data['highestPageId'] > 0 %}
-        {% set publishLink %}
-          <a href="form-publish" class="form-publish">Publish</a>
-        {% endset -%}
-      {% else %}
-        {% set publishLink = "" %}
-      {% endif %}
 
-      {{ govukSummaryList({
-        classes: 'govuk-summary-list--no-border govuk-!-margin-bottom-2 meta-data',
-        rows: [
-          {
-            key: {
-              text: "Status:",
-              classes: "govuk-body-s govuk-!-padding-top-0"
-            },
-            value: {
-              html: "Draft" + publishLink,
-              classes: " govuk-body-s govuk-!-padding-top-0"
-            }
-          },
-          {
-            key: {
-              text: "Pages:",
-              classes: " govuk-body-s govuk-!-padding-top-0"
-            },
-            value: {
-              text: totalPageNum,
-              classes: " govuk-body-s govuk-!-padding-top-0"
-            }
-          }
-        ]
-      }) }}
+      <p class="govuk-body-s">{{totalPageNum}} page draft form{% if data['highestPageId'] > 0 %} —
+        <a href="form-publish" class="form-publish govuk-link--no-visited-state">Publish</a>{% endif %}.
+      </p>
 
       <dl class="govuk-summary-list">
             <div class="govuk-summary-list__row">
@@ -57,10 +28,22 @@
               <dd class="govuk-summary-list__value govuk-!-width-one-quarter">
               </dd>
                 <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" href="edit-page/0">
+                    <a class="govuk-link govuk-link--no-visited-state" href="edit-page/0">
                       Edit</a>
                 </dd>
             </div>
+
+            <!-- Add this if users are confused about where their pages go
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key govuk-!-font-weight-regular">
+                <a class=" govuk-link--no-visited-state" href="choose-page-type/{{nextPageId}}">Create a new page</a>
+              </dt>
+              <dd class="govuk-summary-list__value govuk-!-width-one-quarter">
+              </dd>
+                <dd class="govuk-summary-list__actions">
+                </dd>
+            </div>
+            -->
 
           {% for page in data.pages -%}
 
@@ -75,8 +58,9 @@
               <dd class="govuk-summary-list__value">
               </dd>
                 <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" href="edit-page/{{loop.index}}">
-                      Edit</a>
+                    <a class="govuk-link govuk-link--no-visited-state" href="edit-page/{{loop.index}}">
+                      Edit 
+                    </a>
                 </dd>
             </div>
             {% endif %}
@@ -91,7 +75,7 @@
               <dd class="govuk-summary-list__value">
               </dd>
                 <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" href="edit-check-answers-page">
+                    <a class="govuk-link govuk-link--no-visited-state" href="edit-check-answers-page">
                       Edit</a>
                 </dd>
             </div>
@@ -103,7 +87,7 @@
               <dd class="govuk-summary-list__value">
               </dd>
                 <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" href="edit-confirmation-page">
+                    <a class="govuk-link govuk-link--no-visited-state" href="edit-page/confirmation">
                       Edit</a>
                 </dd>
             </div>
@@ -111,23 +95,19 @@
 
       <div class="govuk-button-group">
 
-      {% if data['highestPageId'] > 0 %}
-
-      {{ govukButton({
-        text: "Create a new page",
-        href: "choose-page-type/" + nextPageId
-      }) }}
-
+      {% if data['formTitle'] == 'New form' %}
+        {{ govukButton({
+          text: "Edit start page",
+          href: "edit-page/0"
+        }) }}
       {% else %}
-
-      {{ govukButton({
-        text: "Edit start page",
-        href: "edit-page/0"
-      }) }}
-
+        {{ govukButton({
+          text: "Create a new page",
+          href: "choose-page-type/" + nextPageId
+        }) }}
       {% endif %}
       <p>
-        or <a class="govuk-link" href="form-settings">change form settings</a>
+        or <a class="govuk-link govuk-link--no-visited-state" href="form-settings">change form settings</a>
       </p>
       </div>
 

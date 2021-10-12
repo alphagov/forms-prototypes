@@ -66,29 +66,3 @@ $govuk-assets-path: '/govuk/assets/';
     }
   }
 }
-
-.govuk-summary-list.meta-data{
-  .govuk-summary-list__key{
-      width: 55px;
-  }
-  .govuk-summary-list__value{
-      width: min-content;
-  }
-  .form-publish{
-    border-left: 1px solid $govuk-border-colour;
-    margin-left: govuk-spacing(1);
-    padding-left: govuk-spacing(2);
-  }
-}
-
-
-/*
-// Tweak details to make them more consistent with conditional reveals?
-.govuk-details__summary{
-  padding-left: 30px;
-  margin-left: 5px;
-}
-.govuk-details__text{
-  border-left-width: 4px;
-}
-*/

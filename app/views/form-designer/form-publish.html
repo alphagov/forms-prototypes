@@ -1,0 +1,74 @@
+{% extends "layout-govuk-forms.html" %}
+
+{% block pageTitle %}
+  Publish form: {{ data['formTitle'] }}
+{% endblock %}
+
+{% block content %}
+
+<form id="form" class="form" action="../edit-page/{{ pageId }}" method="post">
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <span class="govuk-caption-l">Publish form</span>
+      <h1 class="govuk-heading-l">{{ data['formTitle'] }}</h1>
+
+      {% set nextPageId = data['highestPageId'] | int + 1 %}
+      {% set totalPageNum = data['highestPageId'] | int + 3 %}
+
+
+      {{ govukRadios({
+        idPrefix: "publish",
+        name: "publish",
+        classes: "govuk-radios--small",
+        fieldset: {
+          legend: {
+            text: "Where do you want to publish the form?"
+          }
+        },
+        items: [
+          {
+            value: "GOV.UK",
+            text: "On the GOV.UK website",
+            checked: checked("publish", "GOV.UK")
+          },
+          {
+            value: "org",
+            text: "On my organisation's website",
+            checked: checked("publish", "Org")
+          }
+          ]
+        }) }}
+
+      <div class="govuk-button-group">
+
+      {{ govukButton({
+        text: "Publish form",
+        href: "form-index"
+      }) }}
+
+      <p>
+        or <a class="govuk-link govuk-link--no-visited-state" href="form-index">return to page list</a>
+      </p>
+      </div>
+
+
+    </div>
+
+    <div class="govuk-grid-column-one-third" style="height: 600px;">
+      <div class="preview-pane-wrapper">
+        <div class="preview-header">
+          <p class="preview-link govuk-body-s">
+            <a href="start-page-preview-new-tab" target="_blank">Open in a new tab</a>
+
+          </p>
+        </div>
+        <iframe title="Page preview" data-module="app-example-frame" class="preview-pane app-example__frame app-example__frame--resizable" src="start-page-preview" frameborder="1" loading="lazy" id="iFrameResizer0" scrolling="no" ></iframe>
+      </div>
+    </div>
+
+  </div>
+
+</form>
+
+{% endblock %}

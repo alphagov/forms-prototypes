@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+  Check your contact details
+{% endblock %}
+
+{% block header %}
+  <!-- Blank header with no service name for the start page -->
+  {{ govukHeader() }}
+{% endblock %}
+
+{% block beforeContent %}
+  <a class="govuk-back-link" href="save-progress">Back</a>
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" action="save-progress-confirm" method="post">
+
+        <span class="govuk-caption-xl">Take your pet abroad</span>
+
+{% if data['save-by-email'] %}
+      {{ govukInput({
+        id: "save-by-email",
+        name: "save-by-email",
+        type: "email",
+        autocomplete: "email",
+        value: data['save-by-email'],
+        spellcheck: false,
+        label: {
+          text: "Check the email address",
+          isPageHeading: true,
+          classes: "govuk-label--l"
+        },
+        hint: {
+          text: "You can correct it if you need to"
+        }
+      }) }}
+
+      <button class="govuk-button" data-module="govuk-button">This is correct - send me the link</button>
+
+{% elseif data['save-by-text'] %}
+
+      {{ govukInput({
+        id: "save-by-text",
+        name: "save-by-text",
+        type: "tel",
+        autocomplete: "tel",
+        value: data['save-by-text'],
+        classes: "govuk-!-width-one-third",
+        label: {
+          text: "Check the mobile number",
+          isPageHeading: true,
+          classes: "govuk-label--l"
+        },
+        hint: {
+          text: "You can correct it if you need to"
+        }
+      }) }}
+
+      <button class="govuk-button" data-module="govuk-button">This is correct - send me the code</button>
+
+{% endif %}
+
+
+      </form>
+
+    </div>
+  </div>
+
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+  What is your name?
+{% endblock %}
+
+{% block header %}
+  <!-- Blank header with no service name for the start page -->
+  {{ govukHeader() }}
+{% endblock %}
+
+{% block beforeContent %}
+  <a class="govuk-back-link" href="save-progress-check">Back</a>
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" action="task-list" method="post">
+
+      <span class="govuk-caption-xl">Take your pet abroad</span>
+
+{% if data['save-by-email'] %}
+
+      <h1 class="govuk-heading-l">Return link emailed</h1>
+
+      <p>A link to return to this form has been emailed to {{data['save-by-email']}}.</p>
+
+{% elseif data['save-by-text'] %}
+
+      <h1 class="govuk-heading-l">Return code texted</h1>
+
+      <p>A code to return to this form has been texted to {{data['save-by-text']}}.</p>
+
+{% endif %}
+
+        <button class="govuk-button" data-module="govuk-button">Continue to form</button>
+
+      </form>
+
+    </div>
+  </div>
+
+{% endblock %}
+
