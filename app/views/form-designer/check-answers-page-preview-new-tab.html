@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+  {{data['checkAnswersTitle']}}
+{% endblock %}
+
+{% block header %}
+  <!-- Blank header with no service name for the start page -->
+  {{ govukHeader() }}
+{% endblock %}
+
+{% block beforeContent %}
+  <a class="govuk-back-link" href="page-preview-new-tab/{{data['highestPageId']}}" target="_parent">Back</a>
+{% endblock %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+
+
+  <h1 class="govuk-panel__title">{{data['checkAnswersTitle']}}</h1>
+
+
+    {% if data['checkAnswersDeclaration'] %}
+    <h2 class="govuk-heading-m">Declaration</h2>
+
+    <p>{{data['checkAnswersDeclaration']}}</p>
+
+    {% endif %}
+
+    {{ govukButton({
+      text: "Agree and submit application",
+      href: "confirmation-page-preview-new-tab",
+      attributes: {
+        target: "_parent"
+      }
+    }) }}
+  </div>
+</div>
+{% endblock %}

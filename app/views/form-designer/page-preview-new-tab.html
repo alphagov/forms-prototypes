@@ -204,11 +204,28 @@
 
         {% set nextPageId = pageId | int + 1 %}
 
-        {# Submit button #}
+
+        {% if pageId == data['highestPageId'] %}
+
+        {{ govukButton({
+          text: "Check your answers",
+          href: "../check-answers-page-preview-new-tab",
+          attributes: {
+            target: "_parent"
+          }
+        }) }}
+
+        {% else %}
+
         {{ govukButton({
           text: "Continue",
-          href: "" + nextPageId
+          href: "" + nextPageId,
+          attributes: {
+            target: "_parent"
+          }
         }) }}
+
+        {% endif %}
 
     </div>
   </div>
