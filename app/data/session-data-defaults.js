@@ -18,7 +18,7 @@ Example usage:
 */
 
 module.exports = {
-
+  
   // Insert values here
 
   highestPageId: 0,
@@ -27,8 +27,8 @@ module.exports = {
   publish: "GOV.UK",
   authentication: "email",
   payments: "no",
+  pages: [],
   status: "Draft",
   confirmationNext: "We've sent you an email confirming that we have received your application.",
   confirmationTitle: "Application complete"
-
 }

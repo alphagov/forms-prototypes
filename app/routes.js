@@ -45,16 +45,11 @@ router.get('/form-designer/edit-page/:pageId', function(req, res) {
 
     var action = req.session.data['action'];
     var pageId = req.params.pageId;
-    var highestPageId = req.session.data['highestPageId']
     var editNextPageId = parseInt(pageId) + 1;
-    var createNextPageId = parseInt(highestPageId) + 1;
 
-    // Update the 'Highest page Id' if necessary
-    // Used to loop over the page list, tweak button text etc.
-    // This is a pretty fragile approach!
-    if (pageId !== 'confirmation' && pageId > highestPageId) {
-      req.session.data['highestPageId'] = pageId;
-    }
+    // Update the 'Highest page Id'
+    req.session.data['highestPageId'] = req.session.data.pages.length;
+    var createNextPageId = parseInt(req.session.data['highestPageId']) + 1;
 
     // If user is creating a page from the confirmation page...
     if (pageId == 'confirmation' && action == "createNextPage"){
@@ -82,8 +77,13 @@ router.get('/form-designer/edit-page/:pageId', function(req, res) {
 
     // If user pressed the 'Update preview' button or back link...
     } else {
+      var pageIndex = parseInt(pageId) - 1;
+      var pageData = req.session.data.pages[pageIndex];
+
       res.render('form-designer/edit-page', {
-        'pageId' : pageId
+        'pageId' : pageId,
+        'pageIndex' : pageIndex,
+        'pageData': pageData,
       });
     }
 
@@ -99,11 +99,27 @@ router.get('/form-designer/choose-page-type/:pageId', function(req, res) {
 // Renders the in-page preview, set to a specific page
 router.get('/form-designer/page-preview/:pageId', function(req, res) {
     req.session.data['action'] = "";
-    res.render('form-designer/page-preview', { 'pageId' : req.params.pageId });
+    var pageId = req.params.pageId;
+    var pageIndex = parseInt(pageId) - 1;
+    var pageData = req.session.data.pages[pageIndex];
+
+    res.render('form-designer/page-preview', {
+      'pageId' : pageId,
+      'pageIndex' : pageIndex,
+      'pageData': pageData,
+    });
 });
 
 // Renders the new-tab page preview, set to a specific page
 router.get('/form-designer/page-preview-new-tab/:pageId', function(req, res) {
     req.session.data['action'] = "";
-    res.render('form-designer/page-preview-new-tab', { 'pageId' : req.params.pageId });
+    var pageId = req.params.pageId;
+    var pageIndex = parseInt(pageId) - 1;
+    var pageData = req.session.data.pages[pageIndex];
+    
+    res.render('form-designer/page-preview-new-tab', {
+      'pageId' : pageId,
+      'pageIndex' : pageIndex,
+      'pageData': pageData,
+    });
 });
