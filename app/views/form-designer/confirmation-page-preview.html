@@ -22,7 +22,11 @@
     {% if data['confirmationNext'] %}
     <h2 class="govuk-heading-m">What happens next</h2>
 
-    <p>{{data['confirmationNext']}}</p>
+    <div class="app-prose-scope">
+    {% markdown %}
+      {{ data['confirmationNext'] }}
+    {% endmarkdown %}
+    </div>
 
     {% endif %}
   </div>

@@ -36,7 +36,11 @@
           {# If the page has an intro, set the heading outside of the macros #}
           {# Use the short title as the field label #}
           <h1 class="govuk-heading-l">{{ pageData['long-title'] }}</h1>
-          <p>{{ pageData['intro-text'] }}</p>
+          <div class="app-prose-scope">
+          {% markdown %}
+            {{ pageData['intro-text'] }}
+          {% endmarkdown %}
+          </div>
           {% set label = {
             text: pageData['short-title']
           }%}

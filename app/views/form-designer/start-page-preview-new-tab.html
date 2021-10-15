@@ -19,7 +19,11 @@
     </h1>
 
     {% if data['formIntro'] %}
-    <p>{{ data['formIntro'] }}</p>
+    <div class="app-prose-scope">
+    {% markdown %}
+      {{ data['formIntro'] }}
+    {% endmarkdown %}
+    </div>
     {% endif %}
 
     {% if data['highestPageId'] == 0 %}
@@ -40,7 +44,11 @@
 
     {% if data['formBeforeStart'] %}
     <h2 class="govuk-heading-m">Before you start</h2>
-    <p>{{ data['formBeforeStart'] }}</p>
+    <div class="app-prose-scope">
+    {% markdown %}
+      {{ data['formBeforeStart'] }}
+    {% endmarkdown %}
+    </div>
     {% endif %}
 
   </div>
