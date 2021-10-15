@@ -200,9 +200,18 @@
 
         {# Help text #}
         {% if pageData['help-text'] %}
+
+            {% set helpTextHtml %}
+            <div class="app-prose-scope">
+            {% markdown %}
+              {{ pageData['help-text'] }}
+            {% endmarkdown %}
+            </div>
+            {% endset -%}
+
         {{ govukDetails({
           summaryText: "Help with this question",
-          text: pageData['help-text']
+          html: helpTextHtml
         }) }}
         {% endif %}
 
