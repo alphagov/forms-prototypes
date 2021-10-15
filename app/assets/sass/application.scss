@@ -66,3 +66,78 @@ $govuk-assets-path: '/govuk/assets/';
     }
   }
 }
+
+// Prose scope (stolen from the kit docs)
+
+.app-prose-scope {
+
+  h1 {
+    @extend %govuk-heading-l;
+  }
+
+  h2 {
+    @extend %govuk-heading-m;
+  }
+
+  h3 {
+    @extend %govuk-heading-s;
+  }
+
+  h4 {
+    @extend %govuk-heading-s;
+  }
+
+  p {
+    @extend %govuk-body-m;
+  }
+
+  strong,
+  b {
+    @include govuk-typography-weight-bold;
+  }
+
+  ul,
+  ol {
+    @extend %govuk-list;
+  }
+
+  ol {
+    @extend %govuk-list--number;
+  }
+
+  ul {
+    @extend %govuk-list--bullet;
+  }
+
+  a {
+    @extend %govuk-link;
+  }
+
+  hr {
+    @extend %govuk-section-break;
+    @extend %govuk-section-break--visible;
+    @extend %govuk-section-break--l;
+  }
+
+  p code,
+  li code {
+    color: #d13118;
+    background-color: govuk-colour("light-grey", $legacy: "grey-4");
+    padding: 0 govuk-spacing(1);
+  }
+
+  // TODO: Blockquotes are likely the most semantic element to be using, update to use the inset component directly.
+  blockquote {
+    margin-left: 0;
+    @extend .govuk-inset-text;
+  }
+}
+
+.app-prose-scope ul + h2,
+.app-prose-scope ul + h3,
+.app-prose-scope ul + h4,
+.app-prose-scope pre + h2,
+.app-prose-scope pre + h3,
+.app-prose-scope pre + h4 {
+  @include govuk-responsive-margin(4, "top");
+}
