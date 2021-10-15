@@ -33,6 +33,14 @@
 
 {% block head %}
   {% include "includes/head.html" %}
+
+  <!-- Ensures preview only has scrollbar if it needs it -->
+  <style media="screen">
+    .govuk-template {
+    overflow-y: auto;
+    }
+  </style>
+
 {% endblock %}
 
 {% block header %}{% endblock %}

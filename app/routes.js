@@ -1,10 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
-// Add your routes here - above the module.exports line
-
-module.exports = router
-
+// ROUTES FOR EXAMPLE FORMS
 
 // Run this code when a form is submitted to '/example-2/eligibility-check-answer'
 router.post('/example-2/eligibility-check-answer', function (req, res) {
@@ -40,6 +37,10 @@ router.post('/example-2/save-progress-check', function (req, res) {
 
 })
 
+
+
+// ROUTES FOR FORM DESIGNER
+
 // Renders the page editor, set to a specific page
 router.get('/form-designer/edit-page/:pageId', function(req, res) {
 
@@ -51,8 +52,16 @@ router.get('/form-designer/edit-page/:pageId', function(req, res) {
     req.session.data['highestPageId'] = req.session.data.pages.length;
     var createNextPageId = parseInt(req.session.data['highestPageId']) + 1;
 
+    // If user is creating a page from the check your answers page...
+    if (pageId == 'check-answers' && action == "createNextPage"){
+      res.redirect('/form-designer/edit-page/' + createNextPageId);
+
+    // If user is updating the check your answers page...
+    } else if (pageId == 'check-answers' && (action == "update" || action == "")){
+      res.render('form-designer/edit-check-answers-page');
+
     // If user is creating a page from the confirmation page...
-    if (pageId == 'confirmation' && action == "createNextPage"){
+    } else if (pageId == 'confirmation' && action == "createNextPage"){
       res.redirect('/form-designer/edit-page/' + createNextPageId);
 
     // If user is updating the confirmation page...
@@ -116,10 +125,15 @@ router.get('/form-designer/page-preview-new-tab/:pageId', function(req, res) {
     var pageId = req.params.pageId;
     var pageIndex = parseInt(pageId) - 1;
     var pageData = req.session.data.pages[pageIndex];
-    
+
     res.render('form-designer/page-preview-new-tab', {
       'pageId' : pageId,
       'pageIndex' : pageIndex,
       'pageData': pageData,
     });
 });
+
+
+
+
+module.exports = router

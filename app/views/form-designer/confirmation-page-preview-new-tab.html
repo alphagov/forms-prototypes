@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+  {{data['confirmationTitle']}}
+{% endblock %}
+
+{% block header %}
+  <!-- Blank header with no service name for the start page -->
+  {{ govukHeader() }}
+{% endblock %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+
+    <div class="govuk-panel govuk-panel--confirmation">
+      <h1 class="govuk-panel__title">{{data['confirmationTitle']}}</h1>
+      <div class="govuk-panel__body">
+        Your reference number is<br><strong>HDJ2123F</strong>
+      </div>
+    </div>
+
+    {% if data['confirmationNext'] %}
+    <h2 class="govuk-heading-m">What happens next</h2>
+
+    <p>{{data['confirmationNext']}}</p>
+
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

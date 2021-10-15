@@ -6,12 +6,12 @@
 
 {% block content %}
 
-<form id="form" class="form" action="confirmation" method="post">
+<form id="form" class="form" action="check-answers" method="post">
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
       <span class="govuk-caption-l">{{ data['formTitle'] }}</span>
-      <h1 class="govuk-heading-l">Confirmation</h1>
+      <h1 class="govuk-heading-l">Check your answers</h1>
 
         {#
 
@@ -27,25 +27,25 @@
             classes: "govuk-label--m"
           },
           hint: {
-            text: "Appears in the green box"
+            text: "Appears at the top of the page"
           },
-          id: "confirmationTitle",
-          name: "confirmationTitle",
-          value: data['confirmationTitle']
+          id: "checkAnswersTitle",
+          name: "checkAnswersTitle",
+          value: data['checkAnswersTitle']
         }) }}
 
 
         {{ govukCharacterCount({
-          name: "confirmationNext",
-          id: "confirmationNext",
+          name: "checkAnswersDeclaration",
+          id: "checkAnswersDeclaration",
           maxlength: 2000,
-          value: data['confirmationNext'],
+          value: data['checkAnswersDeclaration'],
           label: {
-            text: "Page contents",
+            text: "Declaration",
             classes: "govuk-label--m"
           },
           hint: {
-            text: "Tell people what will happen next and anything that they need to do"
+            text: "The declaration that people make when they submit the form"
           }
         }) }}
 
@@ -74,10 +74,10 @@
         <div class="preview-header">
           <p class="preview-link govuk-body-s">
             <!-- <a href="#" target="_blank" onclick="document.getElementById('form').submit();">Refresh</a> &nbsp;|&nbsp; -->
-            <a href="../confirmation-page-preview-new-tab" target="_blank">Open in a new tab</a>
+            <a href="../check-answers-page-preview-new-tab" target="_blank">Open in a new tab</a>
           </p>
         </div>
-        <iframe title="Page preview" data-module="app-example-frame" class="preview-pane app-example__frame app-example__frame--resizable" src="../confirmation-page-preview" frameborder="1" loading="lazy" id="iFrameResizer0" scrolling="no" ></iframe>
+        <iframe title="Page preview" data-module="app-example-frame" class="preview-pane app-example__frame app-example__frame--resizable" src="../check-answers-page-preview" frameborder="1" loading="lazy" id="iFrameResizer0" ></iframe>
         {{ govukButton({
           text: "Update preview",
           classes: "update-button",
