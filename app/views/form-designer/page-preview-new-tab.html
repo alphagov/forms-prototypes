@@ -111,6 +111,7 @@
 
         {# Date field #}
         {% if pageData['type'] == 'date' %}
+
         {{ govukDateInput({
           id: pageId,
           namePrefix: pageId,
@@ -135,7 +136,7 @@
         <div class="govuk-form-group">
           <fieldset class="govuk-fieldset" aria-describedby="question-1-hint">
 
-            {% if not ['intro-text'] %}
+            {% if not pageData['intro-text'] %}
             <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
               <h1 class="govuk-fieldset__heading">
                 {{ pageData['long-title'] }}
