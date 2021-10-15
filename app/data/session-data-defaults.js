@@ -22,7 +22,7 @@ module.exports = {
   // Insert values here
 
   highestPageId: 0,
-  formTitle: "New form",
+  formTitle: "Untitled form",
   action: "",
   publish: "GOV.UK",
   authentication: "email",
