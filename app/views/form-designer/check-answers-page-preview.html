@@ -49,7 +49,11 @@
     {% if data['checkAnswersDeclaration'] %}
     <h2 class="govuk-heading-m">Declaration</h2>
 
-    <p>{{data['checkAnswersDeclaration']}}</p>
+    <div class="app-prose-scope">
+    {% markdown %}
+      {{ data['checkAnswersDeclaration'] }}
+    {% endmarkdown %}
+    </div>
 
     {% endif %}
 

@@ -39,6 +39,7 @@
     "marked": "^2.0.0",
     "notifications-node-client": "^4.7.2",
     "nunjucks": "^3.2.1",
+    "nunjucks-markdown": "^2.0.1",
     "portscanner": "^2.1.1",
     "require-dir": "^1.0.0",
     "sync-request": "^6.0.0",
