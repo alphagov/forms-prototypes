@@ -1,6 +1,6 @@
 ---
 applications:
-- name: cifu-prototypes
+- name: collecting-information-from-users-prototypes
   memory: 256M
   buildpacks:
   - nodejs_buildpack
