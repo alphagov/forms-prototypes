@@ -3,7 +3,7 @@ $govuk-global-styles: true;
 $govuk-new-link-styles: true;
 
 // We can't mount GOV.UK Frontend's assets at root as it's done automatically by the extensions framework.
-$govuk-assets-path: '/govuk/assets/';
+$govuk-assets-path: "/govuk/assets/";
 
 // Import GOV.UK Frontend and any extension styles if extensions have been configured
 @import "lib/extensions/extensions";
@@ -15,12 +15,12 @@ $govuk-assets-path: '/govuk/assets/';
 @import "patterns/task-list";
 @import "patterns/related-items";
 
-.preview-pane-wrapper{
+.preview-pane-wrapper {
   position: sticky;
   top: 110px;
   text-align: center;
 }
-.preview-pane{
+.preview-pane {
   overflow: hidden;
   height: 570px;
   width: calc(100% - 4px);
@@ -30,7 +30,7 @@ $govuk-assets-path: '/govuk/assets/';
 }
 
 .update-button,
-.update-button:hover{
+.update-button:hover {
   color: $govuk-link-colour;
   text-decoration: underline;
   @extend %govuk-link;
@@ -38,13 +38,13 @@ $govuk-assets-path: '/govuk/assets/';
   box-shadow: none;
 }
 
-.update-button:hover{
+.update-button:hover {
   text-decoration-thickness: 2px;
   color: $govuk-link-hover-colour;
 }
 
 // Header of the preview pane
-.preview-header{
+.preview-header {
   height: 35px;
   background-color: govuk-colour("black");
 
@@ -55,14 +55,14 @@ $govuk-assets-path: '/govuk/assets/';
   border: 2px solid black;
   border-bottom: 5px solid $govuk-brand-colour;
 
-  p{
+  p {
     color: govuk-colour("white");
     padding: 6px govuk-spacing(3);
     margin-bottom: 0;
     float: right;
-    a{
-        color: govuk-colour("white");
-        font-size: 14px;
+    a {
+      color: govuk-colour("white");
+      font-size: 14px;
     }
   }
 }
@@ -70,7 +70,6 @@ $govuk-assets-path: '/govuk/assets/';
 // Prose scope (stolen from the kit docs)
 
 .app-prose-scope {
-
   h1 {
     @extend %govuk-heading-l;
   }
