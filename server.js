@@ -74,7 +74,7 @@ if (isSecure) {
   app.set('trust proxy', 1) // needed for secure cookies on heroku
 }
 
-middleware.forEach((func) => app.use(func))
+middleware.forEach(func => app.use(func))
 
 // Set up App
 var appViews = extensions.getAppViews([
@@ -366,7 +366,7 @@ app.use(function (err, req, res, next) {
 // Markdown support
 const markdown = require('nunjucks-markdown')
 const marked = require('marked')
-markdown.register(nunjucksAppEnv, marked)
+markdown.register(nunjucksAppEnv, marked.parse)
 
 // ================
 
