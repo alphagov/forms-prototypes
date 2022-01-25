@@ -51,6 +51,12 @@ router.get('/download', function (req, res) {
   }
 })
 
+router.get('/update.sh', function (req, res) {
+  res.redirect(
+    'https://raw.githubusercontent.com/alphagov/govuk-prototype-kit/main/update.sh'
+  )
+})
+
 // Examples - examples post here
 router.post('/tutorials-and-examples', function (req, res) {
   res.redirect('tutorials-and-examples')
@@ -75,6 +81,10 @@ router.get('/making-pages', function (req, res) {
 
 router.get('/make-first-prototype/add-questions', function (req, res) {
   res.redirect('/docs/make-first-prototype/use-components')
+})
+
+router.get('/templates/check-your-answers', function (req, res) {
+  res.redirect('/docs/templates/check-answers')
 })
 
 module.exports = router

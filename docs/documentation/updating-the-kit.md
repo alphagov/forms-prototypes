@@ -1,42 +1,60 @@
-# Updating to the latest version
+# Update your Prototype Kit
 
-1. [Download the zip file of the latest version of the Prototype Kit](/docs/download).
+How to update your prototype and get help from the GOV.UK Prototype Kit team.
 
-2. Unzip the zip file.
+## Get help
 
-3. Make a backup copy of your prototype folder.
+If you have a question or need help with updating the Prototype Kit, you can:
 
-4. In your prototype, delete everything except the `app` and `.git` folders.
+- email govuk-design-system-support@digital.cabinet-office.gov.uk
+- get in touch on the [Prototype Kit's channel on cross-government Slack](https://ukgovernmentdigital.slack.com/messages/prototype-kit/)
 
-   You may not be able to see the `.git` folder because files and folders that start with `.` are hidden by default.
+Tell us as much as you can about the issue you're having, and the computer and operating system you're using.
 
-5. Copy all the folders from the unzipped folder to your prototype, except the `app` folder.
+## Updating to the latest version
 
-6. Replace the `app/config.js` file in your prototype with the `app/config.js` file from the unzipped folder.
+### Find what version you’re using
 
-7. Compare your new `config.js` file to the `config.js` file in the backup you made in step 3, and copy over anything you need to from the backup - for example your service name.
+In Finder on Mac or Windows Explorer go to your prototype folder and open the file `VERSION.txt`. This will show what version of the prototype kit you’re using.
 
-8. Copy `app/assets/sass/patterns` from the unzipped folder to your prototype.
+- If your prototype is version 8 or before, then contact the GOV.UK Prototype team for help with updating it
+- If your prototype is version 9, 10 or 11, you can update to version 12 by following the steps on this page
 
-9. Open the `app/assets/sass/application.scss` file in the unzipped folder.
+### Updating to version 12
 
-10. Copy everything down to `// Add extra styles here`, then paste it into the `app/assets/sass/application.scss` file in your prototype so it replaces everything above `// Add extra styles here`.
+1. Make a backup of your prototype folder. You can do this in Finder or Windows Explorer. This may take a few minutes.
 
-11. Save the updated `app/assets/sass/application.scss` file in your prototype.
+2. In the [terminal](https://govuk-prototype-kit.herokuapp.com/docs/install/requirements.md#terminal), `cd` to your prototype folder.
 
-12. Check the [latest Prototype Kit release note](https://github.com/alphagov/govuk-prototype-kit/releases/latest) and follow any guidance on updating your prototype.
+3. Run this command:
 
-    If your prototype has not been updated for a long time, you should also follow any guidance in [release notes](https://github.com/alphagov/govuk-prototype-kit/releases) between the version you're updating from and the latest version. You can find out the version you're updating from in the `VERSION.txt` file in your backup folder.
+```
+curl -L https://govuk-prototype-kit.herokuapp.com/docs/update.sh | bash
+```
 
-13. In your [terminal](/docs/install/requirements.md#terminal), `cd` to your prototype folder.
+It will download a zip file and unzip the latest version of the Prototype Kit into a new `update` folder.
 
-14. Run `npm install`.
+4. In a code editor (like Atom) open the file at `update/app/assets/sass/application.scss`.
 
-    This may take up to a minute. You can ignore any lines in the log that start with `WARN`.
+5. Copy everything until the line that starts with `// Add extra styles here`.
 
-15. [Run the kit and check it works](/docs/install/run-the-kit).
+6. Open the file at `app/assets/sass/application.scss`. This is the file in your prototype folder, not the one in the update folder.
 
-If your prototype does not work, compare the new `package.json` file to the `package.json` file in the backup you made in step 3. Run `npm install PACKAGE-NAME` for each package that's missing in the new file.
+7. Delete everything above `// Add extra styles` here and paste what you copied in step 5. Save the file.
+
+8. In your terminal, run `npm install`. This may take up to a minute. You can ignore any lines in the log that start with `WARN`.
+
+9. In your terminal, run `npm start`.
+
+10. Check your prototype to see if it works as expected.
+
+11. Delete the update folder in Finder or Windows Explorer.
+
+### If your prototype does not work
+
+If your prototype does not work, compare the new `package.json` file to the `package.json` file in the backup you made in step 3. 
+
+Run `npm install PACKAGE-NAME` for each package that's missing in the new file.
 
 ## Gulp error message
 
@@ -60,11 +78,3 @@ If you need to restart the Prototype Kit after the fix:
 1. in your [terminal](https://govuk-prototype-kit.herokuapp.com/docs/install/requirements.md#terminal), `cd` to your prototype folder
 2. run `npm start`
 
-## Get help
-
-You can:
-
-- [raise an issue in the Prototype Kit GitHub repo](https://github.com/alphagov/govuk-prototype-kit/issues)
-- get in touch using the [#prototype-kit channel on cross-government Slack](https://ukgovernmentdigital.slack.com/messages/prototype-kit/)
-
-Tell us as much as you can about the issue you're having, and the computer and operating system you're using.
