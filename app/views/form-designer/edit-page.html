@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block beforeContent %}
-<!--
+  <!--
   <div class="govuk-breadcrumbs">
   <ol class="govuk-breadcrumbs__list">
     <li class="govuk-breadcrumbs__list-item">
@@ -21,20 +21,20 @@
 
 {% block content %}
 
-<form id="form" class="form" action="../edit-page/{{pageId}}" method="post">
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
+  <form id="form" class="form" action="../edit-page/{{pageId}}" method="post">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
 
-      {% set namePrefix = "pages[" + pageIndex + "]" %}
+        {% set namePrefix = "pages[" + pageIndex + "]" %}
 
-      <span class="govuk-caption-l">Page {{pageId}}</span>
-      <h1 class="govuk-heading-l">
-        {% if pageData['long-title'] %}
-          {{pageData['long-title']}}
-        {% else %}
+        <span class="govuk-caption-l">Page {{pageId}}</span>
+        <h1 class="govuk-heading-l">
+          {% if pageData['long-title'] %}
+            {{pageData['long-title']}}
+          {% else %}
           Edit page
         {% endif %}
-      </h1>
+        </h1>
 
         {% set radioCheckboxHtml %}
 
@@ -175,7 +175,6 @@
           value: pageData['short-title']
         }) }}
 
-
         {{ govukRadios({
           idPrefix: "type",
           name: namePrefix + "[type]",
@@ -231,7 +230,7 @@
             </span>
           </summary>
           <div class="govuk-details__text govuk-!-padding-bottom-0">
-        {{ govukTextarea({
+            {{ govukTextarea({
           id: "intro-text",
           name: namePrefix + "[intro-text]",
           value: pageData['intro-text'],
@@ -280,7 +279,7 @@
             </span>
           </summary>
           <div class="govuk-details__text govuk-!-padding-bottom-0">
-        {{ govukTextarea({
+            {{ govukTextarea({
           id: "help-text",
           name: namePrefix + "[help-text]",
           value: pageData['help-text'],
@@ -301,52 +300,59 @@
         <input type="hidden" id="index" name="{{namePrefix}}[pageIndex]'" value="{{[pageIndex]}}">
 
         <div class="govuk-button-group">
-        {% if pageId >= data['highestPageId'] %}
+          {% if pageId >= data['highestPageId'] %}
 
-        {{ govukButton({
-          text: "Save and create next page",
-          name: "action",
-          value: "createNextPage"
-        }) }}
+            {{ govukButton({
+              text: "Save and create next page",
+              name: "action",
+              value: "createNextPage"
+            }) }}
 
-        {% else %}
+          {% else %}
 
-        {{ govukButton({
-          text: "Edit next page",
-          name: "action",
-          value: "editNextPage"
-        }) }}
+            {{ govukButton({
+              text: "Edit next page",
+              name: "action",
+              value: "editNextPage"
+            }) }}
 
-        {% endif %}
+          {% endif %}
 
-        <p>
+          {{ govukButton({ 
+            text: "Delete page",
+            classes: "govuk-button--warning",
+            name: "action",
+            value: "deletePage" 
+          }) }}
+
+          <p>
           or <a class="govuk-link govuk-link--no-visited-state" href="../form-index">go to page list</a>
-        </p>
-        </div>
-
-    </div>
-
-    <div class="govuk-grid-column-one-third" style="height: 1462px;">
-      <div class="preview-pane-wrapper">
-        <div class="preview-header">
-          <p class="preview-link govuk-body-s">
-            <!-- <a href="#" target="_blank" onclick="document.getElementById('form').submit();">Refresh</a> &nbsp;|&nbsp; -->
-            <a href="../page-preview-new-tab/{{pageId}}" target="_blank">Open in a new tab</a>
           </p>
         </div>
-        <iframe title="Page preview" data-module="app-example-frame" class="preview-pane app-example__frame app-example__frame--resizable" src="../page-preview/{{pageId}}" frameborder="1" loading="lazy" id="iFrameResizer0"></iframe>
-        {{ govukButton({
+
+      </div>
+
+      <div class="govuk-grid-column-one-third" style="height: 1462px;">
+        <div class="preview-pane-wrapper">
+          <div class="preview-header">
+            <p class="preview-link govuk-body-s">
+              <!-- <a href="#" target="_blank" onclick="document.getElementById('form').submit();">Refresh</a> &nbsp;|&nbsp; -->
+              <a href="../page-preview-new-tab/{{pageId}}" target="_blank">Open in a new tab</a>
+            </p>
+          </div>
+          <iframe title="Page preview" data-module="app-example-frame" class="preview-pane app-example__frame app-example__frame--resizable" src="../page-preview/{{pageId}}" frameborder="1" loading="lazy" id="iFrameResizer0"></iframe>
+          {{ govukButton({
           text: "Update preview",
           classes: "update-button",
           name: "action",
           value: "update"
         }) }}
 
+        </div>
       </div>
+
     </div>
 
-  </div>
-
-</form>
+  </form>
 
 {% endblock %}
