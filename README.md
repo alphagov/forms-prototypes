@@ -1,6 +1,6 @@
-# cifu-prototypes
+# Forms prototypes
 
-Prototypes from the Collecting Information from Users (CIFU) team in the Government Digital Service.
+Prototypes from the GOV.UK Forms team in the Government Digital Service.
 
 Built with the [GOV.UK Prototype Kit](https://govuk-prototype-kit.herokuapp.com/docs)
 
@@ -13,10 +13,10 @@ Hosted here: **[https://collecting-information-from-users-prototypes.london.clou
 
 ## File locations
 
-Custom routes: [/app/routes.js](https://github.com/alphagov/cifu-prototypes/blob/main/app/routes.js)
+Custom routes: [/app/routes.js](https://github.com/alphagov/forms-prototypes/blob/main/app/routes.js)
 
-Session data defaults: [/app/data/session-data-defaults.js](https://github.com/alphagov/cifu-prototypes/blob/main/app/data/session-data-defaults.js)
+Session data defaults: [/app/data/session-data-defaults.js](https://github.com/alphagov/forms-prototypes/blob/main/app/data/session-data-defaults.js)
 
-Custom Sass: [/app/assets/sass/application.scss](https://github.com/alphagov/cifu-prototypes/blob/main/app/assets/sass/application.scss)
+Custom Sass: [/app/assets/sass/application.scss](https://github.com/alphagov/forms-prototypes/blob/main/app/assets/sass/application.scss)
 
-Form designer views: [/app/views/form-designer](https://github.com/alphagov/cifu-prototypes/tree/main/app/views/form-designer)
+Form designer views: [/app/views/form-designer](https://github.com/alphagov/forms-prototypes/tree/main/app/views/form-designer)
