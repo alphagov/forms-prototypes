@@ -50,7 +50,10 @@ router.get('/form-designer/edit-page/:pageId', function (req, res) {
     res.redirect('/form-designer/edit-page/' + createNextPageId)
 
     // If user is updating the check your answers page...
-  } else if (pageId == 'check-answers' && (action == 'update' || action == '')) {
+  } else if (
+    pageId == 'check-answers' &&
+    (action == 'update' || action == '')
+  ) {
     res.render('form-designer/edit-check-answers-page')
 
     // If user is creating a page from the confirmation page...
@@ -77,7 +80,22 @@ router.get('/form-designer/edit-page/:pageId', function (req, res) {
     res.redirect('/form-designer/edit-page/' + editNextPageId)
 
     // If user pressed the 'Update preview' button or back link...
+  } else if (action === 'deletePage') {
+    // reset the action to avoid a loop
+    req.session.data.action = ''
+
+    const pages = req.session.data.pages
+      .filter(element => parseInt(element.pageIndex, 10) !== pageId - 1)
+      .map((page, index) => {
+        page.pageIndex = index
+        return page
+      })
+
+    req.session.data.pages = pages
+
+    res.redirect('/form-designer/form-index')
   } else {
+    // If user pressed the 'Update preview' button or back link...
     var pageIndex = parseInt(pageId) - 1
     var pageData = req.session.data.pages[pageIndex]
 
