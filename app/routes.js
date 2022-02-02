@@ -1,4 +1,5 @@
 const express = require('express')
+const { setPageIndexToArrayPosition } = require('../lib/utils.js')
 const router = express.Router()
 
 // ROUTES FOR EXAMPLE FORMS
@@ -86,10 +87,7 @@ router.get('/form-designer/edit-page/:pageId', function (req, res) {
 
     const pages = req.session.data.pages
       .filter(element => parseInt(element.pageIndex, 10) !== pageId - 1)
-      .map((page, index) => {
-        page.pageIndex = index
-        return page
-      })
+      .map(setPageIndexToArrayPosition)
 
     req.session.data.pages = pages
 
@@ -105,6 +103,23 @@ router.get('/form-designer/edit-page/:pageId', function (req, res) {
       pageData: pageData
     })
   }
+})
+
+// Route used by the reordering buttons in form-index.html
+router.get('/form-designer/reorder-page/:pageId/:direction', function (
+  req,
+  res
+) {
+  const { pageId, direction } = req.params
+  const newArrayPosition = direction === 'down' ? pageId : pageId - 2
+  const { pages } = req.session.data
+
+  const pageToMove = pages.splice(pageId - 1, 1)[0]
+  pages.splice(newArrayPosition, 0, pageToMove)
+
+  req.session.data.pages = pages.map(setPageIndexToArrayPosition)
+
+  res.redirect('/form-designer/form-index')
 })
 
 // Renders the page type chooser, set to a specific page

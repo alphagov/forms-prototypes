@@ -140,3 +140,7 @@ $govuk-assets-path: "/govuk/assets/";
 .app-prose-scope pre + h4 {
   @include govuk-responsive-margin(4, "top");
 }
+
+.form-action-group {
+  justify-content: flex-end;
+}

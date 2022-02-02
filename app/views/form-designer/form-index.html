@@ -26,7 +26,6 @@
             <dt class="govuk-summary-list__key govuk-!-font-weight-regular">
                 Start page
               </dt>
-            <dd class="govuk-summary-list__value govuk-!-width-one-quarter"></dd>
             <dd class="govuk-summary-list__actions">
               <a class="govuk-link govuk-link--no-visited-state" href="edit-page/0">
                       Edit</a>
@@ -56,12 +55,29 @@
                   <!--Q{{page["pageIndex"] | int + 1}}.-->
                   {{questionTitle}}
                 </dt>
-                <dd class="govuk-summary-list__value"></dd>
                 <dd class="govuk-summary-list__actions">
-                  <a class="govuk-link govuk-link--no-visited-state"
+                  <div class="govuk-button-group form-action-group">
+                    {% if page.pageIndex > 0 %}
+                      {{ govukButton({
+                          text: "Up",
+                          classes: "govuk-button--secondary",
+                          href: "reorder-page/" + (page.pageIndex | int + 1) + "/up"
+                        }) }}
+                    {% endif %}
+
+                    {% if page.pageIndex < data.pages | length - 1 %}
+                      {{ govukButton({
+                          text: "Down",
+                          classes: "govuk-button--secondary",
+                          href: "reorder-page/" + (page.pageIndex | int + 1) + "/down"
+                        }) }}
+                    {% endif %}
+
+                    <a class="govuk-link govuk-link--no-visited-state"
                     href="edit-page/{{page.pageIndex | int + 1}}">
                       Edit
                     </a>
+                  </div>
                 </dd>
               </div>
             {% endif %}
@@ -72,7 +88,6 @@
             <dt class="govuk-summary-list__key govuk-!-font-weight-regular">
                 Check your answers
               </dt>
-            <dd class="govuk-summary-list__value"></dd>
             <dd class="govuk-summary-list__actions">
               <a class="govuk-link govuk-link--no-visited-state" href="edit-page/check-answers">
                       Edit</a>
@@ -83,7 +98,6 @@
             <dt class="govuk-summary-list__key govuk-!-font-weight-regular">
                 Confirmation
               </dt>
-            <dd class="govuk-summary-list__value"></dd>
             <dd class="govuk-summary-list__actions">
               <a class="govuk-link govuk-link--no-visited-state" href="edit-page/confirmation">
                       Edit</a>
@@ -95,14 +109,14 @@
 
           {% if data['formTitle'] == 'Untitled form' %}
             {{ govukButton({
-          text: "Edit start page",
-          href: "edit-page/0"
-        }) }}
+              text: "Edit start page",
+              href: "edit-page/0"
+            }) }}
           {% else %}
             {{ govukButton({
-          text: "Create a new page",
-          href: "choose-page-type/" + nextPageId
-        }) }}
+              text: "Create a new page",
+              href: "choose-page-type/" + nextPageId
+            }) }}
           {% endif %}
           <p>
         or <a class="govuk-link govuk-link--no-visited-state" href="form-settings">change form settings</a>
