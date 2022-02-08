@@ -1,0 +1,195 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+    Reviewing form: Apply for a Roller Disco Licence
+{% endblock %}
+
+{% block header %}
+    {{ govukHeader() }}
+{% endblock %}
+
+{% block beforeContent %}
+    {{ govukBackLink({
+        "text": "Back",
+        "href": "javascript: window.history.go(-1)"
+        }) 
+    }}
+{% endblock %}
+
+{% block content %}
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-xl">Reviewing form: Apply for a Roller Disco Licence</h1>
+        </div>
+    </div>
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h2 class="govuk-heading-l">Form pages</h2>
+            {{ govukTable({
+                head: [
+                    {
+                        text: "Question"
+                    },
+                    {
+                        text: "Type"
+                    },
+                    {
+                        text: "Required"
+                    },
+                    {
+                        text: "Changed since last publish"
+                    }
+                ],
+                rows: [
+                    [
+                        {
+                            html: "<a href='review-question.html'>Name</a>"
+                        },
+                        {
+                            text: "Text"
+                        },
+                        {
+                            text: "Yes"
+                        },
+                        {
+                            text: "Yes"
+                        }
+                    ],
+                    [
+                        {
+                            html: "<a href='review-question.html'>Address</a>"
+                        },
+                        {
+                            text: "Long text"
+                        },
+                        {
+                            text: "Yes"
+                        },
+                        {
+                            text: "No"
+                        }
+                    ],
+                    [
+                        {
+                            html: "<a href='review-question.html'>Date of birth</a>"
+                        },
+                        {
+                            text: "Date"
+                        },
+                        {
+                            text: "No"
+                        },
+                        {
+                            text: "No"
+                        }
+                    ],
+                    [
+                        {
+                            html: "<a href='review-question.html'>Trading name</a>"
+                        },
+                        {
+                            text: "Text"
+                        },
+                        {
+                            text: "Yes"
+                        },
+                        {
+                            text: "No"
+                        }
+                    ],
+                    [
+                        {
+                            html: "<a href='review-question.html'>Capacity</a>"
+                        },
+                        {
+                            text: "Number"
+                        },
+                        {
+                            text: "Yes"
+                        },
+                        {
+                            text: "No"
+                        }
+                    ]
+                ]
+            }) }}
+            <h2 class="govuk-heading-l">Comments</h2>
+            <div class="comment govuk-!-margin-bottom-3">
+                <div class="media-body">
+                    <p class="govuk-body media-heading">
+                        <span class="govuk-visually-hidden">Comment by</span>
+                        <span class="author govuk-!-font-weight-bold">elissavet.gianouli@djrs.gov.uk</span>
+                        <span class="govuk-visually-hidden">posted on</span>
+                        <time datetime="2021-08-16T00:34:34+01:00">on 16 August 2021</time>
+                    </p>
+                    <div class="comment-body">
+                        <p>The new address field looks good. I'm happy with the changes!</p>
+                    </div>
+                </div>
+            </div>
+            <div class="comment">
+                <div class="media-body">
+                    <p class="govuk-body media-heading">
+                        <span class="govuk-visually-hidden">Comment by</span>
+                        <span class="author govuk-!-font-weight-bold">nina.licheli@djrs.gov.uk</span>
+                        <span class="govuk-visually-hidden">posted on</span>
+                        <time datetime="2021-08-16T00:34:34+01:00">on 16 August 2021</time>
+                    </p>
+                    <div class="comment-body">
+                        <p>I agree with Elissavet - this looks good.</p>
+                    </div>
+                </div>
+            </div>
+            <form action="#" method="post" novalidate>
+                {{ govukTextarea({
+                    label: {
+                        text: "Add a comment",
+                        classes: "govuk-label--s"
+                    },
+                    id: "review-comment",
+                    name: "review-comment",
+                    classes: "govuk-!-margin-bottom-1",
+                    formGroup: {
+                        classes: "govuk-!-margin-bottom-1"
+                    }
+                }) }}
+
+                {{ govukButton({
+                    text: "Submit feedback"
+                }) }}
+            </form>
+        </div>
+        <div class="govuk-grid-column-one-third">
+            <h2 class="govuk-heading-m">Current reviewers</h3>
+            <p>You have requested reviews from:</p>
+            <ul class="govuk-list govuk-list--bullet">
+                <li>elissavet.gianouli@djrs.gov.uk</li>
+                <li>nina.licheli@djrs.gov.uk</li>
+            </ul>
+            <h2 class="govuk-heading-m">Add reviewer</h2>
+            <form action="#" method="post" novalidate>
+
+                {{ govukInput({
+                    label: {
+                        text: "Email address of reviewer",
+                        classes: "govuk-label--s",
+                        isPageHeading: false
+                    },
+                    hint: {
+                        text: "Your reviewer will receive a link to this page"
+                    },
+                    id: "reviewer-email",
+                    name: "reviewer-email",
+                    type: "email",
+                    autocomplete: "email",
+                    spellcheck: false
+                }) }}
+
+                {{ govukButton({
+                    text: "Send for review"
+                }) }}
+            </form>
+        </div>
+    </div>
+{% endblock %}

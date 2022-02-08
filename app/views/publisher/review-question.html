@@ -1,0 +1,82 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+    Reviewing question: Name
+{% endblock %}
+
+{% block header %}
+    {{ govukHeader() }}
+{% endblock %}
+
+{% block beforeContent %}
+    {{ govukBackLink({
+        "text": "Back",
+        "href": "javascript: window.history.go(-1)"
+        }) 
+    }}
+{% endblock %}
+
+{% block content %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+
+            <form action="#" method="post" novalidate>
+                {{ govukInput({
+                    label: {
+                        text: "What is your name?",
+                        classes: "govuk-label--l",
+                        isPageHeading: true
+                    },
+                    hint: {
+                        text: 'Please enter your full name, including any middle names.'
+                    },
+                    id: "review-comment",
+                    name: "review-comment",
+                    classes: "govuk-!-margin-bottom-1",
+                    formGroup: {
+                        classes: "govuk-!-margin-bottom-1"
+                    }
+                }) }}
+
+                {{ govukButton({
+                    text: "Next page"
+                }) }}
+            </form>
+        </div>
+        <div class="govuk-grid-column-one-third">
+            <h2 class="govuk-heading-l">Reviewer comments</h2>
+            <div class="comment govuk-!-margin-bottom-3">
+                <div class="media-body">
+                    <p class="govuk-body media-heading">
+                        <span class="govuk-visually-hidden">Comment by</span>
+                        <span class="author govuk-!-font-weight-bold">elissavet.gianouli@djrs.gov.uk</span>
+                        <span class="govuk-visually-hidden">posted on</span>
+                        <time datetime="2021-08-16T00:34:34+01:00">on 16 August 2021</time>
+                    </p>
+                    <div class="comment-body">
+                        <p>Do we really need to collect middle names here?</p>
+                    </div>
+                </div>
+            </div>
+            <form action="#" method="post" novalidate>
+                {{ govukTextarea({
+                    label: {
+                        text: "Add a comment",
+                        classes: "govuk-label--s"
+                    },
+                    id: "review-comment",
+                    name: "review-comment",
+                    classes: "govuk-!-margin-bottom-1",
+                    formGroup: {
+                        classes: "govuk-!-margin-bottom-1"
+                    }
+                }) }}
+
+                {{ govukButton({
+                    text: "Submit feedback"
+                }) }}
+            </form>
+        </div>
+    </div>
+    <div class="govuk-grid-row"></div>
+{% endblock %}

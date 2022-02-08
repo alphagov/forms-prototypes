@@ -1,0 +1,135 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+    Your forms
+{% endblock %}
+
+{% block header %}
+    {{ govukHeader() }}
+{% endblock %}
+
+{% block content %}
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            <h1 class="govuk-heading-xl">Your forms</h1>
+            {{ govukButton({
+                text: "Create a new form"
+            }) }}
+            {% set publishedHtml %}
+            {{ govukTable({
+                head: [
+                    {
+                        text: "Form name"
+                    },
+                    {
+                        text: "Author"
+                    },
+                    {
+                        text: "Status"
+                    },
+                    {
+                        text: "Last modified"
+                    }
+                ],
+                rows: [
+                    [
+                        {
+                            html: "<a href='form-summary.html'>Apply for a roller disco licence</a>"
+                        },
+                        {
+                            text: "Laura Mipsum"
+                        },
+                        {
+                            text: "Draft"
+                        },
+                        {
+                            text: "20th November 2021 at 15:45"
+                        }
+                    ]
+                ]
+            }) }}
+            {% endset -%}
+
+            {% set draftHtml %}
+            {{ govukTable({
+                head: [
+                    {
+                        text: "Form name"
+                    },
+                    {
+                        text: "Author"
+                    },
+                    {
+                        text: "Status"
+                    },
+                    {
+                        text: "Last modified"
+                    }
+                ],
+                rows: [ 
+                    [
+                        {
+                            html: "<a href='form-summary.html'>Claim quad skates discount</a>"
+                        },
+                        {
+                            text: "Paul Farmer"
+                        },
+                        {
+                            text: "Published"
+                        },
+                        {
+                            text: "6th February 2021 at 09:31"
+                        }
+                        ],
+                        [
+                        {
+                            html: "<a href='form-summary.html'>Register as a skating trainer</a>"
+                        },
+                        {
+                            text: "Rita Patel"
+                        },
+                        {
+                            text: "Staging"
+                        },
+                        {
+                            text: "19th October 2021 at 12:19"
+                        }
+                    ]
+                ]
+            }) }}
+            {% endset -%}
+
+            {% set trashHtml %}
+            <p>You have no forms in Trash.</p>
+            {% endset -%}
+
+            {{ govukTabs({
+                items: [
+                    {
+                        label: "Published (1)",
+                        id: "past-day",
+                        panel: {
+                            html: publishedHtml
+                        }
+                        },
+                        {
+                        label: "Draft (2)",
+                        id: "past-week",
+                        panel: {
+                            html: draftHtml
+                        }
+                        },
+                        {
+                        label: "Trash (0)",
+                        id: "past-month",
+                        panel: {
+                            html: trashHtml
+                        }
+                    }
+                ]
+            }) }}
+        </div>
+    </div>
+
+{% endblock %}

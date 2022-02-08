@@ -144,3 +144,11 @@ $govuk-assets-path: "/govuk/assets/";
 .form-action-group {
   justify-content: flex-end;
 }
+
+.comment {
+  border-bottom: 1px solid $govuk-border-colour;
+
+  &:last-of-type {
+    border-bottom: 0;
+  }
+}
