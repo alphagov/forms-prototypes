@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+    Enter email address
+{% endblock %}
+
+{% block header %}
+    {{ govukHeader() }}
+{% endblock %}
+
+{% block beforeContent %}
+    {{ govukBackLink({
+        "text": "Back",
+        "href": "javascript: window.history.go(-1)"
+        }) 
+    }}
+{% endblock %}
+
+{% block content %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+
+            <form action="#" method="post" novalidate>
+                {{ govukInput({
+                    label: {
+                        text: "What email address should form responses be sent to?",
+                        classes: "govuk-label--l",
+                        isPageHeading: true
+                    },
+                    hint: {
+                        text: 'If you are publishing to the live environment, this must be a shared inbox.'
+                    },
+                    id: "response-inbox",
+                    name: "response-inbox",
+                    classes: "govuk-!-margin-bottom-1",
+                    formGroup: {
+                        classes: "govuk-!-margin-bottom-1"
+                    }
+                }) }}
+
+                {{ govukButton({
+                    text: "Next page"
+                }) }}
+            </form>
+        </div>
+    </div>
+{% endblock %}

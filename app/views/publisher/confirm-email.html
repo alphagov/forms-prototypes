@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+    Confirm your email
+{% endblock %}
+
+{% block header %}
+    {{ govukHeader() }}
+{% endblock %}
+
+{% block beforeContent %}
+    {{ govukBackLink({
+        "text": "Back",
+        "href": "javascript: window.history.go(-1)"
+        }) 
+    }}
+{% endblock %}
+
+{% block content %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-label--l">Confirm your email</h1>
+            <p>A 6-digit verification code has been sent to the email address you entered on the previous page.</p>
+            <form action="email-confirmed" method="post" novalidate>
+                {{ govukInput({
+                    label: {
+                        text: "Enter your 6-digit verification code",
+                        classes: "govuk-label--m"
+                    },
+                    hint: {
+                        text: 'If you do not have access to the inbox, contact the team within your department who are responsible for it.'
+                    },
+                    id: "inbox-verification-code",
+                    name: "inbox-verification-code",
+                    classes: "govuk-!-margin-bottom-1",
+                    formGroup: {
+                        classes: "govuk-!-margin-bottom-1"
+                    }
+                }) }}
+
+                {{ govukButton({
+                    text: "Next page"
+                }) }}
+            </form>
+        </div>
+    </div>
+    <div class="govuk-grid-row"></div>
+{% endblock %}

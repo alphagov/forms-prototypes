@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+    Email address verified
+{% endblock %}
+
+{% block header %}
+    {{ govukHeader() }}
+{% endblock %}
+
+{% block beforeContent %}
+    {{ govukBackLink({
+        "text": "Back",
+        "href": "javascript: window.history.go(-1)"
+        }) 
+    }}
+{% endblock %}
+
+{% block content %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-label--l">Email address email-confirmed</h1>
+            <p>Your email address has been confirmed.</p>
+
+            {{ govukButton({
+                text: "Next page",
+                href: "declaration"
+            }) }}
+        </div>
+    </div>
+{% endblock %}

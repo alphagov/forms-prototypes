@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+    Form Summary - Apply for a Roller Disco Licence
+{% endblock %}
+
+{% block header %}
+    {{ govukHeader() }}
+{% endblock %}
+
+{% block beforeContent %}
+    {{ govukBackLink({
+        "text": "Back",
+        "href": "javascript: window.history.go(-1)"
+        }) 
+    }}
+{% endblock %}
+
+{% block content %}
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-xl">Apply for a Roller Disco Licence (Draft)</h1>
+
+        </div>
+    </div>
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h3 class="govuk-heading-m">Draft URL</h3>
+            <p>
+                <a href="#">https://apply-for-a-roller-disco-licence.draft.forms.service.gov.uk</a>
+            </p>
+
+            <h3 class="govuk-heading-m">Review URL</h3>
+            <p>
+                <a href="review">https://apply-for-a-roller-disco-licence.draft.forms.service.gov.uk/review</a>
+            </p>
+
+            <h3 class="govuk-heading-m">Actions</h3>
+
+            <div class="govuk-button-group">
+                {{ govukButton({
+                    text: "Edit form",
+                    href: '/form-designer/form-index'
+                }) }}
+                {{ govukButton({
+                    text: "Send for review",
+                    href: "review"
+                }) }}
+                {{ govukButton({
+                    text: "Publish form",
+                    href: "confirm-email"
+                }) }}
+            </div>
+        </div>
+        <div class="govuk-grid-column-one-third">
+            <p>Status: <span class="govuk-!-font-weight-bold">Draft</span></p>
+            <p>Last modified by <span class="govuk-!-font-weight-bold">Laura Mipsum</span> on 20th November 2021 at 15:45</p>
+        </div>
+    </div>
+
+{% endblock %}
