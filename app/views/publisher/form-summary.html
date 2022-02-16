@@ -18,15 +18,15 @@
 {% endblock %}
 
 {% block content %}
-
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-            <h1 class="govuk-heading-xl">Apply for a Roller Disco Licence (Draft)</h1>
-
-        </div>
-    </div>
-    <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-xl">Apply for a Roller Disco Licence</h1>
+            <p>{{govukTag({
+                text: "Draft",
+                classes: "govuk-tag--blue"
+                })}}
+            </p>
+            <p>Last modified by <span class="govuk-!-font-weight-bold">Laura Mipsum</span> on 20th November 2021 at 15:45</p>
             <h3 class="govuk-heading-m">Draft URL</h3>
             <p>
                 <a href="#">https://apply-for-a-roller-disco-licence.draft.forms.service.gov.uk</a>
@@ -53,10 +53,6 @@
                     href: "enter-email"
                 }) }}
             </div>
-        </div>
-        <div class="govuk-grid-column-one-third">
-            <p>Status: <span class="govuk-!-font-weight-bold">Draft</span></p>
-            <p>Last modified by <span class="govuk-!-font-weight-bold">Laura Mipsum</span> on 20th November 2021 at 15:45</p>
         </div>
     </div>
 
