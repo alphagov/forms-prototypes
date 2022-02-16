@@ -1,4 +1,7 @@
-# Adding CSS, JavaScript, images and PDFs
+---
+title: Add CSS, JavaScript, images and other files
+---
+# Add CSS, JavaScript, images and other files
 
 The Prototype Kit comes with standard GOV.UK Frontend styles and components for you to use in your prototypes. However, if you need to add your own CSS (Cascading Style Sheets), JavaScript, images or other files (for example, PDFs), use the `/app/assets` folder.
 
@@ -18,7 +21,7 @@ To add styles use:
 
 Do not edit the file `/public/styles/application.css` because it’s deleted and rebuilt every time you make a change to your prototype.
 
-The Prototype Kit uses [Sass](https://sass-lang.com/guide), which adds extra features to CSS.
+The [Prototype Kit uses Sass](https://sass-lang.com/guide), which adds extra features to CSS.
 
 ### Using import
 
