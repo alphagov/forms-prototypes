@@ -152,3 +152,20 @@ $govuk-assets-path: "/govuk/assets/";
     border-bottom: 0;
   }
 }
+
+.publisher-submenu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1em;
+  position: relative;
+  top: -10px;
+  background: #f3f2f1;
+  padding: 1em;
+}
+
+.publisher-submenu__links {
+  display: flex;
+  gap: 1em;
+  flex-wrap: wrap;
+}
