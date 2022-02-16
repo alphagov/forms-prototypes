@@ -1,3 +1,7 @@
+---
+title: Show different pages depending on user input (branching)
+caption: Build a basic prototype
+---
 # Show different pages depending on user input (branching)
 
 Our first question asks the user how many balls they can juggle. We’re going to send them to an ‘ineligible’ page if they can only juggle 2 balls or less. Sending users to different pages based on their input is called branching.
@@ -14,7 +18,7 @@ The route takes the answer the user gave to the first question and either sends 
 
 2. Update the content to tell the user why they’re ineligible and what they can do next.
 
-Check it works by visiting http://localhost:3000/ineligible.
+To check it works, [go to http://localhost:3000/ineligible](http://localhost:3000/ineligible).
 
 ## Create a route
 

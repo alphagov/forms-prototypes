@@ -1,3 +1,6 @@
+---
+title: Accessibility
+---
 # Accessibility
 
 The GOV.UK Prototype Kit website is maintained by a team at the Government Digital Service (GDS).
@@ -46,7 +49,7 @@ Some pages do not have descriptive titles. This fails WCAG 2.1 success criterion
 
 Some images do not have a good text alternative, so people using a screen reader cannot access the information. This fails WCAG 2.1 success criterion 1.1.1 (non-text content).
 
-The text in the code examples cannot be resized using bowser controls. This fails WCAG 2.1 success criterion 1.4.4 (resize text).
+The text in the code examples cannot be resized using browser controls. This fails WCAG 2.1 success criterion 1.4.4 (resize text).
 
 The code examples require scrolling horizontally on small screens. This fails WCAG 2.1 success criterion 1.4.10 (reflow).
 
@@ -67,7 +70,7 @@ The test was carried out by the GOV.UK Prototype Kit team.
 The GOV.UK Prototype Kit team tested a sample of pages to cover the different content types in the Prototype Kit website. They were:
 
 - [the homepage](/docs)
-- [the tutorials and examples page](/docs/tutorials-and-examples)
+- [the tutorials and templates page](/docs/tutorials-and-examples)
 - [the tutorial pages](/docs/make-first-prototype/start)
 - [the guide pages](/docs/publishing-on-heroku)
 - [the example pages](/docs/examples/pass-data)
