@@ -16,6 +16,28 @@
             {{ govukButton({
                 text: "Create a new form"
             }) }}
+
+            {% set draftStatus %}
+            {{govukTag({
+                text: "Draft",
+                classes: "govuk-tag--blue"
+            })}}
+            {% endset -%}
+
+            {% set reviewStatus %}
+            {{govukTag({
+                text: "In review",
+                classes: "govuk-tag--yellow"
+            })}}
+            {% endset -%}
+
+            {% set liveStatus %}
+            {{govukTag({
+                text: "Live",
+                classes: "govuk-tag--green"
+            })}}
+            {% endset -%}
+
             {% set publishedHtml %}
             {{ govukTable({
                 head: [
@@ -41,7 +63,7 @@
                             text: "Laura Mipsum"
                         },
                         {
-                            text: "Draft"
+                            html: liveStatus
                         },
                         {
                             text: "20th November 2021 at 15:45"
@@ -76,7 +98,7 @@
                             text: "Paul Farmer"
                         },
                         {
-                            text: "Published"
+                            html: draftStatus
                         },
                         {
                             text: "6th February 2021 at 09:31"
@@ -90,7 +112,7 @@
                             text: "Rita Patel"
                         },
                         {
-                            text: "Staging"
+                            html: reviewStatus
                         },
                         {
                             text: "19th October 2021 at 12:19"
@@ -98,10 +120,6 @@
                     ]
                 ]
             }) }}
-            {% endset -%}
-
-            {% set trashHtml %}
-            <p>You have no forms in Trash.</p>
             {% endset -%}
 
             {{ govukTabs({
@@ -118,13 +136,6 @@
                         id: "past-week",
                         panel: {
                             html: draftHtml
-                        }
-                        },
-                        {
-                        label: "Trash (0)",
-                        id: "past-month",
-                        panel: {
-                            html: trashHtml
                         }
                     }
                 ]

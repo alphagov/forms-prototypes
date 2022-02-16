@@ -6,6 +6,7 @@
 
 {% block header %}
     {{ govukHeader() }}
+    {% include "includes/submenu.html" %}
 {% endblock %}
 
 {% block beforeContent %}
@@ -21,43 +22,84 @@
         <div class="govuk-grid-column-two-thirds">
 
             <form action="#" method="post" novalidate>
-                {{ govukInput({
-                    label: {
-                        text: "What is your name?",
-                        classes: "govuk-label--l",
-                        isPageHeading: true
+                {{ govukRadios({
+                    idPrefix: "what-is-your-capacity",
+                    name: "what-is-your-capacity",
+                    fieldset: {
+                        legend: {
+                        text: "What is the capacity of your venue?",
+                        isPageHeading: true,
+                        classes: "govuk-fieldset__legend--l"
+                        }
                     },
-                    hint: {
-                        text: 'Please enter your full name, including any middle names.'
-                    },
-                    id: "review-comment",
-                    name: "review-comment",
-                    classes: "govuk-!-margin-bottom-1",
-                    formGroup: {
-                        classes: "govuk-!-margin-bottom-1"
-                    }
+                    items: [
+                        {
+                        value: "0to50",
+                        text: "Fewer than 50 people"
+                        },
+                        {
+                        value: "51to100",
+                        text: "Between 51 and 100 people"
+                        },
+                        {
+                        value: "101orMore",
+                        text: "101 or more people"
+                        }
+                    ]
                 }) }}
 
                 {{ govukButton({
                     text: "Next page"
                 }) }}
             </form>
+
         </div>
-        <div class="govuk-grid-column-one-third">
-            <h2 class="govuk-heading-l">Reviewer comments</h2>
-            <div class="comment govuk-!-margin-bottom-3">
-                <div class="media-body">
-                    <p class="govuk-body media-heading">
-                        <span class="govuk-visually-hidden">Comment by</span>
-                        <span class="author govuk-!-font-weight-bold">elissavet.gianouli@djrs.gov.uk</span>
-                        <span class="govuk-visually-hidden">posted on</span>
-                        <time datetime="2021-08-16T00:34:34+01:00">on 16 August 2021</time>
-                    </p>
-                    <div class="comment-body">
-                        <p>Do we really need to collect middle names here?</p>
-                    </div>
-                </div>
-            </div>
+    </div>
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            <hr/>
+            <p>Nothing below this line is visible to the public.</p>
+        </div>
+    </div>
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-one-half">
+            <h2 class="govuk-heading-m">Page information</h2>
+            {{ govukSummaryList({
+                rows: [
+                    {
+                    key: {
+                        text: "Type"
+                    },
+                    value: {
+                        text: "Choose one"
+                    }
+                    },
+                    {
+                    key: {
+                        text: "Required"
+                    },
+                    value: {
+                        text: "Yes"
+                    }
+                    },
+                    {
+                    key: {
+                        text: "Next page"
+                    },
+                    value: {
+                        html: '<ul class="govuk-list govuk-list--bullet"><li>If user chooses "101 or more people": <a href="#">Ineligible</a></li><li>Otherwise: <a href="#">Check your answers</a></li></ul>'
+                    }
+                    }
+                ]
+            }) }}
+        </div>
+        <div class="govuk-grid-column-one-half">
+            <h2 class="govuk-heading-m">Reviewer comments</h2>
+
+            {{ comment(name='elissavet.gianouli@djrs.gov.uk',
+                value='Do we really need to collect middle names here?'
+            ) }}
+
             <form action="#" method="post" novalidate>
                 {{ govukTextarea({
                     label: {
@@ -78,5 +120,4 @@
             </form>
         </div>
     </div>
-    <div class="govuk-grid-row"></div>
 {% endblock %}
