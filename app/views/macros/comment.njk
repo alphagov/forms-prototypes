@@ -1,0 +1,15 @@
+{% macro comment(name, value = '', date = '16 August 2021') %}
+    <div class="comment govuk-!-margin-bottom-3">
+        <div class="media-body">
+            <p class="govuk-body media-heading">
+                <span class="govuk-visually-hidden">Comment by</span>
+                <span class="author govuk-!-font-weight-bold">{{name}}</span>
+                <span class="govuk-visually-hidden">posted on</span>
+                <time datetime="2021-08-16T00:34:34+01:00">on {{date}}</time>
+            </p>
+            <div class="comment-body">
+                <p>{{value}}</p>
+            </div>
+        </div>
+    </div>
+{% endmacro %}

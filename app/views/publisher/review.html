@@ -30,16 +30,10 @@
             {{ govukTable({
                 head: [
                     {
-                        text: "Question"
+                        text: "Page"
                     },
                     {
-                        text: "Type"
-                    },
-                    {
-                        text: "Required"
-                    },
-                    {
-                        text: "Changed since last publish"
+                        text: "Reviewer comments"
                     }
                 ],
                 rows: [
@@ -48,13 +42,7 @@
                             html: "<a href='review-question.html'>Name</a>"
                         },
                         {
-                            text: "Text"
-                        },
-                        {
-                            text: "Yes"
-                        },
-                        {
-                            text: "Yes"
+                            text: "1"
                         }
                     ],
                     [
@@ -62,13 +50,7 @@
                             html: "<a href='review-question.html'>Address</a>"
                         },
                         {
-                            text: "Long text"
-                        },
-                        {
-                            text: "Yes"
-                        },
-                        {
-                            text: "No"
+                            text: "0"
                         }
                     ],
                     [
@@ -76,13 +58,7 @@
                             html: "<a href='review-question.html'>Date of birth</a>"
                         },
                         {
-                            text: "Date"
-                        },
-                        {
-                            text: "No"
-                        },
-                        {
-                            text: "No"
+                            text: "0"
                         }
                     ],
                     [
@@ -90,13 +66,7 @@
                             html: "<a href='review-question.html'>Trading name</a>"
                         },
                         {
-                            text: "Text"
-                        },
-                        {
-                            text: "Yes"
-                        },
-                        {
-                            text: "No"
+                            text: "3"
                         }
                     ],
                     [
@@ -104,44 +74,25 @@
                             html: "<a href='review-question.html'>Capacity</a>"
                         },
                         {
-                            text: "Number"
-                        },
-                        {
-                            text: "Yes"
-                        },
-                        {
-                            text: "No"
+                            text: "1"
                         }
                     ]
                 ]
             }) }}
-            <h2 class="govuk-heading-l">Comments</h2>
-            <div class="comment govuk-!-margin-bottom-3">
-                <div class="media-body">
-                    <p class="govuk-body media-heading">
-                        <span class="govuk-visually-hidden">Comment by</span>
-                        <span class="author govuk-!-font-weight-bold">elissavet.gianouli@djrs.gov.uk</span>
-                        <span class="govuk-visually-hidden">posted on</span>
-                        <time datetime="2021-08-16T00:34:34+01:00">on 16 August 2021</time>
-                    </p>
-                    <div class="comment-body">
-                        <p>The new address field looks good. I'm happy with the changes!</p>
-                    </div>
-                </div>
-            </div>
-            <div class="comment">
-                <div class="media-body">
-                    <p class="govuk-body media-heading">
-                        <span class="govuk-visually-hidden">Comment by</span>
-                        <span class="author govuk-!-font-weight-bold">nina.licheli@djrs.gov.uk</span>
-                        <span class="govuk-visually-hidden">posted on</span>
-                        <time datetime="2021-08-16T00:34:34+01:00">on 16 August 2021</time>
-                    </p>
-                    <div class="comment-body">
-                        <p>I agree with Elissavet - this looks good.</p>
-                    </div>
-                </div>
-            </div>
+
+            {{ govukButton({
+                text: "Preview entire form"
+            }) }}
+            <h2 class="govuk-heading-l">Reviewer comments</h2>
+
+            {{ comment(name='elissavet.gianouli@djrs.gov.uk',
+                value="The new address field looks good. I'm happy with the changes!"
+            ) }}
+
+            {{ comment(name='nina.licheli@djrs.gov.uk',
+                value='I agree with Elissavet - this looks good.'
+            ) }}
+
             <form action="#" method="post" novalidate>
                 {{ govukTextarea({
                     label: {
@@ -162,12 +113,6 @@
             </form>
         </div>
         <div class="govuk-grid-column-one-third">
-            <h2 class="govuk-heading-m">Current reviewers</h3>
-            <p>You have requested reviews from:</p>
-            <ul class="govuk-list govuk-list--bullet">
-                <li>elissavet.gianouli@djrs.gov.uk</li>
-                <li>nina.licheli@djrs.gov.uk</li>
-            </ul>
             <h2 class="govuk-heading-m">Add reviewer</h2>
             <form action="#" method="post" novalidate>
 
@@ -191,6 +136,12 @@
                     text: "Send for review"
                 }) }}
             </form>
+            <h2 class="govuk-heading-m">Current reviewers</h3>
+            <p>You have requested reviews from:</p>
+            <ul class="govuk-list govuk-list--bullet">
+                <li>elissavet.gianouli@djrs.gov.uk</li>
+                <li>nina.licheli@djrs.gov.uk</li>
+            </ul>
         </div>
     </div>
 {% endblock %}
