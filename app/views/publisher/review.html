@@ -26,6 +26,12 @@
     </div>
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
+
+            <h2 class="govuk-heading-l">Review URL</h3>
+            <p>
+                <a href="#">https://apply-for-a-roller-disco-licence.draft.forms.service.gov.uk</a>
+            </p>
+
             <h2 class="govuk-heading-l">Form pages</h2>
             {{ govukTable({
                 head: [
@@ -33,7 +39,8 @@
                         text: "Page"
                     },
                     {
-                        text: "Reviewer comments"
+                        text: "Reviewer comments",
+                        classes: 'govuk-!-width-one-quarter'
                     }
                 ],
                 rows: [
@@ -42,7 +49,8 @@
                             html: "<a href='review-question.html'>Name</a>"
                         },
                         {
-                            text: "1"
+                            text: "1",
+                            classes: 'govuk-!-width-one-quarter'
                         }
                     ],
                     [
@@ -50,7 +58,8 @@
                             html: "<a href='review-question.html'>Address</a>"
                         },
                         {
-                            text: "0"
+                            text: "0",
+                            classes: 'govuk-!-width-one-quarter'
                         }
                     ],
                     [
@@ -58,7 +67,8 @@
                             html: "<a href='review-question.html'>Date of birth</a>"
                         },
                         {
-                            text: "0"
+                            text: "0",
+                            classes: 'govuk-!-width-one-quarter'
                         }
                     ],
                     [
@@ -66,7 +76,8 @@
                             html: "<a href='review-question.html'>Trading name</a>"
                         },
                         {
-                            text: "3"
+                            text: "3",
+                            classes: 'govuk-!-width-one-quarter'
                         }
                     ],
                     [
@@ -74,15 +85,13 @@
                             html: "<a href='review-question.html'>Capacity</a>"
                         },
                         {
-                            text: "1"
+                            text: "1",
+                            classes: 'govuk-!-width-one-quarter'
                         }
                     ]
                 ]
             }) }}
 
-            {{ govukButton({
-                text: "Preview entire form"
-            }) }}
             <h2 class="govuk-heading-l">Reviewer comments</h2>
             <div class="moj-message-list">
                 {{ comment(name='elissavet.gianouli@djrs.gov.uk',
