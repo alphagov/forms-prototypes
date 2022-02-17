@@ -32,26 +32,37 @@
                 <a href="#">https://apply-for-a-roller-disco-licence.draft.forms.service.gov.uk</a>
             </p>
 
+            {{ govukButton({
+                text: "Edit form",
+                href: '/form-designer/form-index'
+            }) }}
+
             <h3 class="govuk-heading-m">Review URL</h3>
             <p>
                 <a href="review">https://apply-for-a-roller-disco-licence.draft.forms.service.gov.uk/review</a>
             </p>
+            {{ govukButton({
+                text: "Send for review",
+                href: "review"
+            }) }}
 
             <h3 class="govuk-heading-m">Actions</h3>
 
             <div class="govuk-button-group">
-                {{ govukButton({
-                    text: "Edit form",
-                    href: '/form-designer/form-index'
-                }) }}
-                {{ govukButton({
-                    text: "Send for review",
-                    href: "review"
-                }) }}
+
                 {{ govukButton({
                     text: "Publish form",
                     href: "enter-email"
                 }) }}
+
+                {{ govukButton({
+                    text: "Delete form",
+                    classes: "govuk-button--warning",
+                    href: "start"
+                }) }}
+                <p>
+                    or <a class="govuk-link govuk-link--no-visited-state" href="start">view your forms</a>
+                </p>
             </div>
         </div>
     </div>

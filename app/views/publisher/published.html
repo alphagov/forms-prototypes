@@ -41,21 +41,23 @@
                 <a href="#">https://apply-for-a-roller-disco-licence.forms.service.gov.uk</a>
             </p>
 
+            {{ govukButton({
+                text: "Unpublish form",
+                classes: "govuk-button--secondary",
+                href: "form-summary"
+            }) }}
+
             <h3 class="govuk-heading-m">Actions</h3>
 
             <div class="govuk-button-group">
+
                 {{ govukButton({
                     text: "Edit form",
                     href: '/form-designer/form-index'
                 }) }}
-                {{ govukButton({
-                    text: "Unpublish form",
-                    href: "form-summary"
-                }) }}
-                {{ govukButton({
-                    text: "View my forms",
-                    href: "start"
-                }) }}
+                <p>
+                    or <a class="govuk-link govuk-link--no-visited-state" href="start">view your forms</a>
+                </p>
             </div>
         </div>
     </div>
