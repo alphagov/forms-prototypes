@@ -96,9 +96,14 @@
         <div class="govuk-grid-column-one-half">
             <h2 class="govuk-heading-m">Reviewer comments</h2>
 
-            {{ comment(name='elissavet.gianouli@djrs.gov.uk',
-                value='Do we really need to collect middle names here?'
-            ) }}
+            <div  class="moj-message-list">
+                {{ comment(name='elissavet.gianouli@djrs.gov.uk',
+                    value='This looks OK to me, but make sure you double check this wording with the content team - I believe they recently issued updated guidance on questions like these.'
+                ) }}
+                {{ reply(name='Laura Mipsum',
+                    value='Thanks Elissavet, I\ll get them to take a look.'
+                ) }}
+            </div>
 
             <form action="#" method="post" novalidate>
                 {{ govukTextarea({

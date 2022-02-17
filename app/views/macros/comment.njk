@@ -1,15 +1,21 @@
 {% macro comment(name, value = '', date = '16 August 2021') %}
-    <div class="comment govuk-!-margin-bottom-3">
-        <div class="media-body">
-            <p class="govuk-body media-heading">
-                <span class="govuk-visually-hidden">Comment by</span>
-                <span class="author govuk-!-font-weight-bold">{{name}}</span>
-                <span class="govuk-visually-hidden">posted on</span>
-                <time datetime="2021-08-16T00:34:34+01:00">on {{date}}</time>
-            </p>
-            <div class="comment-body">
-                <p>{{value}}</p>
-            </div>
+    <div class="moj-message-item moj-message-item--received">
+        <div class="moj-message-item__text moj-message-item__text--received">
+            <p>{{value}}</p>
+        </div>
+        <div class="moj-message-item__meta">
+            <span class="moj-message-item__meta--sender">{{name}}</span> on <time class="moj-message-item__meta--timestamp" datetime="10:51am">{{date}}</time>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro reply(name, value = '', date = '16 August 2021') %}
+    <div class="moj-message-item moj-message-item--sent">
+        <div class="moj-message-item__text moj-message-item__text--sent">
+            <p>{{value}}</p>
+        </div>
+        <div class="moj-message-item__meta">
+            <span class="moj-message-item__meta--sender">{{name}}</span> on <time class="moj-message-item__meta--timestamp" datetime="10:51am">{{date}}</time>
         </div>
     </div>
 {% endmacro %}

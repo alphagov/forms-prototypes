@@ -15,6 +15,9 @@ $govuk-assets-path: "/govuk/assets/";
 @import "patterns/task-list";
 @import "patterns/related-items";
 
+// Project partials
+@import "patterns/moj-messages";
+
 .preview-pane-wrapper {
   position: sticky;
   top: 110px;
