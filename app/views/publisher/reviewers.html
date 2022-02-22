@@ -1,0 +1,87 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+    Manage reviewers: Apply for a Roller Disco Licence
+{% endblock %}
+
+{% block header %}
+    {{ govukHeader() }}
+    {% include "includes/submenu.html" %}
+{% endblock %}
+
+{% block beforeContent %}
+    {{ govukBackLink({
+        "text": "Back",
+        "href": "javascript: window.history.go(-1)"
+        }) 
+    }}
+{% endblock %}
+
+{% block content %}
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-xl">Manage reviewers: Apply for a Roller Disco Licence</h1>
+        </div>
+    </div>
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h2 class="govuk-heading-l">Current reviewers</h3>
+            {{ govukTable({
+                head: [
+                    {
+                        text: "Reviewer"
+                    },
+                    {
+                        text: "Actions"
+                    }
+                ],
+                rows: [
+                    [
+                        {
+                            text: "elissavet.gianouli@djrs.gov.uk"
+                        },
+                        {
+                            html: '<a href="#">Remove<span class="govuk-visually-hidden"> elissavet.gianouli@djrs.gov.uk</span></a>'
+                        }
+                    ],[
+                        {
+                            text: "nina.licheli@djrs.gov.uk"
+                        },
+                        {
+                            html: '<a href="#">Remove<span class="govuk-visually-hidden"> nina.licheli@djrs.gov.uk</span></a>'
+                        }
+                    ]
+                ]
+            }) }}
+            <h2 class="govuk-heading-l">Add reviewer</h2>
+            <form action="#" method="post" novalidate>
+
+                {{ govukInput({
+                    label: {
+                        text: "Email address of reviewer",
+                        classes: "govuk-label--s",
+                        isPageHeading: false
+                    },
+                    hint: {
+                        text: "Your reviewer will receive a link to this page"
+                    },
+                    id: "reviewer-email",
+                    name: "reviewer-email",
+                    type: "email",
+                    autocomplete: "email",
+                    spellcheck: false
+                }) }}
+                <div class="govuk-button-group">
+
+                    {{ govukButton({
+                        text: "Send for review"
+                    }) }}
+                    <p>
+                        or <a class="govuk-link govuk-link--no-visited-state" href="review">go back to review page</a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

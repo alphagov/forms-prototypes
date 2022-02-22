@@ -27,6 +27,11 @@
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
 
+            {{ govukButton({
+                text: "Manage reviewers",
+                href: "reviewers"
+            }) }}
+
             <h2 class="govuk-heading-l">Review URL</h3>
             <p>
                 <a href="#">https://apply-for-a-roller-disco-licence.draft.forms.service.gov.uk</a>
@@ -125,37 +130,6 @@
                     text: "Submit feedback"
                 }) }}
             </form>
-        </div>
-        <div class="govuk-grid-column-one-third">
-            <h2 class="govuk-heading-m">Add reviewer</h2>
-            <form action="#" method="post" novalidate>
-
-                {{ govukInput({
-                    label: {
-                        text: "Email address of reviewer",
-                        classes: "govuk-label--s",
-                        isPageHeading: false
-                    },
-                    hint: {
-                        text: "Your reviewer will receive a link to this page"
-                    },
-                    id: "reviewer-email",
-                    name: "reviewer-email",
-                    type: "email",
-                    autocomplete: "email",
-                    spellcheck: false
-                }) }}
-
-                {{ govukButton({
-                    text: "Send for review"
-                }) }}
-            </form>
-            <h2 class="govuk-heading-m">Current reviewers</h3>
-            <p>You have requested reviews from:</p>
-            <ul class="govuk-list govuk-list--bullet">
-                <li>elissavet.gianouli@djrs.gov.uk</li>
-                <li>nina.licheli@djrs.gov.uk</li>
-            </ul>
         </div>
     </div>
 {% endblock %}
