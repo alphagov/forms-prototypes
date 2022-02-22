@@ -1,0 +1,132 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+    Versions: Apply for a Roller Disco Licence
+{% endblock %}
+
+{% block header %}
+    {{ govukHeader() }}
+    {% include "includes/submenu.html" %}
+{% endblock %}
+
+{% block beforeContent %}
+    {{ govukBackLink({
+        "text": "Back",
+        "href": "javascript: window.history.go(-1)"
+        }) 
+    }}
+{% endblock %}
+
+{% block content %}
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            <h1 class="govuk-heading-xl">Apply for a Roller Disco Licence</h1>
+            <h2 class="govuk-heading-l">Versions</h2>
+            {{ govukTable({
+                head: [
+                    {
+                        text: "Version"
+                    },
+                    {
+                        text: "Last published"
+                    },
+                    {
+                        text: "Status"
+                    },
+                    {
+                        text: "Actions"
+                    }
+                ],
+                rows: [
+                    [
+                        {
+                            text: "5 (current)"
+                        },
+                        {
+                            text: "20th February 2022 at 15:45"
+                        },
+                        {
+                            html: govukTag({
+                                text: "Draft",
+                                classes: "govuk-tag--blue"
+                            })
+                        },
+                        {
+                            html: '<a href="form-summary">View<span class="govuk-visually-hidden"> this version</span></a>'
+                        }
+                    ],
+                    [
+                        {
+                            text: "4"
+                        },
+                        {
+                            text: "20th December 2021 at 15:45"
+                        },
+                        {
+                            html: govukTag({
+                                text: "Live",
+                                classes: "govuk-tag--green"
+                            })
+                        },
+                        {
+                            html: '<a href="#">View<span class="govuk-visually-hidden"> this version</span></a><br><a href="#">Edit<span class="govuk-visually-hidden"> this version</span></a>'
+                        }
+                    ],
+                    [
+                        {
+                            text: "3"
+                        },
+                        {
+                            text: "18th November 2021 at 15:45"
+                        },
+                        {
+                            html: govukTag({
+                                text: "Unpublished",
+                                classes: "govuk-tag--grey"
+                            })
+                        },
+                        {
+                            html: '<a href="#">View<span class="govuk-visually-hidden"> this version</span></a><br><a href="#">Edit<span class="govuk-visually-hidden"> this version</span></a>'
+                        }
+                    ],
+                    [
+                        {
+                            text: "2"
+                        },
+                        {
+                            text: "17th November 2021 at 15:45"
+                        },
+                        {
+                            html: govukTag({
+                                text: "Unpublished",
+                                classes: "govuk-tag--grey"
+                            })
+                        },
+                        {
+                            html: '<a href="#">View<span class="govuk-visually-hidden"> this version</span></a><br><a href="#">Edit<span class="govuk-visually-hidden"> this version</span></a>'
+                        }
+                    ],
+                    [
+                        {
+                            text: "1"
+                        },
+                        {
+                            text: "31st October 2021 at 15:45"
+                        },
+                        {
+                            html: govukTag({
+                                text: "Unpublished",
+                                classes: "govuk-tag--grey"
+                            })
+                        },
+                        {
+                            html: '<a href="#">View<span class="govuk-visually-hidden"> this version</span></a><br><a href="#">Edit<span class="govuk-visually-hidden"> this version</span></a>'
+                        }
+                    ]
+                ]
+            }) }}
+        </div>
+    </div>
+
+{% endblock %}
