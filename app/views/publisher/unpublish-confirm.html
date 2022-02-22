@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+    Unpublish form
+{% endblock %}
+
+{% block header %}
+    {{ govukHeader() }}
+    {% include "includes/submenu.html" %}
+{% endblock %}
+
+{% block beforeContent %}
+    {{ govukBackLink({
+        "text": "Back",
+        "href": "javascript: window.history.go(-1)"
+        }) 
+    }}
+{% endblock %}
+
+{% block content %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-label--l">Unpublish form</h1>
+            <p>
+                You are about to unpublish the form <strong>Apply for a Roller Disco Licence</strong>.
+            </p>
+            <p>
+                This will mean that the form will no longer be visible to your users, including any users who are already filling the form out. To avoid confusing and frustrating your users, you should remove any links to this content from GOV.UK first, before unpublishing the form.
+            </p>
+
+            <div class="govuk-button-group">
+
+                {{ govukButton({
+                    text: "Unpublish form",
+                    classes: "govuk-button--warning",
+                    href: "form-summary"
+                }) }}
+                <p>
+                    or <a class="govuk-link govuk-link--no-visited-state" href="start">return to the form summary page</a>
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
