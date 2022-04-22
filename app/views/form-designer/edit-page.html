@@ -198,6 +198,35 @@
               }
             },
             {
+              value: "email",
+              text: "An email address",
+              checked: checked(namePrefix + "['type']", "email")
+            },
+            {
+              value: "address",
+              text: "An address",
+              checked: checked(namePrefix + "['type']", "address")
+            },
+            {
+              value: "phone",
+              text: "A telephone number",
+              checked: checked(namePrefix + "['type']", "phone")
+            },
+            {
+              value: "national-insurance-number",
+              text: "A National Insurance Number",
+              checked: checked(namePrefix + "['type']", "national-insurance-number")
+            },
+            {
+              value: "date",
+              text: "A date",
+              checked: checked(namePrefix + "['type']", "date")
+            }
+          ]
+        }) }}
+
+        {# 
+            {
               value: "textarea",
               text: "One or more paragraphs",
               checked: checked(namePrefix + "['type']", "textarea"),
@@ -212,16 +241,9 @@
               conditional: {
                 html: radioCheckboxHtml
               }
-            },
-            {
-              value: "date",
-              text: "A date",
-              checked: checked(namePrefix + "['type']", "date")
-            }
-          ]
-        }) }}
+            }, #}
 
-        <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+        {# <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 
         <details class="govuk-details govuk-!-margin-bottom-0" data-module="govuk-details">
           <summary class="govuk-details__summary">
@@ -244,7 +266,7 @@
           }
         }) }}
           </div>
-        </details>
+        </details> #}
 
         <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 
@@ -270,7 +292,7 @@
           </div>
         </details>
 
-        <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+        {# <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 
         <details class="govuk-details govuk-!-margin-bottom-0" data-module="govuk-details">
           <summary class="govuk-details__summary">
@@ -293,7 +315,7 @@
           }
         }) }}
           </div>
-        </details>
+        </details> #}
 
         <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 
