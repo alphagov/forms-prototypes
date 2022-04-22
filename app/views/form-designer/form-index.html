@@ -105,23 +105,17 @@
           </div>
         </dl>
 
-        <div class="govuk-button-group">
-
-          {% if data['formTitle'] == 'Untitled form' %}
-            {{ govukButton({
+        {% if data['formTitle'] == 'Untitled form' %}
+          {{ govukButton({
               text: "Edit start page",
               href: "edit-page/0"
             }) }}
-          {% else %}
-            {{ govukButton({
+        {% else %}
+          {{ govukButton({
               text: "Create a new page",
               href: "choose-page-type/" + nextPageId
             }) }}
-          {% endif %}
-          <p>
-        or <a class="govuk-link govuk-link--no-visited-state" href="form-settings">change form settings</a>
-          </p>
-        </div>
+        {% endif %}
 
       </div>
 
