@@ -1,0 +1,55 @@
+{% extends "layout-govuk-forms.html" %}
+
+{% block pageTitle %}
+  Edit question
+{% endblock %}
+
+{% block content %}
+
+<form id="form" class="form" action="../edit-page/{{pageId}}" method="post">
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <h1 class="govuk-heading-l">Create new form</h1>
+
+        {#
+
+        Every field id is prefixed with a unique page id.
+        So we can have separate configurations for every page.
+
+        #}
+        {% set pagePrefix = "p" + pageId + "-" %}
+
+        <input type="hidden" id="index" name="{{namePrefix}}[pageIndex]'" value="{{[pageIndex]}}">
+
+
+        {{ govukInput({
+          label: {
+            text: "Enter form title",
+            classes: "govuk-label--m"
+          },
+          formGroup: {
+            classes: "govuk-!-margin-bottom-3"
+          },
+          id: "formTitle",
+          name: "formTitle"
+        }) }}
+
+
+        <div class="govuk-button-group">
+
+        {{ govukButton({
+          text: "Continue",
+          name: "action",
+          value: "createForm"
+        }) }}
+
+        </div>
+
+    </div>
+
+  </div>
+
+</form>
+
+{% endblock %}

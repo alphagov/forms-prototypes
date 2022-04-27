@@ -1,0 +1,30 @@
+{% extends "layout-govuk-forms.html" %}
+
+{% block pageTitle %}
+  Welcome to GOV.UK Forms
+{% endblock %}
+
+{% block content %}
+
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+
+        <h1 class="govuk-heading-l">Welcome to GOV.UK Forms</h1>
+
+
+        <div class="govuk-button-group">
+
+          {{ govukButton({
+            text: "Create a new form",
+            href: "edit-page/form-title"
+          }) }}
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </form>
+
+{% endblock %}
