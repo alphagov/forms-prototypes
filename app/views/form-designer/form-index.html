@@ -21,6 +21,14 @@
           {% endif %}.
       </p>
 
+      {{ govukButton({
+          text: "Create a new page",
+          href: "choose-page-type/" + nextPageId
+        }) }}
+
+        <p><a href="/form-designer/start-page-preview-new-tab" target="_blank">Preview form (opens in new tab)</a></p>
+
+
         <dl class="govuk-summary-list">
           
 
@@ -96,11 +104,6 @@
             </dd>
           </div>
         </dl>
-
-          {{ govukButton({
-              text: "Create a new page",
-              href: "choose-page-type/" + nextPageId
-            }) }}
 
       </div>
 
