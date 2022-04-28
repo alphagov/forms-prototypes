@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+  Create a form
+{% endblock %}
+
+{% block content %}
+
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+      <form class="form" action="form-index" method="post">
+
+        {% from "govuk/components/input/macro.njk" import govukInput %}
+
+        {{ govukInput({
+        label: {
+        text: "What is the name of your form?",
+        classes: "govuk-label--l",
+        isPageHeading: true
+        },
+        hint: {
+          text: "This could be what your form will help the user do"
+        },
+        id: "event-name",
+        name: "formTitle"
+        }) }}
+
+
+        <button class="govuk-button" data-module="govuk-button">Save and continue</button>
+
+      </form>
+      </div>
+    </div>
+
+{% endblock %}
+
