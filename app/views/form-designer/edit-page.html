@@ -137,6 +137,16 @@
           value: pageData['short-title']
         }) }}
 
+        {# If no type is set, set type to text #}
+        {%
+         set allEmpty = not (checked(namePrefix + "['type']", "text")
+           or checked(namePrefix + "['type']", "email")
+           or checked(namePrefix + "['type']", "address")
+           or checked(namePrefix + "['type']", "phone")
+           or checked(namePrefix + "['type']", "national-insurance-number")
+           or checked(namePrefix + "['type']", "date"))
+        %}
+
         {{ govukRadios({
           idPrefix: "type",
           name: namePrefix + "[type]",
@@ -154,7 +164,7 @@
             {
               value: "text",
               text: "A single line response",
-              checked: checked(namePrefix + "['type']", "text")
+              checked: checked(namePrefix + "['type']", "text") or allEmpty
             },
             {
               value: "email",
