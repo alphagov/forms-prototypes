@@ -108,44 +108,6 @@
         }) }}
         {% endset -%}
 
-        {% set textHtml %}
-        {{ govukSelect({
-          id: "unit",
-          name: namePrefix + "[unit]",
-          label: {
-            text: "Unit",
-            classes: "govuk-label--s"
-          },
-          items: [
-            {
-              value: "text",
-              text: "None",
-              selected: checked(namePrefix + "['unit']", "text")
-            },
-            {
-              value: "pounds",
-              text: "Currency (£)",
-              selected: checked(namePrefix + "['unit']", "pounds")
-            },
-            {
-              value: "kg",
-              text: "Weight (kg)",
-              selected: checked(namePrefix + "['unit']", "kg")
-            },
-            {
-              value: "km",
-              text: "Distance (km)",
-              selected: checked(namePrefix + "['unit']", "km")
-            },
-            {
-              value: "m",
-              text: "Length (m)",
-              selected: checked(namePrefix + "['unit']", "m")
-            }
-          ]
-        }) }}
-        {% endset -%}
-
         {{ govukInput({
           label: {
             text: "Question",
@@ -192,10 +154,7 @@
             {
               value: "text",
               text: "A single line",
-              checked: checked(namePrefix + "['type']", "text"),
-              conditional: {
-                html: textHtml
-              }
+              checked: checked(namePrefix + "['type']", "text")
             },
             {
               value: "email",
