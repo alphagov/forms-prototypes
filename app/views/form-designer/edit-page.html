@@ -108,44 +108,6 @@
         }) }}
         {% endset -%}
 
-        {% set textHtml %}
-        {{ govukSelect({
-          id: "unit",
-          name: namePrefix + "[unit]",
-          label: {
-            text: "Unit",
-            classes: "govuk-label--s"
-          },
-          items: [
-            {
-              value: "text",
-              text: "None",
-              selected: checked(namePrefix + "['unit']", "text")
-            },
-            {
-              value: "pounds",
-              text: "Currency (£)",
-              selected: checked(namePrefix + "['unit']", "pounds")
-            },
-            {
-              value: "kg",
-              text: "Weight (kg)",
-              selected: checked(namePrefix + "['unit']", "kg")
-            },
-            {
-              value: "km",
-              text: "Distance (km)",
-              selected: checked(namePrefix + "['unit']", "km")
-            },
-            {
-              value: "m",
-              text: "Length (m)",
-              selected: checked(namePrefix + "['unit']", "m")
-            }
-          ]
-        }) }}
-        {% endset -%}
-
         {{ govukInput({
           label: {
             text: "Question",
@@ -175,6 +137,16 @@
           value: pageData['short-title']
         }) }}
 
+        {# If no type is set, set type to text #}
+        {%
+         set allEmpty = not (checked(namePrefix + "['type']", "text")
+           or checked(namePrefix + "['type']", "email")
+           or checked(namePrefix + "['type']", "address")
+           or checked(namePrefix + "['type']", "phone")
+           or checked(namePrefix + "['type']", "national-insurance-number")
+           or checked(namePrefix + "['type']", "date"))
+        %}
+
         {{ govukRadios({
           idPrefix: "type",
           name: namePrefix + "[type]",
@@ -191,12 +163,38 @@
           items: [
             {
               value: "text",
-              text: "A single line",
-              checked: checked(namePrefix + "['type']", "text"),
-              conditional: {
-                html: textHtml
-              }
+              text: "A single line response",
+              checked: checked(namePrefix + "['type']", "text") or allEmpty
             },
+            {
+              value: "email",
+              text: "An email address",
+              checked: checked(namePrefix + "['type']", "email")
+            },
+            {
+              value: "address",
+              text: "An address",
+              checked: checked(namePrefix + "['type']", "address")
+            },
+            {
+              value: "phone",
+              text: "A telephone number",
+              checked: checked(namePrefix + "['type']", "phone")
+            },
+            {
+              value: "national-insurance-number",
+              text: "A National Insurance Number",
+              checked: checked(namePrefix + "['type']", "national-insurance-number")
+            },
+            {
+              value: "date",
+              text: "A date",
+              checked: checked(namePrefix + "['type']", "date")
+            }
+          ]
+        }) }}
+
+        {#
             {
               value: "textarea",
               text: "One or more paragraphs",
@@ -212,16 +210,9 @@
               conditional: {
                 html: radioCheckboxHtml
               }
-            },
-            {
-              value: "date",
-              text: "A date",
-              checked: checked(namePrefix + "['type']", "date")
-            }
-          ]
-        }) }}
+            }, #}
 
-        <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+        {# <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 
         <details class="govuk-details govuk-!-margin-bottom-0" data-module="govuk-details">
           <summary class="govuk-details__summary">
@@ -244,7 +235,7 @@
           }
         }) }}
           </div>
-        </details>
+        </details> #}
 
         <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 
@@ -270,7 +261,7 @@
           </div>
         </details>
 
-        <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+        {# <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 
         <details class="govuk-details govuk-!-margin-bottom-0" data-module="govuk-details">
           <summary class="govuk-details__summary">
@@ -293,7 +284,7 @@
           }
         }) }}
           </div>
-        </details>
+        </details> #}
 
         <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 
@@ -318,11 +309,11 @@
 
           {% endif %}
 
-          {{ govukButton({ 
+          {{ govukButton({
             text: "Delete page",
             classes: "govuk-button--warning",
             name: "action",
-            value: "deletePage" 
+            value: "deletePage"
           }) }}
 
           <p>
@@ -334,19 +325,19 @@
 
       <div class="govuk-grid-column-one-third" style="height: 1462px;">
         <div class="preview-pane-wrapper">
-          <div class="preview-header">
-            <p class="preview-link govuk-body-s">
-              <!-- <a href="#" target="_blank" onclick="document.getElementById('form').submit();">Refresh</a> &nbsp;|&nbsp; -->
-              <a href="../page-preview-new-tab/{{pageId}}" target="_blank">Open in a new tab</a>
-            </p>
-          </div>
-          <iframe title="Page preview" data-module="app-example-frame" class="preview-pane app-example__frame app-example__frame--resizable" src="../page-preview/{{pageId}}" frameborder="1" loading="lazy" id="iFrameResizer0"></iframe>
           {{ govukButton({
           text: "Update preview",
-          classes: "update-button",
+          classes: "govuk-button--secondary govuk-!-margin-bottom-0 govuk-!-padding-2",
           name: "action",
           value: "update"
         }) }}
+        <a href="../page-preview-new-tab/{{pageId}}" class="govuk-link govuk-link--no-visited-state govuk-!-padding-4 new-tab-link" target="_blank">Open in a new tab</a>
+          <div class="preview-header">
+            <p class="preview-link govuk-body-s">
+              <!-- <a href="#" target="_blank" onclick="document.getElementById('form').submit();">Refresh</a> &nbsp;|&nbsp; -->
+            </p>
+          </div>
+          <iframe sandbox title="Page preview" data-module="app-example-frame" class="preview-pane app-example__frame app-example__frame--resizable" src="../page-preview/{{pageId}}" frameborder="1" loading="lazy" id="iFrameResizer0"></iframe>
 
         </div>
       </div>

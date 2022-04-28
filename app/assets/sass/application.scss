@@ -172,3 +172,10 @@ $govuk-assets-path: "/govuk/assets/";
   gap: 1em;
   flex-wrap: wrap;
 }
+
+.new-tab-link {
+  display: inline-block;
+  line-height: 1;
+  font-size: 1.1875rem;
+  font-weight: 400;
+}

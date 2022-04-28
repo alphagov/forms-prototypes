@@ -21,16 +21,16 @@
           {% endif %}.
       </p>
 
+      {{ govukButton({
+          text: "Create a new page",
+          href: "choose-page-type/" + nextPageId
+        }) }}
+
+        <p><a href="/form-designer/start-page-preview-new-tab" target="_blank">Preview form (opens in new tab)</a></p>
+
+
         <dl class="govuk-summary-list">
-          <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key govuk-!-font-weight-regular">
-                Start page
-              </dt>
-            <dd class="govuk-summary-list__actions">
-              <a class="govuk-link govuk-link--no-visited-state" href="edit-page/0">
-                      Edit</a>
-            </dd>
-          </div>
+          
 
           <!-- Add this if users are confused about where their pages go
             <div class="govuk-summary-list__row">
@@ -46,7 +46,7 @@
 
           {% for page in data.pages -%}
 
-            {% set questionTitle = page["short-title"] %}
+            {% set questionTitle = page["short-title"]  or page["long-title"] or "Page " + page["pageIndex"] %}
 
             {% if questionTitle %}
 
@@ -105,36 +105,6 @@
           </div>
         </dl>
 
-        <div class="govuk-button-group">
-
-          {% if data['formTitle'] == 'Untitled form' %}
-            {{ govukButton({
-              text: "Edit start page",
-              href: "edit-page/0"
-            }) }}
-          {% else %}
-            {{ govukButton({
-              text: "Create a new page",
-              href: "choose-page-type/" + nextPageId
-            }) }}
-          {% endif %}
-          <p>
-        or <a class="govuk-link govuk-link--no-visited-state" href="form-settings">change form settings</a>
-          </p>
-        </div>
-
-      </div>
-
-      <div class="govuk-grid-column-one-third" style="height: 600px;">
-        <div class="preview-pane-wrapper">
-          <div class="preview-header">
-            <p class="preview-link govuk-body-s">
-              <a href="start-page-preview-new-tab" target="_blank">Open in a new tab</a>
-
-            </p>
-          </div>
-          <iframe title="Page preview" data-module="app-example-frame" class="preview-pane app-example__frame app-example__frame--resizable" src="start-page-preview" frameborder="1" loading="lazy" id="iFrameResizer0" scrolling="no" ></iframe>
-        </div>
       </div>
 
     </div>

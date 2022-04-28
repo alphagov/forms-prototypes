@@ -4,20 +4,17 @@
   Edit question
 {% endblock %}
 
-{% block header %}
-
-{% endblock %}
+{% block header %}{% endblock %}
 
 {% block beforeContent %}
-  {% set prevPageId = pageId -1 %}
+  {% set prevPageId = pageId - 1 %}
   <a class="govuk-back-link" href="../edit-page/{{prevPageId}}" target="_parent">Back</a>
 {% endblock %}
 
 {% block content %}
-<form class="form" action="edit-question-save" method="post">
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-
+  <form class="form" action="edit-question-save" method="post">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
 
         {#
 
@@ -26,7 +23,6 @@
 
         #}
 
-
         {% if pageData['intro-text'] %}
 
           {# If the page has an intro, set the heading outside of the macros #}
@@ -34,9 +30,9 @@
           <h1 class="govuk-heading-l">{{ pageData['long-title'] }}</h1>
 
           <div class="app-prose-scope">
-          {% markdown %}
+            {% markdown %}
             {{ pageData['intro-text'] }}
-          {% endmarkdown %}
+            {% endmarkdown %}
           </div>
 
           {% set label = {
@@ -55,19 +51,18 @@
 
         {% endif %}
 
-
         {# Single line text fields #}
-        {% if pageData['type'] == 'text' and pageData['unit'] == 'text' %}
-        {{ govukInput({
+        {% if pageData['type'] == 'text' %}
+          {{ govukInput({
           label: label,
           hint: {text: pageData['hint-text']},
           id: pageId,
           name: pageId
         }) }}
 
-        {# Currency fields #}
+          {# Currency fields #}
         {% elseif pageData['type'] == 'text' and pageData['unit'] == 'pounds' %}
-        {{ govukInput({
+          {{ govukInput({
           label: label,
           hint: {text: pageData['hint-text']},
           id: pageId,
@@ -77,9 +72,9 @@
           spellcheck: false
         }) }}
 
-        {# Weight, distance and length fields #}
+          {# Weight, distance and length fields #}
         {% elseif pageData['type'] == 'text'  %}
-        {{ govukInput({
+          {{ govukInput({
           label: label,
           hint: {text: pageData['hint-text']},
           id: pageId,
@@ -90,17 +85,102 @@
         }) }}
         {% endif %}
 
+        {% if pageData['type'] == 'email' %}
+          {{ govukInput({
+          label: label,
+          hint: { text: pageData['hint-text'] },
+          id: pageId,
+          name: pageId,
+          type: "email",
+          autocomplete: "email",
+          spellcheck: false
+        }) }}
+        {% endif %}
+
+        {% if pageData['type'] == 'phone' %}
+          {{ govukInput({
+          label: label,
+          id: pageId,
+          name: pageId,
+          type: "tel",
+          autocomplete: "tel",
+          classes: "govuk-input--width-20"
+        }) }}
+        {% endif %}
+
+        {% if pageData['type'] == 'national-insurance-number' %}
+          {{ govukInput({
+          label: label,
+          hint: { text: pageData['hint-text'] },
+          classes: "govuk-input--width-10",
+          id: pageId,
+          name: pageId,
+          spellcheck: false
+        }) }}
+        {% endif %}
+
+        {% if pageData['type'] == 'address' %}
+
+          {% call govukFieldset({
+            legend: {
+              text: pageData['long-title'],
+              classes: "govuk-fieldset__legend--l",
+              isPageHeading: true
+            }
+          }) %}
+
+          {{ govukInput({
+            label: {
+              html: 'Address line 1'
+            },
+            id: "address-line-1",
+            name: "address-line-1",
+            autocomplete: "address-line1"
+          }) }}
+
+          {{ govukInput({
+            label: {
+              html: 'Address line 2 (optional)'
+            },
+            id: "address-line-2",
+            name: "address-line-2",
+            autocomplete: "address-line2"
+          }) }}
+
+          {{ govukInput({
+            label: {
+              text: "Town or city"
+            },
+            classes: "govuk-!-width-two-thirds",
+            id: "address-town",
+            name: "address-town",
+            autocomplete: "address-level2"
+          }) }}
+
+          {{ govukInput({
+            label: {
+              text: "Postcode"
+            },
+            classes: "govuk-input--width-10",
+            id: "address-postcode",
+            name: "address-postcode",
+            autocomplete: "postal-code"
+          }) }}
+
+          {% endcall %}
+        {% endif %}
+
         {# Textarea with character limit #}
-        {% if (pageData['type'] == 'textarea') and (pageData['char-limit'] == 'none') %}
-        {{ govukTextarea({
+        {# {% if (pageData['type'] == 'textarea') and (pageData['char-limit'] == 'none') %}
+          {{ govukTextarea({
           label: label,
           hint: {text: pageData['hint-text']},
           id: pageId,
           name: pageId
         }) }}
-        {% endif %}
+        {% endif %} #}
 
-        {# Textarea with no character limit #}
+        {# Textarea with no character limit
         {% if (pageData['type'] == 'textarea') and not (pageData['char-limit'] == 'none') %}
         {{ govukCharacterCount({
           name: pageId,
@@ -109,11 +189,11 @@
           label: label,
           hint: {text: pageData['hint-text']}
         }) }}
-        {% endif %}
+        {% endif %} #}
 
         {# Date field #}
         {% if pageData['type'] == 'date' %}
-        {{ govukDateInput({
+          {{ govukDateInput({
           id: pageId,
           namePrefix: pageId,
           fieldset: {
@@ -130,7 +210,7 @@
         #}
 
         {# Radios #}
-        {% if pageData['type'] == 'radio-checkbox' and pageData['radios'] %}
+        {# {% if pageData['type'] == 'radio-checkbox' and pageData['radios'] %}
 
         {% set itemsArray = pageData['item-list'].split('\n') %}
 
@@ -160,10 +240,10 @@
           </div>
         </fieldset>
         </div>
-        {% endif %}
+        {% endif %} #}
 
         {# Checkboxes #}
-        {% if pageData['type'] == 'radio-checkbox' and not pageData['radios'] %}
+        {# {% if pageData['type'] == 'radio-checkbox' and not pageData['radios'] %}
 
         {% set itemsArray = pageData['item-list'].split('\n') %}
 
@@ -193,20 +273,20 @@
           </div>
         </fieldset>
         </div>
-        {% endif %}
+        {% endif %} #}
 
         {# Help text #}
         {% if pageData['help-text'] %}
 
-            {% set helpTextHtml %}
-            <div class="app-prose-scope">
+          {% set helpTextHtml %}
+          <div class="app-prose-scope">
             {% markdown %}
-              {{ pageData['help-text'] }}
+            {{ pageData['help-text'] }}
             {% endmarkdown %}
-            </div>
-            {% endset -%}
+          </div>
+          {% endset -%}
 
-        {{ govukDetails({
+          {{ govukDetails({
           summaryText: "Help with this question",
           html: helpTextHtml
         }) }}
@@ -218,7 +298,7 @@
 
         {% if pageId == data['highestPageId'] %}
 
-        {{ govukButton({
+          {{ govukButton({
           text: "Check your answers",
           href: "../edit-page/check-answers",
           attributes: {
@@ -228,7 +308,7 @@
 
         {% else %}
 
-        {{ govukButton({
+          {{ govukButton({
           text: "Continue",
           href: "../edit-page/" + nextPageId,
           attributes: {
@@ -238,7 +318,7 @@
 
         {% endif %}
 
+      </div>
     </div>
-  </div>
-</form>
+  </form>
 {% endblock %}
