@@ -125,7 +125,7 @@ router.get('/form-designer/reorder-page/:pageId/:direction', function (
 // Renders the page type chooser, set to a specific page
 router.get('/form-designer/choose-page-type/:pageId', function (req, res) {
   req.session.data.action = ''
-  res.render('form-designer/choose-page-type', { pageId: req.params.pageId })
+  res.redirect(`/form-designer/edit-page/${req.params.pageId}`)
 })
 
 // Renders the in-page preview, set to a specific page
