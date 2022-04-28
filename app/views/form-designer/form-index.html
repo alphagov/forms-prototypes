@@ -97,17 +97,10 @@
           </div>
         </dl>
 
-        {% if data['formTitle'] == 'Untitled form' %}
-          {{ govukButton({
-              text: "Edit start page",
-              href: "edit-page/0"
-            }) }}
-        {% else %}
           {{ govukButton({
               text: "Create a new page",
               href: "choose-page-type/" + nextPageId
             }) }}
-        {% endif %}
 
       </div>
 
