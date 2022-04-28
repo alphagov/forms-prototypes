@@ -299,11 +299,12 @@
 
           {% endif %}
 
-          {{ govukButton({ 
+          {{ govukButton({
             text: "Delete page",
             classes: "govuk-button--warning",
             name: "action",
             value: "deletePage" 
+            value: "deletePage"
           }) }}
 
           <p>
@@ -317,11 +318,11 @@
         <div class="preview-pane-wrapper">
           {{ govukButton({
           text: "Update preview",
-          classes: "update-button govuk-!-margin-bottom-0 govuk-!-padding-2",
+          classes: "govuk-button--secondary govuk-!-margin-bottom-0 govuk-!-padding-2",
           name: "action",
           value: "update"
         }) }}
-        <a href="../page-preview-new-tab/{{pageId}}" class="govuk-link govuk-link--no-visited-state govuk-!-padding-2 new-tab-link" target="_blank">Open in a new tab</a>
+        <a href="../page-preview-new-tab/{{pageId}}" class="govuk-link govuk-link--no-visited-state govuk-!-padding-4 new-tab-link" target="_blank">Open in a new tab</a>
           <div class="preview-header">
             <p class="preview-link govuk-body-s">
               <!-- <a href="#" target="_blank" onclick="document.getElementById('form').submit();">Refresh</a> &nbsp;|&nbsp; -->
