@@ -52,7 +52,7 @@
         {% endif %}
 
         {# Single line text fields #}
-        {% if pageData['type'] == 'text' and pageData['unit'] == 'text' %}
+        {% if pageData['type'] == 'text' %}
           {{ govukInput({
           label: label,
           hint: {text: pageData['hint-text']},
