@@ -29,8 +29,8 @@ module.exports = {
   payments: 'no',
   pages: [],
   status: 'Draft',
-  confirmationTitle: 'Application complete',
-  confirmationNext: "We've sent you an email confirming that we have received your application.",
-  checkAnswersTitle: 'Check your answers before sending your application',
-  checkAnswersDeclaration: 'By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.'
+  confirmationTitle: 'Form submitted',
+  confirmationNext: "We've sent you an email to confirm we have received your form.",
+  checkAnswersTitle: 'Check your answers',
+  checkAnswersDeclaration: 'By submitting this form you are confirming that, to the best of your knowledge, the answers you are providing are correct.'
 }
