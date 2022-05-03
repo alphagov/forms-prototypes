@@ -91,7 +91,7 @@
 
         {% if pageData['type'] == 'national-insurance-number' %}
           {{ govukInput({
-          label: label.text,
+          label: label,
           hint: { text: pageData['hint-text'] },
           classes: "govuk-input--width-10",
           id: pageId,
