@@ -14,7 +14,7 @@
         <h1 class="govuk-heading-l">{{ data['formTitle'] }}</h1>
 
         {% set nextPageId = data['highestPageId'] | int + 1 %}
-        {% set totalPageNum = data['highestPageId'] | int + 3 %}
+        {% set totalPageNum = data['highestPageId'] | int + 2 %}
 
         <p class="govuk-body-s">{{totalPageNum}} page draft form{% if data['highestPageId'] > 0 %} —
         <a href="form-publish" class="form-publish govuk-link--no-visited-state">Publish</a>
