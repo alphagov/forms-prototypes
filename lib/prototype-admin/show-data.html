@@ -1,0 +1,79 @@
+
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+  Show session data – GOV.UK Prototype Kit
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+      "text": "Back",
+      "href": "javascript: window.history.go(-1)"
+    })
+  }}
+{% endblock %}
+
+{% block content %}
+
+<form method="post">
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-xl">
+        Show session data
+      </h1>
+
+      <dl class="govuk-summary-list govuk-!-margin-bottom-9">
+        {% for key, obj in data %}
+          {% if 'pages' not in key %}
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+              {{key}}
+            </dt>
+            <dd class="govuk-summary-list__value">
+              {{obj|safe}}
+            </dd>
+          </div>
+          {% endif %}
+        {% endfor %}
+      </dl>
+    </div>
+
+    <div class="govuk-grid-column-full">
+      <h2 class="govuk-heading-m">
+        Questions
+      </h2>
+      <table class="govuk-table">
+        <caption class="govuk-table__caption govuk-table__caption--s">Pages created</caption>
+        <thead class="govuk-table__head">
+          <tr class="govuk-table__row">
+            <th scope="col" class="govuk-table__header">Page number</th>
+            <th scope="col" class="govuk-table__header">Long version</th>
+            <th scope="col" class="govuk-table__header">Short version</th>
+            <th scope="col" class="govuk-table__header">Answer type</th>
+          </tr>
+        </thead>
+        <tbody class="govuk-table__body">
+          {% for page in data.pages %}
+          <tr class="govuk-table__row">
+            <th scope="row" class="govuk-table__header">
+              {{"Page " + page["pageIndex"]}}
+            </th>
+            <td class="govuk-table__cell">
+              {{page["long-title"]}}
+            </td>
+            <td class="govuk-table__cell">
+              {{page["short-title"]}}
+            </td>
+            <td class="govuk-table__cell">
+              <strong>{{page["type"]}}</strong>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</form>
+
+{% endblock %}
