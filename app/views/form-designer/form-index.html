@@ -10,39 +10,36 @@
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
 
-        <span class="govuk-caption-l">Form</span>
-        <h1 class="govuk-heading-l">{{ data['formTitle'] }}</h1>
+        <span class="govuk-caption-l">{{ data['formTitle'] }}</span>
+        <h1 class="govuk-heading-l">Form overview</h1>
 
         {% set nextPageId = data['highestPageId'] | int + 1 %}
         {% set totalPageNum = data['highestPageId'] | int + 2 %}
 
-        <p class="govuk-body-s">{{totalPageNum}} page draft form{% if data['highestPageId'] > 0 %} —
-        <a href="form-publish" class="form-publish govuk-link--no-visited-state">Publish</a>
-          {% endif %}.
-      </p>
-
       {{ govukButton({
           text: "Add a question",
-          href: "choose-page-type/" + nextPageId
+          href: "choose-page-type/" + nextPageId,
+          classes: "govuk-!-margin-bottom-3 govuk-!-margin-top-3"
         }) }}
 
-        <p><a href="/form-designer/start-page-preview-new-tab" target="_blank">Preview form (opens in new tab)</a></p>
 
+
+        {% if data.pages.length %}
+        <h2 class="govuk-heading-m govuk-!-margin-top-7 govuk-!-margin-bottom-0">Form name</h2>
 
         <dl class="govuk-summary-list">
-          
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key govuk-!-font-weight-regular">
+          {{ data['formTitle'] }}
+            </dt>
+          <dd class="govuk-summary-list__actions">
+            <a class="govuk-link govuk-link--no-visited-state" href="form-create-a-form.html"> Edit</a>
+          </dd>
+        </div>
+      </dl>
 
-          <!-- Add this if users are confused about where their pages go
-            <div class="govuk-summary-list__row">
-              <dt class="govuk-summary-list__key govuk-!-font-weight-regular">
-                <a class=" govuk-link--no-visited-state" href="choose-page-type/{{nextPageId}}">Create a new page</a>
-              </dt>
-              <dd class="govuk-summary-list__value govuk-!-width-one-quarter">
-              </dd>
-                <dd class="govuk-summary-list__actions">
-                </dd>
-            </div>
-            -->
+        <h2 class="govuk-heading-m govuk-!-margin-top-7 govuk-!-margin-bottom-0">Your questions</h2>
+        <dl class="govuk-summary-list">
 
           {% for page in data.pages -%}
 
@@ -83,7 +80,10 @@
             {% endif %}
 
           {%- endfor %}
+          </dl>
 
+          <h2 class="govuk-heading-m govuk-!-margin-top-7 govuk-!-margin-bottom-0">Generated questions</h2>
+          <dl class="govuk-summary-list">
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key govuk-!-font-weight-regular">
                 Check your answers
@@ -105,6 +105,15 @@
           </div>
         </dl>
 
+      <div class="govuk-!-margin-top-9">
+        <p><a href="/form-designer/start-page-preview-new-tab" target="_blank">Test the form in a new tab</a></p>
+        {{ govukButton({
+            text: "Publish form",
+            classes: "govuk-button--secondary",
+            href: "form-publish"
+          }) }}
+      </div>
+      {% endif %}
       </div>
 
     </div>
