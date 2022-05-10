@@ -53,7 +53,7 @@
                   {{questionTitle}}
                 </dt>
                 <dd class="govuk-summary-list__actions">
-                  <div class="govuk-button-group form-action-group">
+                  <div class="govuk-button-group form-action-group govuk-!-margin-bottom-0">
                     {% if page.pageIndex > 0 %}
                       {{ govukButton({
                           text: "Up",
@@ -82,11 +82,12 @@
           {%- endfor %}
           </dl>
 
-          <h2 class="govuk-heading-m govuk-!-margin-top-7 govuk-!-margin-bottom-0">Generated questions</h2>
+          <h2 class="govuk-heading-m govuk-!-margin-top-7 govuk-!-margin-bottom-0">Standard pages</h2>
           <dl class="govuk-summary-list">
           <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key govuk-!-font-weight-regular">
-                Check your answers
+            <dt class="govuk-summary-list__key govuk-!-width-full govuk-!-font-weight-regular">
+            <p>Check your answers</p>
+                <p class="govuk-hint">This page lists all the questions and answers so people can check them before they submit the form. You can add a declaration for people to confirm their answers.</p>
               </dt>
             <dd class="govuk-summary-list__actions">
               <a class="govuk-link govuk-link--no-visited-state" href="edit-page/check-answers">
@@ -95,8 +96,9 @@
           </div>
 
           <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key govuk-!-font-weight-regular">
-                Confirmation
+            <dt class="govuk-summary-list__key govuk-!-width-full govuk-!-font-weight-regular">
+            <p>Confirmation</p>
+            <p class="govuk-hint">This page will be shown to confirm the form has been submitted. You can add information to tell people what will happen next.</p>
               </dt>
             <dd class="govuk-summary-list__actions">
               <a class="govuk-link govuk-link--no-visited-state" href="edit-page/confirmation">
@@ -106,6 +108,7 @@
         </dl>
 
       <div class="govuk-!-margin-top-9">
+        <h2 class="govuk-heading-m">Next steps</h2>
         <p><a href="/form-designer/start-page-preview-new-tab" target="_blank">Test the form in a new tab</a></p>
         {{ govukButton({
             text: "Publish form",
