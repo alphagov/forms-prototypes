@@ -18,11 +18,15 @@ $govuk-assets-path: "/govuk/assets/";
 // Project partials
 @import "patterns/moj-messages";
 
+/*  Remove sticky pane
+    Allow content to be left aligned
 .preview-pane-wrapper {
   position: sticky;
   top: 110px;
   text-align: center;
 }
+*/
+
 .preview-pane {
   overflow: hidden;
   height: 570px;
