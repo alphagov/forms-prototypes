@@ -1,22 +1,24 @@
 {% extends "layout-govuk-forms.html" %}
 
+{% set pageTitle -%}
+  {% if pageData['long-title'] %}
+    {{pageData['long-title']}}
+  {% else %}
+    Edit question
+  {% endif %}
+{%- endset %}
+
 {% block pageTitle %}
-  Edit question
+  {{pageTitle|safe}} - GOV.UK Forms
 {% endblock %}
 
 {% block beforeContent %}
-  <!--
-  <div class="govuk-breadcrumbs">
-  <ol class="govuk-breadcrumbs__list">
-    <li class="govuk-breadcrumbs__list-item">
-      <a class="govuk-breadcrumbs__link" href="/form-designer">Forms</a>
-    </li>
-    <li class="govuk-breadcrumbs__list-item">
-      <a class="govuk-breadcrumbs__link" href="../form-index">{{ data['formTitle'] }}</a>
-    </li>
-  </ol>
-</div>
--->
+  {% set prevPageId = pageId | int - 1 %}
+  {% if prevPageId > 0 %}
+    <a class="govuk-back-link" href="{{prevPageId}}">Back</a>
+  {% else %}
+    <a class="govuk-back-link" href="../form-index" target="_parent">Back</a>
+  {% endif %}
 {% endblock %}
 
 {% block content %}
@@ -27,14 +29,8 @@
 
         {% set namePrefix = "pages[" + pageIndex + "]" %}
 
-        <span class="govuk-caption-l">Page {{pageId}}</span>
-        <h1 class="govuk-heading-l">
-          {% if pageData['long-title'] %}
-            {{pageData['long-title']}}
-          {% else %}
-          Edit page
-        {% endif %}
-        </h1>
+        <span class="govuk-caption-l">Question {{pageId}}</span>
+        <h1 class="govuk-heading-l">{{pageTitle|safe}}</h1>
 
         {% set radioCheckboxHtml %}
 
@@ -108,13 +104,14 @@
         }) }}
         {% endset -%}
 
+        <!-- Long question text input -->
         {{ govukInput({
           label: {
-            text: "Question",
+            text: "Question text",
             classes: "govuk-label--m"
           },
           hint: {
-            text: "Long version — for example, What is your name?"
+            text: "Ask a question the way you would in person. For example ‘What is your address?’."
           },
           formGroup: {
             classes: "govuk-!-margin-bottom-3"
@@ -124,18 +121,70 @@
           value: pageData['long-title']
         }) }}
 
+        <!-- Short question text input -->
         {{ govukInput({
           label: {
-            text: "Short page title",
-            classes: "govuk-visually-hidden"
+            text: "Question short name (optional)",
+            classes: "govuk-label--m"
           },
           hint: {
-            text: "Short version — for example, Name"
+            text: "The short name will be used when the form’s questions are all displayed in a list. Use a short descriptive name. For example ‘Address’."
           },
           id: "short-title",
           name: namePrefix + "[short-title]",
           value: pageData['short-title']
         }) }}
+
+        <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+
+        <details class="govuk-details govuk-!-margin-bottom-0" data-module="govuk-details">
+          <summary class="govuk-details__summary">
+            <span class="govuk-details__summary-text">
+              Add hint text to help people answer the question
+            </span>
+          </summary>
+          <div class="govuk-details__text govuk-!-padding-bottom-0">
+            {{ govukInput({
+              label: {
+                text: "Hint text (optional)",
+                classes: "govuk-visually-hidden"
+              },
+              hint: {
+                text: "You can use hint text if you need to explain the format the answer should be in, or where to find the information you’ve asked for."
+              },
+              id: "hint-text",
+              name: namePrefix + "[hint-text]",
+              value: pageData['hint-text']
+            }) }}
+          </div>
+        </details>
+
+        {# <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+
+        <details class="govuk-details govuk-!-margin-bottom-0" data-module="govuk-details">
+          <summary class="govuk-details__summary">
+            <span class="govuk-details__summary-text">
+              Add help text
+            </span>
+          </summary>
+          <div class="govuk-details__text govuk-!-padding-bottom-0">
+            {{ govukTextarea({
+              id: "help-text",
+              name: namePrefix + "[help-text]",
+              value: pageData['help-text'],
+              classes: "govuk-!-margin-bottom-1",
+              label: {
+                text: "Help",
+                classes: "govuk-visually-hidden"
+              },
+              hint: {
+                text: "More detailed help — only add this if people get stuck"
+              }
+            }) }}
+          </div>
+        </details> #}
+
+        <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 
         {# If no type is set, set type to text #}
         {%
@@ -153,43 +202,43 @@
           classes: "govuk-radios--small",
           fieldset: {
             legend: {
-              text: "Answer",
+              text: "What kind of answer do you need to this question?",
               classes: "govuk-fieldset__legend--m"
             }
           },
           hint: {
-            text: "What kind of answer you need to this question"
+            text: "The answer will be validated to check it’s in the selected format."
           },
           items: [
             {
               value: "text",
-              text: "A single line of text",
+              text: "Single line of text",
               checked: checked(namePrefix + "['type']", "text") or allEmpty
             },
             {
-              value: "email",
-              text: "An email address",
-              checked: checked(namePrefix + "['type']", "email")
-            },
-            {
               value: "address",
-              text: "An address",
+              text: "Address",
               checked: checked(namePrefix + "['type']", "address")
             },
             {
-              value: "phone",
-              text: "A phone number",
-              checked: checked(namePrefix + "['type']", "phone")
+              value: "date",
+              text: "Date",
+              checked: checked(namePrefix + "['type']", "date")
+            },
+            {
+              value: "email",
+              text: "Email address",
+              checked: checked(namePrefix + "['type']", "email")
             },
             {
               value: "national-insurance-number",
-              text: "A National Insurance number",
+              text: "National Insurance number",
               checked: checked(namePrefix + "['type']", "national-insurance-number")
             },
             {
-              value: "date",
-              text: "A date",
-              checked: checked(namePrefix + "['type']", "date")
+              value: "phone",
+              text: "Phone number",
+              checked: checked(namePrefix + "['type']", "phone")
             }
           ]
         }) }}
@@ -222,79 +271,36 @@
           </summary>
           <div class="govuk-details__text govuk-!-padding-bottom-0">
             {{ govukTextarea({
-          id: "intro-text",
-          name: namePrefix + "[intro-text]",
-          value: pageData['intro-text'],
-          classes: "govuk-!-margin-bottom-3",
-          label: {
-            text: "Introduction",
-            classes: "govuk-visually-hidden"
-          },
-          hint: {
-            text: "Only add if it helps people understand the question"
-          }
-        }) }}
-          </div>
-        </details> #}
-
-        <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
-
-        <details class="govuk-details govuk-!-margin-bottom-0" data-module="govuk-details">
-          <summary class="govuk-details__summary">
-            <span class="govuk-details__summary-text">
-              Add hint text
-            </span>
-          </summary>
-          <div class="govuk-details__text govuk-!-padding-bottom-0">
-            {{ govukInput({
+              id: "intro-text",
+              name: namePrefix + "[intro-text]",
+              value: pageData['intro-text'],
+              classes: "govuk-!-margin-bottom-3",
               label: {
-                text: "Hint",
+                text: "Introduction",
                 classes: "govuk-visually-hidden"
               },
               hint: {
-                text: "A short hint to help people answer the question"
-              },
-              id: "hint-text",
-              name: namePrefix + "[hint-text]",
-              value: pageData['hint-text']
+                text: "Only add if it helps people understand the question"
+              }
             }) }}
           </div>
-        </details>
-
-        {# <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
-
-        <details class="govuk-details govuk-!-margin-bottom-0" data-module="govuk-details">
-          <summary class="govuk-details__summary">
-            <span class="govuk-details__summary-text">
-              Add help text
-            </span>
-          </summary>
-          <div class="govuk-details__text govuk-!-padding-bottom-0">
-            {{ govukTextarea({
-          id: "help-text",
-          name: namePrefix + "[help-text]",
-          value: pageData['help-text'],
-          classes: "govuk-!-margin-bottom-1",
-          label: {
-            text: "Help",
-            classes: "govuk-visually-hidden"
-          },
-          hint: {
-            text: "More detailed help — only add this if people get stuck"
-          }
-        }) }}
-          </div>
         </details> #}
-
-        <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 
         <input type="hidden" id="index" name="{{namePrefix}}[pageIndex]'" value="{{[pageIndex]}}">
 
         <div class="govuk-button-group">
+
+          {{ govukButton({
+            text: "Save changes",
+            name: "action",
+            value: "update"
+          }) }}
+
           {% if pageId >= data['highestPageId'] %}
 
             {{ govukButton({
-              text: "Save and create next page",
+              text: "Create next question",
+              classes: "govuk-button--secondary",
               name: "action",
               value: "createNextPage"
             }) }}
@@ -302,7 +308,8 @@
           {% else %}
 
             {{ govukButton({
-              text: "Edit next page",
+              text: "Edit next question",
+              classes: "govuk-button--secondary",
               name: "action",
               value: "editNextPage"
             }) }}
@@ -310,28 +317,25 @@
           {% endif %}
 
           {{ govukButton({
-            text: "Delete page",
+            text: "Delete question",
             classes: "govuk-button--warning",
             name: "action",
             value: "deletePage"
           }) }}
-
-          <p>
-          or <a class="govuk-link govuk-link--no-visited-state" href="../form-index">go to page list</a>
-          </p>
         </div>
+
+        <p class="govuk-body">
+          <a class="govuk-link govuk-link--no-visited-state" href="../form-index">Go to form overview</a>
+        </p>
 
       </div>
 
-      <div class="govuk-grid-column-one-third" style="height: 1462px;">
+      <div class="govuk-grid-column-one-third">
         <div class="preview-pane-wrapper">
-          {{ govukButton({
-          text: "Update preview",
-          classes: "govuk-button--secondary govuk-!-margin-bottom-0 govuk-!-padding-2",
-          name: "action",
-          value: "update"
-        }) }}
-        <a href="../page-preview-new-tab/{{pageId}}" class="govuk-link govuk-link--no-visited-state govuk-!-padding-4 new-tab-link" target="_blank">Open in a new tab</a>
+          <h2 class="govuk-heading-m">
+            Question preview
+          </h2>
+          <a href="../page-preview-new-tab/{{pageId}}" class="govuk-link govuk-link--no-visited-state govuk-!-margin-bottom-4 new-tab-link" target="_blank">Preview question in a new tab</a>
           <div class="preview-header">
             <p class="preview-link govuk-body-s">
               <!-- <a href="#" target="_blank" onclick="document.getElementById('form').submit();">Refresh</a> &nbsp;|&nbsp; -->
