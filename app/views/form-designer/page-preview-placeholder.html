@@ -1,5 +1,8 @@
 {% extends "layout-body-only.html" %}
 
+{% block beforeContent %}
+{% endblock %}
+
 {% block pageTitle %}
   Edit question
 {% endblock %}
@@ -17,19 +20,18 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-    <h1 class="govuk-heading-l">Page title</h1>
+      <h1 class="govuk-heading-l">Page title</h1>
 
-    <p style="background: #f3f2f1">&nbsp;</p>
-    <p style="background: #f3f2f1">&nbsp;</p>
-    <p style="background: #f3f2f1">&nbsp;</p>
-    <p style="background: #f3f2f1">&nbsp;</p>
-    <p style="background: #f3f2f1">&nbsp;</p>
+      <p style="background: #f3f2f1">&nbsp;</p>
+      <p style="background: #f3f2f1">&nbsp;</p>
+      <p style="background: #f3f2f1">&nbsp;</p>
+      <p style="background: #f3f2f1">&nbsp;</p>
+      <p style="background: #f3f2f1">&nbsp;</p>
 
-
-        {{ govukButton({
-          text: "Continue",
-          disabled: true
-        }) }}
+      {{ govukButton({
+        text: "Continue",
+        disabled: true
+      }) }}
 
     </div>
   </div>
