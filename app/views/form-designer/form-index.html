@@ -43,7 +43,7 @@
 
           {% for page in data.pages -%}
 
-            {% set questionTitle = page["short-title"]  or page["long-title"] or "Page " + page["pageIndex"] %}
+            {% set questionTitle =  page["long-title"] or page["short-title"] or "Page " + page["pageIndex"] %}
 
             {% if questionTitle %}
 
