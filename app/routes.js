@@ -181,5 +181,30 @@ router.post('/form-designer/form-create-a-form', function (req, res) {
   }
 })
 
+// Renders the edit question page, handling validation errors
+router.post('/form-designer/edit-page/{{pageId}}', function (req, res) {
+  const errors = {};
+  const { longTitle } = req.session.data
+
+  // If the longTitle is blank, create an error to be displayed to the user
+  if (!longTitle || !longTitle.length) {
+    errors['longTitle'] = {
+      text: 'Enter the question',
+      href: "#long-title"
+    }
+  }
+
+  // Convert the errors into a list, so we can use it in the template
+  const errorList = Object.values(errors)
+  // If there are no errors, redirect the user to the next page
+  // otherwise, show the page again with the errors set
+  const containsErrors = errorList.length > 0
+  if(containsErrors) {
+    res.render('form-designer/edit-page/{{pageId}}', { errors, errorList, containsErrors })
+  } else {
+    res.redirect('form-designer/edit-page/{{pageId}}')
+  }
+})
+
 
 module.exports = router

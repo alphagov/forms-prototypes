@@ -1,7 +1,7 @@
 {% extends "layout-govuk-forms.html" %}
 
 {% block pageTitle %}
-  Edit question
+  {{ "Error:" if containsErrors }} Edit question
 {% endblock %}
 
 {% block beforeContent %}
@@ -21,7 +21,14 @@
 
 {% block content %}
 
-  <form id="form" class="form" action="../edit-page/{{pageId}}" method="post">
+{% if containsErrors %}
+  {{ govukErrorSummary({
+    titleText: "There is a problem",
+    errorList: errorList
+  }) }}
+{% endif %}
+
+  <form id="form" class="form" method="post">
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
 
@@ -121,16 +128,17 @@
           },
           id: "long-title",
           name: namePrefix + "[long-title]",
-          value: pageData['long-title']
+          value: pageData['long-title'],
+          errorMessage: { text: errors['longTitle'].text } if errors['longTitle'].text
         }) }}
 
         {{ govukInput({
           label: {
-            text: "Short page title",
+            text: "Short page title (optional)",
             classes: "govuk-visually-hidden"
           },
           hint: {
-            text: "Short version — for example, Name"
+            text: "Short version (optional) — for example, Name"
           },
           id: "short-title",
           name: namePrefix + "[short-title]",
