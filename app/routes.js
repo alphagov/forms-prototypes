@@ -1,5 +1,8 @@
+const path = require('path')
 const express = require('express')
 const { setPageIndexToArrayPosition } = require('../lib/utils.js')
+const sessionDataDefaults = require('./data/session-data-defaults.js')
+const returningSessionDataDefaults = require('./data/returning-session-data-defaults')
 const router = express.Router()
 
 // ROUTES FOR EXAMPLE FORMS
@@ -179,6 +182,11 @@ router.post('/form-designer/form-create-a-form', function (req, res) {
   } else {
     res.redirect('form-index')
   }
+})
+
+router.get('/form-designer/returning', (req, res) => {
+  req.session.data = returningSessionDataDefaults 
+  res.redirect('/form-designer/form-list')
 })
 
 

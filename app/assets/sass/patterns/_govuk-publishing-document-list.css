@@ -1,0 +1,116 @@
+.gem-c-document-list {
+  color: #0b0c0c;
+  font-family: "GDS Transport", arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 400;
+  font-size: 16px;
+  font-size: 1rem;
+  line-height: 1.25;
+  margin: 0;
+  padding: 0;
+}
+@media print {
+  .gem-c-document-list {
+    color: #000000;
+  }
+}
+@media print {
+  .gem-c-document-list {
+    font-family: sans-serif;
+  }
+}
+@media (min-width: 40.0625em) {
+  .gem-c-document-list {
+    font-size: 19px;
+    font-size: 1.1875rem;
+    line-height: 1.3157894737;
+  }
+}
+@media print {
+  .gem-c-document-list {
+    font-size: 14pt;
+    line-height: 1.15;
+  }
+}
+
+.gem-c-document-list__item {
+  margin-bottom: 25px;
+  padding-top: 10px;
+  border-top: 1px solid #b1b4b6;
+  list-style: none;
+}
+
+.gem-c-document-list__item-title {
+  font-family: "GDS Transport", arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 700;
+  font-size: 16px;
+  font-size: 1rem;
+  line-height: 1.25;
+  display: inline-block;
+}
+@media print {
+  .gem-c-document-list__item-title {
+    font-family: sans-serif;
+  }
+}
+@media (min-width: 40.0625em) {
+  .gem-c-document-list__item-title {
+    font-size: 19px;
+    font-size: 1.1875rem;
+    line-height: 1.3157894737;
+  }
+}
+@media print {
+  .gem-c-document-list__item-title {
+    font-size: 14pt;
+    line-height: 1.15;
+  }
+}
+
+.gem-c-document-list__item-metadata {
+  padding: 0;
+}
+
+.gem-c-document-list__attribute {
+  color: #0b0c0c;
+  font-family: "GDS Transport", arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 400;
+  font-size: 14px;
+  font-size: 0.875rem;
+  line-height: 1.1428571429;
+  color: #505a5f;
+  display: inline-block;
+  list-style: none;
+  padding-right: 20px;
+}
+@media print {
+  .gem-c-document-list__attribute {
+    color: #000000;
+  }
+}
+@media print {
+  .gem-c-document-list__attribute {
+    font-family: sans-serif;
+  }
+}
+@media (min-width: 40.0625em) {
+  .gem-c-document-list__attribute {
+    font-size: 16px;
+    font-size: 1rem;
+    line-height: 1.25;
+  }
+}
+@media print {
+  .gem-c-document-list__attribute {
+    font-size: 14pt;
+    line-height: 1.2;
+  }
+}
+@media (min-width: 48.0625em) {
+}
+

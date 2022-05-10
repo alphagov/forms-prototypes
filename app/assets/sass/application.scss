@@ -17,6 +17,7 @@ $govuk-assets-path: "/govuk/assets/";
 
 // Project partials
 @import "patterns/moj-messages";
+@import "patterns/govuk-publishing-document-list";
 
 /*  Remove sticky pane
     Allow content to be left aligned

@@ -73,6 +73,12 @@
       </table>
 
     </div>
+    <div class="govuk-grid-column-full">
+          <h2 class="govuk-heading-m">
+            Data in JSON format
+          </h2>
+          <pre>{{ data | dump(2) | safe }}</p>
+        </div>
   </div>
 </form>
 
