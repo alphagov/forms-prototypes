@@ -1,16 +1,21 @@
 {% extends "layout-govuk-forms.html" %}
 
+
 {% block pageTitle %}
-  Create a form
+  {{ "Error:" if containsErrors }} Create a form
 {% endblock %}
 
 {% block content %}
+  {% if containsErrors %}
+    {{ govukErrorSummary({
+      titleText: "There is a problem",
+      errorList: errorList
+    }) }}
+  {% endif %}
 
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
-      <form class="form" action="form-index" method="post">
-
-        {% from "govuk/components/input/macro.njk" import govukInput %}
+      <form class="form" method="post">
 
         {{ govukInput({
         label: {
@@ -21,9 +26,10 @@
         hint: {
           text: "Use a name that describes what the form will help people to do. For example ‘Apply for a licence’."
         },
-        id: "event-name",
+        id: "form-title",
         name: "formTitle",
-        value: data['formTitle'] 
+        value: data['formTitle'],
+        errorMessage: { text: errors['formTitle'].text } if errors['formTitle'].text
         }) }}
 
 

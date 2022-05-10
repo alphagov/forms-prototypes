@@ -156,4 +156,30 @@ router.get('/form-designer/page-preview-new-tab/:pageId', function (req, res) {
   })
 })
 
+// Renders the page which asks for form name, handling validation errors
+router.post('/form-designer/form-create-a-form', function (req, res) {
+  const errors = {};
+  const { formTitle } = req.session.data
+
+  // If the formTitle is blank, create an error to be displayed to the user
+  if (!formTitle || !formTitle.length) {
+    errors['formTitle'] = {
+      text: 'Enter a form name',
+      href: "#form-title"
+    }
+  }
+
+  // Convert the errors into a list, so we can use it in the template
+  const errorList = Object.values(errors)
+  // If there are no errors, redirect the user to the next page
+  // otherwise, show the page again with the errors set
+  const containsErrors = errorList.length > 0
+  if(containsErrors) {
+    res.render('form-designer/form-create-a-form', { errors, errorList, containsErrors })
+  } else {
+    res.redirect('form-index')
+  }
+})
+
+
 module.exports = router
