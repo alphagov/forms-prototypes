@@ -1,14 +1,12 @@
 {% extends "layout-body-only.html" %}
 
 {% block pageTitle %}
-  Edit question
+  {{ pageData['long-title'] }} - GOV.UK Forms
 {% endblock %}
 
 {% block header %}{% endblock %}
 
 {% block beforeContent %}
-  {% set prevPageId = pageId - 1 %}
-  <a class="govuk-back-link" href="../edit-page/{{prevPageId}}" target="_parent">Back</a>
 {% endblock %}
 
 {% block content %}
@@ -229,14 +227,14 @@
             {{ pageData['hint-text']}}
           </div>
           <div class="govuk-radios">
-                {% for item in itemsArray %}
-                <div class="govuk-radios__item">
-                  <input class="govuk-radios__input" id="question-1-{{ item }}" name="question-1-" type="radio" value="{{ item }}">
-                  <label class="govuk-label govuk-radios__label" for="question-1-{{ item }}">
-                    {{ item }}
-                  </label>
-                </div>
-                {% endfor %}
+            {% for item in itemsArray %}
+            <div class="govuk-radios__item">
+              <input class="govuk-radios__input" id="question-1-{{ item }}" name="question-1-" type="radio" value="{{ item }}">
+              <label class="govuk-label govuk-radios__label" for="question-1-{{ item }}">
+                {{ item }}
+              </label>
+            </div>
+            {% endfor %}
           </div>
         </fieldset>
         </div>
@@ -293,30 +291,10 @@
         {% endif %}
 
         {# Submit button #}
-
-        {% set nextPageId = pageId | int + 1 %}
-
-        {% if pageId == data['highestPageId'] %}
-
-          {{ govukButton({
-          text: "Check your answers",
-          href: "../edit-page/check-answers",
-          attributes: {
-            target: "_parent"
-          }
-        }) }}
-
-        {% else %}
-
-          {{ govukButton({
+        {{ govukButton({
           text: "Continue",
-          href: "../edit-page/" + nextPageId,
-          attributes: {
-            target: "_parent"
-          }
+          disabled: true
         }) }}
-
-        {% endif %}
 
       </div>
     </div>

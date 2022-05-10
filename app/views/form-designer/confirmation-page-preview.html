@@ -1,12 +1,12 @@
 {% extends "layout-body-only.html" %}
 
 {% block pageTitle %}
-  Start page
+  {{data['confirmationTitle']}} - GOV.UK Forms
 {% endblock %}
 
-{% block header %}
+{% block header %}{% endblock %}
 
-{% endblock %}
+{% block beforeContent %}{% endblock %}
 
 {% block content %}
 <div class="govuk-grid-row">
@@ -20,15 +20,15 @@
     </div>
 
     {% if data['confirmationNext'] %}
-    <h2 class="govuk-heading-m">What happens next</h2>
+      <h2 class="govuk-heading-m">What happens next</h2>
 
-    <div class="app-prose-scope">
-    {% markdown %}
-      {{ data['confirmationNext'] }}
-    {% endmarkdown %}
-    </div>
-
+      <div class="app-prose-scope">
+      {% markdown %}
+        {{ data['confirmationNext'] }}
+      {% endmarkdown %}
+      </div>
     {% endif %}
+
   </div>
 </div>
 {% endblock %}
