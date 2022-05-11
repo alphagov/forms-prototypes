@@ -5,38 +5,44 @@
 {% endblock %}
 
 {% block content %}
-<h1 class="govuk-heading-l">Your forms</h1>
-<ul class="gem-c-document-list">
-  <li class="gem-c-document-list__item">
-    <a class="gem-c-document-list__item-title govuk-link" href="/form-designer/form-index">{{ data.formTitle }}</a>
-    <ul class="gem-c-document-list__item-metadata">
-      <li class="gem-c-document-list__attribute">
-        <time datetime="2016-06-27T10:29:44+00:00"> 08 May 2022 </time>
-      </li>
-      <li class="gem-c-document-list__attribute"></li>
-    </ul>
-  </li>
+<h1 class="govuk-heading-l">GOV.UK Forms</h1>
 
-  <li class="gem-c-document-list__item">
-    <a class="gem-c-document-list__item-title govuk-link" href="#not-found">Redundancy payments form: amend my claim for holiday taken but not paid</a>
-    <ul class="gem-c-document-list__item-metadata">
-      <li class="gem-c-document-list__attribute">
-        <time datetime="2015-09-24T16:42:48+00:00"> 24 April 2022 </time>
-      </li>
-      <li class="gem-c-document-list__attribute"></li>
-    </ul>
-  </li>
+{{ govukButton({
+    text: "Create a form",
+    classes: "govuk-button--primary",
+    href: "unpublish-confirm"
+}) }}
 
-  <li class="gem-c-document-list__item">
-    <a class="gem-c-document-list__item-title govuk-link" href="#not-found">Redundancy payments form: amend my claim for unpaid wages</a>
-    <ul class="gem-c-document-list__item-metadata">
-      <li class="gem-c-document-list__attribute">
-        <time datetime="2016-09-05T16:48:27+00:00"> 5 April 2022 </time>
-      </li>
-      <li class="gem-c-document-list__attribute">Statutory guidance</li>
-    </ul>
-  </li>
-</ul>
+<h2 class="govuk-heading-m">Your forms</h2>
+<dl class="govuk-summary-list">
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key govuk-!-width-full govuk-!-font-weight-regular">
+    <p class="govuk-body">{{ data.formTitle }}</p>
+      </dt>
+    <dd class="govuk-summary-list__actions">
+      <a class="govuk-link govuk-link--no-visited-state" href="/form-designer/form-index">Edit</a>
+    </dd>
+  </div>
+
+  <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key govuk-!-width-full govuk-!-font-weight-regular">
+      <p class="govuk-body">Redundancy payments form: amend my claim for holiday taken but not paid</p>
+        </dt>
+      <dd class="govuk-summary-list__actions">
+        <a class="govuk-link govuk-link--no-visited-state" href="#not-found">Edit</a>
+      </dd>
+    </div>
+
+    <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key govuk-!-width-full govuk-!-font-weight-regular">
+        <p class="govuk-body">Redundancy payments form: amend my claim for unpaid wages</p>
+          </dt>
+        <dd class="govuk-summary-list__actions">
+          <a class="govuk-link govuk-link--no-visited-state" href="#not-found">Edit</a>
+        </dd>
+      </div>
+
+</dl>
 
 {% endblock %}
 
