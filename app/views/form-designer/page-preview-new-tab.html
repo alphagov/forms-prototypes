@@ -19,7 +19,12 @@
 {% endblock %}
 
 {% block content %}
-  <form class="form" action="edit-question-save" method="post">
+  {% set nextPageId = pageId | int + 1 %}
+  {% set isLastQuestionPage = pageId == data['highestPageId'] %}
+  {% set formAction = "../check-answers-page-preview-new-tab" if isLastQuestionPage else nextPageId %}
+  {% set buttonText = "Check your answers" if isLastQuestionPage else "Continue" %}
+
+  <form class="form" action='{{formAction}}' method="post">
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
 
@@ -274,29 +279,12 @@
         }) }}
         {% endif %}
 
-        {% set nextPageId = pageId | int + 1 %}
-
-        {% if pageId == data['highestPageId'] %}
-
-          {{ govukButton({
-          text: "Check your answers",
-          href: "../check-answers-page-preview-new-tab",
+        {{ govukButton({
+          text: buttonText,
           attributes: {
             target: "_parent"
           }
         }) }}
-
-        {% else %}
-
-          {{ govukButton({
-          text: "Continue",
-          href: "" + nextPageId,
-          attributes: {
-            target: "_parent"
-          }
-        }) }}
-
-        {% endif %}
 
       </div>
     </div>
