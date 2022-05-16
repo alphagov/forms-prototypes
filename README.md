@@ -6,10 +6,7 @@ Built with the [GOV.UK Prototype Kit](https://govuk-prototype-kit.herokuapp.com/
 
 [Prototype Kit installation instructions](https://govuk-prototype-kit.herokuapp.com/docs/install)
 
-Hosted here: **[https://forms-prototypes.london.cloudapps.digital/](https://forms-prototypes.london.cloudapps.digital/)**
-
-- U: forms
-- P: prototypes
+Hosted here: **[https://forms-prototypes.london.cloudapps.digital/](https://forms-prototypes.london.cloudapps.digital/)** (password: prototypes)
 
 ## File locations
 
