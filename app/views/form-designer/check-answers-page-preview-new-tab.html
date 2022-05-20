@@ -32,6 +32,18 @@
           <!--Q{{page["pageIndex"] | int + 1}}.--> {{questionTitle}}
         </dt>
         <dd class="govuk-summary-list__value">
+          {% if page['type'] == 'date' %}
+            {{data[loop.index + '-day']}}
+            {% if (data[loop.index + '-day']) %}/{% endif %}
+            {{data[loop.index + '-month'] or '01'}} / {{data[loop.index + '-year']}}
+          {% elif page['type'] == 'address' %}
+            {{data[loop.index + '-address-line-1']}}<br>
+            {% if data[loop.index + '-address-line-2'] %}{{data[loop.index + '-address-line-2']}}<br>{% endif %}
+            {{data[loop.index + '-address-town']}}<br>
+            {{data[loop.index + '-address-postcode']}}
+          {% else %}
+            {{data[loop.index]}}
+          {% endif %}
         </dd>
           <dd class="govuk-summary-list__actions">
               <a class="govuk-link govuk-link--no-visited-state" href="page-preview-new-tab/{{loop.index}}">
