@@ -67,7 +67,8 @@
             label: label,
             hint: {text: pageData['hint-text']},
             id: pageId,
-            name: pageId
+            name: pageId,
+            value: data[pageId | int]
           }) }}
         {% endif %}
 
@@ -79,7 +80,8 @@
           name: pageId,
           type: "email",
           autocomplete: "email",
-          spellcheck: false
+          spellcheck: false,
+          value: data[pageId | int]
         }) }}
         {% endif %}
 
@@ -90,7 +92,8 @@
           name: pageId,
           type: "tel",
           autocomplete: "tel",
-          classes: "govuk-input--width-20"
+          classes: "govuk-input--width-20",
+          value: data[pageId | int]
         }) }}
         {% endif %}
 
@@ -101,7 +104,8 @@
           classes: "govuk-input--width-10",
           id: pageId,
           name: pageId,
-          spellcheck: false
+          spellcheck: false,
+          value: data[pageId | int]
         }) }}
         {% endif %}
 
@@ -119,18 +123,20 @@
             label: {
               html: 'Address line 1'
             },
-            id: "address-line-1",
-            name: "address-line-1",
-            autocomplete: "address-line1"
+            id: pageId + "-address-line-1",
+            name: pageId + "-address-line-1",
+            autocomplete: "address-line1",
+            value: data[(pageId | int) + '-address-line-1']
           }) }}
 
           {{ govukInput({
             label: {
               html: 'Address line 2 (optional)'
             },
-            id: "address-line-2",
-            name: "address-line-2",
-            autocomplete: "address-line2"
+            id: pageId + "-address-line-2",
+            name: pageId + "-address-line-2",
+            autocomplete: "address-line2",
+            value: data[(pageId | int) + '-address-line-2']
           }) }}
 
           {{ govukInput({
@@ -138,9 +144,10 @@
               text: "Town or city"
             },
             classes: "govuk-!-width-two-thirds",
-            id: "address-town",
-            name: "address-town",
-            autocomplete: "address-level2"
+            id: pageId + "-address-town",
+            name: pageId + "-address-town",
+            autocomplete: "address-level2",
+            value: data[(pageId | int) + '-address-town']
           }) }}
 
           {{ govukInput({
@@ -148,9 +155,10 @@
               text: "Postcode"
             },
             classes: "govuk-input--width-10",
-            id: "address-postcode",
-            name: "address-postcode",
-            autocomplete: "postal-code"
+            id: pageId + "-address-postcode",
+            name: pageId + "-address-postcode",
+            autocomplete: "postal-code",
+            value: data[(pageId | int) + '-address-postcode']
           }) }}
 
           {% endcall %}
@@ -180,14 +188,38 @@
         {# Date field #}
         {% if pageData['type'] == 'date' %}
 
+        {% set day = pageId + '-day' %}
+        {% set month = pageId + '-month' %}
+        {% set year = pageId + '-year' %}
+
+        {% set neValue %}{{data[pageId + '-day'] + '/' + data[pageId + '-month'] + '/' + data[pageId + '-year']}}{% endset %}
+
           {{ govukDateInput({
           id: pageId,
           namePrefix: pageId,
           fieldset: {
             legend: label
           },
-          hint: {text: pageData['hint-text']}
+          hint: {text: pageData['hint-text']},
+          items: [
+            {
+              name: "day",
+              classes: "govuk-input--width-2",
+              value: data[pageId + '-day']
+            },
+            {
+              name: "month",
+              classes: "govuk-input--width-2",
+              value: data[pageId + '-month']
+            },
+            {
+              name: "year",
+              classes: "govuk-input--width-4",
+              value: data[pageId + '-year']
+            }
+          ]
         }) }}
+
         {% endif %}
 
         {#
