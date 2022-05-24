@@ -4,8 +4,13 @@
   Form: {{ data['formTitle'] }}
 {% endblock %}
 
-{% block content %}
+{% block beforeContent %}
+{% if data['referer'] %}
+  <a class="govuk-back-link" href="{{data['referer']}}">Back</a>
+{% endif %}
+{% endblock %}
 
+{% block content %}
   <form id="form" class="form" action="../edit-page/{{ pageId }}" method="post">
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">

@@ -38,6 +38,13 @@ router.post('/example-2/save-progress-check', function (req, res) {
 })
 
 // ROUTES FOR FORM DESIGNER
+//
+
+router.use('/form-designer/*', function (req, res, next) {
+  const referer = req.headers.referer ?? '';
+  req.session.data.referer = referer
+  next();
+})
 
 // Renders the page editor, set to a specific page
 router.get('/form-designer/edit-page/:pageId', function (req, res) {

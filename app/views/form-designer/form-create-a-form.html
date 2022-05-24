@@ -5,6 +5,12 @@
   {{ "Error:" if containsErrors }} Create a form
 {% endblock %}
 
+{% block beforeContent %}
+{% if data['referer'] %}
+  <a class="govuk-back-link" href="{{data['referer']}}">Back</a>
+{% endif %}
+{% endblock %}
+
 {% block content %}
   {% if containsErrors %}
     {{ govukErrorSummary({
