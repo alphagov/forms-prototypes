@@ -316,12 +316,14 @@
 
           {% endif %}
 
+          {% if editingExistingQuestion %}
           {{ govukButton({
             text: "Delete question",
             classes: "govuk-button--warning",
             name: "action",
             value: "deletePage"
           }) }}
+          {% endif %}
         </div>
 
         <p class="govuk-body">
