@@ -291,7 +291,7 @@
         <div class="govuk-button-group">
 
           {{ govukButton({
-            text: "Save changes",
+            text:  "Save changes" if editingExistingQuestion else "Save question",
             name: "action",
             value: "update"
           }) }}

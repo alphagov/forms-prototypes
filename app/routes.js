@@ -110,7 +110,8 @@ router.get('/form-designer/edit-page/:pageId', function (req, res) {
     res.render('form-designer/edit-page', {
       pageId: pageId,
       pageIndex: pageIndex,
-      pageData: pageData
+      pageData: pageData,
+      editingExistingQuestion: req.session.data.pages[pageIndex] !== undefined
     })
   }
 })
