@@ -94,14 +94,7 @@ router.get('/form-designer/edit-page/:pageId', function (req, res) {
   } else if (action === 'deletePage') {
     // reset the action to avoid a loop
     req.session.data.action = ''
-
-    const pages = req.session.data.pages
-      .filter(element => parseInt(element.pageIndex, 10) !== pageId - 1)
-      .map(setPageIndexToArrayPosition)
-
-    req.session.data.pages = pages
-
-    res.redirect('/form-designer/form-index')
+    return res.redirect(`/form-designer/delete/${pageId}`)
   } else {
     // If user pressed the 'Update preview' button or back link...
     var pageIndex = parseInt(pageId) - 1
@@ -115,6 +108,49 @@ router.get('/form-designer/edit-page/:pageId', function (req, res) {
     })
   }
 })
+
+// Route used to delete question
+router.get('/form-designer/delete/:pageId/', function (
+  req,
+  res
+) {
+  const { action } = req.session.data
+  const pageIndex = parseInt(req.params.pageId, 10) - 1
+  const pageData = req.session.data.pages[pageIndex]
+
+  if(!(pageIndex in req.session.data.pages)) {
+    throw Error('Page not found');
+  }
+
+  if(action === 'delete' && req.session.data.delete === 'Yes') {
+    // Create an array of pages without the one we want to remove
+    const pages = req.session.data.pages
+      .filter(element => parseInt(element.pageIndex, 10) !== pageIndex)
+      .map(setPageIndexToArrayPosition)
+
+    // Save the pages
+    req.session.data.pages = pages
+    // Update the highestPageId so when user creates a new question after
+    // deleting the right id is used
+    req.session.data.highestPageId = req.session.data.pages.length
+
+    // Reset the state so they can be reused
+    req.session.data.action = undefined
+    req.session.data.delete = undefined
+    return res.redirect('/form-designer/form-index')
+  } else if(action === 'delete' && req.session.data.delete === 'No') {
+    // Reset the state so they can be reused
+    req.session.data.action = undefined
+    req.session.data.delete = undefined
+    return res.redirect(`/form-designer/edit-page/${pageIndex + 1}`)
+  } else {
+
+    res.render('form-designer/delete.html', {
+      pageData
+    })
+  }
+})
+
 
 // Route used by the reordering buttons in form-index.html
 router.get('/form-designer/reorder-page/:pageId/:direction', function (
@@ -196,6 +232,5 @@ router.get('/form-designer/returning', (req, res) => {
   req.session.data = returningSessionDataDefaults 
   res.redirect('/form-designer/form-list')
 })
-
 
 module.exports = router
