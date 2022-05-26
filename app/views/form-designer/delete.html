@@ -1,0 +1,36 @@
+{% extends "layout-govuk-forms.html" %}
+
+{% block pageTitle %}
+  Delete page - GOV.UK Forms
+{% endblock %}
+
+
+{% block beforeContent %}
+  <a class="govuk-back-link" href="{{data['referer']}}">Back</a>
+{% endblock %}
+
+{% block content %}
+<form method="post">
+  <input type="hidden" name="action" value="delete">
+  <div class="govuk-form-group">
+    <fieldset class="govuk-fieldset">
+      <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+        <h1 class="govuk-fieldset__heading">Are you sure you want to delete this question?</h1>
+      </legend>
+      <div class="govuk-radios">
+        <div class="govuk-radios__item">
+          <input id="yes" type="radio" name="delete" class="govuk-radios__input" value="Yes">
+          <label class="govuk-radios__label" for="yes">Yes</label>
+        </div>
+        <div class="govuk-radios__item">
+          <input id="no" type="radio" name="delete" class="govuk-radios__input" value="No">
+          <label class="govuk-radios__label" for="no">No</label>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+  <button type="submit" class="govuk-button">Continue</button>
+</form>
+
+
+{% endblock %}
