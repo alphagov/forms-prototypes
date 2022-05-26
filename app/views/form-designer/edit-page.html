@@ -239,6 +239,14 @@
               value: "phone",
               text: "Phone number",
               checked: checked(namePrefix + "['type']", "phone")
+            },
+            {
+              value: "radio-checkbox",
+              text: "Choosing from a list of options",
+              checked: checked(namePrefix + "['type']", "radio-checkbox"),
+              conditional: {
+              html: radioCheckboxHtml
+            }
             }
           ]
         }) }}
