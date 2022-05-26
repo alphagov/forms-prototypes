@@ -208,7 +208,7 @@
         #}
 
         {# Radios #}
-        {# {% if pageData['type'] == 'radio-checkbox' and pageData['radios'] %}
+        {% if pageData['type'] == 'radio-checkbox' and pageData['radios'] %}
 
         {% set itemsArray = pageData['item-list'].split('\n') %}
 
@@ -238,10 +238,10 @@
           </div>
         </fieldset>
         </div>
-        {% endif %} #}
+        {% endif %}
 
         {# Checkboxes #}
-        {# {% if pageData['type'] == 'radio-checkbox' and not pageData['radios'] %}
+        {% if pageData['type'] == 'radio-checkbox' and not pageData['radios'] %}
 
         {% set itemsArray = pageData['item-list'].split('\n') %}
 
@@ -271,7 +271,7 @@
           </div>
         </fieldset>
         </div>
-        {% endif %} #}
+        {% endif %}
 
         {# Help text #}
         {% if pageData['help-text'] %}

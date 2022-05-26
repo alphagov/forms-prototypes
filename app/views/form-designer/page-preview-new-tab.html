@@ -248,10 +248,11 @@
                 {{ pageData['hint-text']}}
               </div>
               <div class="govuk-radios">
-                {% for item in itemsArray %}
+                {% for itemRaw in itemsArray %}
+                {% set item = itemRaw | trim %}
                   <div class="govuk-radios__item">
-                    <input class="govuk-radios__input" id="question-1-{{ item }}" name="question-1-" type="radio" value="{{ item }}">
-                    <label class="govuk-label govuk-radios__label" for="question-1-{{ item }}">
+                    <input class="govuk-radios__input" id="{{ pageId }}-{{ item }}" name="{{ pageId }}" type="radio" value="{{ item }}" {{ checked(pageId, item) }}>
+                    <label class="govuk-label govuk-radios__label" for="{{ pageId }}">
                       {{ item }}
                     </label>
                   </div>
@@ -281,10 +282,11 @@
                 {{ pageData['hint-text']}}
               </div>
               <div class="govuk-checkboxes">
-                {% for item in itemsArray %}
+                {% for itemRaw in itemsArray %}
+                  {% set item = itemRaw | trim %}
                   <div class="govuk-checkboxes__item">
-                    <input class="govuk-checkboxes__input" id="question-1-{{ item }}" name="question-1-" type="checkbox" value="{{ item }}">
-                    <label class="govuk-label govuk-checkboxes__label" for="question-1-{{ item }}">
+                    <input class="govuk-checkboxes__input" id="{{ pageId }}-{{ item }}" name="{{ pageId }}" type="checkbox" value="{{ item }}" {{ checked(pageId, item) }}>
+                    <label class="govuk-label govuk-checkboxes__label" for="{{ pageId }}">
                       {{ item }}
                     </label>
                   </div>
