@@ -53,7 +53,8 @@ router.get('/form-designer/pages/new', function (req, res) {
 })
 
 // Edit a user-created page
-router.get('/form-designer/pages/:pageId(\\d+)/edit', function (req, res) {
+
+router.post('/form-designer/pages/:pageId(\\d+)/edit', function (req, res) {
   var action = req.session.data.action
   // clear the action so it doesn't change the next page load
   req.session.data.action = undefined
@@ -68,23 +69,26 @@ router.get('/form-designer/pages/:pageId(\\d+)/edit', function (req, res) {
   } else if (action === 'deletePage') {
     return res.redirect(`delete`)
   } else {
-    var pageIndex = pageId
-    var pageData = req.session.data.pages[pageIndex]
-
-    return res.render('form-designer/pages/edit', {
-      pageId: pageId,
-      pageIndex: pageIndex,
-      pageData: pageData,
-      editingExistingQuestion: req.session.data.pages[pageIndex] !== undefined
-    })
+    return res.redirect(req.path)
   }
 })
 
+router.get('/form-designer/pages/:pageId(\\d+)/edit', function (req, res) {
+  var pageId = parseInt(req.params.pageId, 10)
+  var pageIndex = pageId
+  var pageData = req.session.data.pages[pageIndex]
+  return res.render('form-designer/pages/edit', {
+    pageId: pageId,
+    pageIndex: pageIndex,
+    pageData: pageData,
+    editingExistingQuestion: req.session.data.pages[pageIndex] !== undefined
+  })
+})
+
 // Route used to delete question
-router.get('/form-designer/pages/:pageId/delete', function (req, res) {
+router.post('/form-designer/pages/:pageId/delete', function (req, res) {
   const { action } = req.session.data
   const pageIndex = parseInt(req.params.pageId, 10)
-  const pageData = req.session.data.pages[pageIndex]
   const shouldDelete = req.session.data.delete
   req.session.data.action = undefined
   req.session.data.delete = undefined
@@ -105,10 +109,21 @@ router.get('/form-designer/pages/:pageId/delete', function (req, res) {
   } else if(action === 'delete' && shouldDelete  === 'No') {
     return res.redirect(`/form-designer/pages/${pageIndex}/edit`)
   } else {
-    res.render('form-designer/pages/delete.html', {
-      pageData
-    })
+    return res.redirect(req.path)
   }
+})
+
+router.get('/form-designer/pages/:pageId/delete', function (req, res) {
+  const pageIndex = parseInt(req.params.pageId, 10)
+  const pageData = req.session.data.pages[pageIndex]
+
+  if(!(pageIndex in req.session.data.pages)) {
+    throw Error('Page not found');
+  }
+
+  res.render('form-designer/pages/delete.html', {
+    pageData
+  })
 })
 
 // This is just for convience to to the new-tab preview for this page
