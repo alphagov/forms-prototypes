@@ -83,14 +83,17 @@ router.get('/form-designer/pages/:pageId(\\d+)/edit', function (req, res) {
 // Route used to delete question
 router.get('/form-designer/pages/:pageId/delete', function (req, res) {
   const { action } = req.session.data
-  const pageIndex = parseInt(req.params.pageId, 10) - 1
+  const pageIndex = parseInt(req.params.pageId, 10)
   const pageData = req.session.data.pages[pageIndex]
+  const shouldDelete = req.session.data.delete
+  req.session.data.action = undefined
+  req.session.data.delete = undefined
 
   if(!(pageIndex in req.session.data.pages)) {
     throw Error('Page not found');
   }
 
-  if(action === 'delete' && req.session.data.delete === 'Yes') {
+  if(action === 'delete' && shouldDelete === 'Yes') {
     // Create an array of pages without the one we want to remove
     const pages = req.session.data.pages
       .filter(element => parseInt(element.pageIndex, 10) !== pageIndex)
@@ -98,18 +101,10 @@ router.get('/form-designer/pages/:pageId/delete', function (req, res) {
 
     // Save the pages
     req.session.data.pages = pages
-
-    // Reset the state so they can be reused
-    req.session.data.action = undefined
-    req.session.data.delete = undefined
     return res.redirect('/form-designer/form-index')
-  } else if(action === 'delete' && req.session.data.delete === 'No') {
-    // Reset the state so they can be reused
-    req.session.data.action = undefined
-    req.session.data.delete = undefined
-    return res.redirect(`/form-designer/pages/${pageIndex + 1}/edit`)
+  } else if(action === 'delete' && shouldDelete  === 'No') {
+    return res.redirect(`/form-designer/pages/${pageIndex}/edit`)
   } else {
-
     res.render('form-designer/pages/delete.html', {
       pageData
     })
