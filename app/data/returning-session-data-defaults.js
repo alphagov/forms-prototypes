@@ -18,7 +18,6 @@ Example usage:
 */
 
 module.exports = {
-  "highestPageId": 5,
   "action": "update",
   "publish": "GOV.UK",
   "authentication": "email",
