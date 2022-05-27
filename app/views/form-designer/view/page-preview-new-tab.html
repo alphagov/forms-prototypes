@@ -10,7 +10,7 @@
   {% if prevPageId > 0 %}
     <a class="govuk-back-link" href="{{prevPageId}}">Back</a>
   {% else %}
-    <a class="govuk-back-link" href="../start-page-preview-new-tab" target="_parent">Back</a>
+    <a class="govuk-back-link" href="start" target="_parent">Back</a>
   {% endif %}
 {% endblock %}
 
@@ -21,7 +21,7 @@
 {% block content %}
   {% set nextPageId = pageId | int + 1 %}
   {% set isLastQuestionPage = pageId == data['highestPageId'] %}
-  {% set formAction = "../check-answers-page-preview-new-tab" if isLastQuestionPage else nextPageId %}
+  {% set formAction = "check-answers" if isLastQuestionPage else nextPageId %}
   {% set buttonText = "Check your answers" if isLastQuestionPage else "Continue" %}
 
   <form class="form" action='{{formAction}}' method="post">

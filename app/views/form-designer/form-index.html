@@ -11,7 +11,7 @@
 {% endblock %}
 
 {% block content %}
-  <form id="form" class="form" action="../edit-page/{{ pageId }}" method="post">
+  <form id="form" class="form" action="../{{ pageId }}/edit" method="post">
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
 
@@ -23,7 +23,7 @@
 
       {{ govukButton({
           text: "Add a question",
-          href: "choose-page-type/" + nextPageId,
+          href: "/form-designer/pages/new",
           classes: "govuk-!-margin-bottom-3 govuk-!-margin-top-3"
         }) }}
 
@@ -64,7 +64,7 @@
                       {{ govukButton({
                           text: "Up",
                           classes: "govuk-button--secondary",
-                          href: "reorder-page/" + (page.pageIndex | int + 1) + "/up"
+                          href: "pages/" + (page.pageIndex | int + 1) + "/reorder/up"
                         }) }}
                     {% endif %}
 
@@ -72,12 +72,12 @@
                       {{ govukButton({
                           text: "Down",
                           classes: "govuk-button--secondary",
-                          href: "reorder-page/" + (page.pageIndex | int + 1) + "/down"
+                          href: "pages/" + (page.pageIndex | int + 1) + "/reorder/down"
                         }) }}
                     {% endif %}
 
                     <a class="govuk-link govuk-link--no-visited-state"
-                    href="edit-page/{{page.pageIndex | int + 1}}">
+                    href="pages/{{page.pageIndex | int + 1}}/edit">
                       Edit
                     </a>
                   </div>
@@ -96,7 +96,7 @@
                 <p class="govuk-hint">This page lists all the questions and answers so people can check them before they submit the form. You can add a declaration for people to confirm their answers.</p>
               </dt>
             <dd class="govuk-summary-list__actions">
-              <a class="govuk-link govuk-link--no-visited-state" href="edit-page/check-answers">
+              <a class="govuk-link govuk-link--no-visited-state" href="pages/check-answers/edit">
                       Edit</a>
             </dd>
           </div>
@@ -107,7 +107,7 @@
             <p class="govuk-hint">This page will be shown to confirm the form has been submitted. You can add information to tell people what will happen next.</p>
               </dt>
             <dd class="govuk-summary-list__actions">
-              <a class="govuk-link govuk-link--no-visited-state" href="edit-page/confirmation">
+              <a class="govuk-link govuk-link--no-visited-state" href="pages/confirm/edit">
                       Edit</a>
             </dd>
           </div>
@@ -115,7 +115,7 @@
 
       <div class="govuk-!-margin-top-9">
         <h2 class="govuk-heading-m">Next steps</h2>
-        <p><a href="/form-designer/page-preview-new-tab/1" target="_blank">Test the form in a new tab</a></p>
+        <p><a href="/form-designer/view/1" target="_blank">Test the form in a new tab</a></p>
         {{ govukButton({
             text: "Publish form",
             classes: "govuk-button--secondary",

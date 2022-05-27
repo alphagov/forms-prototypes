@@ -1,7 +1,5 @@
-const path = require('path')
 const express = require('express')
 const { setPageIndexToArrayPosition } = require('../lib/utils.js')
-const sessionDataDefaults = require('./data/session-data-defaults.js')
 const returningSessionDataDefaults = require('./data/returning-session-data-defaults')
 const router = express.Router()
 
@@ -46,8 +44,13 @@ router.use('/form-designer/*', function (req, res, next) {
   next();
 })
 
+router.get('/form-designer/pages/new', function (req, res) {
+  const nextPageId = parseInt(req.session.data.highestPageId) + 1
+  res.redirect(`/form-designer/pages/${nextPageId}/edit`) 
+})
+
 // Renders the page editor, set to a specific page
-router.get('/form-designer/edit-page/:pageId', function (req, res) {
+router.get('/form-designer/pages/:pageId/edit', function (req, res) {
   var action = req.session.data.action
   var pageId = req.params.pageId
   var editNextPageId = parseInt(pageId) + 1
@@ -58,22 +61,22 @@ router.get('/form-designer/edit-page/:pageId', function (req, res) {
 
   // If user is creating a page from the check your answers page...
   if (pageId == 'check-answers' && action == 'createNextPage') {
-    res.redirect('/form-designer/edit-page/' + createNextPageId)
+    res.redirect(`/form-designer/pages/${ createNextPageId}/edit`)
 
     // If user is updating the check your answers page...
   } else if (
     pageId == 'check-answers' &&
     (action == 'update' || action == '')
   ) {
-    res.render('form-designer/edit-check-answers-page')
+    res.render('form-designer/pages/edit-check-answers-page')
 
     // If user is creating a page from the confirmation page...
-  } else if (pageId == 'confirmation' && action == 'createNextPage') {
+  } else if (pageId == 'confirm' && action == 'createNextPage') {
     res.redirect('/form-designer/edit-page/' + createNextPageId)
 
     // If user is updating the confirmation page...
-  } else if (pageId == 'confirmation' && (action == 'update' || action == '')) {
-    res.render('form-designer/edit-confirmation-page')
+  } else if (pageId == 'confirm' && (action == 'update' || action == '')) {
+    res.render('form-designer/pages/edit-confirmation-page')
 
     // If user is updating the start page...
   } else if (pageId == 0 && (action == 'update' || action == '')) {
@@ -81,26 +84,27 @@ router.get('/form-designer/edit-page/:pageId', function (req, res) {
 
     // If user pressed the 'Create next page' button...
   } else if (action == 'createNextPage') {
-    res.redirect('/form-designer/choose-page-type/' + createNextPageId)
+    req.session.data.action = undefined
+    res.redirect(`/form-designer/pages/new`)
 
     // If user pressed the 'Edit next page' button...
   } else if (action == 'editNextPage') {
     // reset the action to avoid a loop
     req.session.data.action = ''
 
-    res.redirect('/form-designer/edit-page/' + editNextPageId)
+    res.redirect(`/form-designer/pages/${editNextPageId}`)
 
     // If user pressed the 'Update preview' button or back link...
   } else if (action === 'deletePage') {
     // reset the action to avoid a loop
     req.session.data.action = ''
-    return res.redirect(`/form-designer/delete/${pageId}`)
+    return res.redirect(`delete`)
   } else {
     // If user pressed the 'Update preview' button or back link...
     var pageIndex = parseInt(pageId) - 1
     var pageData = req.session.data.pages[pageIndex]
 
-    res.render('form-designer/edit-page', {
+    res.render('form-designer/pages/edit', {
       pageId: pageId,
       pageIndex: pageIndex,
       pageData: pageData,
@@ -110,10 +114,7 @@ router.get('/form-designer/edit-page/:pageId', function (req, res) {
 })
 
 // Route used to delete question
-router.get('/form-designer/delete/:pageId/', function (
-  req,
-  res
-) {
+router.get('/form-designer/pages/:pageId/delete', function (req, res) {
   const { action } = req.session.data
   const pageIndex = parseInt(req.params.pageId, 10) - 1
   const pageData = req.session.data.pages[pageIndex]
@@ -142,18 +143,21 @@ router.get('/form-designer/delete/:pageId/', function (
     // Reset the state so they can be reused
     req.session.data.action = undefined
     req.session.data.delete = undefined
-    return res.redirect(`/form-designer/edit-page/${pageIndex + 1}`)
+    return res.redirect(`/form-designer/pages/${pageIndex + 1}/edit`)
   } else {
 
-    res.render('form-designer/delete.html', {
+    res.render('form-designer/pages/delete.html', {
       pageData
     })
   }
 })
 
+router.get('/form-designer/pages/:pageId/view', function (req, res) {
+  return res.redirect(`/form-designer/view/${req.params.pageId}`)
+});
 
 // Route used by the reordering buttons in form-index.html
-router.get('/form-designer/reorder-page/:pageId/:direction', function (
+router.get('/form-designer/pages/:pageId/reorder/:direction', function (
   req,
   res
 ) {
@@ -169,14 +173,8 @@ router.get('/form-designer/reorder-page/:pageId/:direction', function (
   res.redirect('/form-designer/form-index')
 })
 
-// Renders the page type chooser, set to a specific page
-router.get('/form-designer/choose-page-type/:pageId', function (req, res) {
-  req.session.data.action = ''
-  res.redirect(`/form-designer/edit-page/${req.params.pageId}`)
-})
-
 // Renders the in-page preview, set to a specific page
-router.get('/form-designer/page-preview/:pageId', function (req, res) {
+router.get('/form-designer/pages/:pageId/page-preview', function (req, res) {
   req.session.data.action = ''
   var pageId = req.params.pageId
   var pageIndex = parseInt(pageId) - 1
@@ -189,14 +187,27 @@ router.get('/form-designer/page-preview/:pageId', function (req, res) {
   })
 })
 
+router.get('/form-designer/view/start', function (req, res) {
+  return res.render('form-designer/view/start.html')
+})
+
+router.get('/form-designer/view/check-answers', function (req, res) {
+  return res.render('form-designer/view/check-answers.html')
+})
+
+router.get('/form-designer/view/confirm', function (req, res) {
+  return res.render('form-designer/view/confirm.html')
+})
+
 // Renders the new-tab page preview, set to a specific page
-router.get('/form-designer/page-preview-new-tab/:pageId', function (req, res) {
+router.get('/form-designer/view/:pageId', function (req, res) {
   req.session.data.action = ''
   var pageId = req.params.pageId
+  
   var pageIndex = parseInt(pageId) - 1
   var pageData = req.session.data.pages[pageIndex]
 
-  res.render('form-designer/page-preview-new-tab', {
+  res.render('form-designer/view/page-preview-new-tab', {
     pageId: pageId,
     pageIndex: pageIndex,
     pageData: pageData
