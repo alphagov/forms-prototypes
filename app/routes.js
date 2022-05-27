@@ -60,14 +60,45 @@ router.post('/form-designer/pages/:pageId(\\d+)/edit', function (req, res) {
   req.session.data.action = undefined
 
   var pageId = parseInt(req.params.pageId, 10)
-  var editNextPageId = pageId + 1
+  var pageIndex = pageId
+  var pageData = req.session.data.pages[pageIndex]
 
-  if (action == 'createNextPage') {
-    return res.redirect(`/form-designer/pages/new`)
+  var editNextPageId = pageId + 1
+  // No need to validate if the user wants to delete this page anyway
+  if (action === 'deletePage') {
+    return res.redirect(`delete`)
+  }
+
+  const errors = {};
+  const title = req.session.data.pages[pageId]['long-title']
+
+  if (!title || !title.length) {
+    errors['long-title'] = {
+      text: 'Enter question text',
+      href: "#long-title"
+    }
+  }
+
+  // Convert the errors into a list, so we can use it in the template
+  const errorList = Object.values(errors)
+  // If there are no errors, redirect the user to the next page
+  // otherwise, show the page again with the errors set
+  const containsErrors = errorList.length > 0
+  // If there are errors on the page, redisplay it with the errors
+  if(containsErrors) {
+    return res.render('form-designer/pages/edit', {
+      pageId: pageId,
+      pageIndex: pageIndex,
+      pageData: pageData,
+      editingExistingQuestion: req.session.data.pages[pageIndex] !== undefined,
+      errors,
+      errorList,
+      containsErrors 
+    })
+  } else if (action == 'createNextPage') {
+      return res.redirect(`/form-designer/pages/new`)
   } else if (action == 'editNextPage') {
     return res.redirect(`/form-designer/pages/${editNextPageId}/edit`)
-  } else if (action === 'deletePage') {
-    return res.redirect(`delete`)
   } else {
     return res.redirect(req.path)
   }

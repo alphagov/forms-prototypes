@@ -24,6 +24,12 @@
 {% block content %}
 
   <form id="form" class="form" method="post">
+    {% if containsErrors %}
+    {{ govukErrorSummary({
+    titleText: "There is a problem",
+    errorList: errorList
+    }) }}
+    {% endif %}
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
 
@@ -118,7 +124,8 @@
           },
           id: "long-title",
           name: namePrefix + "[long-title]",
-          value: pageData['long-title']
+          value: pageData['long-title'],
+          errorMessage: { text: errors['long-title'].text } if errors['long-title'].text
         }) }}
 
         <!-- Short question text input -->
