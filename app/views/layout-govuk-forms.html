@@ -53,6 +53,7 @@
 
 {% if useAutoStoreData %}
   {% block footer %}
+  <pre>{{ data | dump(2) | safe }}</pre>
     {{ govukFooter({
       meta: {
         items: [

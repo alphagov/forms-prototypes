@@ -1,10 +1,10 @@
 {% extends "layout-govuk-forms.html" %}
 
 {% set pageTitle -%}
-  {% if data['confirmationTitle'] %}
-    {{data['confirmationTitle']|safe}}
+  {% if data['checkAnswersTitle'] %}
+    {{data['checkAnswersTitle']|safe}}
   {% else %}
-    Confirmation
+    Check your answers
   {% endif %}
 {%- endset %}
 
@@ -27,7 +27,7 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-      <span class="govuk-caption-l">Confirmation</span>
+      <span class="govuk-caption-l">Check your answers</span>
       <h1 class="govuk-heading-l">{{pageTitle}}</h1>
 
         {#
@@ -44,25 +44,25 @@
             classes: "govuk-label--m"
           },
           hint: {
-            text: "Appears in the green box"
+            text: "Appears at the top of the page"
           },
-          id: "confirmationTitle",
-          name: "confirmationTitle",
-          value: data['confirmationTitle']
+          id: "checkAnswersTitle",
+          name: "checkAnswersTitle",
+          value: data['checkAnswersTitle']
         }) }}
 
 
         {{ govukCharacterCount({
-          name: "confirmationNext",
-          id: "confirmationNext",
+          name: "checkAnswersDeclaration",
+          id: "checkAnswersDeclaration",
           maxlength: 2000,
-          value: data['confirmationNext'],
+          value: data['checkAnswersDeclaration'],
           label: {
-            text: "What happens next",
+            text: "Declaration",
             classes: "govuk-label--m"
           },
           hint: {
-            text: "Tell people what will happen next and anything that they need to do"
+            text: "The declaration that people make when they submit the form"
           }
         }) }}
 
@@ -82,7 +82,6 @@
           <a class="govuk-link govuk-link--no-visited-state" href="../../form-index">Go to form overview</a>
         </p>
 
-
     </div>
 
     <div class="govuk-grid-column-one-third">
@@ -90,14 +89,14 @@
         <h2 class="govuk-heading-m">
           Page preview
         </h2>
-        <a href="/form-designer/view/confirm" class="govuk-link govuk-link--no-visited-state govuk-!-margin-bottom-4 new-tab-link" target="_blank">Preview page in a new tab</a>
+        <a href="/form-designer/view/check-answers" class="govuk-link govuk-link--no-visited-state govuk-!-margin-bottom-4 new-tab-link" target="_blank">Preview page in a new tab</a>
         <div class="preview-header">
           <p class="preview-link govuk-body-s">
             <!-- <a href="#" target="_blank" onclick="document.getElementById('form').submit();">Refresh</a> &nbsp;|&nbsp; -->
-            <!-- <a href="../confirmation-page-preview-new-tab" target="_blank">Open in a new tab</a> -->
+            <!-- <a href="../check-answers-page-preview-new-tab" target="_blank">Open in a new tab</a> -->
           </p>
         </div>
-        <iframe sandbox="allow-same-origin allow-scripts" title="Page preview" data-module="app-example-frame" class="preview-pane app-example__frame app-example__frame--resizable" src="../confirmation-page-preview" frameborder="1" loading="lazy" id="iFrameResizer0" scrolling="no" ></iframe>
+        <iframe sandbox="allow-same-origin allow-scripts" title="Page preview" data-module="app-example-frame" class="preview-pane app-example__frame app-example__frame--resizable" src="preview" frameborder="1" loading="lazy" id="iFrameResizer0" ></iframe>
       </div>
     </div>
 
