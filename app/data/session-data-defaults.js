@@ -21,7 +21,6 @@ module.exports = {
 
   // Insert values here
 
-  highestPageId: 0,
   action: '',
   publish: 'GOV.UK',
   authentication: 'email',

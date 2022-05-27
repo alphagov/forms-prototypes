@@ -14,7 +14,7 @@
 
 {% block beforeContent %}
   {% set prevPageId = pageId | int - 1 %}
-  {% if prevPageId > 0 %}
+  {% if prevPageId >= 0 %}
     <a class="govuk-back-link" href="../{{prevPageId}}/edit">Back</a>
   {% else %}
     <a class="govuk-back-link" href="../../form-index" target="_parent">Back</a>
@@ -304,7 +304,7 @@
             value: "update"
           }) }}
 
-          {% if pageId >= data['highestPageId'] %}
+          {% if pageId >= data['pages'] | length -1 %} 
 
             {{ govukButton({
               text: "Create next question",

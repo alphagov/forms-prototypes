@@ -48,21 +48,19 @@ router.use('/form-designer/*', function (req, res, next) {
 
 // Create a new page
 router.get('/form-designer/pages/new', function (req, res) {
-  const nextPageId = parseInt(req.session.data.highestPageId) + 1
+  const nextPageId = req.session.data.pages.length
   res.redirect(`/form-designer/pages/${nextPageId}/edit`) 
 })
 
-// Renders the page editor, set to a specific page
+// Edit a user-created page
 router.get('/form-designer/pages/:pageId(\\d+)/edit', function (req, res) {
   var action = req.session.data.action
   // clear the action so it doesn't change the next page load
   req.session.data.action = undefined
 
-  var pageId = req.params.pageId
-  var editNextPageId = parseInt(pageId) + 1
+  var pageId = parseInt(req.params.pageId, 10)
+  var editNextPageId = pageId + 1
 
-  // Update the 'Highest page Id'
-  req.session.data.highestPageId = req.session.data.pages.length
   if (action == 'createNextPage') {
     return res.redirect(`/form-designer/pages/new`)
   } else if (action == 'editNextPage') {
@@ -70,8 +68,7 @@ router.get('/form-designer/pages/:pageId(\\d+)/edit', function (req, res) {
   } else if (action === 'deletePage') {
     return res.redirect(`delete`)
   } else {
-    // If user pressed the 'Update preview' button or back link...
-    var pageIndex = parseInt(pageId) - 1
+    var pageIndex = pageId
     var pageData = req.session.data.pages[pageIndex]
 
     return res.render('form-designer/pages/edit', {
@@ -101,9 +98,6 @@ router.get('/form-designer/pages/:pageId/delete', function (req, res) {
 
     // Save the pages
     req.session.data.pages = pages
-    // Update the highestPageId so when user creates a new question after
-    // deleting the right id is used
-    req.session.data.highestPageId = req.session.data.pages.length
 
     // Reset the state so they can be reused
     req.session.data.action = undefined
@@ -122,6 +116,7 @@ router.get('/form-designer/pages/:pageId/delete', function (req, res) {
   }
 })
 
+// This is just for convience to to the new-tab preview for this page
 router.get('/form-designer/pages/:pageId/view', function (req, res) {
   return res.redirect(`/form-designer/view/${req.params.pageId}`)
 });
@@ -147,7 +142,7 @@ router.get('/form-designer/pages/:pageId/reorder/:direction', function (
 router.get('/form-designer/pages/:pageId/preview', function (req, res) {
   req.session.data.action = ''
   var pageId = req.params.pageId
-  var pageIndex = parseInt(pageId) - 1
+  var pageIndex = parseInt(pageId)
   var pageData = req.session.data.pages[pageIndex]
 
   res.render('form-designer/pages/preview', {
@@ -162,13 +157,15 @@ router.get('/form-designer/view/:pageId(\\d+)', function (req, res) {
   req.session.data.action = ''
   var pageId = req.params.pageId
   
-  var pageIndex = parseInt(pageId) - 1
+  var pageIndex = parseInt(pageId)
   var pageData = req.session.data.pages[pageIndex]
+  const isLastQuestionPage = pageIndex === (req.session.data.pages.length - 1)
 
   res.render('form-designer/view/page', {
     pageId: pageId,
     pageIndex: pageIndex,
-    pageData: pageData
+    pageData: pageData,
+    isLastQuestionPage 
   })
 })
 
