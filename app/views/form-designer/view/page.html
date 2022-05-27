@@ -17,11 +17,9 @@
 {% endblock %}
 
 {% block content %}
-  {% set nextPageId = pageId | int + 1 %}
-  {% set formAction = "check-answers" if isLastQuestionPage else nextPageId %}
   {% set buttonText = "Check your answers" if isLastQuestionPage else "Continue" %}
 
-  <form class="form" action='{{formAction}}' method="post">
+  <form class="form" method="post">
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
 

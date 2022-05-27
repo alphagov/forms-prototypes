@@ -117,10 +117,7 @@ router.get('/form-designer/pages/:pageId/view', function (req, res) {
 });
 
 // Route used by the reordering buttons in form-index.html
-router.get('/form-designer/pages/:pageId/reorder/:direction', function (
-  req,
-  res
-) {
+router.get('/form-designer/pages/:pageId/reorder/:direction', function (req, res) {
   const { pageId, direction } = req.params
   const newArrayPosition = direction === 'down' ? pageId : pageId - 2
   const { pages } = req.session.data
@@ -148,10 +145,20 @@ router.get('/form-designer/pages/:pageId/preview', function (req, res) {
 })
 
 // Renders the new-tab page preview, set to a specific page
-router.get('/form-designer/view/:pageId(\\d+)', function (req, res) {
-  req.session.data.action = ''
+router.post('/form-designer/view/:pageId(\\d+)', function (req, res) {
   var pageId = req.params.pageId
-  
+  var pageIndex = parseInt(pageId)
+  const isLastQuestionPage = pageIndex === (req.session.data.pages.length - 1)
+
+  if(isLastQuestionPage) {
+    return res.redirect('check-answers')
+  } else {
+    return res.redirect(`${pageIndex + 1}`)
+  }
+});
+
+router.get('/form-designer/view/:pageId(\\d+)', function (req, res) {
+  var pageId = req.params.pageId
   var pageIndex = parseInt(pageId)
   var pageData = req.session.data.pages[pageIndex]
   const isLastQuestionPage = pageIndex === (req.session.data.pages.length - 1)
