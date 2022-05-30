@@ -51,9 +51,8 @@ router.get('/form-designer/edit-page/:pageId', function (req, res) {
   var action = req.session.data.action
   var pageId = req.params.pageId
   var editNextPageId = parseInt(pageId) + 1
-  var enableMultipleChoiceAnswerType = JSON.parse(
-    process.env.ENABLE_MULTIPLE_CHOICE_ANSWER_TYPE
-  )
+  var enableMultipleChoiceAnswerType =
+    process.env.ENABLE_MULTIPLE_CHOICE_ANSWER_TYPE === 'true'
 
   // Update the 'Highest page Id'
   req.session.data.highestPageId = req.session.data.pages.length
