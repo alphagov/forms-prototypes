@@ -51,6 +51,8 @@ router.get('/form-designer/edit-page/:pageId', function (req, res) {
   var action = req.session.data.action
   var pageId = req.params.pageId
   var editNextPageId = parseInt(pageId) + 1
+  var enableMultipleChoiceAnswerType =
+    process.env.ENABLE_MULTIPLE_CHOICE_ANSWER_TYPE === 'true'
 
   // Update the 'Highest page Id'
   req.session.data.highestPageId = req.session.data.pages.length
@@ -104,7 +106,8 @@ router.get('/form-designer/edit-page/:pageId', function (req, res) {
       pageId: pageId,
       pageIndex: pageIndex,
       pageData: pageData,
-      editingExistingQuestion: req.session.data.pages[pageIndex] !== undefined
+      editingExistingQuestion: req.session.data.pages[pageIndex] !== undefined,
+      enableMultipleChoiceAnswerType
     })
   }
 })

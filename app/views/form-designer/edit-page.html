@@ -196,20 +196,8 @@
            or checked(namePrefix + "['type']", "date"))
         %}
 
-        {{ govukRadios({
-          idPrefix: "type",
-          name: namePrefix + "[type]",
-          classes: "govuk-radios--small",
-          fieldset: {
-            legend: {
-              text: "What kind of answer do you need to this question?",
-              classes: "govuk-fieldset__legend--m"
-            }
-          },
-          hint: {
-            text: "The answer will be validated to check it’s in the selected format."
-          },
-          items: [
+        {%
+          set radioItems = [
             {
               value: "text",
               text: "Single line of text",
@@ -239,16 +227,38 @@
               value: "phone",
               text: "Phone number",
               checked: checked(namePrefix + "['type']", "phone")
-            },
-            {
-              value: "radio-checkbox",
-              text: "Choosing from a list of options",
-              checked: checked(namePrefix + "['type']", "radio-checkbox"),
-              conditional: {
-              html: radioCheckboxHtml
-            }
             }
           ]
+        %}
+        
+        {% set multipleChoiceRadioItem = {
+            value: "radio-checkbox",
+            text: "Choosing from a list of options",
+            checked: checked(namePrefix + "['type']", "radio-checkbox"),
+            conditional: {
+              html: radioCheckboxHtml
+            }
+          }
+        %}
+
+        {% if enableMultipleChoiceAnswerType %}
+          {% set radioItems = (radioItems.push(multipleChoiceRadioItem), radioItems) %}
+        {% endif %}
+
+        {{ govukRadios({
+          idPrefix: "type",
+          name: namePrefix + "[type]",
+          classes: "govuk-radios--small",
+          fieldset: {
+            legend: {
+              text: "What kind of answer do you need to this question?",
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          hint: {
+            text: "The answer will be validated to check it’s in the selected format."
+          },
+          items: radioItems
         }) }}
 
         {#
