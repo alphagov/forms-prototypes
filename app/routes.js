@@ -3,6 +3,7 @@ const express = require('express')
 const { setPageIndexToArrayPosition } = require('../lib/utils.js')
 const sessionDataDefaults = require('./data/session-data-defaults.js')
 const returningSessionDataDefaults = require('./data/returning-session-data-defaults')
+const returningSessionDataDefaultsA11y = require('./data/returning-session-data-defaults-a11y')
 const router = express.Router()
 
 // ROUTES FOR EXAMPLE FORMS
@@ -232,8 +233,8 @@ router.post('/form-designer/form-create-a-form', function (req, res) {
 })
 
 router.get('/form-designer/returning', (req, res) => {
-  req.session.data = returningSessionDataDefaults 
-  res.redirect('/form-designer/form-list')
+  req.session.data = returningSessionDataDefaultsA11y
+  res.redirect('/form-designer/form-list-a11y')
 })
 
 module.exports = router
