@@ -60,9 +60,10 @@
                 </dt>
                 <dd class="govuk-summary-list__actions">
                   <div class="govuk-button-group form-action-group govuk-!-margin-bottom-0">
+                    <div class="form-actions-reordering">
                     {% if page.pageIndex > 0 %}
                       {{ govukButton({
-                          text: "Up",
+                          html: "Move up <span class='govuk-visually-hidden'>" + questionTitle + "</span>",
                           classes: "govuk-button--secondary",
                           href: "reorder-page/" + (page.pageIndex | int + 1) + "/up"
                         }) }}
@@ -70,15 +71,16 @@
 
                     {% if page.pageIndex < data.pages | length - 1 %}
                       {{ govukButton({
-                          text: "Down",
+                          html: "Move down <span class='govuk-visually-hidden'>" + questionTitle + "</span>",
                           classes: "govuk-button--secondary",
                           href: "reorder-page/" + (page.pageIndex | int + 1) + "/down"
                         }) }}
                     {% endif %}
+                    <div>
 
                     <a class="govuk-link govuk-link--no-visited-state"
                     href="edit-page/{{page.pageIndex | int + 1}}">
-                      Edit
+                      Edit <span class="govuk-visually-hidden">{{questionTitle}}</span>
                     </a>
                   </div>
                 </dd>
