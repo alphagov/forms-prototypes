@@ -98,6 +98,11 @@ router.get('/form-designer/edit-page/:pageId', function (req, res) {
     // reset the action to avoid a loop
     req.session.data.action = ''
     return res.redirect(`/form-designer/delete/${pageId}`)
+  } else if (action === 'previewPage') {
+    // reset the action to avoid a loop
+    req.session.data.action = ''
+
+    res.redirect(`/form-designer/edit-page/${pageId}/preview`)
   } else {
     // If user pressed the 'Update preview' button or back link...
     var pageIndex = parseInt(pageId) - 1
@@ -111,6 +116,22 @@ router.get('/form-designer/edit-page/:pageId', function (req, res) {
       enableMultipleChoiceAnswerType
     })
   }
+})
+
+router.get('/form-designer/preview-page/:pageId', function (req, res) {
+  var pageId = req.params.pageId
+  var enableMultipleChoiceAnswerType =
+    process.env.ENABLE_MULTIPLE_CHOICE_ANSWER_TYPE === 'true'
+  var pageIndex = parseInt(pageId) - 1
+  var pageData = req.session.data.pages[pageIndex]
+
+  res.render('form-designer/preview-page', {
+    pageId: pageId,
+    pageIndex: pageIndex,
+    pageData: pageData,
+    editingExistingQuestion: req.session.data.pages[pageIndex] !== undefined,
+    enableMultipleChoiceAnswerType
+  })
 })
 
 // Route used to delete question
