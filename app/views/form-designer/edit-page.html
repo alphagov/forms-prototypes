@@ -307,18 +307,10 @@
         <input type="hidden" id="index" name="{{namePrefix}}[pageIndex]'" value="{{[pageIndex]}}">
 
         <div class="govuk-button-group">
-
-          {{ govukButton({
-            text:  "Save changes" if editingExistingQuestion else "Save question",
-            name: "action",
-            value: "update"
-          }) }}
-
           {% if pageId >= data['highestPageId'] %}
 
             {{ govukButton({
-              text: "Create next question",
-              classes: "govuk-button--secondary",
+              text: "Save and add next question",
               name: "action",
               value: "createNextPage"
             }) }}
@@ -326,13 +318,19 @@
           {% else %}
 
             {{ govukButton({
-              text: "Edit next question",
-              classes: "govuk-button--secondary",
+              text: "Save and edit next question",
               name: "action",
               value: "editNextPage"
             }) }}
 
           {% endif %}
+
+          {{ govukButton({
+            text:  "Save and preview question",
+            name: "action",
+            value: "update",
+            classes: "govuk-button--secondary"
+          }) }}
 
           {% if editingExistingQuestion %}
           {{ govukButton({
