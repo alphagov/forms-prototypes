@@ -137,28 +137,19 @@
 
         <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 
-        <details class="govuk-details govuk-!-margin-bottom-0" data-module="govuk-details" {{"open" if pageData['hint-text']}}>
-          <summary class="govuk-details__summary">
-            <span class="govuk-details__summary-text">
-              Add hint text to help people answer the question
-            </span>
-          </summary>
-          <div class="govuk-details__text govuk-!-padding-bottom-0">
-            {{ govukInput({
-              label: {
-                text: "Hint text (optional)",
-                classes: "govuk-visually-hidden"
-              },
-              hint: {
-                text: "You can use hint text if you need to explain the format the answer should be in, or where to find the information you’ve asked for."
-              },
-              id: "hint-text",
-              name: namePrefix + "[hint-text]",
-              value: pageData['hint-text']
-            }) }}
-          </div>
-        </details>
-
+        {{ govukInput({
+          label: {
+            text: "Hint text (optional)",
+            classes: "govuk-label--m"
+          },
+          hint: {
+            text: "You can use hint text if you need to explain the format the answer should be in, or where to find the information you’ve asked for."
+          },
+          id: "hint-text",
+          name: namePrefix + "[hint-text]",
+          value: pageData['hint-text']
+        }) }}
+      
         {# <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 
         <details class="govuk-details govuk-!-margin-bottom-0" data-module="govuk-details">
