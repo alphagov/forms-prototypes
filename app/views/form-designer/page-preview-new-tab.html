@@ -22,7 +22,6 @@
   {% set nextPageId = pageId | int + 1 %}
   {% set isLastQuestionPage = pageId == data['highestPageId'] %}
   {% set formAction = "../check-answers-page-preview-new-tab" if isLastQuestionPage else nextPageId %}
-  {% set buttonText = "Check your answers" if isLastQuestionPage else "Continue" %}
 
   <form class="form" action='{{formAction}}' method="post">
     <div class="govuk-grid-row">
@@ -314,7 +313,7 @@
         {% endif %}
 
         {{ govukButton({
-          text: buttonText,
+          text: "Continue",
           attributes: {
             target: "_parent"
           }
