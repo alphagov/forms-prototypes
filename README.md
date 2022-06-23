@@ -20,6 +20,9 @@ Form designer views: [/app/views/form-designer](https://github.com/alphagov/form
 
 ## Environment variables
 
+Set these environment variables to `true` to enable the features.
+
 | Name                                 | Purpose                                             |
 | ------------------------------------ | --------------------------------------------------- |
 | `ENABLE_MULTIPLE_CHOICE_ANSWER_TYPE` | Feature flag to enable multiple choice answer types |
+| `ENABLE_NUMBER_ANSWER_TYPE`          | Feature flag to enable numeric answer type          |
