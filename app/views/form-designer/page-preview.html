@@ -21,33 +21,13 @@
 
         #}
 
-        {% if pageData['intro-text'] %}
-
-          {# If the page has an intro, set the heading outside of the macros #}
-          {# Use the short title as the field label #}
-          <h1 class="govuk-heading-l">{{ pageData['long-title'] }}</h1>
-
-          <div class="app-prose-scope">
-            {% markdown %}
-            {{ pageData['intro-text'] }}
-            {% endmarkdown %}
-          </div>
-
-          {% set label = {
-            text: pageData['short-title']
-          }%}
-
-        {% else %}
-
-          {# If the page has no intro, set the heading inside of the macros #}
-          {# The heading doubles up as the label #}
-          {% set label = {
-            text: pageData['long-title'],
-            classes: "govuk-label--l",
-            isPageHeading: true
-          }%}
-
-        {% endif %}
+        {# If the page has no intro, set the heading inside of the macros #}
+        {# The heading doubles up as the label #}
+        {% set label = {
+          text: pageData['long-title'],
+          classes: "govuk-label--l",
+          isPageHeading: true
+        }%}
 
         {# Single line text fields #}
         {% if pageData['type'] == 'text' %}

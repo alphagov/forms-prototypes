@@ -25,6 +25,7 @@ module.exports = {
   "payments": "no",
   "pages": [
     {
+      "intro": "This is the intro",
       "long-title": "What is you name?",
       "short-title": "Name",
       "hint-text": "Enter your fuul name",

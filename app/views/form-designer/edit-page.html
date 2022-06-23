@@ -121,20 +121,6 @@
           value: pageData['long-title']
         }) }}
 
-        <!-- Short question text input -->
-        {{ govukInput({
-          label: {
-            text: "Question short name (optional)",
-            classes: "govuk-label--m"
-          },
-          hint: {
-            text: "The short name will be used when the form’s questions are all displayed in a list. Use a short descriptive name. For example ‘Address’."
-          },
-          id: "short-title",
-          name: namePrefix + "[short-title]",
-          value: pageData['short-title']
-        }) }}
-
         <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 
         {{ govukInput({
