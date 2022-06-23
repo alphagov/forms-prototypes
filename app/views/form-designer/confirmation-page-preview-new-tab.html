@@ -1,7 +1,8 @@
 {% extends "layout.html" %}
+{% set mainClasses = "main--draft govuk-main-wrapper--auto-spacing" %}
 
 {% block pageTitle %}
-  {{data['confirmationTitle']}}
+  {{data['confirmationTitle']}} - Preview - GOV.UK
 {% endblock %}
 
 {% block header %}
@@ -14,7 +15,7 @@
   <div class="govuk-grid-column-two-thirds">
 
     <div class="govuk-panel govuk-panel--confirmation">
-      <h1 class="govuk-panel__title">{{data['confirmationTitle']}}</h1>
+      <h1 class="govuk-panel__title">{{data['confirmationTitle']}} <span class="govuk-visually-hidden">preview</span></h1>
       <div class="govuk-panel__body">
         Your reference number is<br><strong>HDJ2123F</strong>
       </div>

@@ -184,3 +184,10 @@ $govuk-assets-path: "/govuk/assets/";
   font-size: 1.1875rem;
   font-weight: 400;
 }
+
+.main--draft {
+  background-image: url(/public/images/draft-watermark.png);
+  background-repeat: repeat-y;
+  background-position: 50% 0;
+  background-size: contain;
+}
