@@ -181,6 +181,11 @@
               checked: checked(namePrefix + "['type']", "text") or allEmpty
             },
             {
+              value: "text",
+              text: "Number",
+              checked: checked(namePrefix + "['type']", "text") or allEmpty
+            } if enableNumberAnswerType,
+            {
               value: "address",
               text: "Address",
               checked: checked(namePrefix + "['type']", "address")
