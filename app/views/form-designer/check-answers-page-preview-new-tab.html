@@ -34,7 +34,7 @@
         </dt>
         <dd class="govuk-summary-list__value">
 
-          {% if (data[loop.index]) or data[loop.index + '-year'] %}
+          {% if (data[loop.index]) or (data[loop.index + '-year']) %}
             {% if page['type'] == 'date' %}
               {{data[loop.index + '-day']}}
               {% if (data[loop.index + '-day']) %}/{% endif %}
