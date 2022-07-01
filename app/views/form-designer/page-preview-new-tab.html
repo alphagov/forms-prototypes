@@ -52,6 +52,17 @@
           }) }}
         {% endif %}
 
+        {# Number fields #}
+        {% if pageData['type'] == 'number' %}
+          {{ govukInput({
+            label: label,
+            hint: {text: pageData['hint-text']},
+            id: pageId,
+            name: pageId,
+            value: data[pageId | int]
+          }) }}
+        {% endif %}
+
         {% if pageData['type'] == 'email' %}
           {{ govukInput({
           label: label,

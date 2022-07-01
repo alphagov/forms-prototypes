@@ -37,29 +37,15 @@
           id: pageId,
           name: pageId
         }) }}
+        {% endif %}
 
-          {# Currency fields #}
-        {% elseif pageData['type'] == 'text' and pageData['unit'] == 'pounds' %}
+        {# Number text fields #}
+        {% if pageData['type'] == 'number' %}
           {{ govukInput({
           label: label,
           hint: {text: pageData['hint-text']},
           id: pageId,
-          name: pageId,
-          prefix: {text: "£"},
-          classes: "govuk-input--width-5",
-          spellcheck: false
-        }) }}
-
-          {# Weight, distance and length fields #}
-        {% elseif pageData['type'] == 'text'  %}
-          {{ govukInput({
-          label: label,
-          hint: {text: pageData['hint-text']},
-          id: pageId,
-          name: pageId,
-          suffix: {text: pageData['unit']},
-          classes: "govuk-input--width-5",
-          spellcheck: false
+          name: pageId
         }) }}
         {% endif %}
 

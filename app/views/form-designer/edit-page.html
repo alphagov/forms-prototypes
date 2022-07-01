@@ -166,6 +166,7 @@
         {# If no type is set, set type to text #}
         {%
          set allEmpty = not (checked(namePrefix + "['type']", "text")
+           or checked(namePrefix + "['type']", "number")
            or checked(namePrefix + "['type']", "email")
            or checked(namePrefix + "['type']", "address")
            or checked(namePrefix + "['type']", "phone")
@@ -181,9 +182,9 @@
               checked: checked(namePrefix + "['type']", "text") or allEmpty
             },
             {
-              value: "text",
+              value: "number",
               text: "Number",
-              checked: checked(namePrefix + "['type']", "text") or allEmpty
+              checked: checked(namePrefix + "['type']", "number")
             } if enableNumberAnswerType,
             {
               value: "address",
