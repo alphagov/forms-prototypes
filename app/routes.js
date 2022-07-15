@@ -251,7 +251,7 @@ router.post('/form-designer/completed-forms-email/set-completed-forms-email', fu
 
   // If the formsEmail is blank, create an error to be displayed to the user
   if (!formsEmail?.length) {
-    errors['formsEmail'] = {
+    errors.formsEmail = {
       text: 'Enter an email address where form submissions should be sent',
       href: "#forms-email"
     }
