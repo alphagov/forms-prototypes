@@ -1,0 +1,62 @@
+{% extends "layout-govuk-forms.html" %}
+
+{% set pageTitle = 'Are you sure you want to change this email address?' %}
+
+{% block pageTitle %}
+  {{ "Error:" if containsErrors }}{{pageTitle|safe}} - GOV.UK Forms
+{% endblock %}
+
+{% block beforeContent %}
+  <a class="govuk-back-link" href="{{data['referer']}}">Back</a>
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      {% if containsErrors %}
+        {{ govukErrorSummary({
+          titleText: "There is a problem",
+          errorList: errorList
+        }) }}
+      {% endif %}
+
+      <h1 class="govuk-heading-l">{{pageTitle|safe}}</h1>
+
+      <p class="govuk-body">
+        Completed forms will be sent to {{data['formsEmail'] or 'first.email@address.com' | safe}} instead of {{data['currentFormsEmail'] or 'second.email@address.com' | safe}}.
+      </p>
+
+      <form method="post">
+
+        {{ govukRadios({
+          idPrefix: "change-email-yesno",
+          name: "changeFormsEmail",
+          fieldset: {
+            legend: {
+              text: pageTitle|safe,
+              classes: "govuk-visually-hidden"
+            }
+          },
+          items: [
+            {
+              value: "yes",
+              text: "Yes",
+              checked: data['change-email-yesno'] == 'yes'
+            },
+            {
+              value: "no",
+              text: "No",
+              checked: data['change-email-yesno'] == 'no'
+            }
+          ],
+          errorMessage: { text: errors['changeFormsEmail'].text } if errors['changeFormsEmail'].text
+        }) }}
+
+        <button type="submit" class="govuk-button">Continue</button>
+      </form>
+    </div>
+  </div>
+
+
+{% endblock %}

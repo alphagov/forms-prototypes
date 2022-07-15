@@ -241,4 +241,66 @@ router.get('/form-designer/returning', (req, res) => {
   res.redirect('/form-designer/form-list-a11y')
 })
 
+
+// Routing for publishing steps
+
+// Renders the page which asks for form submissions email address, handling validation errors
+router.post('/form-designer/completed-forms-email/set-completed-forms-email', function (req, res) {
+  const errors = {};
+  const { formsEmail } = req.session.data
+  const { currentFormsEmail } = req.session.data
+
+  // If the formsEmail is blank, create an error to be displayed to the user
+  if (!formsEmail || !formsEmail.length) {
+    errors['formsEmail'] = {
+      text: 'Enter an email address where form submissions should be sent',
+      href: "#forms-email"
+    }
+  }
+
+  // Convert the errors into a list, so we can use it in the template
+  const errorList = Object.values(errors)
+  // If there are no errors, redirect the user to the next page
+  // otherwise, show the page again with the errors set
+  const containsErrors = errorList.length > 0
+  if(containsErrors) {
+    res.render('form-designer/completed-forms-email/set-completed-forms-email', { errors, errorList, containsErrors })
+  } else {
+    if(currentFormsEmail && (currentFormsEmail != formsEmail)) {
+      res.redirect('change-email-address')
+    } else {
+      res.redirect('confirmation-code-sent')
+    }
+  }
+})
+
+// Renders the page which asks to confirm wanting to change submission email address, handling validation errors
+router.post('/form-designer/completed-forms-email/change-email-address', function (req, res) {
+  const errors = {};
+  const { changeFormsEmail } = req.session.data
+
+  // If the changeFormsEmail has selection, create an error to be displayed to the user
+  if (!changeFormsEmail || !changeFormsEmail.length) {
+    errors['formsEmail'] = {
+      text: 'Select yes if you want to change the email',
+      href: "#forms-email"
+    }
+  }
+
+  // Convert the errors into a list, so we can use it in the template
+  const errorList = Object.values(errors)
+  // If there are no errors, redirect the user to the next page
+  // otherwise, show the page again with the errors set
+  const containsErrors = errorList.length > 0
+  if(containsErrors) {
+    res.render('form-designer/completed-forms-email/change-email-address', { errors, errorList, containsErrors })
+  } else {
+    if(changeFormsEmail == 'yes') {
+      res.redirect('confirmation-code-sent')
+    } else {
+      res.redirect('set-completed-forms-email')
+    }
+  }
+})
+
 module.exports = router

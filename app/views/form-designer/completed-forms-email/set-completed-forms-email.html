@@ -1,0 +1,57 @@
+{% extends "layout-govuk-forms.html" %}
+
+{% set pageTitle = 'Set the email address for completed forms' %}
+
+{% block pageTitle %}
+  {{ "Error:" if containsErrors }}{{pageTitle|safe}} - GOV.UK Forms
+{% endblock %}
+
+{% block beforeContent %}
+  <a class="govuk-back-link" href="../form-index">Back to form overview</a>
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      {% if containsErrors %}
+        {{ govukErrorSummary({
+          titleText: "There is a problem",
+          errorList: errorList
+        }) }}
+      {% endif %}
+
+      <h1 class="govuk-heading-l">{{pageTitle|safe}}</h1>
+
+      <p class="govuk-body">
+        This should be a shared government email inbox.
+      </p>
+
+      <p class="govuk-body">
+        An email will be sent to this address with a confirmation code and your email address. The recipient will be asked to tell you the code. You will then need to enter the code to confirm the email address.
+      </p>
+
+      <form method="post">
+
+        {{ govukInput({
+          label: {
+            text: "What email address should completed forms be sent to?",
+            classes: "govuk-label--m"
+          },
+          classes: "govuk-!-width-two-thirds",
+          id: "forms-email",
+          name: "formsEmail",
+          errorMessage: { text: errors['formsEmail'].text } if errors['formsEmail'].text
+        }) }}
+
+        {% if not data['currentFormsEmail'] or data['currentFormsEmail'] == '' %}
+          <input type="hidden" name="currentFormsEmail" value="{{data['currentFormsEmail'] or data['formsEmail']}}">
+        {% endif %}
+
+        <button type="submit" class="govuk-button">Continue</button>
+      </form>
+    </div>
+  </div>
+
+
+{% endblock %}
