@@ -1,0 +1,35 @@
+{% extends "layout-govuk-forms.html" %}
+
+{% set pageTitle = 'Confirmation code sent' %}
+
+{% block pageTitle %}
+  {{pageTitle|safe}} - GOV.UK Forms
+{% endblock %}
+
+{% block beforeContent %}
+  <a class="govuk-back-link" href="{{data['referer']}}">Back</a>
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <h1 class="govuk-heading-l">{{pageTitle|safe}}</h1>
+
+      <p class="govuk-body">
+        We've sent a confirmation code and your email address to {{data['formsEmail'] or 'email@address.com' | safe}}. The recipient will be asked to give you the code. You need to enter the code to confirm the email address. The code is valid for 7 days.
+      </p>
+
+      <p class="govuk-body">
+         <a href="add-confirmation-code" class="govuk-link">Enter the email address confirmation code</a>
+      </p>
+
+      <p class="govuk-body">
+        <a href="../form-index" class="govuk-link">Go to form overview</a>
+      </p>
+
+    </div>
+  </div>
+
+
+{% endblock %}

@@ -21,26 +21,24 @@
         {% set nextPageId = data['highestPageId'] | int + 1 %}
         {% set totalPageNum = data['highestPageId'] | int + 2 %}
 
-      {{ govukButton({
+        {{ govukButton({
           text: "Add a question",
           href: "choose-page-type/" + nextPageId,
           classes: "govuk-!-margin-bottom-3 govuk-!-margin-top-3"
         }) }}
 
-
-
         <h2 class="govuk-heading-m govuk-!-margin-top-7 govuk-!-margin-bottom-0">Form name</h2>
 
         <dl class="govuk-summary-list">
-        <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key govuk-!-font-weight-regular">
-          {{ data['formTitle'] }}
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key govuk-!-font-weight-regular">
+              {{ data['formTitle'] }}
             </dt>
-          <dd class="govuk-summary-list__actions">
-            <a class="govuk-link govuk-link--no-visited-state" href="form-create-a-form.html"> Edit</a>
-          </dd>
-        </div>
-      </dl>
+            <dd class="govuk-summary-list__actions">
+              <a class="govuk-link govuk-link--no-visited-state" href="form-create-a-form.html">Edit<span class="govuk-visually-hidden"> form name</span></a>
+            </dd>
+          </div>
+        </dl>
 
       {% if data.pages.length %}
 
@@ -78,9 +76,8 @@
                     {% endif %}
                     <div>
 
-                    <a class="govuk-link govuk-link--no-visited-state"
-                    href="edit-page/{{page.pageIndex | int + 1}}">
-                      Edit <span class="govuk-visually-hidden">{{questionTitle}}</span>
+                    <a class="govuk-link govuk-link--no-visited-state"href="edit-page/{{page.pageIndex | int + 1}}">
+                      Edit<span class="govuk-visually-hidden"> {{questionTitle}}</span>
                     </a>
                   </div>
                 </dd>
@@ -92,43 +89,51 @@
 
           <h2 class="govuk-heading-m govuk-!-margin-top-7 govuk-!-margin-bottom-0">Standard pages</h2>
           <dl class="govuk-summary-list">
-          <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key govuk-!-width-full govuk-!-font-weight-regular">
-            <p>Check your answers</p>
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key govuk-!-width-full govuk-!-font-weight-regular">
+                <p>Check your answers</p>
                 <p class="govuk-hint">This page lists all the questions and answers so people can check them before they submit the form. You can add a declaration for people to confirm their answers.</p>
               </dt>
-            <dd class="govuk-summary-list__actions">
-              <a class="govuk-link govuk-link--no-visited-state" href="edit-page/check-answers">
-                      Edit</a>
-            </dd>
-          </div>
+              <dd class="govuk-summary-list__actions">
+                <a class="govuk-link govuk-link--no-visited-state" href="edit-page/check-answers">
+                  Edit<span class="govuk-visually-hidden"> check your answers page</span>
+                </a>
+              </dd>
+            </div>
 
-          <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key govuk-!-width-full govuk-!-font-weight-regular">
-            <p>Confirmation</p>
-            <p class="govuk-hint">This page will be shown to confirm the form has been submitted. You can add information to tell people what will happen next.</p>
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key govuk-!-width-full govuk-!-font-weight-regular">
+                <p>Form submitted</p>
+                <p class="govuk-hint">This page will be shown to confirm the form has been submitted. You can add information to tell people what will happen next.</p>
               </dt>
-            <dd class="govuk-summary-list__actions">
-              <a class="govuk-link govuk-link--no-visited-state" href="edit-page/confirmation">
-                      Edit</a>
-            </dd>
-          </div>
-        </dl>
+              <dd class="govuk-summary-list__actions">
+                <a class="govuk-link govuk-link--no-visited-state" href="edit-page/confirmation">
+                  Edit<span class="govuk-visually-hidden"> form submitted page</span>
+                </a>
+              </dd>
+            </div>
+          </dl>
 
-      <div class="govuk-!-margin-top-9">
-        <h2 class="govuk-heading-m">Next steps</h2>
-        <p><a href="/form-designer/page-preview-new-tab/1" target="_blank">Test the form in a new tab</a></p>
-        {{ govukButton({
-            text: "Publish form",
-            classes: "govuk-button--secondary",
-            href: "form-publish"
-          }) }}
-      </div>
-      {% endif %}
+          <div class="govuk-!-margin-top-9">
+            <h2 class="govuk-heading-m">Next steps</h2>
+            <p class="govuk-body">
+              <a href="/form-designer/page-preview-new-tab/1" target="_blank">Preview the form in a new tab</a>
+            <p>
+            <p class="govuk-body">
+              <a href="completed-forms-email/set-completed-forms-email">Set the email address completed forms will be sent to</a>
+            </p>
+            <p>
+            <p class="govuk-body">
+              <a href="completed-forms-email/add-confirmation-code">Enter the email address confirmation code</a>
+            </p>
+            <p class="govuk-body">
+              <a href="form-publish">Get your form live on GOV.UK</a>
+            </p>
+          </div>
+        {% endif %}
       </div>
 
     </div>
-
   </form>
 
 {% endblock %}
