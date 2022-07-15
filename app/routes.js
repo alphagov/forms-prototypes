@@ -250,7 +250,7 @@ router.post('/form-designer/completed-forms-email/set-completed-forms-email', fu
   const { formsEmail, currentFormsEmail } = req.session.data
 
   // If the formsEmail is blank, create an error to be displayed to the user
-  if (!formsEmail || !formsEmail.length) {
+  if (!formsEmail?.length) {
     errors['formsEmail'] = {
       text: 'Enter an email address where form submissions should be sent',
       href: "#forms-email"
