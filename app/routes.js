@@ -294,7 +294,7 @@ router.post('/form-designer/completed-forms-email/change-email-address', functio
   if(containsErrors) {
     res.render('form-designer/completed-forms-email/change-email-address', { errors, errorList, containsErrors })
   } else {
-    if(changeFormsEmail == 'yes') {
+    if(changeFormsEmail === 'yes') {
       res.redirect('confirmation-code-sent')
     } else {
       res.redirect('set-completed-forms-email')
