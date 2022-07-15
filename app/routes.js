@@ -247,8 +247,7 @@ router.get('/form-designer/returning', (req, res) => {
 // Renders the page which asks for form submissions email address, handling validation errors
 router.post('/form-designer/completed-forms-email/set-completed-forms-email', function (req, res) {
   const errors = {};
-  const { formsEmail } = req.session.data
-  const { currentFormsEmail } = req.session.data
+  const { formsEmail, currentFormsEmail } = req.session.data
 
   // If the formsEmail is blank, create an error to be displayed to the user
   if (!formsEmail || !formsEmail.length) {
