@@ -252,7 +252,7 @@ router.post('/form-designer/completed-forms-email/set-completed-forms-email', fu
   // If the formsEmail is blank, create an error to be displayed to the user
   if (!formsEmail?.length) {
     errors.formsEmail = {
-      text: 'Enter an email address where form submissions should be sent',
+      text: 'Enter an email address',
       href: "#forms-email"
     }
   }
@@ -298,6 +298,35 @@ router.post('/form-designer/completed-forms-email/change-email-address', functio
       res.redirect('confirmation-code-sent')
     } else {
       res.redirect('set-completed-forms-email')
+    }
+  }
+})
+
+// Renders the page which asks for email confirmation code, handling validation errors
+router.post('/form-designer/completed-forms-email/add-confirmation-code', function (req, res) {
+  const errors = {};
+  const { formsEmail, confirmationCode } = req.session.data
+
+  // If the formsEmail is blank, create an error to be displayed to the user
+  if (!confirmationCode?.length) {
+    errors.confirmationCode = {
+      text: 'Enter the confirmation code'),
+      href: "#confirmation-code"
+    }
+  }
+
+  // Convert the errors into a list, so we can use it in the template
+  const errorList = Object.values(errors)
+  // If there are no errors, redirect the user to the next page
+  // otherwise, show the page again with the errors set
+  const containsErrors = errorList.length > 0
+  if(containsErrors) {
+    res.render('form-designer/completed-forms-email/add-confirmation-code', { errors, errorList, containsErrors })
+  } else {
+    if(confirmationCode === '000000') {
+      res.redirect('confirmation-code-expired')
+    } else {
+      res.redirect('email-confirmation')
     }
   }
 })
