@@ -113,12 +113,15 @@
               </dd>
             </div>
           </dl>
+        {% endif %}
 
           <div class="govuk-!-margin-top-9">
             <h2 class="govuk-heading-m">Next steps</h2>
+          {% if data.pages.length %}
             <p class="govuk-body">
               <a href="/form-designer/page-preview-new-tab/1" target="_blank">Preview the form in a new tab</a>
             <p>
+          {% endif %}
             <p class="govuk-body">
               <a href="completed-forms-email/set-completed-forms-email">Set the email address completed forms will be sent to</a>
             </p>
@@ -126,11 +129,12 @@
             <p class="govuk-body">
               <a href="completed-forms-email/add-confirmation-code">Enter the email address confirmation code</a>
             </p>
+          {% if data.pages.length %}
             <p class="govuk-body">
               <a href="form-publish">Get your form live on GOV.UK</a>
             </p>
+          {% endif %}
           </div>
-        {% endif %}
       </div>
 
     </div>

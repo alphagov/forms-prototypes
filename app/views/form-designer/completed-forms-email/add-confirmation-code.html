@@ -1,0 +1,48 @@
+{% extends "layout-govuk-forms.html" %}
+
+{% set pageTitle = 'Enter the confirmation code' %}
+
+{% block pageTitle %}
+  {{ "Error:" if containsErrors }}{{pageTitle|safe}} - GOV.UK Forms
+{% endblock %}
+
+{% block beforeContent %}
+  <a class="govuk-back-link" href="../form-index">Back to form overview</a>
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      {% if containsErrors %}
+        {{ govukErrorSummary({
+          titleText: "There is a problem",
+          errorList: errorList
+        }) }}
+      {% endif %}
+
+      <form method="post">
+
+        {{ govukInput({
+          label: {
+            text: pageTitle,
+            classes: "govuk-label--l",
+            isPageHeading: true
+          },
+          classes: "govuk-!-width-two-thirds",
+          id: "confirmation-code",
+          name: "confirmationCode",
+          errorMessage: { text: errors['confirmationCode'].text } if errors['confirmationCode'].text
+        }) }}
+
+        <p class="govuk-body">
+          <a href="confirmation-code-sent" class="govuk-link">Send a new confirmation code to {{data['formsEmail'] or 'email@address.com' | safe}}</a>
+        <p>
+
+        <button type="submit" class="govuk-button">Continue</button>
+      </form>
+    </div>
+  </div>
+
+
+{% endblock %}
