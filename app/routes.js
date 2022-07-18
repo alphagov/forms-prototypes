@@ -310,7 +310,7 @@ router.post('/form-designer/completed-forms-email/add-confirmation-code', functi
   // If the formsEmail is blank, create an error to be displayed to the user
   if (!confirmationCode?.length) {
     errors.confirmationCode = {
-      text: 'Enter the confirmation code'),
+      text: 'Enter the confirmation code',
       href: "#confirmation-code"
     }
   }
