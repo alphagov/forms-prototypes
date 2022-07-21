@@ -1,0 +1,159 @@
+{% extends "layout-govuk-forms.html" %}
+
+{% set pageTitle = 'Create a form' %}
+
+<!-- Do some checks to see how many sections are "Completed" -->
+{% set sections = 0 %}
+<!-- if form has a title sections completed =+ 1 -->
+{% if data['formTitle'] %}{% set sections = sections + 1 %}{% endif %}
+<!-- if questions added sections completed =+ 1 -->
+<!-- if summary page reviewed and confirmed sections completed =+ 1 -->
+<!-- if confirmation page reviewed and confirmed sections completed =+ 1 -->
+<!-- if processing email address added sections completed =+ 1 -->
+{% if data['formsEmail'] %}{% set sections = sections + 1 %}{% endif %}
+<!-- if processing email verified sections completed =+ 1 -->
+{% if data['confirmationCode'] %}{% set sections = sections + 1 %}{% endif %}
+
+{% block pageTitle %}
+  {{pageTitle}}: {{ data['formTitle'] }} - GOV.UK Forms
+{% endblock %}
+
+{% block beforeContent %}
+  <a class="govuk-back-link" href="form-home">Back to forms</a>
+{% endblock %}
+
+{% block content %}
+  <form id="form" class="form" action="../edit-page/{{ pageId }}" method="post">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+
+        <span class="govuk-caption-l">{{ data['formTitle'] }}</span>
+        <h1 class="govuk-heading-l">{{pageTitle}}</h1>
+
+        <!-- Keep these for now. Could still be needed/of use -->
+        {% set nextPageId = data['highestPageId'] | int + 1 %}
+        {% set totalPageNum = data['highestPageId'] | int + 2 %}
+
+        <h2 class="govuk-heading-s govuk-!-margin-bottom-2">Form incomplete</h2>
+        <p class="govuk-body govuk-!-margin-bottom-7">You have completed {{sections}} of 10 sections.</p>
+
+        <ol class="app-task-list">
+          <li>
+            <h2 class="app-task-list__section">
+              <span class="app-task-list__section-number">1. </span> Create your form
+            </h2>
+            <ul class="app-task-list__items">
+              <li class="app-task-list__item">
+                <span class="app-task-list__task-name">
+                  <a href="form-create-a-form" aria-describedby="name-of-form-status">
+                    Edit the name of your form
+                  </a>
+                </span>
+                <strong class="govuk-tag {% if not data['formTitle'] %}govuk-tag--grey{% endif %} app-task-list__tag" id="name-of-form-status">{% if data['formTitle'] %}Completed{% else %}Not started{% endif %}</strong>
+              </li>
+              <li class="app-task-list__item">
+                <span class="app-task-list__task-name">
+                  <a href="form-index" aria-describedby="add-questions-status">
+                    Add and edit your questions
+                  </a>
+                </span>
+                <strong class="govuk-tag {% if data.pages.length %}govuk-tag--blue{%else %}govuk-tag--grey{% endif %} app-task-list__tag" id="add-questions-status">{% if data.pages.length %}In progress{% else %}Not started {% endif %}</strong>
+              </li>
+              <li class="app-task-list__item">
+                <span class="app-task-list__task-name">
+                  <a href="edit-page/check-answers" aria-describedby="add-declaration-status">
+                    Review summary page and add declaration
+                  </a>
+                </span>
+                <strong class="govuk-tag govuk-tag--grey app-task-list__tag" id="add-declaration-status">Not started</strong>
+              </li>
+              <li class="app-task-list__item">
+                <span class="app-task-list__task-name">
+                  <a href="edit-page/confirmation" aria-describedby="add-what-happens-next-status">
+                    Add information about what happens next
+                  </a>
+                </span>
+                <strong class="govuk-tag govuk-tag--grey app-task-list__tag" id="add-what-happens-next-status">Not started</strong>
+              </li>
+            </ul>
+          </li>
+
+          <li>
+            <h2 class="app-task-list__section">
+              <span class="app-task-list__section-number">2. </span> Set form responses
+            </h2>
+            <ul class="app-task-list__items">
+              <li class="app-task-list__item">
+                <span class="app-task-list__task-name">
+                  <a href="completed-forms-email/set-completed-forms-email" aria-describedby="processing-email-status">
+                    Set the email address completed forms will be sent to
+                  </a>
+                </span>
+                <strong class="govuk-tag {% if not data['formsEmail'] %}govuk-tag--grey{% endif %} app-task-list__tag" id="processing-email-status">{% if data['formsEmail'] %}Completed{% else %}Not started{% endif %}</strong>
+              </li>
+              <li class="app-task-list__item">
+                <span class="app-task-list__task-name">
+                  {% if data['formsEmail'] %}<a href="completed-forms-email/add-confirmation-code" aria-describedby="verified-email-status">{% endif %}
+                    Enter the email address confirmation code
+                  {% if data['formsEmail'] %}</a>{% endif %}
+                </span>
+                <strong class="govuk-tag {% if not data['confirmationCode'] %}govuk-tag--grey{% endif %} app-task-list__tag" id="verified-email-status">{% if not data['formsEmail'] %}Cannot start yet{% elif not data['confirmationCode'] %}Not started{% else %}Completed{% endif %}</strong>
+              </li>
+            </ul>
+          </li>
+
+          <li>
+            <h2 class="app-task-list__section">
+              <span class="app-task-list__section-number">3. </span> Get your form ready to go live
+            </h2>
+            <ul class="app-task-list__items">
+              <li class="app-task-list__item">
+                <span class="app-task-list__task-name">
+                  <a href="#" aria-describedby="privacy-information-link-status">
+                    Provide link to your privacy information
+                  </a>
+                </span>
+                <strong class="govuk-tag govuk-tag--grey app-task-list__tag" id="privacy-information-link-status">Not started</strong>
+              </li>
+              <li class="app-task-list__item">
+                <span class="app-task-list__task-name">
+                  <a href="#" aria-describedby="accessibility-statement-link-status">
+                    Provide link to your accessibility statement
+                  </a>
+                </span>
+                <strong class="govuk-tag govuk-tag--grey app-task-list__tag" id="accessibility-statement-link-status">Not started</strong>
+              </li>
+            </ul>
+          </li>
+
+          <li>
+            <h2 class="app-task-list__section">
+              <span class="app-task-list__section-number">4. </span> Publish your form
+            </h2>
+            <ul class="app-task-list__items">
+              <li class="app-task-list__item">
+                <span class="app-task-list__task-name">
+                  <a href="#" aria-describedby="form-live-status">
+                    Make your form live
+                  </a>
+                </span>
+                <strong class="govuk-tag govuk-tag--grey app-task-list__tag" id="form-live-status">Not started</strong>
+              </li>
+              <li class="app-task-list__item">
+                <span class="app-task-list__task-name">
+                  <a href="form-publish" aria-describedby="publish-status">
+                    How to publish the form on GOV.UK
+                  </a>
+                </span>
+                <strong class="govuk-tag govuk-tag--grey app-task-list__tag" id="publish-status">Not started</strong>
+              </li>
+            </ul>
+          </li>
+
+        </ol>
+
+      </div>
+    </div>
+  </form>
+
+{% endblock %}

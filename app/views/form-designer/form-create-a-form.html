@@ -6,9 +6,7 @@
 {% endblock %}
 
 {% block beforeContent %}
-{% if data['referer'] %}
-  <a class="govuk-back-link" href="{{data['referer']}}">Back</a>
-{% endif %}
+  <a class="govuk-back-link" href="create-form">Back</a>
 {% endblock %}
 
 {% block content %}
@@ -46,4 +44,3 @@
     </div>
 
 {% endblock %}
-
