@@ -66,9 +66,8 @@ module.exports = {
     }
   ],
   status: 'Draft',
-  confirmationTitle: 'Form submitted',
-  confirmationNext:
-    "We've sent you an email to confirm we have received your form.",
+  confirmationTitle: 'Your form has been submitted',
+  confirmationNext:'',
   checkAnswersTitle: 'Check your answers',
   checkAnswersDeclaration:
     'By submitting this form you are confirming that, to the best of your knowledge, the answers you are providing are correct.',
