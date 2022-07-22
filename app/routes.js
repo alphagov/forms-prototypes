@@ -232,7 +232,7 @@ router.post('/form-designer/form-create-a-form', function (req, res) {
   if(containsErrors) {
     res.render('form-designer/form-create-a-form', { errors, errorList, containsErrors })
   } else {
-    res.redirect('form-index')
+    res.redirect('create-form')
   }
 })
 

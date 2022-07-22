@@ -7,15 +7,35 @@
 {% block content %}
 
     <div class="govuk-grid-row">
+
       <div class="govuk-grid-column-two-thirds">
         <h1 class="govuk-heading-l">GOV.UK Forms</h1>
+
         {{ govukButton({
-        text: "Create a form",
-        href: "form-create-a-form.html",
-        isStartButton: true
+          text: "Create a form",
+          href: "form-create-a-form.html",
+          classes: "govuk-!-margin-bottom-9",
+          isStartButton: true
         }) }}
       </div>
+
+      {% if data['formTitle'] %}
+      <div class="govuk-grid-column-full">
+        <dl class="govuk-summary-list">
+          <div class="govuk-summary-list__row">
+            <dd class="govuk-summary-list__value">
+              {{data['formTitle']}}
+            </dd>
+            <dd class="govuk-summary-list__actions">
+              <a class="govuk-link" href="create-form">
+                Edit<span class="govuk-visually-hidden"> {{data['formTitle']}}</span>
+              </a>
+            </dd>
+          </div>
+        </dl>
+      </div>
+      {% endif %}
+
     </div>
 
 {% endblock %}
-
