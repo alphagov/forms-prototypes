@@ -64,9 +64,10 @@
           ]
         }) }}
 
-        {% endset -%}
+       {% endset -%}
 
-        {% set textareaHtml %}
+    {# We're not using character limit for the textarea options yet #}
+      {# {% set textareaHtml %}
         {{ govukSelect({
           id: "char-limit",
           name: namePrefix + "[char-limit]",
@@ -102,7 +103,7 @@
             }
           ]
         }) }}
-        {% endset -%}
+        {% endset -%} #}
 
         <!-- Long question text input -->
         {{ govukInput({
@@ -135,7 +136,7 @@
           name: namePrefix + "[hint-text]",
           value: pageData['hint-text']
         }) }}
-      
+
         {# <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 
         <details class="govuk-details govuk-!-margin-bottom-0" data-module="govuk-details">
@@ -179,41 +180,70 @@
             {
               value: "text",
               text: "Single line of text",
-              checked: checked(namePrefix + "['type']", "text") or allEmpty
+              checked: checked(namePrefix + "['type']", "text") or allEmpty,
+              hint: {
+                text: "For a short answer of up to x characters"
+              }
+            },
+            {
+              value: "textarea",
+              text: "Multiple lines of text",
+              checked: checked(namePrefix + "['type']", "textarea"),
+              hint: {
+                text: "For longer answers of up to x characters"
+              }
             },
             {
               value: "number",
               text: "Number",
-              checked: checked(namePrefix + "['type']", "number")
-            } if enableNumberAnswerType,
+              checked: checked(namePrefix + "['type']", "number"),
+              hint: {
+                text: "Allows only numeric input"
+              }
+            },
             {
               value: "address",
               text: "Address",
-              checked: checked(namePrefix + "['type']", "address")
+              checked: checked(namePrefix + "['type']", "address"),
+              hint: {
+                text: "To collect an address with separate input fields - line 1, line 2, town or city, county and postcode"
+              }
             },
             {
               value: "date",
               text: "Date",
-              checked: checked(namePrefix + "['type']", "date")
+              checked: checked(namePrefix + "['type']", "date"),
+              hint: {
+                text: "Requires a specific day, month and year"
+              }
             },
             {
               value: "email",
               text: "Email address",
-              checked: checked(namePrefix + "['type']", "email")
+              checked: checked(namePrefix + "['type']", "email"),
+              hint: {
+                text: "The answer will be checked to make sure it's in the format of an email address"
+              }
             },
             {
               value: "national-insurance-number",
               text: "National Insurance number",
-              checked: checked(namePrefix + "['type']", "national-insurance-number")
+              checked: checked(namePrefix + "['type']", "national-insurance-number"),
+              hint: {
+                text: "The answer will be checked to make sure it's in the format of a National Insurance number"
+              }
             },
             {
               value: "phone",
               text: "Phone number",
-              checked: checked(namePrefix + "['type']", "phone")
+              checked: checked(namePrefix + "['type']", "phone"),
+              hint: {
+                text: "The answer will be checked to make sure it's in the format of a phone number"
+              }
             }
           ]
         %}
-        
+
         {% set multipleChoiceRadioItem = {
             value: "radio-checkbox",
             text: "Choosing from a list of options",
@@ -244,6 +274,7 @@
           items: radioItems
         }) }}
 
+        {# Keeping this textarea section for now in case we want to try out and test setting character limit in the future #}
         {#
             {
               value: "textarea",
