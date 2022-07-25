@@ -12,7 +12,7 @@
 <!-- if processing email address added sections completed =+ 1 -->
 {% if data['formsEmail'] %}{% set sections = sections + 1 %}{% endif %}
 <!-- if processing email verified sections completed =+ 1 -->
-{% if data['confirmationCode'] %}{% set sections = sections + 1 %}{% endif %}
+{% if data['confirmationCode'] and (data['confirmationCode'] !== '000000') %}{% set sections = sections + 1 %}{% endif %}
 
 {% block pageTitle %}
   {{pageTitle}}: {{ data['formTitle'] }} - GOV.UK Forms
@@ -97,7 +97,7 @@
                     Enter the email address confirmation code
                   {% if data['formsEmail'] %}</a>{% endif %}
                 </span>
-                <strong class="govuk-tag {% if not data['confirmationCode'] %}govuk-tag--grey{% endif %} app-task-list__tag" id="verified-email-status">{% if not data['formsEmail'] %}Cannot start yet{% elif not data['confirmationCode'] %}Not started{% else %}Completed{% endif %}</strong>
+                <strong class="govuk-tag {% if not data['confirmationCode'] or (data['confirmationCode'] === '000000') %}govuk-tag--grey{% endif %} app-task-list__tag" id="verified-email-status">{% if not data['formsEmail'] %}Cannot start yet{% elif not data['confirmationCode'] or (data['confirmationCode'] === '000000') %}Not started{% else %}Completed{% endif %}</strong>
               </li>
             </ul>
           </li>
