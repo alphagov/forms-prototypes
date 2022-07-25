@@ -45,7 +45,10 @@
           label: label,
           hint: {text: pageData['hint-text']},
           id: pageId,
-          name: pageId
+          name: pageId,
+          inputmode: "numeric",
+          pattern: "[0-9]*",
+          spellcheck: false
         }) }}
         {% endif %}
 
@@ -154,6 +157,16 @@
           hint: {text: pageData['hint-text']}
         }) }}
         {% endif %} #}
+
+        {# Textarea no, no, there's no limits #}
+        {% if (pageData['type'] == 'textarea') %}
+        {{ govukTextarea({
+          name: pageId,
+          id: pageId,
+          label: label,
+          hint: {text: pageData['hint-text']}
+        }) }}
+        {% endif %}
 
         {# Date field #}
         {% if pageData['type'] == 'date' %}

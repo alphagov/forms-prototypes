@@ -59,6 +59,9 @@
             hint: {text: pageData['hint-text']},
             id: pageId,
             name: pageId,
+            inputmode: "numeric",
+            pattern: "[0-9]*",
+            spellcheck: false,
             value: data[pageId | int]
           }) }}
         {% endif %}
@@ -155,22 +158,34 @@
           {% endcall %}
         {% endif %}
 
+      {# Keeping the character limit options for now in case we want to test it later #}
+
         {# Textarea with character limit #}
-        {% if (pageData['type'] == 'textarea') and (pageData['char-limit'] == 'none') %}
+        {# {% if (pageData['type'] == 'textarea') and (pageData['char-limit'] == 'none') %}
           {{ govukTextarea({
           label: label,
           hint: {text: pageData['hint-text']},
           id: pageId,
           name: pageId
         }) }}
-        {% endif %}
+        {% endif %} #}
 
         {# Textarea with no character limit #}
-        {% if (pageData['type'] == 'textarea') and not (pageData['char-limit'] == 'none') %}
+        {# {% if (pageData['type'] == 'textarea') and not (pageData['char-limit'] == 'none') %}
           {{ govukCharacterCount({
           name: pageId,
           id: pageId,
           maxlength: pageData['char-limit'],
+          label: label,
+          hint: {text: pageData['hint-text']}
+        }) }}
+        {% endif %} #}
+
+        {# Textarea no, no, there's no limits #}
+        {% if (pageData['type'] == 'textarea') %}
+        {{ govukTextarea({
+          name: pageId,
+          id: pageId,
           label: label,
           hint: {text: pageData['hint-text']}
         }) }}
