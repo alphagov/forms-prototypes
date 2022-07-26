@@ -182,7 +182,7 @@
               text: "Single line of text",
               checked: checked(namePrefix + "['type']", "text") or allEmpty,
               hint: {
-                text: "For a short answer of up to x characters"
+                text: "For a short answer"
               }
             },
             {
@@ -190,7 +190,7 @@
               text: "Multiple lines of text",
               checked: checked(namePrefix + "['type']", "textarea"),
               hint: {
-                text: "For longer answers of up to x characters"
+                text: "For a longer answer"
               }
             },
             {
@@ -198,7 +198,7 @@
               text: "Number",
               checked: checked(namePrefix + "['type']", "number"),
               hint: {
-                text: "The answer will be checked to make sure it's in the numeric format"
+                text: "Requires a numerical answer"
               }
             },
             {
@@ -206,7 +206,7 @@
               text: "Address",
               checked: checked(namePrefix + "['type']", "address"),
               hint: {
-                text: "To collect an address with separate input fields - line 1, line 2, town or city, county and postcode"
+                text: "To collect an address with separate fields for line 1, line 2, town or city, county and postcode"
               }
             },
             {
@@ -222,7 +222,7 @@
               text: "Email address",
               checked: checked(namePrefix + "['type']", "email"),
               hint: {
-                text: "The answer will be checked to make sure it's in the format of an email address"
+                text: "Requires an answer in the format of an email address"
               }
             },
             {
@@ -230,7 +230,7 @@
               text: "National Insurance number",
               checked: checked(namePrefix + "['type']", "national-insurance-number"),
               hint: {
-                text: "The answer will be checked to make sure it's in the format of a National Insurance number"
+                text: "Requires an answer in the format of a National Insurance number"
               }
             },
             {
@@ -238,7 +238,7 @@
               text: "Phone number",
               checked: checked(namePrefix + "['type']", "phone"),
               hint: {
-                text: "The answer will be checked to make sure it's in the format of a phone number"
+                text: "Requires an answer in the format of a phone number"
               }
             }
           ]
@@ -269,7 +269,7 @@
             }
           },
           hint: {
-            text: "The answer will be validated to check it’s in the selected format."
+            text: "The answer will be checked to make sure it’s in the selected format."
           },
           items: radioItems
         }) }}
