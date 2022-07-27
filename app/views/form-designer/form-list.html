@@ -1,48 +1,30 @@
 {% extends "layout-govuk-forms.html" %}
 
 {% block pageTitle %}
-  GOV.UK Forms
+  Your forms - GOV.UK Forms
 {% endblock %}
 
 {% block content %}
-<h1 class="govuk-heading-l">GOV.UK Forms</h1>
+  <h1 class="govuk-heading-l">GOV.UK Forms</h1>
 
-{{ govukButton({
-    text: "Create a form",
-    classes: "govuk-button--primary",
-    href: "unpublish-confirm"
-}) }}
+  {{ govukButton({
+      text: "Create a form",
+      classes: "govuk-button--primary",
+      href: "create-form",
+      isStartButton: true
+  }) }}
 
-<h2 class="govuk-heading-m">Your forms</h2>
-<dl class="govuk-summary-list">
-  <div class="govuk-summary-list__row">
-    <dt class="govuk-summary-list__key govuk-!-width-full govuk-!-font-weight-regular">
-    <p class="govuk-body">{{ data.formTitle }}</p>
-      </dt>
-    <dd class="govuk-summary-list__actions">
-      <a class="govuk-link govuk-link--no-visited-state" href="/form-designer/form-index">Edit <span class="govuk-visually-hidden">{{ data.formTitle }}</span></a>
-    </dd>
-  </div>
+  <h2 class="govuk-heading-m">Your forms</h2>
+  <dl class="govuk-summary-list">
 
-  <div class="govuk-summary-list__row">
+    <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key govuk-!-width-full govuk-!-font-weight-regular">
-      <p class="govuk-body">Redundancy payments form: amend my claim for holiday taken but not paid</p>
-        </dt>
+        <p class="govuk-body">{{ data.formTitle }}</p>
+      </dt>
       <dd class="govuk-summary-list__actions">
-        <a class="govuk-link govuk-link--no-visited-state" href="#not-found">Edit <span class="govuk-visually-hidden">Redundancy payments form: amend my claim for holiday taken but not paid</span></a>
+        <a class="govuk-link govuk-link--no-visited-state" href="/form-designer/create-form">Edit <span class="govuk-visually-hidden">{{ data.formTitle }}</span></a>
       </dd>
     </div>
 
-    <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key govuk-!-width-full govuk-!-font-weight-regular">
-        <p class="govuk-body">Redundancy payments form: amend my claim for unpaid wages</p>
-          </dt>
-        <dd class="govuk-summary-list__actions">
-          <a class="govuk-link govuk-link--no-visited-state" href="#not-found">Edit <span class="govuk-visually-hidden">Redundancy payments form: amend my claim for unpaid wages</span></a>
-        </dd>
-      </div>
-
-</dl>
-
+  </dl>
 {% endblock %}
-

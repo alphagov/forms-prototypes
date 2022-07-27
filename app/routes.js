@@ -237,6 +237,11 @@ router.get('/form-designer/returning', (req, res) => {
   res.redirect('/form-designer/form-list-a11y')
 })
 
+router.get('/form-designer/returning-again', (req, res) => {
+  req.session.data = returningSessionDataDefaults
+  res.redirect('/form-designer/form-list')
+})
+
 
 // Routing for publishing steps
 

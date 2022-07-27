@@ -1,85 +1,92 @@
 {% extends "layout.html" %}
 
 {% block pageTitle %}
-  Form examples
+Form examples
 {% endblock %}
 
 {% block content %}
 
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
 
-      <span class="govuk-caption-xl">GOV.UK Forms</span>
-      <h1 class="govuk-heading-xl">
-        Form builder prototypes
-      </h1>
+    <span class="govuk-caption-xl">GOV.UK Forms</span>
+    <h1 class="govuk-heading-xl">Form builder prototypes</h1>
 
-      <p class="govuk-body-l">Prototypes exploring different aspects of form builders.<p>
+    <p class="govuk-body-l">Prototypes exploring different aspects of form builders.
+    <p>
 
-          <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+      <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
 
-          <h2 class="govuk-heading-m">
-        Page designer
-      </h2>
+    <h2 class="govuk-heading-m">Page designer</h2>
 
-          <p>
-            <b>
-              <a href="/form-designer/form-home">View the prototype</a>
-            </b>
-          </p>
+    <h3 class="govuk-heading-s">First time journey</h3>
+    <p class="govuk-body">
+      <b><a href="/form-designer/form-home">View the prototype</a></b>
+    </p>
 
-          <p>
-        A basic form page designer with the following features:
-      </p>
+    <p class="govuk-body">
+      A basic form page designer with the following features:
+    </p>
 
-          <ul class="govuk-list govuk-list--bullet">
-            <li>the interface and forms are accessible and mobile friendly</li>
-            <li>you create one page at a time, using a looping wizard</li>
-            <li>pages are designed via a form, rather than directly edited</li>
-            <li>there's a persistent mobile-sized preview pane on most pages</li>
-            <li>the preview pane is functional, so you can use it to navigate the form</li>
-          </ul>
+    <ul class="govuk-list govuk-list--bullet">
+      <li>the interface and forms are accessible and mobile friendly</li>
+      <li>you create one page at a time, using a looping wizard</li>
+      <li>pages are designed via a form, rather than directly edited</li>
+      <li>there's a persistent mobile-sized preview pane on most pages</li>
+      <li>the preview pane is functional, so you can use it to navigate the form</li>
+    </ul>
 
-          <p>
-        Hypotheses to test:
-      </p>
+    <p class="govuk-body">
+      Hypotheses to test:
+    </p>
 
-          <ul class="govuk-list govuk-list--bullet">
-            <li>a wizard is usable by non-DDaT professionals</li>
-            <li>a wizard usefully constrains the space of possible page designs</li>
-            <li>a persitant preview pane helps users navigate the form</li>
-            <li>a persitant preview pane helps users understand which elements go where</li>
-            <li>a persitant preview pane provides reassurance about the final form</li>
-          </ul>
+    <ul class="govuk-list govuk-list--bullet">
+      <li>a wizard is usable by non-DDaT professionals</li>
+      <li>a wizard usefully constrains the space of possible page designs</li>
+      <li>a persitant preview pane helps users navigate the form</li>
+      <li>a persitant preview pane helps users understand which elements go where</li>
+      <li>a persitant preview pane provides reassurance about the final form</li>
+    </ul>
 
-          <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+    <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
 
-          <p>
-            <b>
-              <a href="/form-designer/returning">View return journey prototype</a>
-            </b>
-          </p>
+    <h3 class="govuk-heading-s">
+      Amendment form: redundancy claim for holiday pay return journey (Insolvency Service first form)
+    </h3>
+    <p class="govuk-body">
+      <!-- use `data/returning-session-data-defaults.js` -->
+      <b><a href="/form-designer/returning-again">View return journey prototype</a></b>
+    </p>
 
-          <ul class="govuk-list govuk-list--bullet">
-                      <li>A scenario showing a incomplete form</li>
-                    </ul>
+    <ul class="govuk-list govuk-list--bullet">
+      <li>A scenario showing a incomplete form</li>
+    </ul>
 
+    <h3 class="govuk-heading-s">
+      Take your pet abroad return journey (testing form)
+    </h3>
+    <p class="govuk-body">
+      <!-- use `data/returning-session-data-defaults-a11y.js` -->
+      <b><a href="/form-designer/returning">View return journey prototype</a></b>
+    </p>
 
-          <h2 class="govuk-heading-m">
-            Form publisher
-          </h2>
+    <ul class="govuk-list govuk-list--bullet">
+      <li>A scenario showing a completed draft form</li>
+    </ul>
 
-          <p>
-            <b>
-              <a href="/publisher/start">View the prototype</a>
-            </b>
-          </p>
+    <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
 
-          <p>
-            A basic form publisher with some approval features.
-          </p>
+    <h2 class="govuk-heading-m">Form publisher</h2>
 
-        </div>
-      </div>
+    <p class="govuk-body">
+      <b><a href="/publisher/start">View the prototype</a></b>
+    </p>
 
-    {% endblock %}
+    <p class="govuk-body">
+      A basic form publisher with some approval features.
+    </p>
+
+  </div>
+</div>
+
+{% endblock %}

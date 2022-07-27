@@ -25,9 +25,9 @@ module.exports = {
   payments: 'no',
   pages: [
     {
-      'long-title': 'What type animal is pet?',
+      'long-title': 'What type of animal is your pet?',
       'short-title': 'Animal type',
-      'hint-text': 'For example a bird, a hat.',
+      'hint-text': 'For example a bird, cat, dog.',
       type: 'text',
       pageIndex: '0'
     },
@@ -48,26 +48,26 @@ module.exports = {
       'long-title': 'What date do you travel?',
       'short-title': 'Date',
       'hint-text': 'For example 27 3 2007',
-      type: 'address',
+      type: 'date',
       pageIndex: '3'
     },
     {
-      'long-title': 'What transport means are you using?',
+      'long-title': 'How are you travelling?',
       'short-title': 'Transport type',
       'hint-text': 'For example plane, train, car.',
-      type: 'date',
+      type: 'text',
       pageIndex: '4'
     },
     {
-      'long-title': 'How many pets do you have',
-      'short-title': 'How many pets',
-      type: 'text',
+      'long-title': 'How many pets do you have?',
+      'short-title': 'Number of pets',
+      type: 'number',
       pageIndex: '5'
     }
   ],
   status: 'Draft',
   confirmationTitle: 'Your form has been submitted',
-  confirmationNext:'',
+  confirmationNext: 'We’ll send you an email to let you know the outcome. You’ll usually get a response within 10 working days.',
   checkAnswersTitle: 'Check your answers',
   checkAnswersDeclaration:
     'By submitting this form you are confirming that, to the best of your knowledge, the answers you are providing are correct.',

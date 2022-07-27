@@ -8,11 +8,15 @@
 {% if data['formTitle'] %}{% set sections = sections + 1 %}{% endif %}
 <!-- if questions added sections completed =+ 1 -->
 <!-- if summary page reviewed and confirmed sections completed =+ 1 -->
+{% if data['checkAnswersDeclaration'] %}{% set sections = sections + 1 %}{% endif %}
 <!-- if confirmation page reviewed and confirmed sections completed =+ 1 -->
+{% if data['confirmationNext'] %}{% set sections = sections + 1 %}{% endif %}
+
 <!-- if processing email address added sections completed =+ 1 -->
 {% if data['formsEmail'] %}{% set sections = sections + 1 %}{% endif %}
 <!-- if processing email verified sections completed =+ 1 -->
 {% if data['confirmationCode'] and (data['confirmationCode'] !== '000000') %}{% set sections = sections + 1 %}{% endif %}
+
 
 {% block pageTitle %}
   {{pageTitle}}: {{ data['formTitle'] }} - GOV.UK Forms
@@ -65,7 +69,7 @@
                     Review summary page and add declaration
                   </a>
                 </span>
-                <strong class="govuk-tag govuk-tag--grey app-task-list__tag" id="add-declaration-status">Not started</strong>
+                <strong class="govuk-tag {% if not data['checkAnswersDeclaration'] %}govuk-tag--grey{% endif %} app-task-list__tag" id="add-declaration-status">{% if not data['checkAnswersDeclaration'] %}Not started{% else %}Completed{% endif %}</strong>
               </li>
               <li class="app-task-list__item">
                 <span class="app-task-list__task-name">
@@ -73,7 +77,7 @@
                     Add information about what happens next
                   </a>
                 </span>
-                <strong class="govuk-tag govuk-tag--grey app-task-list__tag" id="add-what-happens-next-status">Not started</strong>
+                <strong class="govuk-tag {% if not data['confirmationNext'] %}govuk-tag--grey{% endif %} app-task-list__tag" id="add-what-happens-next-status">{% if not data['confirmationNext'] %}Not started{% else %}Completed{% endif %}</strong>
               </li>
             </ul>
           </li>
