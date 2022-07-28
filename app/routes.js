@@ -60,23 +60,60 @@ router.get('/form-designer/edit-page/:pageId', function (req, res) {
   var createNextPageId = parseInt(req.session.data.highestPageId) + 1
 
   // If user is creating a page from the check your answers page...
-  if (pageId == 'check-answers' && action == 'createNextPage') {
-    res.redirect('/form-designer/edit-page/' + createNextPageId)
+  if (pageId == 'check-answers') {
+    const errors = {};
+    const { checkAnswersDeclaration } = req.session.data
 
-    // If user is updating the check your answers page...
-  } else if (
-    pageId == 'check-answers' &&
-    (action == 'update' || action == '')
-  ) {
-    res.render('form-designer/edit-check-answers-page')
+    // If the formsEmail is blank, create an error to be displayed to the user
+    if (!checkAnswersDeclaration?.length) {
+      errors.checkAnswersDeclaration = {
+        text: 'Enter a declaration',
+        href: "#checkAnswersDeclaration"
+      }
+    }
 
-    // If user is creating a page from the confirmation page...
-  } else if (pageId == 'confirmation' && action == 'createNextPage') {
-    res.redirect('/form-designer/edit-page/' + createNextPageId)
+    // Convert the errors into a list, so we can use it in the template
+    const errorList = Object.values(errors)
+    // If there are no errors, redirect the user to the next page
+    // otherwise, show the page again with the errors set
+    const containsErrors = errorList.length > 0
+    if(containsErrors && action !== '') {
+      res.render('form-designer/edit-check-answers-page', { errors, errorList, containsErrors })
+    } else if(action == 'continue') {
+      // Reset the state so they can be reused
+      req.session.data.action = undefined
+      res.redirect('/form-designer/create-form')
+    } else {
+      res.render('form-designer/edit-check-answers-page')
+    }
 
     // If user is updating the confirmation page...
-  } else if (pageId == 'confirmation' && (action == 'update' || action == '')) {
-    res.render('form-designer/edit-confirmation-page')
+  } else if (pageId == 'confirmation') {
+    const errors = {};
+    const { confirmationNext } = req.session.data
+
+    // If the formsEmail is blank, create an error to be displayed to the user
+    if (!confirmationNext?.length) {
+      errors.confirmationNext = {
+        text: 'Enter what happens next',
+        href: "#confirmationNext"
+      }
+    }
+
+    // Convert the errors into a list, so we can use it in the template
+    const errorList = Object.values(errors)
+    // If there are no errors, redirect the user to the next page
+    // otherwise, show the page again with the errors set
+    const containsErrors = errorList.length > 0
+    if(containsErrors && action !== '') {
+      res.render('form-designer/edit-confirmation-page', { errors, errorList, containsErrors })
+    } else if(action == 'continue') {
+      // Reset the state so they can be reused
+      req.session.data.action = undefined
+      res.redirect('/form-designer/create-form')
+    } else {
+      res.render('form-designer/edit-confirmation-page')
+    }
 
     // If user is updating the start page...
   } else if (pageId == 0 && (action == 'update' || action == '')) {

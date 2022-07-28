@@ -29,5 +29,5 @@ module.exports = {
   pages: [],
   status: 'Draft',
   confirmationTitle: 'Your form has been submitted',
-  checkAnswersTitle: 'Check your answers'
+  checkAnswersTitle: 'Check your answers before submitting your form'
 }

@@ -1,44 +1,57 @@
 {% extends "layout-govuk-forms.html" %}
 
+{% set pageTitle = 'Form submitted page' %}
+
 {% block pageTitle %}
-  Edit form submitted page - GOV.UK Forms
+  {{ "Error: " if containsErrors }}Edit {{pageTitle|lower}} - GOV.UK Forms
 {% endblock %}
 
 {% block beforeContent %}
   {% set prevPageId = pageId | int - 1 %}
   {% if prevPageId > 0 %}
-    <a class="govuk-back-link" href="{{prevPageId}}">Back</a>
+    <a class="govuk-back-link" href="{{prevPageId}}">
+      Back
+    </a>
   {% else %}
-    <a class="govuk-back-link" href="../create-form" target="_parent">Back</a>
+    <a class="govuk-back-link" href="../create-form" target="_parent">
+      Back to create a form
+    </a>
   {% endif %}
 {% endblock %}
 
 {% block content %}
+
+{% if containsErrors %}
+  {{ govukErrorSummary({
+    titleText: "There is a problem",
+    errorList: errorList
+  }) }}
+{% endif %}
 
 <form id="form" class="form" action="confirmation" method="post">
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
       <span class="govuk-caption-l">{{ data['formTitle'] }}</span>
-      <h1 class="govuk-heading-l">Form submitted page</h1>
+      <h1 class="govuk-heading-l">{{pageTitle}}</h1>
 
-        {#
+      {#
 
         Every field id is prefixed with a unique page id.
         So we can have separate configurations for every page.
 
-        #}
-        {% set pagePrefix = "p" + pageId + "-" %}
+      #}
+      {% set pagePrefix = "p" + pageId + "-" %}
 
-        <p class="govuk-body">This page will be shown after someone has completed and submitted the form to let them know that the form has been submitted successfully.</p>
+      <p class="govuk-body">This page will be shown after someone has completed and submitted the form to let them know that the form has been submitted successfully.</p>
 
-        <p class="govuk-body">Add some content to let people know what will happen next and when, so they know what to expect. For example:</p>
+      <p class="govuk-body">Add some content to let people know what will happen next and when, so they know what to expect. For example:</p>
 
-        {{ govukInsetText({
+      {{ govukInsetText({
           text: "We'll send you an email to let you know the outcome. You'll usually get a response within 10 working days."
         }) }}
 
-        {{ govukCharacterCount({
+      {{ govukCharacterCount({
           name: "confirmationNext",
           id: "confirmationNext",
           maxlength: 2000,
@@ -46,25 +59,25 @@
           label: {
             text: "What happens next",
             classes: "govuk-label--m"
-          }
+          },
+          errorMessage: { text: errors['confirmationNext'].text } if errors['confirmationNext'].text
         }) }}
 
-        <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+      <input type="hidden" id="currentPageId" name="currentPageId" value="{{pageId}}">
 
-        <input type="hidden" id="currentPageId" name="currentPageId" value="{{pageId}}">
-
-        <div class="govuk-button-group">
-          {{ govukButton({
-            text: "Save changes",
-            name: "action",
-            value: "update"
-          }) }}
-        </div>
-
-        <p class="govuk-body">
-          <a class="govuk-link govuk-link--no-visited-state" href="../form-index">Go to form overview</a>
-        </p>
-
+      <div class="govuk-button-group">
+        {{ govukButton({
+          text: "Save and continue",
+          name: "action",
+          value: "continue"
+        }) }}
+        {{ govukButton({
+          text:  "Save and preview",
+          name: "action",
+          value: "update",
+          classes: "govuk-button--secondary"
+        }) }}
+      </div>
 
     </div>
 
@@ -76,7 +89,8 @@
         <div class="preview-header">
 
         </div>
-        <iframe sandbox="allow-same-origin allow-scripts" title="Page preview" data-module="app-example-frame" class="preview-pane app-example__frame app-example__frame--resizable" src="../confirmation-page-preview" frameborder="1" loading="lazy" id="iFrameResizer0" scrolling="no" ></iframe>
+        <iframe sandbox="allow-same-origin allow-scripts" title="Page preview" data-module="app-example-frame" class="preview-pane app-example__frame app-example__frame--resizable" src="../confirmation-page-preview" frameborder="1" loading="lazy"
+          id="iFrameResizer0" scrolling="no"></iframe>
       </div>
     </div>
 
