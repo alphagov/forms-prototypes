@@ -1,86 +1,83 @@
 {% extends "layout-govuk-forms.html" %}
 
-{% set pageTitle -%}
-  {% if data['checkAnswersTitle'] %}
-    {{data['checkAnswersTitle']|safe}}
-  {% else %}
-    Check your answers
-  {% endif %}
-{%- endset %}
+{% set pageTitle = 'Form summary page' %}
 
 {% block pageTitle %}
-  Edit {{pageTitle|lower}} - GOV.UK Forms
+  {{ "Error: " if containsErrors }}Edit {{pageTitle|lower}} - GOV.UK Forms
 {% endblock %}
 
 {% block beforeContent %}
   {% set prevPageId = pageId | int - 1 %}
   {% if prevPageId > 0 %}
-    <a class="govuk-back-link" href="{{prevPageId}}">Back</a>
+    <a class="govuk-back-link" href="{{prevPageId}}">
+      Back
+    </a>
   {% else %}
-    <a class="govuk-back-link" href="../create-form" target="_parent">Back</a>
+    <a class="govuk-back-link" href="../create-form" target="_parent">
+      Back to create a form
+    </a>
   {% endif %}
 {% endblock %}
 
 {% block content %}
 
+{% if containsErrors %}
+  {{ govukErrorSummary({
+    titleText: "There is a problem",
+    errorList: errorList
+  }) }}
+{% endif %}
+
 <form id="form" class="form" action="check-answers" method="post">
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-      <span class="govuk-caption-l">Check your answers</span>
+      <span class="govuk-caption-l">{{ data['formTitle'] }}</span>
       <h1 class="govuk-heading-l">{{pageTitle}}</h1>
 
-        {#
+      {#
 
-        Every field id is prefixed with a unique page id.
-        So we can have separate configurations for every page.
+      Every field id is prefixed with a unique page id.
+      So we can have separate configurations for every page.
 
-        #}
-        {% set pagePrefix = "p" + pageId + "-" %}
+      #}
+      {% set pagePrefix = "p" + pageId + "-" %}
 
-        {{ govukInput({
-          label: {
-            text: "Page title",
-            classes: "govuk-label--m"
-          },
-          hint: {
-            text: "Appears at the top of the page"
-          },
-          id: "checkAnswersTitle",
-          name: "checkAnswersTitle",
-          value: data['checkAnswersTitle']
+      <p class="govuk-body">This page lists all the questions and answers so people can check them before they submit the form.</p>
+
+      <p class="govuk-body">You can add a declaration for people to confirm their answers. For example:</p>
+
+      {{ govukInsetText({
+        text: "By submitting this form you are confirming that, to the best of your knowledge, the answers you are providing are correct."
+      }) }}
+
+      {{ govukCharacterCount({
+        name: "checkAnswersDeclaration",
+        id: "checkAnswersDeclaration",
+        maxlength: 2000,
+        value: data['checkAnswersDeclaration'],
+        label: {
+          text: "Declaration",
+          classes: "govuk-label--m"
+        },
+        errorMessage: { text: errors['checkAnswersDeclaration'].text } if errors['checkAnswersDeclaration'].text
+      }) }}
+
+      <input type="hidden" id="currentPageId" name="currentPageId" value="{{pageId}}">
+
+      <div class="govuk-button-group">
+        {{ govukButton({
+          text: "Save and continue",
+          name: "action",
+          value: "continue"
         }) }}
-
-
-        {{ govukCharacterCount({
-          name: "checkAnswersDeclaration",
-          id: "checkAnswersDeclaration",
-          maxlength: 2000,
-          value: data['checkAnswersDeclaration'],
-          label: {
-            text: "Declaration",
-            classes: "govuk-label--m"
-          },
-          hint: {
-            text: "The declaration that people make when they submit the form"
-          }
+        {{ govukButton({
+          text:  "Save and preview",
+          name: "action",
+          value: "update",
+          classes: "govuk-button--secondary"
         }) }}
-
-        <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
-
-        <input type="hidden" id="currentPageId" name="currentPageId" value="{{pageId}}">
-
-        <div class="govuk-button-group">
-          {{ govukButton({
-            text: "Save changes",
-            name: "action",
-            value: "update"
-          }) }}
-        </div>
-
-        <p class="govuk-body">
-          <a class="govuk-link govuk-link--no-visited-state" href="../form-index">Go to form overview</a>
-        </p>
+      </div>
 
     </div>
 
@@ -89,7 +86,6 @@
         <h2 class="govuk-heading-m">
           Page preview
         </h2>
-        <a href="../check-answers-page-preview-new-tab" class="govuk-link govuk-link--no-visited-state govuk-!-margin-bottom-4 new-tab-link" target="_blank">Preview page in a new tab</a>
         <div class="preview-header">
           <p class="preview-link govuk-body-s">
             <!-- <a href="#" target="_blank" onclick="document.getElementById('form').submit();">Refresh</a> &nbsp;|&nbsp; -->
