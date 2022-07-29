@@ -77,7 +77,9 @@ router.get('/form-designer/edit-page/:pageId', function (req, res) {
     // If there are no errors, redirect the user to the next page
     // otherwise, show the page again with the errors set
     const containsErrors = errorList.length > 0
-    if(containsErrors && action !== '') {
+    if(containsErrors && action !== 'gogogo' && action !== '') {
+      // Reset the state so they can be reused
+      req.session.data.action = undefined
       res.render('form-designer/edit-check-answers-page', { errors, errorList, containsErrors })
     } else if(action == 'continue') {
       // Reset the state so they can be reused
@@ -105,7 +107,9 @@ router.get('/form-designer/edit-page/:pageId', function (req, res) {
     // If there are no errors, redirect the user to the next page
     // otherwise, show the page again with the errors set
     const containsErrors = errorList.length > 0
-    if(containsErrors && action !== '') {
+    if(containsErrors && action !== 'gogogo' && action !== '') {
+      // Reset the state so they can be reused
+      req.session.data.action = undefined
       res.render('form-designer/edit-confirmation-page', { errors, errorList, containsErrors })
     } else if(action == 'continue') {
       // Reset the state so they can be reused
