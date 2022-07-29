@@ -83,9 +83,6 @@ module.exports = {
   ],
   status: 'Draft',
   confirmationTitle: 'Your form has been submitted',
-  confirmationNext: 'We’ll send you an email to let you know the outcome. You’ll usually get a response within 10 working days.',
   checkAnswersTitle: 'Check your answers before submitting your form',
-  checkAnswersDeclaration:
-    'By submitting this form you are confirming that, to the best of your knowledge, the answers you are providing are correct.',
   formTitle: 'Amendment form: redundancy claim for holiday pay'
 }
