@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block beforeContent %}
-  <a class="govuk-back-link" href="create-form">Back</a>
+  <a class="govuk-back-link" href="create-form">Back to {% if data['status'] === 'Live' %}your form{% else %}create a form{% endif %}</a>
 {% endblock %}
 
 {% block content %}
@@ -15,8 +15,34 @@
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
 
+        {% if data['status'] === 'Live' %}
+        <div class="govuk-notification-banner" role="alert" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+          <div class="govuk-notification-banner__header">
+            <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+              Important
+            </h2>
+          </div>
+          <div class="govuk-notification-banner__content">
+            <h3 class="govuk-notification-banner__heading">
+              Any changes you make to a live form will be updated in the form immediately.
+            </h3>
+            <p class="govuk-body">
+              This could have an impact on people who are filling in the form at the same time. They may lose any answers they have already provided and may need to start again. 
+            </p>
+          </div>
+        </div>
+        {% endif %}
+
         <span class="govuk-caption-l">{{ data['formTitle'] }}</span>
-        <h1 class="govuk-heading-l">{{pageTitle}}</h1>
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-2">{{pageTitle}}</h1>
+        {% if data['status'] %}
+        <div>
+          {{govukTag({
+            text: data['status'],
+            classes: "govuk-!-margin-bottom-7 govuk-tag--purple" if data['status'] === 'Draft' else "govuk-!-margin-bottom-7 govuk-tag--turquoise"
+          })}}
+        </div>
+        {% endif %}
 
         {% set nextPageId = data['highestPageId'] | int + 1 %}
         {% set totalPageNum = data['highestPageId'] | int + 2 %}
@@ -24,14 +50,14 @@
         {{ govukButton({
           text: "Add a question",
           href: "choose-page-type/" + nextPageId,
-          classes: "govuk-!-margin-bottom-3 govuk-!-margin-top-3"
+          classes: "govuk-!-margin-bottom-7"
         }) }}
 
       {% if data.pages.length %}
 
-        <h2 class="govuk-heading-m govuk-!-margin-top-7 govuk-!-margin-bottom-0">Add and edit questions</h2>
+        <h2 class="govuk-heading-m">Add and edit questions</h2>
 
-        <p class="govuk-body">
+        <p class="govuk-body govuk-!-margin-bottom-9">
           <a href="/form-designer/page-preview-new-tab/1" target="_blank">Preview the form in a new tab</a>
         <p>
 
