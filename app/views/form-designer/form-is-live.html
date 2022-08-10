@@ -1,0 +1,57 @@
+{% extends "layout-govuk-forms.html" %}
+
+{% block pageTitle %}
+  Your form is live: {{ data['formTitle'] }}
+{% endblock %}
+
+{% block content %}
+
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+
+    <span class="govuk-caption-l">{{ data['formTitle'] }}</span>
+    <h1 class="govuk-heading-l">Your form is live</h1>
+
+    <p class="govuk-body">The URL for your form is:</p>
+    <p class="govuk-body">
+      <input class="govuk-input" type="text" id="formURL" value="forms.service.gov.uk/example-url" style="background-color:#f3f2f1;border-color:#b1b4b6;">
+    </p>
+    <div class="tooltip">
+      <span class="tooltiptext govuk-body" id="copyURLTooltip">Copy to clipboard</span>
+      <button class="govuk-button govuk-button--secondary" type="button" onclick="copyURL()">
+        Copy URL
+      </button>
+    </div>
+
+    <p class="govuk-body">
+      The form will not be indexed by search engines, so people will not be able to find it easily. Contact your GOV.UK publishing team to publish a link to your form on GOV.UK so people can find it.
+    </p>
+
+    <a href="create-form" class="govuk-body govuk-link govuk-link--no-visited-state">Continue to form details</a>
+
+  </div>
+
+</div>
+
+{% endblock %}
+
+{% block pageScripts %}
+<script type="text/javascript">
+  function copyURL() {
+    /* Get the text field */
+    var copyText = document.getElementById("formURL");
+
+    /* Select the text field */
+    copyText.select();
+    copyText.setSelectionRange(0, 99999); /* For mobile devices */
+
+     /* Copy the text inside the text field */
+    navigator.clipboard.writeText(copyText.value);
+
+    /* Alert the copied text */
+    var tooltip = document.getElementById("copyURLTooltip");
+    tooltip.innerHTML = "Copied to clipboard";
+  }
+</script>
+{% endblock %}

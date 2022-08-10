@@ -403,4 +403,32 @@ router.post('/form-designer/are-you-sure-you-want-to-edit-live-questions', funct
   }
 })
 
+router.post('/form-designer/make-your-form-live', function (req, res) {
+  const errors = {};
+  const { makeFormLive } = req.session.data
+
+  // If the user haven't selected yes or no
+  if (!makeFormLive || !makeFormLive.length) {
+    errors['makeFormLive'] = {
+      text: 'Select no if you do not want to make your form live yet',
+      href: "#makeFormLive"
+    }
+  }
+  // Convert the errors into a list, so we can use it in the template
+  const errorList = Object.values(errors)
+  // If there are no errors, redirect the user to the next page
+  // otherwise, show the page again with the errors set
+  const containsErrors = errorList.length > 0
+  if(containsErrors) {
+    res.render('form-designer/make-your-form-live', { errors, errorList, containsErrors })
+  } else {
+    if(makeFormLive === 'yes') {
+      req.session.data.status = "Live" 
+      res.redirect('form-is-live')
+    } else {
+      res.redirect('create-form')
+    }
+  }
+})
+
 module.exports = router
