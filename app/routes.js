@@ -373,4 +373,34 @@ router.post('/form-designer/completed-forms-email/add-confirmation-code', functi
   }
 })
 
+
+// Renders the page which asks to confirm editing live questions/form, handling validation errors
+router.post('/form-designer/are-you-sure-you-want-to-edit-live-questions', function (req, res) {
+  const errors = {};
+  const { editLiveQuestions } = req.session.data
+
+  // If the changeFormsEmail has selection, create an error to be displayed to the user
+  if (!editLiveQuestions || !editLiveQuestions.length) {
+    errors['editLiveQuestions'] = {
+      text: 'Select no if you do not want to edit your questions',
+      href: "#editLiveQuestions"
+    }
+  }
+
+  // Convert the errors into a list, so we can use it in the template
+  const errorList = Object.values(errors)
+  // If there are no errors, redirect the user to the next page
+  // otherwise, show the page again with the errors set
+  const containsErrors = errorList.length > 0
+  if(containsErrors) {
+    res.render('form-designer/are-you-sure-you-want-to-edit-live-questions', { errors, errorList, containsErrors })
+  } else {
+    if(editLiveQuestions === 'yes') {
+      res.redirect('form-index')
+    } else {
+      res.redirect('create-form')
+    }
+  }
+})
+
 module.exports = router
