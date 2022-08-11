@@ -30,182 +30,179 @@
 {% endblock %}
 
 {% block content %}
-  <form id="form" class="form" action="../edit-page/{{ pageId }}" method="post">
-    <div class="govuk-grid-row">
-      <div class="govuk-grid-column-two-thirds">
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
 
-        <span class="govuk-caption-l">{{ data['formTitle'] }}</span>
-        <h1 class="govuk-heading-l govuk-!-margin-bottom-2">{{pageTitle}}</h1>
-        {% if data['status'] %}
-        {{govukTag({
-          text: data['status'],
-          classes: "govuk-!-margin-bottom-7 govuk-tag--purple" if data['status'] === 'Draft' else "govuk-!-margin-bottom-7 govuk-tag--turquoise"
-        })}}
-        {% endif %}
+      <span class="govuk-caption-l">{{ data['formTitle'] }}</span>
+      <h1 class="govuk-heading-l govuk-!-margin-bottom-2">{{pageTitle}}</h1>
+      {% if data['status'] %}
+      {{govukTag({
+        text: data['status'],
+        classes: "govuk-!-margin-bottom-7 govuk-tag--purple" if data['status'] === 'Draft' else "govuk-!-margin-bottom-7 govuk-tag--turquoise"
+      })}}
+      {% endif %}
 
-        <!-- Keep these for now. Could still be needed/of use -->
-        {% set nextPageId = data['highestPageId'] | int + 1 %}
-        {% set totalPageNum = data['highestPageId'] | int + 2 %}
+      <!-- Keep these for now. Could still be needed/of use -->
+      {% set nextPageId = data['highestPageId'] | int + 1 %}
+      {% set totalPageNum = data['highestPageId'] | int + 2 %}
 
-        {% if data['status'] === 'Live' %}
-          <h2 class="govuk-heading-s govuk-!-margin-bottom-2">Form is live</h2>
-          <p class="govuk-body">The URL for your form is:</p>
-          <p class="govuk-body">
-            <input class="govuk-input" type="text" id="formURL" value="forms.service.gov.uk/example-url" style="background-color:#f3f2f1;border-color:#b1b4b6;">
-          </p>
-          <div class="tooltip">
-            <span class="tooltiptext govuk-body" id="copyURLTooltip">Copy to clipboard</span>
-            <button class="govuk-button govuk-button--secondary" type="button" onclick="copyURL()">
-              Copy URL
-            </button>
-          </div>
-        {% else %}
-          <h2 class="govuk-heading-s govuk-!-margin-bottom-2">Form incomplete</h2>
-          <p class="govuk-body govuk-!-margin-bottom-7">You have completed {{sections}} of 8 sections.</p>
-        {% endif %}
-
-        <ol class="app-task-list">
-          <li>
-            <h2 class="app-task-list__section">
-              <span class="app-task-list__section-number">1. </span> {% if data['status'] === 'Live' %}Edit your form{% else %}Create your form{% endif %}
-            </h2>
-            <ul class="app-task-list__items">
-              {% if data['status'] === 'Draft' %}
-              <li class="app-task-list__item">
-                <span class="app-task-list__task-name">
-                  <a href="form-create-a-form" aria-describedby="name-of-form-status">
-                    Edit the name of your form
-                  </a>
-                </span>
-                <strong class="govuk-tag {% if not data['formTitle'] %}govuk-tag--grey{% endif %} app-task-list__tag" id="name-of-form-status">{% if data['formTitle'] %}Completed{% else %}Not started{% endif %}</strong>
-              </li>
-              {% endif %}
-              <li class="app-task-list__item">
-                <span class="app-task-list__task-name">
-                  <a href="{% if data['status'] === 'Live' %}are-you-sure-you-want-to-edit-live-questions{% else %}form-index{% endif %}" aria-describedby="add-questions-status">
-                    Add and edit your questions
-                  </a>
-                </span>
-                {% if data['status'] === 'Draft' %}
-                <strong class="govuk-tag {% if data.pages.length %}govuk-tag--blue{%else %}govuk-tag--grey{% endif %} app-task-list__tag" id="add-questions-status">{% if data.pages.length %}In progress{% else %}Not started {% endif %}</strong>
-                {% endif %}
-              </li>
-              <li class="app-task-list__item">
-                <span class="app-task-list__task-name">
-                  <a href="edit-page/check-answers" aria-describedby="add-declaration-status">
-                    Review summary page and add declaration
-                  </a>
-                </span>
-                {% if data['status'] === 'Draft' %}
-                <strong class="govuk-tag {% if not data['checkAnswersDeclaration'] %}govuk-tag--grey{% endif %} app-task-list__tag" id="add-declaration-status">{% if not data['checkAnswersDeclaration'] %}Not started{% else %}Completed{% endif %}</strong>{% endif %}
-              </li>
-              <li class="app-task-list__item">
-                <span class="app-task-list__task-name">
-                  <a href="edit-page/confirmation" aria-describedby="add-what-happens-next-status">
-                    Add information about what happens next
-                  </a>
-                </span>
-                {% if data['status'] === 'Draft' %}
-                <strong class="govuk-tag {% if not data['confirmationNext'] %}govuk-tag--grey{% endif %} app-task-list__tag" id="add-what-happens-next-status">{% if not data['confirmationNext'] %}Not started{% else %}Completed{% endif %}</strong>{% endif %}
-              </li>
-            </ul>
-          </li>
-
-          <li>
-            <h2 class="app-task-list__section">
-              <span class="app-task-list__section-number">2. </span> Set form responses
-            </h2>
-            <ul class="app-task-list__items">
-              <li class="app-task-list__item">
-                <span class="app-task-list__task-name">
-                  <a href="completed-forms-email/set-completed-forms-email" aria-describedby="processing-email-status">
-                    Set the email address completed forms will be sent to
-                  </a>
-                </span>
-                {% if data['status'] === 'Draft' %}
-                <strong class="govuk-tag {% if not data['formsEmail'] %}govuk-tag--grey{% endif %} app-task-list__tag" id="processing-email-status">{% if data['formsEmail'] %}Completed{% else %}Not started{% endif %}</strong>
-                {% endif %}
-              </li>
-              <li class="app-task-list__item">
-                <span class="app-task-list__task-name">
-                  {% if data['formsEmail'] or data['status'] === 'Live' %}<a href="completed-forms-email/add-confirmation-code" aria-describedby="verified-email-status">{% endif %}
-                    Enter the email address confirmation code
-                  {% if data['formsEmail'] or data['status'] === 'Live' %}</a>{% endif %}
-                </span>
-                {% if data['status'] === 'Draft' %}
-                <strong class="govuk-tag {% if not data['confirmationCode'] or (data['confirmationCode'] === '000000') %}govuk-tag--grey{% endif %} app-task-list__tag" id="verified-email-status">{% if not data['formsEmail'] %}Cannot start yet{% elif not data['confirmationCode'] or (data['confirmationCode'] === '000000') %}Not started{% else %}Completed{% endif %}</strong>{% endif %}
-              </li>
-            </ul>
-          </li>
-
-          <li>
-            <h2 class="app-task-list__section">
-              <span class="app-task-list__section-number">3. </span> Get your form ready to go live
-            </h2>
-            <ul class="app-task-list__items">
-              <li class="app-task-list__item">
-                <span class="app-task-list__task-name">
-                  <a href="#" aria-describedby="privacy-information-link-status">
-                    Provide a link to your privacy information
-                  </a>
-                </span>
-                {% if data['status'] === 'Draft' %}
-                <strong class="govuk-tag govuk-tag--grey app-task-list__tag" id="privacy-information-link-status">Not started</strong>{% endif %}
-              </li>
-            </ul>
-          </li>
-
-          {% if data['status'] === 'Draft' %}
-          <li>
-            <h2 class="app-task-list__section">
-              <span class="app-task-list__section-number">4. </span> Make your form live
-            </h2>
-            <ul class="app-task-list__items">
-              <li class="app-task-list__item">
-                <span class="app-task-list__task-name">
-                  {% if sections >= 7 -%}<a href="#" aria-describedby="form-live-status">{%- endif %}
-                    Make your form live
-                  {% if sections >= 7 -%}</a>{%- endif %}
-                </span>
-                {% if data['status'] === 'Live' -%}
-                <strong class="govuk-tag app-task-list__tag" id="form-live-status">Completed</strong>
-                {%- elif sections >= 7 -%}
-                <strong class="govuk-tag govuk-tag--grey app-task-list__tag" id="form-live-status">Not started</strong>
-                {%- else -%}
-                <strong class="govuk-tag govuk-tag--grey app-task-list__tag" id="form-live-status">Cannot start yet</strong>
-                {%- endif %}
-              </li>
-            </ul>
-          </li>{% endif %}
-
-        </ol>
-
-        {% if data['status'] === 'Live' %}
-        <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Publish your form on GOV.UK</h2>
+      {% if data['status'] === 'Live' %}
+        <h2 class="govuk-heading-s govuk-!-margin-bottom-2">Form is live</h2>
+        <p class="govuk-body">The URL for your form is:</p>
         <p class="govuk-body">
-          Contact your GOV.UK publishing team to publish a link to your form on GOV.UK so people can find it.
+          <input class="govuk-input" type="text" id="formURL" value="forms.service.gov.uk/example-url" style="background-color:#f3f2f1;border-color:#b1b4b6;">
         </p>
-        {% endif %}
+        <div class="tooltip">
+          <span class="tooltiptext govuk-body" id="copyURLTooltip">Copy to clipboard</span>
+          <button class="govuk-button govuk-button--secondary" type="button" onclick="copyURL()">
+            Copy URL
+          </button>
+        </div>
+      {% else %}
+        <h2 class="govuk-heading-s govuk-!-margin-bottom-2">Form incomplete</h2>
+        <p class="govuk-body govuk-!-margin-bottom-7">You have completed {{sections}} of 8 sections.</p>
+      {% endif %}
 
-        {% if data['formTitle'] %}
-        <p class="govuk-body govuk-!-margin-top-9">
-          {{ govukButton({
-            text: "Delete form",
-            classes: "govuk-button--warning"
-          }) }}
-        </p>
-        {% endif %}
+      <ol class="app-task-list">
+        <li>
+          <h2 class="app-task-list__section">
+            <span class="app-task-list__section-number">1. </span> {% if data['status'] === 'Live' %}Edit your form{% else %}Create your form{% endif %}
+          </h2>
+          <ul class="app-task-list__items">
+            {% if data['status'] === 'Draft' %}
+            <li class="app-task-list__item">
+              <span class="app-task-list__task-name">
+                <a href="form-create-a-form" aria-describedby="name-of-form-status">
+                  Edit the name of your form
+                </a>
+              </span>
+              <strong class="govuk-tag {% if not data['formTitle'] %}govuk-tag--grey{% endif %} app-task-list__tag" id="name-of-form-status">{% if data['formTitle'] %}Completed{% else %}Not started{% endif %}</strong>
+            </li>
+            {% endif %}
+            <li class="app-task-list__item">
+              <span class="app-task-list__task-name">
+                <a href="{% if data['status'] === 'Live' %}are-you-sure-you-want-to-edit-live-questions{% else %}form-index{% endif %}" aria-describedby="add-questions-status">
+                  Add and edit your questions
+                </a>
+              </span>
+              {% if data['status'] === 'Draft' %}
+              <strong class="govuk-tag {% if data.pages.length %}govuk-tag--blue{%else %}govuk-tag--grey{% endif %} app-task-list__tag" id="add-questions-status">{% if data.pages.length %}In progress{% else %}Not started {% endif %}</strong>
+              {% endif %}
+            </li>
+            <li class="app-task-list__item">
+              <span class="app-task-list__task-name">
+                <a href="edit-page/check-answers" aria-describedby="add-declaration-status">
+                  Review summary page and add declaration
+                </a>
+              </span>
+              {% if data['status'] === 'Draft' %}
+              <strong class="govuk-tag {% if not data['checkAnswersDeclaration'] %}govuk-tag--grey{% endif %} app-task-list__tag" id="add-declaration-status">{% if not data['checkAnswersDeclaration'] %}Not started{% else %}Completed{% endif %}</strong>{% endif %}
+            </li>
+            <li class="app-task-list__item">
+              <span class="app-task-list__task-name">
+                <a href="edit-page/confirmation" aria-describedby="add-what-happens-next-status">
+                  Add information about what happens next
+                </a>
+              </span>
+              {% if data['status'] === 'Draft' %}
+              <strong class="govuk-tag {% if not data['confirmationNext'] %}govuk-tag--grey{% endif %} app-task-list__tag" id="add-what-happens-next-status">{% if not data['confirmationNext'] %}Not started{% else %}Completed{% endif %}</strong>{% endif %}
+            </li>
+          </ul>
+        </li>
 
-      </div>
+        <li>
+          <h2 class="app-task-list__section">
+            <span class="app-task-list__section-number">2. </span> Set form responses
+          </h2>
+          <ul class="app-task-list__items">
+            <li class="app-task-list__item">
+              <span class="app-task-list__task-name">
+                <a href="completed-forms-email/set-completed-forms-email" aria-describedby="processing-email-status">
+                  Set the email address completed forms will be sent to
+                </a>
+              </span>
+              {% if data['status'] === 'Draft' %}
+              <strong class="govuk-tag {% if not data['formsEmail'] %}govuk-tag--grey{% endif %} app-task-list__tag" id="processing-email-status">{% if data['formsEmail'] %}Completed{% else %}Not started{% endif %}</strong>
+              {% endif %}
+            </li>
+            <li class="app-task-list__item">
+              <span class="app-task-list__task-name">
+                {% if data['formsEmail'] or data['status'] === 'Live' %}<a href="completed-forms-email/add-confirmation-code" aria-describedby="verified-email-status">{% endif %}
+                  Enter the email address confirmation code
+                {% if data['formsEmail'] or data['status'] === 'Live' %}</a>{% endif %}
+              </span>
+              {% if data['status'] === 'Draft' %}
+              <strong class="govuk-tag {% if not data['confirmationCode'] or (data['confirmationCode'] === '000000') %}govuk-tag--grey{% endif %} app-task-list__tag" id="verified-email-status">{% if not data['formsEmail'] %}Cannot start yet{% elif not data['confirmationCode'] or (data['confirmationCode'] === '000000') %}Not started{% else %}Completed{% endif %}</strong>{% endif %}
+            </li>
+          </ul>
+        </li>
+
+        <li>
+          <h2 class="app-task-list__section">
+            <span class="app-task-list__section-number">3. </span> Get your form ready to go live
+          </h2>
+          <ul class="app-task-list__items">
+            <li class="app-task-list__item">
+              <span class="app-task-list__task-name">
+                <a href="#" aria-describedby="privacy-information-link-status">
+                  Provide a link to your privacy information
+                </a>
+              </span>
+              {% if data['status'] === 'Draft' %}
+              <strong class="govuk-tag govuk-tag--grey app-task-list__tag" id="privacy-information-link-status">Not started</strong>{% endif %}
+            </li>
+          </ul>
+        </li>
+
+        {% if data['status'] === 'Draft' %}
+        <li>
+          <h2 class="app-task-list__section">
+            <span class="app-task-list__section-number">4. </span> Make your form live
+          </h2>
+          <ul class="app-task-list__items">
+            <li class="app-task-list__item">
+              <span class="app-task-list__task-name">
+                {% if sections >= 5 -%}<a href="make-your-form-live" aria-describedby="form-live-status">{%- endif %}
+                  Make your form live
+                {% if sections >= 5 -%}</a>{%- endif %}
+              </span>
+              {% if data['status'] === 'Live' -%}
+              <strong class="govuk-tag app-task-list__tag" id="form-live-status">Completed</strong>
+              {%- elif sections >= 5 -%}
+              <strong class="govuk-tag govuk-tag--grey app-task-list__tag" id="form-live-status">Not started</strong>
+              {%- else -%}
+              <strong class="govuk-tag govuk-tag--grey app-task-list__tag" id="form-live-status">Cannot start yet</strong>
+              {%- endif %}
+            </li>
+          </ul>
+        </li>{% endif %}
+
+      </ol>
+
+      {% if data['status'] === 'Live' %}
+      <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Publish your form on GOV.UK</h2>
+      <p class="govuk-body">
+        Contact your GOV.UK publishing team to publish a link to your form on GOV.UK so people can find it.
+      </p>
+      {% endif %}
+
+      {% if data['formTitle'] %}
+      <p class="govuk-body govuk-!-margin-top-9">
+        {{ govukButton({
+          text: "Delete form",
+          classes: "govuk-button--warning"
+        }) }}
+      </p>
+      {% endif %}
+
     </div>
-  </form>
+  </div>
 
 {% endblock %}
 
 {% block pageScripts %}
 <script type="text/javascript">
   function copyURL() {
-    console.log('Hello')
     /* Get the text field */
     var copyText = document.getElementById("formURL");
 
