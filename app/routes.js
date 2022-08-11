@@ -423,11 +423,34 @@ router.post('/form-designer/make-your-form-live', function (req, res) {
     res.render('form-designer/make-your-form-live', { errors, errorList, containsErrors })
   } else {
     if(makeFormLive === 'yes') {
-      req.session.data.status = "Live" 
+      req.session.data.status = "Live"
       res.redirect('form-is-live')
     } else {
       res.redirect('create-form')
     }
+  }
+})
+
+router.post('/form-designer/provide-link-to-privacy-information', function (req, res) {
+  const errors = {};
+  const { privacyInformation } = req.session.data
+
+  // If the user haven't selected yes or no
+  if (!privacyInformation?.length) {
+    errors['privacyInformation'] = {
+      text: 'Enter a link to privacy information',
+      href: "#privacy-information"
+    }
+  }
+  // Convert the errors into a list, so we can use it in the template
+  const errorList = Object.values(errors)
+  // If there are no errors, redirect the user to the next page
+  // otherwise, show the page again with the errors set
+  const containsErrors = errorList.length > 0
+  if(containsErrors) {
+    res.render('form-designer/provide-link-to-privacy-information', { errors, errorList, containsErrors })
+  } else {
+    res.redirect('create-form')
   }
 })
 
