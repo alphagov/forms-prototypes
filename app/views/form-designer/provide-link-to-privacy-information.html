@@ -65,7 +65,11 @@
         classes: "govuk-!-width-two-thirds",
         id: "privacy-information",
         name: "privacyInformation",
-        errorMessage: { text: errors['privacyInformation'].text } if errors['privacyInformation'].text
+        hint: {
+          text: "For example, https://www.gov.uk/help/privacy-notice"
+        },
+        errorMessage: {
+          text: errors['privacyInformation'].text } if errors['privacyInformation'].text
       }) }}
 
       {{ govukButton({
