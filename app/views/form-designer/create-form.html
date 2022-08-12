@@ -144,12 +144,12 @@
           <ul class="app-task-list__items">
             <li class="app-task-list__item">
               <span class="app-task-list__task-name">
-                <a href="#" aria-describedby="privacy-information-link-status">
+                <a href="provide-link-to-privacy-information" aria-describedby="privacy-information-link-status">
                   Provide a link to your privacy information
                 </a>
               </span>
               {% if data['status'] === 'Draft' %}
-              <strong class="govuk-tag govuk-tag--grey app-task-list__tag" id="privacy-information-link-status">Not started</strong>{% endif %}
+              <strong class="govuk-tag {% if not data['privacyInformation']%} govuk-tag--grey {%endif%} app-task-list__tag" id="privacy-information-link-status">{% if not data['privacyInformation']%}Not started{% else %} Completed {% endif %}</strong>{% endif %}
             </li>
           </ul>
         </li>

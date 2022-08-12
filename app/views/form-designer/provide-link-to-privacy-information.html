@@ -1,0 +1,84 @@
+{% extends "layout-govuk-forms.html" %}
+
+{% set pageTitle = 'Provide a link to privacy information for this form' %}
+
+{% block pageTitle %}
+  {{ "Error: " if containsErrors }}{{pageTitle}} - GOV.UK Forms
+{% endblock %}
+
+{% block beforeContent %}
+  <a class="govuk-back-link" href="{{data['referer']}}">Back your form</a>
+{% endblock %}
+
+{% block content %}
+
+{% if containsErrors %}
+  {{ govukErrorSummary({
+    titleText: "There is a problem",
+    errorList: errorList
+  }) }}
+{% endif %}
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+
+    <h1 class="govuk-heading-l">
+      {{pageTitle}}
+    </h1>
+
+    <p class="govuk-body">
+      To comply with the UK General Data Protection Regulation (UK GDPR), you must provide privacy information for the people who will enter their data into your form.
+    </p>
+
+    <p class="govuk-body">
+      The privacy information must include details such as: 
+      <ul class="govuk-list govuk-list--bullet">
+        <li>
+          your purposes for processing the personal data
+        </li>
+        <li>
+          how long you’ll keep the personal data
+        </li>
+        <li>
+          who the data will be shared with
+        </li>
+        <li>
+          contact details for your department and your data protection officer
+        </li>
+      </ul>
+    </p>
+
+    <p class="govuk-body">
+      You may already publish this information, for example in a privacy notice or personal information charter. Existing privacy information may need to be updated to cover the data you are collecting in this form, or you may need a new privacy notice. 
+    </p>
+
+    <p class="govuk-body">
+      To get help, contact your department’s data protection officer or data protection manager.
+    </p>
+
+    <form method="post">
+      {{ govukInput({
+        label: {
+          text: "Enter a link to privacy information for this form",
+          classes: "govuk-label--m"
+        },
+        classes: "govuk-!-width-two-thirds",
+        id: "privacy-information",
+        name: "privacyInformation",
+        hint: {
+          text: "For example, https://www.gov.uk/help/privacy-notice"
+        },
+        errorMessage: {
+          text: errors['privacyInformation'].text } if errors['privacyInformation'].text
+      }) }}
+
+      {{ govukButton({
+        text: "Save and continue"
+      }) }}
+    </form>
+
+  </div>
+</div>
+
+
+{% endblock %}
