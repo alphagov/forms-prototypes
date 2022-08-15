@@ -45,7 +45,9 @@
 
       <p class="govuk-body">This page will be shown after someone has completed and submitted the form to let them know that the form has been submitted successfully.</p>
 
-      <p class="govuk-body">Add some content to let people know what will happen next and when, so they know what to expect. For example:</p>
+      <p class="govuk-body">Add some content to let people know what will happen next and when, so they know what to expect.</p>
+      
+      <h2 class="govuk-heading-s">Example</h2>
 
       {{ govukInsetText({
           text: "We'll send you an email to let you know the outcome. You'll usually get a response within 10 working days."
@@ -57,7 +59,7 @@
           maxlength: 2000,
           value: data['confirmationNext'],
           label: {
-            text: "What happens next",
+            text: "Enter some information to tell people what will happen next",
             classes: "govuk-label--m"
           },
           errorMessage: { text: errors['confirmationNext'].text } if errors['confirmationNext'].text
