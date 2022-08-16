@@ -464,6 +464,8 @@ router.post('/form-designer/provide-support-details', function (req, res) {
   const errors = {};
   const { supportDetails, emailSupport, phoneSupport, onlineSupportLink, onlineSupportText } = req.session.data
 
+  console.log(supportDetails)
+
   // If the user hasn't selected an option
   if (!supportDetails?.length) {
     errors['supportDetails'] = {
@@ -472,28 +474,28 @@ router.post('/form-designer/provide-support-details', function (req, res) {
     }
   }
   // If the user has selected email but hasn't entered an email
-  if (supportDetails && !emailSupport?.length) {
+  if (supportDetails?.includes('email') && !emailSupport?.length) {
     errors['emailSupport'] = {
       text: 'Enter the email people can use to ask for help',
       href: "#email-support"
     }
   }
   // If the user has selected telephone but hasn't entered any detail
-  if (supportDetails && !phoneSupport?.length) {
+  if (supportDetails?.includes('phone') && !phoneSupport?.length) {
     errors['phoneSupport'] = {
       text: 'Enter the phone number and opening times people can use to call for help',
       href: "#email-support"
     }
   }
   // If the user has selected online but hasn't entered a link
-  if (supportDetails && !onlineSupportLink?.length) {
+  if (supportDetails?.includes('online') && !onlineSupportLink?.length) {
     errors['onlineSupportLink'] = {
       text: 'Enter the link where people can ask for help',
       href: "#email-support"
     }
   }
   // If the user has selected online but hasn't entered any descriptive text for the link
-  if (supportDetails && !onlineSupportText?.length) {
+  if (supportDetails?.includes('online') && !onlineSupportText?.length) {
     errors['onlineSupportText'] = {
       text: 'Enter how you would like the link to appear to people',
       href: "#email-support"
