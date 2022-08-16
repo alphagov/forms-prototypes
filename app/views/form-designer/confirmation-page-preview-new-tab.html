@@ -1,14 +1,14 @@
-{% extends "layout.html" %}
+{% extends "layout-govuk-form-preview.html" %}
 {% set mainClasses = "main--draft govuk-main-wrapper--auto-spacing" %}
 
 {% block pageTitle %}
   {{data['confirmationTitle']}} - Preview - GOV.UK
 {% endblock %}
 
-{% block header %}
+{#{% block header %}
   <!-- Blank header with no service name for the start page -->
   {{ govukHeader() }}
-{% endblock %}
+{% endblock %}#}
 
 {% block content %}
 <div class="govuk-grid-row">
@@ -20,7 +20,7 @@
 
 
     <h2 class="govuk-heading-m">What happens next</h2>
-    
+
     {% if data['confirmationNext'] %}
     <div class="app-prose-scope">
     {% markdown %}
