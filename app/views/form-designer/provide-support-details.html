@@ -1,0 +1,153 @@
+{% extends "layout-govuk-forms.html" %}
+
+{% set pageTitle = 'Provide contact details for support' %}
+{% set pageQuestion = 'What options do you want to offer people to ask for help?' %}
+
+{% block pageTitle %}
+  {{ "Error: " if containsErrors }}{{pageTitle}} - GOV.UK Forms
+{% endblock %}
+
+{% block beforeContent %}
+  <a class="govuk-back-link" href="{{data['referer']}}">Back your form</a>
+{% endblock %}
+
+{% block content %}
+
+{% if containsErrors %}
+  {{ govukErrorSummary({
+    titleText: "There is a problem",
+    errorList: errorList
+  }) }}
+{% endif %}
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+
+    <h1 class="govuk-heading-l">
+      {{pageTitle}}
+    </h1>
+
+    <p class="govuk-body"></p>
+
+    <form method="post">
+      {% set emailHtml %}
+      {{ govukInput({
+        id: "email-support",
+        name: "emailSupport",
+        type: "email",
+        autocomplete: "email",
+        spellcheck: false,
+        classes: "govuk-!-width-full",
+        label: {
+          text: "Enter the support email for this form"
+        },
+        value: data['emailSupport'],
+        errorMessage: {
+          text: errors['emailSupport'].text } if errors['emailSupport'].text
+      }) }}
+      {% endset -%}
+
+      {% set phoneHtml %}
+      {{ govukTextarea({
+        id: "phone-support",
+        name: "phoneSupport",
+        type: "tel",
+        autocomplete: "tel",
+        classes: "govuk-!-width-full",
+        label: {
+          text: "Phone number and opening times"
+        },
+        hint: {
+          text: "Include the opening times that people can contact you for example, if you are closed on bank holidays or weekends"
+        },
+        value: data['phoneSupport'],
+        errorMessage: {
+          text: errors['phoneSupport'].text } if errors['phoneSupport'].text
+      }) }}
+      {% endset -%}
+
+      {% set textHtml %}
+      {{ govukInput({
+        id: "online-support-link",
+        name: "onlineSupportLink",
+        type: "text",
+        classes: "govuk-!-width-full",
+        label: {
+          text: "What is the link you want people to use?"
+        },
+        hint: {
+          text: "For example, https://gov.uk/contact-form"
+        },
+        value: data['onlineSupportLink'],
+        errorMessage: {
+          text: errors['onlineSupportLink'].text } if errors['onlineSupportLink'].text
+      }) }}
+      {{ govukInput({
+        id: "online-support-text",
+        name: "onlineSupportText",
+        type: "text",
+        classes: "govuk-!-width-full",
+        label: {
+          text: "How would you like this link to show to people?"
+        },
+        hint: {
+          text: "For example, online contact form"
+        },
+        value: data['onlineSupportText'],
+        errorMessage: {
+          text: errors['onlineSupportText'].text } if errors['onlineSupportText'].text
+      }) }}
+      {% endset -%}
+
+      {{ govukCheckboxes({
+        idPrefix: "support-details",
+        name: "supportDetails",
+        fieldset: {
+          legend: {
+            text: pageQuestion,
+            classes: "govuk-fieldset__legend--m"
+          }
+        },
+        hint: {
+          text: "Select at least one option."
+        },
+        items: [
+          {
+            value: "email",
+            text: "Email",
+            conditional: {
+              html: emailHtml
+            },
+            checked: checked("supportDetails", "email")
+          },
+          {
+            value: "phone",
+            text: "Telephone",
+            conditional: {
+              html: phoneHtml
+            },
+            checked: checked("supportDetails", "phone")
+          },
+          {
+            value: "online",
+            text: "Online contact link",
+            conditional: {
+              html: textHtml
+            },
+            checked: checked("supportDetails", "online")
+          }
+        ],
+        errorMessage: {
+          text: errors['supportDetails'].text } if errors['supportDetails'].text
+      }) }}
+
+      {{ govukButton({
+        text: "Save and continue"
+      }) }}
+    </form>
+
+  </div>
+</div>
+
+
+{% endblock %}

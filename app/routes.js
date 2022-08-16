@@ -403,6 +403,8 @@ router.post('/form-designer/are-you-sure-you-want-to-edit-live-questions', funct
   }
 })
 
+
+// Renders the page to confirm making form Live, handling validation errors
 router.post('/form-designer/make-your-form-live', function (req, res) {
   const errors = {};
   const { makeFormLive } = req.session.data
@@ -431,6 +433,8 @@ router.post('/form-designer/make-your-form-live', function (req, res) {
   }
 })
 
+
+// Renders the page for creator to add privacy information link, handling validation errors
 router.post('/form-designer/provide-link-to-privacy-information', function (req, res) {
   const errors = {};
   const { privacyInformation } = req.session.data
@@ -449,6 +453,59 @@ router.post('/form-designer/provide-link-to-privacy-information', function (req,
   const containsErrors = errorList.length > 0
   if(containsErrors) {
     res.render('form-designer/provide-link-to-privacy-information', { errors, errorList, containsErrors })
+  } else {
+    res.redirect('create-form')
+  }
+})
+
+
+// Renders the page for creator to add support contacts, handling validation errors
+router.post('/form-designer/provide-support-details', function (req, res) {
+  const errors = {};
+  const { supportDetails, emailSupport, phoneSupport, onlineSupportLink, onlineSupportText } = req.session.data
+
+  // If the user hasn't selected an option
+  if (!supportDetails?.length) {
+    errors['supportDetails'] = {
+      text: 'Select at least one option to help people ask for help',
+      href: "#support-details"
+    }
+  }
+  // If the user has selected email but hasn't entered an email
+  if (supportDetails && !emailSupport?.length) {
+    errors['emailSupport'] = {
+      text: 'Enter the email people can use to ask for help',
+      href: "#email-support"
+    }
+  }
+  // If the user has selected telephone but hasn't entered any detail
+  if (supportDetails && !phoneSupport?.length) {
+    errors['phoneSupport'] = {
+      text: 'Enter the phone number and opening times people can use to call for help',
+      href: "#email-support"
+    }
+  }
+  // If the user has selected online but hasn't entered a link
+  if (supportDetails && !onlineSupportLink?.length) {
+    errors['onlineSupportLink'] = {
+      text: 'Enter the link where people can ask for help',
+      href: "#email-support"
+    }
+  }
+  // If the user has selected online but hasn't entered any descriptive text for the link
+  if (supportDetails && !onlineSupportText?.length) {
+    errors['onlineSupportText'] = {
+      text: 'Enter how you would like the link to appear to people',
+      href: "#email-support"
+    }
+  }
+  // Convert the errors into a list, so we can use it in the template
+  const errorList = Object.values(errors)
+  // If there are no errors, redirect the user to the next page
+  // otherwise, show the page again with the errors set
+  const containsErrors = errorList.length > 0
+  if(containsErrors) {
+    res.render('form-designer/provide-support-details', { errors, errorList, containsErrors })
   } else {
     res.redirect('create-form')
   }
