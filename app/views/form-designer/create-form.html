@@ -9,7 +9,8 @@
 {% set sections = 0 %}
 <!-- if form has a title sections completed =+ 1 -->
 {% if data['formTitle'] %}{% set sections = sections + 1 %}{% endif %}
-<!-- if questions added sections completed =+ 1 -->
+<!-- if questions added sections completed =+ 1 --> <!-- still needs implemented -->
+{% if data['formsQuestions'] %}{% set sections = sections + 1 %}{% endif %}
 <!-- if summary page reviewed and confirmed sections completed =+ 1 -->
 {% if data['checkAnswersDeclaration'] %}{% set sections = sections + 1 %}{% endif %}
 <!-- if confirmation page reviewed and confirmed sections completed =+ 1 -->
@@ -19,6 +20,11 @@
 {% if data['formsEmail'] %}{% set sections = sections + 1 %}{% endif %}
 <!-- if processing email verified sections completed =+ 1 -->
 {% if data['confirmationCode'] and (data['confirmationCode'] !== '000000') %}{% set sections = sections + 1 %}{% endif %}
+
+<!-- if privacy information link added sections completed =+ 1 -->
+{% if data['privacyInformation']%}{% set sections = sections + 1 %}{% endif %}
+<!-- if support contact details added sections completed =+ 1 -->
+{% if data['supportDetails']%}{% set sections = sections + 1 %}{% endif %}
 
 
 {% block pageTitle %}
@@ -60,7 +66,7 @@
         </div>
       {% else %}
         <h2 class="govuk-heading-s govuk-!-margin-bottom-2">Form incomplete</h2>
-        <p class="govuk-body govuk-!-margin-bottom-7">You have completed {{sections}} of 8 sections.</p>
+        <p class="govuk-body govuk-!-margin-bottom-7">You have completed {{sections}} of 9 sections.</p>
       {% endif %}
 
       <ol class="app-task-list">
@@ -151,6 +157,15 @@
               {% if data['status'] === 'Draft' %}
               <strong class="govuk-tag {% if not data['privacyInformation']%} govuk-tag--grey {%endif%} app-task-list__tag" id="privacy-information-link-status">{% if not data['privacyInformation']%}Not started{% else %} Completed {% endif %}</strong>{% endif %}
             </li>
+            <li class="app-task-list__item">
+              <span class="app-task-list__task-name">
+                <a href="provide-support-details" aria-describedby="provide-support-details-link-status">
+                  Provide contact details for support
+                </a>
+              </span>
+              {% if data['status'] === 'Draft' %}
+              <strong class="govuk-tag {% if not data['supportDetails']%} govuk-tag--grey {%endif%} app-task-list__tag" id="provide-support-details-link-status">{% if not data['supportDetails']%}Not started{% else %} Completed {% endif %}</strong>{% endif %}
+            </li>
           </ul>
         </li>
 
@@ -162,13 +177,13 @@
           <ul class="app-task-list__items">
             <li class="app-task-list__item">
               <span class="app-task-list__task-name">
-                {% if sections >= 5 -%}<a href="make-your-form-live" aria-describedby="form-live-status">{%- endif %}
+                {% if sections >= 7 -%}<a href="make-your-form-live" aria-describedby="form-live-status">{%- endif %}
                   Make your form live
-                {% if sections >= 5 -%}</a>{%- endif %}
+                {% if sections >= 7 -%}</a>{%- endif %}
               </span>
               {% if data['status'] === 'Live' -%}
               <strong class="govuk-tag app-task-list__tag" id="form-live-status">Completed</strong>
-              {%- elif sections >= 5 -%}
+              {%- elif sections >= 7 -%}
               <strong class="govuk-tag govuk-tag--grey app-task-list__tag" id="form-live-status">Not started</strong>
               {%- else -%}
               <strong class="govuk-tag govuk-tag--grey app-task-list__tag" id="form-live-status">Cannot start yet</strong>
