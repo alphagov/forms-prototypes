@@ -165,7 +165,7 @@
         <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 
         {# If no type is set, set type to text #}
-        {%
+        {#{%
          set allEmpty = not (checked(namePrefix + "['type']", "text")
            or checked(namePrefix + "['type']", "number")
            or checked(namePrefix + "['type']", "email")
@@ -173,7 +173,7 @@
            or checked(namePrefix + "['type']", "phone")
            or checked(namePrefix + "['type']", "national-insurance-number")
            or checked(namePrefix + "['type']", "date"))
-        %}
+        %}#}
 
         {%
           set radioItems = [
