@@ -469,35 +469,35 @@ router.post('/form-designer/provide-support-details', function (req, res) {
   // If the user hasn't selected an option
   if (!supportDetails?.length) {
     errors['supportDetails'] = {
-      text: 'Select at least one option to help people ask for help',
+      text: 'Select at least one option',
       href: "#support-details"
     }
   }
   // If the user has selected email but hasn't entered an email
   if (supportDetails?.includes('email') && !emailSupport?.length) {
     errors['emailSupport'] = {
-      text: 'Enter the email people can use to ask for help',
+      text: 'Enter an email address',
       href: "#email-support"
     }
   }
   // If the user has selected telephone but hasn't entered any detail
   if (supportDetails?.includes('phone') && !phoneSupport?.length) {
     errors['phoneSupport'] = {
-      text: 'Enter the phone number and opening times people can use to call for help',
+      text: 'Enter a phone number and opening hours',
       href: "#email-support"
     }
   }
   // If the user has selected online but hasn't entered a link
   if (supportDetails?.includes('online') && !onlineSupportLink?.length) {
     errors['onlineSupportLink'] = {
-      text: 'Enter the link where people can ask for help',
+      text: 'Enter an online contact link',
       href: "#email-support"
     }
   }
   // If the user has selected online but hasn't entered any descriptive text for the link
   if (supportDetails?.includes('online') && !onlineSupportText?.length) {
     errors['onlineSupportText'] = {
-      text: 'Enter how you would like the link to appear to people',
+      text: 'Enter an online contact link description',
       href: "#email-support"
     }
   }

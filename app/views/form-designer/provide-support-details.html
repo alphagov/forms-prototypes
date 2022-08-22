@@ -1,7 +1,7 @@
 {% extends "layout-govuk-forms.html" %}
 
 {% set pageTitle = 'Provide contact details for support' %}
-{% set pageQuestion = 'What options do you want to offer people to ask for help?' %}
+{% set pageQuestion = 'How can people get help with filling in this form?' %}
 
 {% block pageTitle %}
   {{ "Error: " if containsErrors }}{{pageTitle}} - GOV.UK Forms
@@ -27,7 +27,13 @@
       {{pageTitle}}
     </h1>
 
-    <p class="govuk-body"></p>
+    <p class="govuk-body">
+      You need to provide at least one way for people to get help if they get stuck while filling in this form.
+    </p>
+
+    <p class="govuk-body">
+      The contact information will be displayed at the bottom of every page of the form.
+    </p>
 
     <form method="post">
       {% set emailHtml %}
@@ -39,7 +45,7 @@
         spellcheck: false,
         classes: "govuk-!-width-full",
         label: {
-          text: "Enter the support email for this form"
+          text: "Enter the email address"
         },
         value: data['emailSupport'],
         errorMessage: {
@@ -55,7 +61,7 @@
         autocomplete: "tel",
         classes: "govuk-!-width-full",
         label: {
-          text: "Phone number and opening times"
+          text: "Enter the phone number and its opening times"
         },
         hint: {
           text: "Include the opening times that people can contact you for example, if you are closed on bank holidays or weekends"
@@ -73,7 +79,7 @@
         type: "text",
         classes: "govuk-!-width-full",
         label: {
-          text: "What is the link you want people to use?"
+          text: "Enter the link"
         },
         hint: {
           text: "For example, https://gov.uk/contact-form"
@@ -88,10 +94,10 @@
         type: "text",
         classes: "govuk-!-width-full",
         label: {
-          text: "How would you like this link to show to people?"
+          text: "What text should be used to describe this link? "
         },
         hint: {
-          text: "For example, online contact form"
+          text: "For example, ‘Online contact form’"
         },
         value: data['onlineSupportText'],
         errorMessage: {
@@ -109,7 +115,7 @@
           }
         },
         hint: {
-          text: "Select at least one option."
+          text: "Select at least one option"
         },
         items: [
           {
@@ -122,7 +128,7 @@
           },
           {
             value: "phone",
-            text: "Telephone",
+            text: "Phone",
             conditional: {
               html: phoneHtml
             },

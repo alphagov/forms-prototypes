@@ -335,13 +335,16 @@
           </p>
           {%- endif %}
           {% if 'phone' in data['supportDetails'] -%}
-          <h3 class="govuk-heading-s">Telephone</h3>
+          <h3 class="govuk-heading-s">Phone</h3>
           <p class="govuk-body">{{data['phoneSupport'] | striptags(true) | escape | nl2br }}</p>
+          <p class="govuk-body">
+            <a class="govuk-link" href="https://www.gov.uk/call-charges" target="_blank">Find out about call charges</a>
+          </p>
           {%- endif %}
           {% if 'online' in data['supportDetails'] -%}
           <h3 class="govuk-heading-s">Contact us online</h3>
           <p class="govuk-body">
-            <a class="govuk-body" href="{{data['onlineSupportLink']}}" target="_blank">{{data['onlineSupportText'] | safe}} (opens in new tab)</a>
+            <a class="govuk-link" href="{{data['onlineSupportLink']}}" target="_blank">{{data['onlineSupportText'] | safe}} (opens in new tab)</a>
           </p>
           {%- endif %}
         </div>
