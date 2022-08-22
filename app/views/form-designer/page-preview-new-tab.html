@@ -314,9 +314,9 @@
           {% endset -%}
 
           {{ govukDetails({
-          summaryText: "Help with this question",
-          html: helpTextHtml
-        }) }}
+            summaryText: "More information about this question",
+            html: helpTextHtml
+          }) }}
         {% endif %}
 
         {{ govukButton({
@@ -324,6 +324,35 @@
           attributes: {
             target: "_parent"
           }
+        }) }}
+
+        {% set supportTextHtml %}
+        <div class="app-prose-scope">
+          {% if 'email' in data['supportDetails'] -%}
+          <h3 class="govuk-heading-s">Email</h3>
+          <p class="govuk-body">
+            <a class="govuk-link" href="mailto:{{data['emailSupport'] or 'support@department.gov.uk' | safe}}">{{data['emailSupport'] or 'support@department.gov.uk' | safe}}</a>
+          </p>
+          {%- endif %}
+          {% if 'phone' in data['supportDetails'] -%}
+          <h3 class="govuk-heading-s">Phone</h3>
+          <p class="govuk-body">{{data['phoneSupport'] | striptags(true) | escape | nl2br }}</p>
+          <p class="govuk-body">
+            <a class="govuk-link" href="https://www.gov.uk/call-charges" target="_blank">Find out about call charges</a>
+          </p>
+          {%- endif %}
+          {% if 'online' in data['supportDetails'] -%}
+          <h3 class="govuk-heading-s">Contact us online</h3>
+          <p class="govuk-body">
+            <a class="govuk-link" href="{{data['onlineSupportLink']}}" target="_blank">{{data['onlineSupportText'] | safe}} (opens in new tab)</a>
+          </p>
+          {%- endif %}
+        </div>
+        {% endset -%}
+
+        {{ govukDetails({
+          summaryText: "Get help with your form",
+          html: supportTextHtml
         }) }}
 
       </div>

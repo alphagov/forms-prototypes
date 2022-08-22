@@ -1,0 +1,156 @@
+{% extends "layout-govuk-forms.html" %}
+
+{% set pageTitle = 'Provide contact details for support' %}
+{% set pageQuestion = 'How can people get help with filling in this form?' %}
+
+{% block pageTitle %}
+  {{ "Error: " if containsErrors }}{{pageTitle}} - GOV.UK Forms
+{% endblock %}
+
+{% block beforeContent %}
+  <a class="govuk-back-link" href="{{data['referer']}}">Back your form</a>
+{% endblock %}
+
+{% block content %}
+
+{% if containsErrors %}
+  {{ govukErrorSummary({
+    titleText: "There is a problem",
+    errorList: errorList
+  }) }}
+{% endif %}
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+
+    <h1 class="govuk-heading-l">
+      {{pageTitle}}
+    </h1>
+
+    <p class="govuk-body">
+      You need to provide at least one way for people to get help if they get stuck while filling in this form.
+    </p>
+
+    <p class="govuk-body">
+      The contact information will be displayed at the bottom of every page of the form.
+    </p>
+
+    <form method="post">
+      {% set emailHtml %}
+      {{ govukInput({
+        id: "email-support",
+        name: "emailSupport",
+        type: "email",
+        autocomplete: "email",
+        spellcheck: false,
+        classes: "govuk-!-width-full",
+        label: {
+          text: "Enter the email address"
+        },
+        value: data['emailSupport'],
+        errorMessage: {
+          text: errors['emailSupport'].text } if errors['emailSupport'].text
+      }) }}
+      {% endset -%}
+
+      {% set phoneHtml %}
+      {{ govukTextarea({
+        id: "phone-support",
+        name: "phoneSupport",
+        type: "tel",
+        autocomplete: "tel",
+        classes: "govuk-!-width-full",
+        label: {
+          text: "Enter the phone number and its opening times"
+        },
+        value: data['phoneSupport'],
+        errorMessage: {
+          text: errors['phoneSupport'].text } if errors['phoneSupport'].text
+      }) }}
+      {% endset -%}
+
+      {% set textHtml %}
+      {{ govukInput({
+        id: "online-support-link",
+        name: "onlineSupportLink",
+        type: "text",
+        classes: "govuk-!-width-full",
+        label: {
+          text: "Enter the link"
+        },
+        hint: {
+          text: "For example, https://gov.uk/contact-form"
+        },
+        value: data['onlineSupportLink'],
+        errorMessage: {
+          text: errors['onlineSupportLink'].text } if errors['onlineSupportLink'].text
+      }) }}
+      {{ govukInput({
+        id: "online-support-text",
+        name: "onlineSupportText",
+        type: "text",
+        classes: "govuk-!-width-full",
+        label: {
+          text: "What text should be used to describe this link? "
+        },
+        hint: {
+          text: "For example, ‘Online contact form’"
+        },
+        value: data['onlineSupportText'],
+        errorMessage: {
+          text: errors['onlineSupportText'].text } if errors['onlineSupportText'].text
+      }) }}
+      {% endset -%}
+
+      {{ govukCheckboxes({
+        idPrefix: "support-details",
+        name: "supportDetails",
+        fieldset: {
+          legend: {
+            text: pageQuestion,
+            classes: "govuk-fieldset__legend--m"
+          }
+        },
+        hint: {
+          text: "Select at least one option"
+        },
+        items: [
+          {
+            value: "email",
+            text: "Email",
+            conditional: {
+              html: emailHtml
+            },
+            checked: checked("supportDetails", "email")
+          },
+          {
+            value: "phone",
+            text: "Phone",
+            conditional: {
+              html: phoneHtml
+            },
+            checked: checked("supportDetails", "phone")
+          },
+          {
+            value: "online",
+            text: "Online contact link",
+            conditional: {
+              html: textHtml
+            },
+            checked: checked("supportDetails", "online")
+          }
+        ],
+        errorMessage: {
+          text: errors['supportDetails'].text } if errors['supportDetails'].text
+      }) }}
+
+      {{ govukButton({
+        text: "Save and continue"
+      }) }}
+    </form>
+
+  </div>
+</div>
+
+
+{% endblock %}
