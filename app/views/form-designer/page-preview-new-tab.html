@@ -326,6 +326,7 @@
           }
         }) }}
 
+        {% if data['supportDetails'] %}
         {% set supportTextHtml %}
         <div class="app-prose-scope">
           {% if 'email' in data['supportDetails'] -%}
@@ -349,6 +350,7 @@
           {%- endif %}
         </div>
         {% endset -%}
+        {% endif %}
 
         {{ govukDetails({
           summaryText: "Get help with this form",
