@@ -62,7 +62,7 @@ router.get('/form-designer/edit-page/:pageId', function (req, res) {
   // Edit declaration page errors
   if (pageId == 'check-answers') {
     const errors = {};
-    const { checkAnswersDeclaration } = req.session.data
+    const { isDeclarationComplete } = req.session.data
 
     // If declaration is blank, create an error to be displayed to the user
     // if (!checkAnswersDeclaration?.length) {
@@ -71,6 +71,15 @@ router.get('/form-designer/edit-page/:pageId', function (req, res) {
     //     href: "#checkAnswersDeclaration"
     //   }
     // }
+
+    // Confirm if task is completed or not on declaration page
+
+    if (!isDeclarationComplete || !isDeclarationComplete.length) {
+      errors['isDeclarationComplete'] = {
+        text: 'Select no if you want to complete this section later',
+        href: "#isDeclarationComplete"
+      }
+    }
 
     // Convert the errors into a list, so we can use it in the template
     const errorList = Object.values(errors)

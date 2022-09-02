@@ -102,7 +102,7 @@
                 </a>
               </span>
               {% if data['status'] === 'Draft' %}
-              <strong class="govuk-tag {% if not data['checkAnswersDeclaration'] %}govuk-tag--grey{% endif %} app-task-list__tag" id="add-declaration-status">{% if not data['checkAnswersDeclaration'] %}Not started{% else %}Completed{% endif %}</strong>{% endif %}
+              <strong class="govuk-tag {% if not data['isDeclarationComplete'] %}govuk-tag--grey{%elif data['isDeclarationComplete'] === 'no' %}{% endif %} app-task-list__tag" id="add-declaration-status">{% if not data['isDeclarationComplete'] %}Not started{% elif data['isDeclarationComplete'] === 'no'%}In progress{% else %}Completed{% endif %}</strong>{% endif %}
             </li>
             <li class="app-task-list__item">
               <span class="app-task-list__task-name">
@@ -177,13 +177,13 @@
           <ul class="app-task-list__items">
             <li class="app-task-list__item">
               <span class="app-task-list__task-name">
-                {% if sections >= 7 -%}<a href="make-your-form-live" aria-describedby="form-live-status">{%- endif %}
+                {% if sections >= 6 -%}<a href="make-your-form-live" aria-describedby="form-live-status">{%- endif %}
                   Make your form live
-                {% if sections >= 7 -%}</a>{%- endif %}
+                {% if sections >= 6 -%}</a>{%- endif %}
               </span>
               {% if data['status'] === 'Live' -%}
               <strong class="govuk-tag app-task-list__tag" id="form-live-status">Completed</strong>
-              {%- elif sections >= 7 -%}
+              {%- elif sections >= 6 -%}
               <strong class="govuk-tag govuk-tag--grey app-task-list__tag" id="form-live-status">Not started</strong>
               {%- else -%}
               <strong class="govuk-tag govuk-tag--grey app-task-list__tag" id="form-live-status">Cannot start yet</strong>
