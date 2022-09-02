@@ -59,18 +59,18 @@ router.get('/form-designer/edit-page/:pageId', function (req, res) {
   req.session.data.highestPageId = req.session.data.pages.length
   var createNextPageId = parseInt(req.session.data.highestPageId) + 1
 
-  // If user is creating a page from the check your answers page...
+  // Edit declaration page errors
   if (pageId == 'check-answers') {
     const errors = {};
     const { checkAnswersDeclaration } = req.session.data
 
-    // If the formsEmail is blank, create an error to be displayed to the user
-    if (!checkAnswersDeclaration?.length) {
-      errors.checkAnswersDeclaration = {
-        text: 'Enter a declaration',
-        href: "#checkAnswersDeclaration"
-      }
-    }
+    // If declaration is blank, create an error to be displayed to the user
+    // if (!checkAnswersDeclaration?.length) {
+    //   errors.checkAnswersDeclaration = {
+    //     text: 'Enter a declaration',
+    //     href: "#checkAnswersDeclaration"
+    //   }
+    // }
 
     // Convert the errors into a list, so we can use it in the template
     const errorList = Object.values(errors)
