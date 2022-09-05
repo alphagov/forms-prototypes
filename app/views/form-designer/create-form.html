@@ -12,7 +12,7 @@
 <!-- if questions added sections completed =+ 1 --> <!-- still needs implemented -->
 {% if data['formsQuestions'] %}{% set sections = sections + 1 %}{% endif %}
 <!-- if summary page reviewed and confirmed sections completed =+ 1 -->
-{% if data['checkAnswersDeclaration'] %}{% set sections = sections + 1 %}{% endif %}
+{% if data['isDeclarationComplete'] === 'yes' %}{% set sections = sections + 1 %}{% endif %}
 <!-- if confirmation page reviewed and confirmed sections completed =+ 1 -->
 {% if data['confirmationNext'] %}{% set sections = sections + 1 %}{% endif %}
 
@@ -102,7 +102,7 @@
                 </a>
               </span>
               {% if data['status'] === 'Draft' %}
-              <strong class="govuk-tag {% if not data['isDeclarationComplete'] %}govuk-tag--grey{%elif data['isDeclarationComplete'] === 'no' %}{% endif %} app-task-list__tag" id="add-declaration-status">{% if not data['isDeclarationComplete'] %}Not started{% elif data['isDeclarationComplete'] === 'no'%}In progress{% else %}Completed{% endif %}</strong>{% endif %}
+              <strong class="govuk-tag {% if not data['isDeclarationComplete'] %}govuk-tag--grey{%elif data['isDeclarationComplete'] === 'no' %}govuk-tag--blue{%else %}{% endif %} app-task-list__tag" id="add-declaration-status">{% if not data['isDeclarationComplete'] %}Not started{% elif data['isDeclarationComplete'] === 'no'%}In progress{% else %}Completed{% endif %}</strong>{% endif %}
             </li>
             <li class="app-task-list__item">
               <span class="app-task-list__task-name">
