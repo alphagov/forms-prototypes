@@ -80,11 +80,13 @@
         items: [
           {
             value: "yes",
-            text: "Yes, I have completed this section"
+            text: "Yes, I have completed this section",
+            checked: checked('isDeclarationComplete', "yes")
           },
           {
             value: "no",
-            text: "No, I will come back later"
+            text: "No, I will come back later",
+            checked: checked('isDeclarationComplete', "no")
           }
         ],
         errorMessage: { text: errors['isDeclarationComplete'].text } if errors['isDeclarationComplete'].text
