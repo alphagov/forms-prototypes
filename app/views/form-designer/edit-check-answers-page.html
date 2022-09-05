@@ -46,9 +46,9 @@
       <p class="govuk-body">When someone has answered all the questions in your form, they will be shown a page that lists all of their answers. The page will ask them to check their answers before they submit the form.</p>
 
       <p class="govuk-body">You can add a declaration to this page. A declaration is some content that people must confirm they understand and agree to before they submit the form.</p>
-      
+
       <p class="govuk-body">You might want to add a declaration if you need people to confirm they have provided accurate information, or that they understand the consequences of providing false information.</p>
-      
+
       <h2 class="govuk-heading-s">Example</h2>
 
       {{ govukInsetText({
@@ -63,8 +63,33 @@
         label: {
           text: "Enter a declaration for people to agree to (optional)",
           classes: "govuk-label--m"
+        }
+      }) }}
+
+      {{ govukRadios({
+        classes: "govuk-radios",
+        idPrefix: "isDeclarationComplete",
+        name: "isDeclarationComplete",
+        fieldset: {
+          legend: {
+            text: "Have you completed this section?",
+            isPageHeading: false,
+            classes: "govuk-fieldset__legend--m"
+          }
         },
-        errorMessage: { text: errors['checkAnswersDeclaration'].text } if errors['checkAnswersDeclaration'].text
+        items: [
+          {
+            value: "yes",
+            text: "Yes, I have completed this section",
+            checked: checked('isDeclarationComplete', "yes")
+          },
+          {
+            value: "no",
+            text: "No, I will come back later",
+            checked: checked('isDeclarationComplete', "no")
+          }
+        ],
+        errorMessage: { text: errors['isDeclarationComplete'].text } if errors['isDeclarationComplete'].text
       }) }}
 
       <input type="hidden" id="currentPageId" name="currentPageId" value="{{pageId}}">
