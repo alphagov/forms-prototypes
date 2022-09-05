@@ -1,11 +1,6 @@
 {% extends "layout-govuk-form-preview.html" %}
 {% set mainClasses = "main--draft govuk-main-wrapper--auto-spacing" %}
 
-{#{% block header %}
-  <!-- Blank header with no service name for the start page -->
-  {{ govukHeader() }}
-{% endblock %}#}
-
 {% block beforeContent %}
   {% set prevPageId = pageId | int - 1 %}
   {% if prevPageId > 0 %}
@@ -14,7 +9,7 @@
 {% endblock %}
 
 {% block pageTitle %}
-  {{ pageData['long-title'] }} - Preview - GOV.UK
+  {{ pageData['long-title'] }} - Preview - {{ data['formTitle'] }} - GOV.UK
 {% endblock %}
 
 {% block content %}
@@ -326,6 +321,7 @@
           }
         }) }}
 
+        {% if data['supportDetails'] %}
         {% set supportTextHtml %}
         <div class="app-prose-scope">
           {% if 'email' in data['supportDetails'] -%}
@@ -335,22 +331,26 @@
           </p>
           {%- endif %}
           {% if 'phone' in data['supportDetails'] -%}
-          <h3 class="govuk-heading-s">Telephone</h3>
+          <h3 class="govuk-heading-s">Phone</h3>
           <p class="govuk-body">{{data['phoneSupport'] | striptags(true) | escape | nl2br }}</p>
+          <p class="govuk-body">
+            <a class="govuk-link" href="https://www.gov.uk/call-charges" target="_blank">Find out about call charges</a>
+          </p>
           {%- endif %}
           {% if 'online' in data['supportDetails'] -%}
-          <h3 class="govuk-heading-s">Contact us online</h3>
+          <h3 class="govuk-heading-s">Online</h3>
           <p class="govuk-body">
-            <a class="govuk-body" href="{{data['onlineSupportLink']}}" target="_blank">{{data['onlineSupportText'] | safe}} (opens in new tab)</a>
+            <a class="govuk-link" href="{{data['onlineSupportLink']}}" target="_blank">{{data['onlineSupportText'] | safe}} (opens in new tab)</a>
           </p>
           {%- endif %}
         </div>
         {% endset -%}
 
         {{ govukDetails({
-          summaryText: "Get help with your form",
+          summaryText: "Get help with this form",
           html: supportTextHtml
         }) }}
+        {% endif %}
 
       </div>
     </div>
