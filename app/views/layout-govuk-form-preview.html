@@ -43,7 +43,7 @@
   {# Set serviceName in config.js. #}
   {{ govukHeader({
     homepageUrl: "/",
-    serviceName: "{{ data['formTitle']}}",
+    serviceName: data['formTitle'],
     serviceUrl: "/",
     containerClasses: "govuk-width-container"
   }) }}

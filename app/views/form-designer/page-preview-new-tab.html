@@ -1,11 +1,6 @@
 {% extends "layout-govuk-form-preview.html" %}
 {% set mainClasses = "main--draft govuk-main-wrapper--auto-spacing" %}
 
-{% block header %}
-  <!-- Blank header with no service name for the start page -->
-  {{ govukHeader() }}
-{% endblock %}
-
 {% block beforeContent %}
   {% set prevPageId = pageId | int - 1 %}
   {% if prevPageId > 0 %}
@@ -14,7 +9,7 @@
 {% endblock %}
 
 {% block pageTitle %}
-  {{ pageData['long-title'] }} - Preview - GOV.UK
+  {{ pageData['long-title'] }} - Preview - {{ data['formTitle'] }} - GOV.UK
 {% endblock %}
 
 {% block content %}
