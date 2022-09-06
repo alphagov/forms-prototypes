@@ -96,6 +96,22 @@
               hint: {
                 text: "Requires an answer in the format of a phone number"
               }
+            },
+            {
+              value: "select",
+              text: "One or more selected options from a list",
+              checked: checked(namePrefix + "['type']", "select"),
+              hint: {
+                text: "Create a list of options for people to select from"
+              }
+            },
+            {
+              value: "yesorno",
+              text: "Yes or no",
+              checked: checked(namePrefix + "['type']", "yesorno"),
+              hint: {
+                text: "People have to select either yes or no"
+              }
             }
           ]
         %}
