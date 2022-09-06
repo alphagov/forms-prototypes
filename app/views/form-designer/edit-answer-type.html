@@ -31,6 +31,8 @@
 
         <span class="govuk-caption-l">Question {{pageId}}</span>
 
+        {% set namePrefix = "pages[" + pageIndex + "]" %}
+
         {%
           set radioItems = [
             {
