@@ -47,6 +47,29 @@ router.use('/form-designer/*', function (req, res, next) {
   next();
 })
 
+router.get('/form-designer/edit-answer-type/:pageId', function (req, res) {
+  var action = req.session.data.action
+  var pageId = req.params.pageId
+
+  // If user pressed the 'Update preview' button or back link...
+  var pageIndex = parseInt(pageId) - 1
+  var pageData = req.session.data.pages[pageIndex]
+
+  // Update the 'Highest page Id'
+  req.session.data.highestPageId = req.session.data.pages.length
+
+  if (action == 'editPage') {
+    res.redirect('/form-designer/edit-page/' + pageId)
+  } else {
+    res.render('form-designer/edit-answer-type', {
+      pageId: pageId,
+      pageIndex: pageIndex,
+      pageData: pageData,
+      editingExistingQuestion: req.session.data.pages[pageIndex] !== undefined
+    })
+  }
+})
+
 // Renders the page editor, set to a specific page
 router.get('/form-designer/edit-page/:pageId', function (req, res) {
   var action = req.session.data.action
@@ -156,6 +179,7 @@ router.get('/form-designer/edit-page/:pageId', function (req, res) {
     res.render('form-designer/edit-page', {
       pageId: pageId,
       pageIndex: pageIndex,
+      typeData: req.session.data.pages.type,
       pageData: pageData,
       editingExistingQuestion: req.session.data.pages[pageIndex] !== undefined,
       enableMultipleChoiceAnswerType
@@ -226,7 +250,7 @@ router.get('/form-designer/reorder-page/:pageId/:direction', function (
 // Renders the page type chooser, set to a specific page
 router.get('/form-designer/choose-page-type/:pageId', function (req, res) {
   req.session.data.action = ''
-  res.redirect(`/form-designer/edit-page/${req.params.pageId}`)
+  res.redirect(`/form-designer/edit-answer-type/${req.params.pageId}`)
 })
 
 // Renders the in-page preview, set to a specific page
