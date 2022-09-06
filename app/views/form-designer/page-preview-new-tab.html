@@ -264,9 +264,9 @@
         {% endif %}
 
         {# Checkboxes #}
-        {% if pageData['type'] == 'radio-checkbox' and not pageData['radios'] %}
+        {% if pageData['type'] == 'select' and not pageData['radios'] %}
 
-          {% set itemsArray = pageData['item-list'].split('\n') %}
+          {# {% set itemsArray = pageData['item-list'].split('\n') %} #}
 
           <div class="govuk-form-group">
             <fieldset class="govuk-fieldset" aria-describedby="question-1-hint">
@@ -283,15 +283,23 @@
                 {{ pageData['hint-text']}}
               </div>
               <div class="govuk-checkboxes">
-                {% for itemRaw in itemsArray %}
-                  {% set item = itemRaw | trim %}
+                {% if pageData['item-list'] %}
+                  {% for item in itemsArray %}
                   <div class="govuk-checkboxes__item">
-                    <input class="govuk-checkboxes__input" id="{{ pageId }}-{{ item }}" name="{{ pageId }}" type="checkbox" value="{{ item }}" {{ checked(pageId, item) }}>
-                    <label class="govuk-label govuk-checkboxes__label" for="{{ pageId }}">
+                    <input class="govuk-checkboxes__input" id="question-1-{{ item }}" name="question-1-" type="checkbox" value="{{ item }}">
+                    <label class="govuk-label govuk-checkboxes__label" for="question-1-{{ item }}">
                       {{ item }}
                     </label>
                   </div>
-                {% endfor %}
+                  {% endfor %}
+                {% else %}
+                <div class="govuk-checkboxes__item">
+                  <input class="govuk-checkboxes__input" id="{{ pageId }}-{{ item }}" name="{{ pageId }}" type="checkbox" value="{{ item }}" {{ checked(pageId, item) }}>
+                  <label class="govuk-label govuk-checkboxes__label" for="{{ pageId }}">
+                    <i>Blank</i>
+                  </label>
+                </div>
+                {% endif %}
               </div>
             </fieldset>
           </div>
