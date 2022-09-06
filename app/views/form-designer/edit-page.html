@@ -15,7 +15,7 @@
 {% block beforeContent %}
   {% set prevPageId = pageId | int - 1 %}
   {% if prevPageId > 0 %}
-    <a class="govuk-back-link" href="{{prevPageId}}">Back</a>
+    <a class="govuk-back-link" href="../edit-answer-type/{{pageId}}">Back</a>
   {% else %}
     <a class="govuk-back-link" href="../form-index" target="_parent">Back</a>
   {% endif %}
