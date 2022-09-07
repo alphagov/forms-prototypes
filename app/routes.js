@@ -171,6 +171,56 @@ router.get('/form-designer/edit-page/:pageId', function (req, res) {
     // reset the action to avoid a loop
     req.session.data.action = ''
     return res.redirect(`/form-designer/delete/${pageId}`)
+  } else if (action === 'addAnother') {
+    // If user pressed the 'Update preview' button or back link...
+    var pageIndex = parseInt(pageId) - 1
+    var pageData = req.session.data.pages[pageIndex]
+
+    var itemList = req.session.data.pages[pageIndex]['item-list']
+    var lastItem = itemList.length - 1
+
+    if (itemList[lastItem]) {
+      itemList.push("")
+    }
+
+    // reset the action to avoid a loop
+    req.session.data.action = ''
+    res.render('form-designer/edit-page', {
+      pageId: pageId,
+      pageIndex: pageIndex,
+      typeData: req.session.data.pages.type,
+      pageData: pageData,
+      editingExistingQuestion: req.session.data.pages[pageIndex] !== undefined,
+      enableMultipleChoiceAnswerType
+    })
+  } else if (action.includes('removeOption')) {
+
+    // If user pressed the 'Update preview' button or back link...
+    var pageIndex = parseInt(pageId) - 1
+    var pageData = req.session.data.pages[pageIndex]
+
+    var itemList = req.session.data.pages[pageIndex]['item-list']
+    var remove = req.session.data.action.split("-")
+    var itemToRemove = remove.pop()
+
+    if (itemToRemove > -1) { // only splice array when item is found
+      if (itemList.length <= 2) {
+        itemList.push("")
+      }
+      itemList.splice(itemToRemove, 1); // 2nd parameter means remove one item only
+    }
+
+    // reset the action to avoid a loop
+    req.session.data.action = ''
+    res.render('form-designer/edit-page', {
+      pageId: pageId,
+      pageIndex: pageIndex,
+      typeData: req.session.data.pages.type,
+      pageData: pageData,
+      editingExistingQuestion: req.session.data.pages[pageIndex] !== undefined,
+      enableMultipleChoiceAnswerType
+    })
+
   } else {
     // If user pressed the 'Update preview' button or back link...
     var pageIndex = parseInt(pageId) - 1

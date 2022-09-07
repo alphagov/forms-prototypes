@@ -8,13 +8,30 @@
   {% endif %}
 {%- endset %}
 
+{% if pageData['type'] === 'text' %}
+{% set answerType = 'Single line of text' %}
+{% elif pageData['type'] === 'textarea' %}
+{% set answerType = 'Multiple lines of text' %}
+{% elif pageData['type'] === 'email' %}
+{% set answerType = 'Email address' %}
+{% elif pageData['type'] === 'national-insurance-number' %}
+{% set answerType = 'National Insurance number' %}
+{% elif pageData['type'] === 'phone' %}
+{% set answerType = 'Phone number' %}
+{% elif pageData['type'] === 'select' %}
+{% set answerType = 'One or more selected options from a list' %}
+{% elif pageData['type'] === 'yesorno' %}
+{% set answerType = 'Yes or no' %}
+{% else %}
+{% set answerType = pageData['type']|capitalize %}
+{% endif %}
+
 {% block pageTitle %}
   {{pageTitle|safe}} - GOV.UK Forms
 {% endblock %}
 
 {% block beforeContent %}
-  {% set prevPageId = pageId | int - 1 %}
-  {% if prevPageId > 0 %}
+  {% if data.referer and ('edit-answer-type' in data.referer) and (pageId === data.referer.split('/') | last) %}
     <a class="govuk-back-link" href="../edit-answer-type/{{pageId}}">Back</a>
   {% else %}
     <a class="govuk-back-link" href="../form-index" target="_parent">Back</a>
@@ -68,7 +85,7 @@
               Answer type
             </dt>
             <dd class="govuk-summary-list__value">
-              {{ pageData['type'] | capitalize | replace("-", " ") }}
+              {{answerType}}
             </dd>
             <dd class="govuk-summary-list__actions">
               <a class="govuk-link govuk-link--no-visited-state" href="/form-designer/edit-answer-type/{{pageIndex + 1}}">
@@ -77,6 +94,52 @@
             </dd>
           </div>
         </dl>
+
+        {% if pageData['type'] === 'select' %}
+        <h2 class="govuk-heading-m">Edit your list of options</h2>
+        {{ govukCheckboxes({
+          idPrefix: "oneOption",
+          name: namePrefix + "[oneOption]",
+          fieldset: {
+            legend: {
+              text: "People can only select one option"
+            }
+          },
+          items: [
+            {
+              value: "oneOption",
+              text: "People can only select one option",
+              checked: checked(namePrefix + "['oneOption']", "oneOption")
+            }
+          ]
+        }) }}
+
+        {% set optionArray = pageData['item-list'] or [{},{}] %}
+        <ol class="govuk-list">
+        {% for option in optionArray %}
+          {% set optionRow -%}option{{loop.index0}}{%- endset %}
+          <li>
+            <label class="govuk-label" for="option-{{loop.index0}}">
+              Option {{loop.index}}
+            </label>
+            <input class="govuk-input govuk-input--width-20" id="option-{{loop.index0}}" name="{{namePrefix}}[item-list]" type="text" value="{{pageData['item-list'][loop.index0]}}">
+            {{ govukButton({
+              text: "Remove",
+              name: "action",
+              value: "removeOption-" + loop.index0,
+              classes: "govuk-button--secondary govuk-!-margin-bottom-3"
+            }) }}
+          </li>
+        {% endfor %}
+        </ol>
+
+        {{ govukButton({
+          text: "Add another option",
+          name: "action",
+          value: "addAnother",
+          classes: "govuk-button--secondary"
+        }) }}
+        {% endif %}
 
         <input type="hidden" id="type" name="{{namePrefix}}[type]'" value="{{pageData['type']}}">
         <input type="hidden" id="index" name="{{namePrefix}}[pageIndex]'" value="{{[pageIndex]}}">
@@ -128,7 +191,7 @@
           <h2 class="govuk-heading-m">
             Question preview
           </h2>
-          <a href="../page-preview-new-tab/{{pageId}}" class="govuk-link govuk-link--no-visited-state govuk-!-margin-bottom-4 new-tab-link" target="_blank">Preview question in a new tab</a>
+          <!-- <a href="../page-preview-new-tab/{{pageId}}" class="govuk-link govuk-link--no-visited-state govuk-!-margin-bottom-4 new-tab-link" target="_blank">Preview question in a new tab</a> -->
           <div class="preview-header">
             <p class="preview-link govuk-body-s">
               <!-- <a href="#" target="_blank" onclick="document.getElementById('form').submit();">Refresh</a> &nbsp;|&nbsp; -->
