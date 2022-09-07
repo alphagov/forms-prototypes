@@ -230,12 +230,16 @@
         #}
 
         {# Radios #}
-        {% if pageData['type'] == 'radio-checkbox' and pageData['radios'] %}
+        {% if (pageData['type'] === 'select' and pageData['oneOption']) or (pageData['type'] === 'yesorno') %}
 
-          {% set itemsArray = pageData['item-list'].split('\n') %}
+          {% if pageData['type'] === 'yesorno' %}
+            {% set itemsArray = ['Yes', 'No'] %}
+          {% else %}
+            {% set itemsArray = pageData['item-list'] %}
+          {% endif %}
 
           <div class="govuk-form-group">
-            <fieldset class="govuk-fieldset" aria-describedby="question-1-hint">
+            <fieldset class="govuk-fieldset" aria-describedby="question-{{pageId}}-hint">
 
               {% if not pageData['intro-text'] %}
                 <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
@@ -245,7 +249,7 @@
                 </legend>
               {% endif %}
 
-              <div id="question-1-hint" class="govuk-hint">
+              <div id="question-{{pageId}}-hint" class="govuk-hint">
                 {{ pageData['hint-text']}}
               </div>
               <div class="govuk-radios">
@@ -253,7 +257,7 @@
                 {% set item = itemRaw | trim %}
                   <div class="govuk-radios__item">
                     <input class="govuk-radios__input" id="{{ pageId }}-{{ item }}" name="{{ pageId }}" type="radio" value="{{ item }}" {{ checked(pageId, item) }}>
-                    <label class="govuk-label govuk-radios__label" for="{{ pageId }}">
+                    <label class="govuk-label govuk-radios__label" for="{{ pageId }}-{{ item }}">
                       {{ item }}
                     </label>
                   </div>
@@ -264,12 +268,12 @@
         {% endif %}
 
         {# Checkboxes #}
-        {% if pageData['type'] == 'select' and not pageData['radios'] %}
+        {% if pageData['type'] == 'select' and not pageData['oneOption'] %}
 
-          {# {% set itemsArray = pageData['item-list'].split('\n') %} #}
+          {% set itemsArray = pageData['item-list'] %}
 
           <div class="govuk-form-group">
-            <fieldset class="govuk-fieldset" aria-describedby="question-1-hint">
+            <fieldset class="govuk-fieldset" aria-describedby="question-{{pageId}}-hint">
 
               {% if not pageData['intro-text'] %}
                 <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
@@ -279,15 +283,15 @@
                 </legend>
               {% endif %}
 
-              <div id="question-1-hint" class="govuk-hint">
+              <div id="question-{{pageId}}-hint" class="govuk-hint">
                 {{ pageData['hint-text']}}
               </div>
               <div class="govuk-checkboxes">
                 {% if pageData['item-list'] %}
                   {% for item in itemsArray %}
                   <div class="govuk-checkboxes__item">
-                    <input class="govuk-checkboxes__input" id="question-1-{{ item }}" name="question-1-" type="checkbox" value="{{ item }}">
-                    <label class="govuk-label govuk-checkboxes__label" for="question-1-{{ item }}">
+                    <input class="govuk-checkboxes__input" id="question-{{pageId}}-{{ item }}" name="{{ pageId }}" type="checkbox" value="{{ item }}" {{ checked(pageId, item) }}>
+                    <label class="govuk-label govuk-checkboxes__label" for="question-{{pageId}}-{{ item }}">
                       {{ item }}
                     </label>
                   </div>
@@ -295,7 +299,13 @@
                 {% else %}
                 <div class="govuk-checkboxes__item">
                   <input class="govuk-checkboxes__input" id="{{ pageId }}-{{ item }}" name="{{ pageId }}" type="checkbox" value="{{ item }}" {{ checked(pageId, item) }}>
-                  <label class="govuk-label govuk-checkboxes__label" for="{{ pageId }}">
+                  <label class="govuk-label govuk-checkboxes__label" for="{{ pageId }}-{{ item }}">
+                    <i>Blank</i>
+                  </label>
+                </div>
+                <div class="govuk-checkboxes__item">
+                  <input class="govuk-checkboxes__input" id="{{ pageId }}-{{ item }}" name="{{ pageId }}" type="checkbox" value="{{ item }}" {{ checked(pageId, item) }}>
+                  <label class="govuk-label govuk-checkboxes__label" for="{{ pageId }}-{{ item }}">
                     <i>Blank</i>
                   </label>
                 </div>

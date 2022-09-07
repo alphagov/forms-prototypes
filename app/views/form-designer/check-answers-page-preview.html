@@ -47,8 +47,13 @@
       </div>
     {% endif %}
 
+    {% if data['checkAnswersDeclaration'] %}
+      {% set buttonText = 'Agree and submit' %}
+    {% else %}
+      {% set buttonText = 'Submit' %}
+    {% endif %}
     {{ govukButton({
-      text: "Agree and submit",
+      text: buttonText,
       disabled: true
     }) }}
 

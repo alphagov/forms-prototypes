@@ -18,17 +18,15 @@
       <h1 class="govuk-panel__title">{{ data['confirmationTitle'] }} <span class="govuk-visually-hidden">preview</span></h1>
     </div>
 
-
-    <h2 class="govuk-heading-m">What happens next</h2>
-    
     {% if data['confirmationNext'] %}
-    <div class="app-prose-scope">
-    {% markdown %}
-      {{ data['confirmationNext'] }}
-    {% endmarkdown %}
-    </div>
-
+      <h2 class="govuk-heading-m">What happens next</h2>
+      <div class="app-prose-scope">
+      {% markdown %}
+        {{ data['confirmationNext'] }}
+      {% endmarkdown %}
+      </div>
     {% endif %}
+    
   </div>
 </div>
 {% endblock %}
