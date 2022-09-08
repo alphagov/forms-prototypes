@@ -1,0 +1,86 @@
+{% extends "layout-govuk-forms.html" %}
+
+{% set pageTitle = 'Create quesiton group' %}
+
+{% block pageTitle %}
+  {{pageTitle|safe}} - GOV.UK Forms
+{% endblock %}
+
+{% block beforeContent %}
+  <a class="govuk-back-link" href="{{data.referer}}">Back to choose question group</a>
+{% endblock %}
+
+{% block content %}
+
+  <form id="form" class="form" action="../create-question-group/{{pageId}}" method="post">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+
+        <span class="govuk-caption-l">{{formTitle}}</span>
+        <h1 class="govuk-heading-l">{{pageTitle|safe}}</h1>
+
+        {% set namePrefix = "pages[" + pageIndex + "]" %}
+
+        {{ govukInput({
+          label: {
+            text: "What do you want to call this group?",
+            classes: "govuk-label--m"
+          },
+          hint: {
+            text: "This will help you find the group when adding new pages or when you need to come back to make changes. Use a descriptive name for example, ‘Applicant information’"
+          },
+          id: "group-name",
+          name: "groupName"
+        }) }}
+
+        <div class="govuk-form-group">
+          <fieldset class="govuk-fieldset" role="group" aria-describedby="add-loop-hint">
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+              <h2 class="govuk-fieldset__heading">
+                How many times should this question group be answered?
+              </h2>
+            </legend>
+            <div id="add-loop-hint" class="govuk-hint">
+              This will allow people to give multiple answers to a single question for example, ‘Where have you previously lived?’
+            </div>
+            <div class="govuk-date-input" id="add-loop">
+              <div class="govuk-date-input__item">
+                <div class="govuk-form-group">
+                  <label class="govuk-label govuk-date-input__label" for="add-loop-min">
+                    Min
+                  </label>
+                  <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="padd-loop-min" name="{{namePrefix}}[add-loop-min]" type="text" inputmode="numeric" value="{{pageData['add-loop-min']}}">
+                </div>
+              </div>
+              <div class="govuk-date-input__item">
+                <div class="govuk-form-group">
+                  <label class="govuk-label govuk-date-input__label" for="add-loop-max">
+                    Max
+                  </label>
+                  <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="add-loop-max" name="{{namePrefix}}[add-loop-max]" type="text" inputmode="numeric" value="{{pageData['add-loop-max']}}">
+                </div>
+              </div>
+            </div>
+
+          </fieldset>
+        </div>
+
+        <div class="govuk-button-group">
+          {{ govukButton({
+            text: "Save and continue",
+            name: "action",
+            value: "addToGroup"
+          }) }}
+        </div>
+
+        <!-- <p class="govuk-body">
+          <a class="govuk-link govuk-link--no-visited-state" href="../form-index">Go to form overview</a>
+        </p> -->
+
+      </div>
+
+    </div>
+
+  </form>
+
+{% endblock %}
