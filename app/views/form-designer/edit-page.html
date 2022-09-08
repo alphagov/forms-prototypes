@@ -89,7 +89,7 @@
             </dd>
             <dd class="govuk-summary-list__actions">
               <a class="govuk-link govuk-link--no-visited-state" href="/form-designer/edit-answer-type/{{pageIndex + 1}}">
-                Change <span class="govuk-visually-hidden">{{pageData['type']}}<span>
+                Change <span class="govuk-visually-hidden">answer type {{answerType}}<span>
               </a>
             </dd>
           </div>
@@ -124,7 +124,7 @@
             </label>
             <input class="govuk-input govuk-input--width-20" id="option-{{loop.index0}}" name="{{namePrefix}}[item-list]" type="text" value="{{pageData['item-list'][loop.index0]}}">
             {{ govukButton({
-              text: "Remove",
+              html: 'Remove <span class="govuk-visually-hidden">option ' + loop.index + '</span>',
               name: "action",
               value: "removeOption-" + loop.index0,
               classes: "govuk-button--secondary govuk-!-margin-bottom-3"
@@ -191,7 +191,7 @@
           <h2 class="govuk-heading-m">
             Question preview
           </h2>
-          <!-- <a href="../page-preview-new-tab/{{pageId}}" class="govuk-link govuk-link--no-visited-state govuk-!-margin-bottom-4 new-tab-link" target="_blank">Preview question in a new tab</a> -->
+          <a href="../page-preview-new-tab/{{pageId}}" class="govuk-link govuk-link--no-visited-state govuk-!-margin-bottom-4 new-tab-link" target="_blank">Preview question in a new tab</a>
           <div class="preview-header">
             <p class="preview-link govuk-body-s">
               <!-- <a href="#" target="_blank" onclick="document.getElementById('form').submit();">Refresh</a> &nbsp;|&nbsp; -->
