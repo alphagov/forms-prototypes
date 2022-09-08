@@ -1,0 +1,76 @@
+{% extends "layout-govuk-forms.html" %}
+
+{% set pageTitle = 'Choose quesiton group' %}
+
+{% block pageTitle %}
+  {{pageTitle|safe}} - GOV.UK Forms
+{% endblock %}
+
+{% block beforeContent %}
+  <a class="govuk-back-link" href="{{data.referer}}">Back to edit question</a>
+{% endblock %}
+
+{% block content %}
+
+  <form id="form" class="form" action="../choose-question-group/{{pageId}}" method="post">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+
+        <span class="govuk-caption-l">{{formTitle}}</span>
+
+        {% set namePrefix = "pages[" + pageIndex + "]" %}
+
+        {%
+          set radioItems = [
+            {
+              value: "text",
+              text: "Question group 1",
+              checked: checked(namePrefix + "['type']", "text") or allEmpty
+            },
+            {
+              value: "text",
+              text: "Question group 2",
+              checked: checked(namePrefix + "['type']", "text") or allEmpty
+            }
+          ]
+        %}
+
+        {{ govukRadios({
+          idPrefix: "type",
+          name: namePrefix + "[type]",
+          fieldset: {
+            legend: {
+              text: pageTitle,
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--l"
+            }
+          },
+          items: radioItems
+        }) }}
+
+        {{ govukButton({
+          text:  "Create a new group",
+          name: "action",
+          value: "newGroup",
+          classes: "govuk-button--secondary"
+        }) }}
+
+        <div class="govuk-button-group">
+          {{ govukButton({
+            text: "Save and continue",
+            name: "action",
+            value: "addToGroup"
+          }) }}
+        </div>
+
+        <!-- <p class="govuk-body">
+          <a class="govuk-link govuk-link--no-visited-state" href="../form-index">Go to form overview</a>
+        </p> -->
+
+      </div>
+
+    </div>
+
+  </form>
+
+{% endblock %}
