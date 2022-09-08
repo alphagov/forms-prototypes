@@ -39,7 +39,6 @@ router.post('/example-2/save-progress-check', function (req, res) {
 })
 
 // ROUTES FOR FORM DESIGNER
-//
 
 router.use('/form-designer/*', function (req, res, next) {
   const referer = req.headers.referer ?? '';
@@ -47,11 +46,10 @@ router.use('/form-designer/*', function (req, res, next) {
   next();
 })
 
+// Renders the answer type editor, set to a specific page
 router.get('/form-designer/edit-answer-type/:pageId', function (req, res) {
   var action = req.session.data.action
   var pageId = req.params.pageId
-
-  // If user pressed the 'Update preview' button or back link...
   var pageIndex = parseInt(pageId) - 1
   var pageData = req.session.data.pages[pageIndex]
 
@@ -59,6 +57,7 @@ router.get('/form-designer/edit-answer-type/:pageId', function (req, res) {
   req.session.data.highestPageId = req.session.data.pages.length
 
   if (action == 'editPage') {
+    // if user pressed 'Save and continue' button...
     res.redirect('/form-designer/edit-page/' + pageId)
   } else {
     res.render('form-designer/edit-answer-type', {
@@ -82,7 +81,7 @@ router.get('/form-designer/edit-page/:pageId', function (req, res) {
   req.session.data.highestPageId = req.session.data.pages.length
   var createNextPageId = parseInt(req.session.data.highestPageId) + 1
 
-  // Edit declaration page errors
+  // Edit declaration (CYA) page errors
   if (pageId == 'check-answers') {
     const errors = {};
     const { isDeclarationComplete } = req.session.data
@@ -96,7 +95,6 @@ router.get('/form-designer/edit-page/:pageId', function (req, res) {
     // }
 
     // Confirm if task is completed or not on declaration page
-
     if (!isDeclarationComplete || !isDeclarationComplete.length) {
       errors['isDeclarationComplete'] = {
         text: 'Select no if you want to complete this section later',
@@ -121,8 +119,8 @@ router.get('/form-designer/edit-page/:pageId', function (req, res) {
       res.render('form-designer/edit-check-answers-page')
     }
 
-    // If user is updating the confirmation page...
   } else if (pageId == 'confirmation') {
+    // If user is updating the confirmation page...
     const errors = {};
     const { confirmationNext } = req.session.data
 
@@ -151,40 +149,57 @@ router.get('/form-designer/edit-page/:pageId', function (req, res) {
       res.render('form-designer/edit-confirmation-page')
     }
 
-    // If user is updating the start page...
   } else if (pageId == 0 && (action == 'update' || action == '')) {
+    // If user is updating the start page...
     res.render('form-designer/edit-start-page')
 
-    // If user pressed the 'Create next page' button...
   } else if (action == 'createNextPage') {
-    res.redirect('/form-designer/choose-page-type/' + createNextPageId)
+    // If user pressed the 'Create next page' button...
+    var pageId = req.params.pageId
+    var pageIndex = parseInt(pageId) - 1
 
-    // If user pressed the 'Edit next page' button...
+    req.session.data.action = '' // reset the action to avoid a loop
+
+    if (req.session.data.pages[pageIndex]['addAnother'] === 'group') {
+      // if create question group radio selected
+      res.redirect('/form-designer/choose-question-group/' + pageId)
+    } else {
+      // if 'individual' or 'no' loop radio selected continue to next page
+      res.redirect('/form-designer/choose-page-type/' + createNextPageId)
+    }
+
   } else if (action == 'editNextPage') {
-    // reset the action to avoid a loop
-    req.session.data.action = ''
+    // If user pressed the 'Save and edit next page' button...
+    var pageId = req.params.pageId
+    var pageIndex = parseInt(pageId) - 1
 
-    res.redirect('/form-designer/edit-page/' + editNextPageId)
+    req.session.data.action = '' // reset the action to avoid a loop
 
-    // If user pressed the 'Update preview' button or back link...
+    if (req.session.data.pages[pageIndex]['addAnother'] === 'group') {
+      // if create question group radio selected
+      res.redirect('/form-designer/choose-question-group/' + pageId)
+    } else {
+      res.redirect('/form-designer/edit-page/' + editNextPageId)
+    }
+
   } else if (action === 'deletePage') {
-    // reset the action to avoid a loop
-    req.session.data.action = ''
+    // If user pressed 'Delete question' button
+    req.session.data.action = '' // reset the action to avoid a loop
     return res.redirect(`/form-designer/delete/${pageId}`)
+
   } else if (action === 'addAnother') {
-    // If user pressed the 'Update preview' button or back link...
+    // If user pressed the 'Add another option' button
     var pageIndex = parseInt(pageId) - 1
     var pageData = req.session.data.pages[pageIndex]
+    var itemList = req.session.data.pages[pageIndex]['item-list'] // get options list
 
-    var itemList = req.session.data.pages[pageIndex]['item-list']
-    var lastItem = itemList.length - 1
-
+    var lastItem = itemList.length - 1 // get list length
+    // add an empty item to option list array, so it gives a new input on the screen
     if (itemList[lastItem]) {
       itemList.push("")
     }
 
-    // reset the action to avoid a loop
-    req.session.data.action = ''
+    req.session.data.action = '' // reset the action to avoid a loop
     res.render('form-designer/edit-page', {
       pageId: pageId,
       pageIndex: pageIndex,
@@ -193,15 +208,15 @@ router.get('/form-designer/edit-page/:pageId', function (req, res) {
       editingExistingQuestion: req.session.data.pages[pageIndex] !== undefined,
       enableMultipleChoiceAnswerType
     })
-  } else if (action.includes('removeOption')) {
 
-    // If user pressed the 'Update preview' button or back link...
-    var pageIndex = parseInt(pageId) - 1
-    var pageData = req.session.data.pages[pageIndex]
+  } else if (action.includes('removeOption')) {
+    // If user pressed 'Remove' button next to select option (checkbox/radio)
+    var pageIndex = parseInt(pageId) - 1 // get page array index
+    var pageData = req.session.data.pages[pageIndex] // get page data from array
 
     var itemList = req.session.data.pages[pageIndex]['item-list']
-    var remove = req.session.data.action.split("-")
-    var itemToRemove = remove.pop()
+    var remove = req.session.data.action.split("-") // return option and index of item to remove as an array
+    var itemToRemove = remove.pop() // gets the 2nd object from returned option, leaving us with the index of the item
 
     if (itemToRemove > -1) { // only splice array when item is found
       if (itemList.length <= 2) {
@@ -210,8 +225,8 @@ router.get('/form-designer/edit-page/:pageId', function (req, res) {
       itemList.splice(itemToRemove, 1); // 2nd parameter means remove one item only
     }
 
-    // reset the action to avoid a loop
-    req.session.data.action = ''
+    req.session.data.action = '' // reset the action to avoid a loop
+
     res.render('form-designer/edit-page', {
       pageId: pageId,
       pageIndex: pageIndex,
@@ -222,7 +237,7 @@ router.get('/form-designer/edit-page/:pageId', function (req, res) {
     })
 
   } else {
-    // If user pressed the 'Update preview' button or back link...
+    // If user pressed 'Update preview' button or back link...
     var pageIndex = parseInt(pageId) - 1
     var pageData = req.session.data.pages[pageIndex]
 
@@ -233,6 +248,52 @@ router.get('/form-designer/edit-page/:pageId', function (req, res) {
       pageData: pageData,
       editingExistingQuestion: req.session.data.pages[pageIndex] !== undefined,
       enableMultipleChoiceAnswerType
+    })
+  }
+})
+
+// Renders the question group selection, set to a specific page
+router.get('/form-designer/choose-question-group/:pageId', function (req, res) {
+  var action = req.session.data.action // get button pressed action
+  var pageId = req.params.pageId // get current page ID
+  var pageIndex = parseInt(pageId) - 1 // get page array index
+  var pageData = req.session.data.pages[pageIndex] // get page data from array
+
+  if (action == 'newGroup') {
+    // If user pressed 'Create a new group' button...
+    req.session.data.action = '' // reset the action to avoid a loop
+    res.redirect('/form-designer/create-question-group/' + pageId)
+  } else {
+    req.session.data.action = '' // reset the action to avoid a loop
+
+    res.render('form-designer/choose-question-group', {
+      pageId: pageId,
+      pageIndex: pageIndex,
+      typeData: req.session.data.pages.type,
+      pageData: pageData
+    })
+  }
+})
+
+// Renders the question group creation, set to a specific page
+router.get('/form-designer/create-question-group/:pageId', function (req, res) {
+  var action = req.session.data.action // get button pressed action
+  var pageId = req.params.pageId // get current page ID
+  var pageIndex = parseInt(pageId) - 1 // get page array index
+  var pageData = req.session.data.pages[pageIndex] // get page data from array
+
+  if (action == 'addToGroup') {
+    // If user pressed 'Save and continue' button...
+    req.session.data.action = '' // reset the action to avoid a loop
+    res.redirect('/form-designer/choose-question-group/' + pageId)
+  } else {
+    req.session.data.action = '' // reset the action to avoid a loop
+    
+    res.render('form-designer/create-question-group', {
+      pageId: pageId,
+      pageIndex: pageIndex,
+      typeData: req.session.data.pages.type,
+      pageData: pageData
     })
   }
 })
@@ -356,11 +417,13 @@ router.post('/form-designer/form-create-a-form', function (req, res) {
   }
 })
 
+// Routing for return journey testing - 'Amendment form: redundancy claim for holiday pay', Insolvency Service form
 router.get('/form-designer/returning', (req, res) => {
   req.session.data = returningSessionDataDefaultsA11y
   res.redirect('/form-designer/form-list-a11y')
 })
 
+// Routing for return journey testing - 'Take your pet abroad' form
 router.get('/form-designer/returning-again', (req, res) => {
   req.session.data = returningSessionDataDefaults
   res.redirect('/form-designer/form-list')
@@ -432,7 +495,7 @@ router.post('/form-designer/completed-forms-email/add-confirmation-code', functi
   const errors = {};
   const { formsEmail, confirmationCode } = req.session.data
 
-  // If the formsEmail is blank, create an error to be displayed to the user
+  // If the confirmationCode is blank, create an error to be displayed to the user
   if (!confirmationCode?.length) {
     errors.confirmationCode = {
       text: 'Enter the confirmation code',
@@ -522,7 +585,7 @@ router.post('/form-designer/provide-link-to-privacy-information', function (req,
   const errors = {};
   const { privacyInformation } = req.session.data
 
-  // If the user haven't selected yes or no
+  // If the privacyInformation is blank, create an error to be displayed to the user
   if (!privacyInformation?.length) {
     errors['privacyInformation'] = {
       text: 'Enter a link to privacy information',
