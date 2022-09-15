@@ -2,6 +2,13 @@
 
 {% set pageTitle = 'Add and edit your questions' %}
 
+{% set count = count or 0 %}
+{% set countEnd = 0 %}
+
+{% for page in data.pages -%}
+  {% if page.group %}{% set countEnd = countEnd + 1 %}{% endif %}
+{% endfor %}
+
 {% block pageTitle %}
   {{pageTitle}}: {{ data['formTitle'] }} - GOV.UK Forms
 {% endblock %}
@@ -65,41 +72,102 @@
 
           {% for page in data.pages -%}
 
-            {% set questionTitle =  page["long-title"] or "Page " + page["pageIndex"] %}
+            {% set questionTitle = page["long-title"] or "Page " + page["pageIndex"] %}
 
-            {% if questionTitle %}
-
-              <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key govuk-!-font-weight-regular">
-                  <!--Q{{page["pageIndex"] | int + 1}}.-->
-                  {{questionTitle}}
-                </dt>
-                <dd class="govuk-summary-list__actions">
-                  <div class="govuk-button-group form-action-group govuk-!-margin-bottom-0">
-                    <div class="form-actions-reordering">
+            {% if page.group %}
+            {% set groupName = '' %}
+            {% set groupIndex = 0 %}
+            {% for group in data.groups %}
+              {% if page.group === group.name %}
+                {% set groupName = group.name %}
+                {% set groupIndex = loop.index0 %}
+              {% endif %}
+            {% endfor %}
+            {% if count == 0 %}
+            <div class="govuk-summary-list__row">
+              <section class="app-summary-card">
+                <header class="app-summary-card__header">
+                  <h2 class="app-summary-card__title">{{groupName}}</h2>
+                  <div class="app-summary-card__actions">
+                    <ul class="app-summary-card__actions-list">
                     {% if page.pageIndex > 0 %}
-                      {{ govukButton({
+                      <li class="app-summary-card__actions-list-item">
+                        {{ govukButton({
                           html: "Move up <span class='govuk-visually-hidden'>" + questionTitle + "</span>",
-                          classes: "govuk-button--secondary",
+                          classes: "govuk-button--secondary govuk-!-margin-0",
                           href: "reorder-page/" + (page.pageIndex | int + 1) + "/up"
                         }) }}
+                      </li>
                     {% endif %}
-
                     {% if page.pageIndex < data.pages | length - 1 %}
-                      {{ govukButton({
+                      <li class="app-summary-card__actions-list-item">
+                        {{ govukButton({
                           html: "Move down <span class='govuk-visually-hidden'>" + questionTitle + "</span>",
-                          classes: "govuk-button--secondary",
+                          classes: "govuk-button--secondary govuk-!-margin-0",
                           href: "reorder-page/" + (page.pageIndex | int + 1) + "/down"
                         }) }}
+                      </li>
                     {% endif %}
-                    <div>
-
-                    <a class="govuk-link govuk-link--no-visited-state"href="edit-page/{{page.pageIndex | int + 1}}">
-                      Edit<span class="govuk-visually-hidden"> {{questionTitle}}</span>
-                    </a>
+                      <li class="app-summary-card__actions-list-item">
+                        <a class="govuk-link govuk-link--no-visited-state"href="create-question-group/{{groupIndex | int + 1}}">
+                          Edit<span class="govuk-visually-hidden"> {{questionTitle}}</span>
+                        </a>
+                      </li>
+                    </ul>
                   </div>
-                </dd>
-              </div>
+                </header>
+
+                <div class="app-summary-card__body">
+                {% endif %}
+                  <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key govuk-!-font-weight-regular">
+                      <!--Q{{page["pageIndex"] | int + 1}}.-->
+                      {{questionTitle}}
+                    </dt>
+                    <dd class="govuk-summary-list__actions">
+                      <a class="govuk-link govuk-link--no-visited-state"href="edit-page/{{page.pageIndex | int + 1}}">
+                        Edit<span class="govuk-visually-hidden"> {{questionTitle}}</span>
+                      </a>
+                    </dd>
+                  </div>
+                  {% set count = count + 1 %}
+            {% if page.group and count == countEnd %}
+                </div>
+              </section>
+            </div>
+            {% endif %}
+
+            {% else %}
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key govuk-!-font-weight-regular">
+                <!--Q{{page["pageIndex"] | int + 1}}.-->
+                {{questionTitle}}
+              </dt>
+              <dd class="govuk-summary-list__actions">
+                <div class="govuk-button-group form-action-group govuk-!-margin-bottom-0">
+                  <div class="form-actions-reordering">
+                  {% if page.pageIndex > 0 %}
+                    {{ govukButton({
+                        html: "Move up <span class='govuk-visually-hidden'>" + questionTitle + "</span>",
+                        classes: "govuk-button--secondary",
+                        href: "reorder-page/" + (page.pageIndex | int + 1) + "/up"
+                      }) }}
+                  {% endif %}
+
+                  {% if page.pageIndex < data.pages | length - 1 %}
+                    {{ govukButton({
+                        html: "Move down <span class='govuk-visually-hidden'>" + questionTitle + "</span>",
+                        classes: "govuk-button--secondary",
+                        href: "reorder-page/" + (page.pageIndex | int + 1) + "/down"
+                      }) }}
+                  {% endif %}
+                  </div>
+                </div>
+                <a class="govuk-link govuk-link--no-visited-state"href="edit-page/{{page.pageIndex | int + 1}}">
+                  Edit<span class="govuk-visually-hidden"> {{questionTitle}}</span>
+                </a>
+              </dd>
+            </div>
             {% endif %}
 
           {%- endfor %}

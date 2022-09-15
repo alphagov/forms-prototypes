@@ -160,7 +160,7 @@ router.get('/form-designer/edit-page/:pageId', function (req, res) {
 
     req.session.data.action = '' // reset the action to avoid a loop
 
-    if (req.session.data.pages[pageIndex]['addAnother'] === 'group') {
+    if ((req.session.data.pages[pageIndex]['addAnother'] === 'group') && ((req.session.data.pages[pageIndex]['group'] === '') || (!req.session.data.pages[pageIndex]['group']))) {
       // if create question group radio selected
       res.redirect('/form-designer/choose-question-group/' + pageId)
     } else {
@@ -175,7 +175,7 @@ router.get('/form-designer/edit-page/:pageId', function (req, res) {
 
     req.session.data.action = '' // reset the action to avoid a loop
 
-    if (req.session.data.pages[pageIndex]['addAnother'] === 'group') {
+    if ((req.session.data.pages[pageIndex]['addAnother'] === 'group') && ((req.session.data.pages[pageIndex]['group'] === '') || (!req.session.data.pages[pageIndex]['group']))) {
       // if create question group radio selected
       res.redirect('/form-designer/choose-question-group/' + pageId)
     } else {
@@ -259,13 +259,28 @@ router.get('/form-designer/choose-question-group/:pageId', function (req, res) {
   var pageIndex = parseInt(pageId) - 1 // get page array index
   var pageData = req.session.data.pages[pageIndex] // get page data from array
 
-  if (action == 'newGroup') {
+  if (action === 'newGroup') {
     // If user pressed 'Create a new group' button...
     req.session.data.action = '' // reset the action to avoid a loop
     res.redirect('/form-designer/create-question-group/' + pageId)
-  } else {
+
+  } else if (action === 'addToGroup') {
+    // If user has chosen a question group to add question to...
+
+    var questionGroup = req.session.data.questionGroup // get the chosen radio - group name
+
+    // add group to page object
+    if (questionGroup) {
+      Object.assign(pageData, { 'group': questionGroup })
+    }
+
     req.session.data.action = '' // reset the action to avoid a loop
 
+    // then go back to edit question page
+    res.redirect('/form-designer/edit-page/' + pageId)
+
+  } else {
+    req.session.data.action = '' // reset the action to avoid a loop
     res.render('form-designer/choose-question-group', {
       pageId: pageId,
       pageIndex: pageIndex,
@@ -285,15 +300,30 @@ router.get('/form-designer/create-question-group/:pageId', function (req, res) {
   if (action == 'addToGroup') {
     // If user pressed 'Save and continue' button...
     req.session.data.action = '' // reset the action to avoid a loop
+    req.session.data.highestGroupId += 1 // increase highest group ID ready for next group to be added
+
+    // add temporary input data to an array object in "groups" array
+    req.session.data.groups.push(
+      {
+        "name": req.session.data['group-name'],
+        "add-loop-min": req.session.data['group-loop-min'],
+        "add-loop-max": req.session.data['group-loop-max']
+      }
+    )
+
+    delete req.session.data['group-name'] // remove temporary data
+    delete req.session.data['group-loop-min'] // remove temporary data
+    delete req.session.data['group-loop-max'] // remove temporary data
+
+    // go back to group radio selection page
     res.redirect('/form-designer/choose-question-group/' + pageId)
+
   } else {
     req.session.data.action = '' // reset the action to avoid a loop
-    
+
     res.render('form-designer/create-question-group', {
       pageId: pageId,
-      pageIndex: pageIndex,
-      typeData: req.session.data.pages.type,
-      pageData: pageData
+      groupIndex: req.session.data.highestGroupId
     })
   }
 })

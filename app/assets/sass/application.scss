@@ -1,24 +1,19 @@
 // global styles for <a> and <p> tags
 $govuk-global-styles: true;
 $govuk-new-link-styles: true;
-
 // We can't mount GOV.UK Frontend's assets at root as it's done automatically by the extensions framework.
 $govuk-assets-path: "/govuk/assets/";
-
 // Import GOV.UK Frontend and any extension styles if extensions have been configured
 @import "lib/extensions/extensions";
-
 // Patterns that aren't in Frontend
 @import "patterns/step-by-step-header";
 @import "patterns/step-by-step-nav";
 @import "patterns/step-by-step-related";
 @import "patterns/task-list";
 @import "patterns/related-items";
-
 // Project partials
 @import "patterns/moj-messages";
 @import "patterns/govuk-publishing-document-list";
-
 /*  Remove sticky pane
     Allow content to be left aligned
 .preview-pane-wrapper {
@@ -27,7 +22,6 @@ $govuk-assets-path: "/govuk/assets/";
   text-align: center;
 }
 */
-
 .preview-pane {
   overflow: hidden;
   height: 570px;
@@ -50,13 +44,11 @@ $govuk-assets-path: "/govuk/assets/";
   text-decoration-thickness: 2px;
   color: $govuk-link-hover-colour;
 }
-
 // Header of the preview pane
 .preview-header {
   height: 35px;
   background-color: govuk-colour("black");
-
-  background-image: url(/public/images/mini-logo.png);
+  background-image: url("/public/images/mini-logo.png");
   background-size: contain;
   background-repeat: no-repeat;
   background-position-x: -15px;
@@ -68,15 +60,14 @@ $govuk-assets-path: "/govuk/assets/";
     padding: 6px govuk-spacing(3);
     margin-bottom: 0;
     float: right;
+
     a {
       color: govuk-colour("white");
       font-size: 14px;
     }
   }
 }
-
 // Prose scope (stolen from the kit docs)
-
 .app-prose-scope {
   h1 {
     @extend %govuk-heading-l;
@@ -98,13 +89,13 @@ $govuk-assets-path: "/govuk/assets/";
     @extend %govuk-body-m;
   }
 
-  strong,
-  b {
+  b,
+  strong {
     @include govuk-typography-weight-bold;
   }
 
-  ul,
-  ol {
+  ol,
+  ul {
     @extend %govuk-list;
   }
 
@@ -126,13 +117,12 @@ $govuk-assets-path: "/govuk/assets/";
     @extend %govuk-section-break--l;
   }
 
-  p code,
-  li code {
+  li code,
+  p code {
     color: #d13118;
     background-color: govuk-colour("light-grey", $legacy: "grey-4");
     padding: 0 govuk-spacing(1);
   }
-
   // TODO: Blockquotes are likely the most semantic element to be using, update to use the inset component directly.
   blockquote {
     margin-left: 0;
@@ -140,12 +130,12 @@ $govuk-assets-path: "/govuk/assets/";
   }
 }
 
-.app-prose-scope ul + h2,
-.app-prose-scope ul + h3,
-.app-prose-scope ul + h4,
 .app-prose-scope pre + h2,
 .app-prose-scope pre + h3,
-.app-prose-scope pre + h4 {
+.app-prose-scope pre + h4,
+.app-prose-scope ul + h2,
+.app-prose-scope ul + h3,
+.app-prose-scope ul + h4 {
   @include govuk-responsive-margin(4, "top");
 }
 
@@ -186,15 +176,14 @@ $govuk-assets-path: "/govuk/assets/";
 }
 
 .main--draft {
-  background-image: url(/public/images/draft-watermark.png);
+  background-image: url("/public/images/draft-watermark.png");
   background-repeat: repeat-y;
   background-position: 50% 0;
   background-size: contain;
 }
-
-
 // Copy URL styling
 // Tooltip
+
 .tooltip {
   position: relative;
   display: inline-block;
@@ -231,4 +220,185 @@ $govuk-assets-path: "/govuk/assets/";
 .tooltip:hover .tooltiptext {
   visibility: visible;
   opacity: 1;
+}
+
+
+
+// App summary card - DfE card pattern
+.app-summary-card {
+  border: 3px solid #DEE0E2;
+  /* Card header */
+  /* Card body */
+}
+
+.app-summary-card .app-summary-card__header {
+  align-items: center;
+  background-color: #DEE0E2;
+  padding: 15px;
+}
+@media (min-width: 48.0625em) {
+  .app-summary-card .app-summary-card__header {
+    display: flex;
+    justify-content: space-between;
+    // align-items: start;
+  }
+}
+
+.app-summary-card .app-summary-card__title {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 400;
+  font-size: 16px;
+  font-size: 1rem;
+  line-height: 1.25;
+  margin: 0;
+}
+@media print {
+  .app-summary-card .app-summary-card__title {
+    font-family: sans-serif;
+  }
+}
+@media (min-width: 40.0625em) {
+  .app-summary-card .app-summary-card__title {
+    font-size: 19px;
+    font-size: 1.1875rem;
+    line-height: 1.31579;
+  }
+}
+@media print {
+  .app-summary-card .app-summary-card__title {
+    font-size: 14pt;
+    line-height: 1.15;
+  }
+}
+
+.app-summary-card .app-summary-card__meta {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 400;
+  font-size: 14px;
+  font-size: 0.875rem;
+  line-height: 1.14286;
+  display: block;
+  margin: 0;
+}
+@media print {
+  .app-summary-card .app-summary-card__meta {
+    font-family: sans-serif;
+  }
+}
+@media (min-width: 40.0625em) {
+  .app-summary-card .app-summary-card__meta {
+    font-size: 16px;
+    font-size: 1rem;
+    line-height: 1.25;
+  }
+}
+@media print {
+  .app-summary-card .app-summary-card__meta {
+    font-size: 14pt;
+    line-height: 1.2;
+  }
+}
+
+.app-summary-card .app-summary-card__actions {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 400;
+  font-size: 16px;
+  font-size: 1rem;
+  line-height: 1.25;
+}
+@media print {
+  .app-summary-card .app-summary-card__actions {
+    font-family: sans-serif;
+  }
+}
+@media (min-width: 40.0625em) {
+  .app-summary-card .app-summary-card__actions {
+    font-size: 19px;
+    font-size: 1.1875rem;
+    line-height: 1.31579;
+  }
+}
+@media print {
+  .app-summary-card .app-summary-card__actions {
+    font-size: 14pt;
+    line-height: 1.15;
+  }
+}
+
+.app-summary-card .app-summary-card__actions-list {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.app-summary-card .app-summary-card__actions-list-item {
+  display: block;
+  white-space: nowrap;
+}
+@media (min-width: 48.0625em) {
+  .app-summary-card .app-summary-card__actions-list-item {
+    display: inline-block;
+    margin-left: 10px;
+    text-align: right;
+  }
+}
+
+// .app-summary-card .app-summary-card__actions-list-item:first-child {
+//   margin-left: 0;
+// }
+
+.app-summary-card .app-summary-card__body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 400;
+  font-size: 16px;
+  font-size: 1rem;
+  line-height: 1.25;
+  padding: 15px;
+}
+@media print {
+  .app-summary-card .app-summary-card__body {
+    font-family: sans-serif;
+  }
+}
+@media (min-width: 40.0625em) {
+  .app-summary-card .app-summary-card__body {
+    font-size: 19px;
+    font-size: 1.1875rem;
+    line-height: 1.31579;
+  }
+}
+@media print {
+  .app-summary-card .app-summary-card__body {
+    font-size: 14pt;
+    line-height: 1.15;
+  }
+}
+
+.app-summary-card .govuk-summary-list,
+.app-summary-card .govuk-table,
+.app-summary-card .govuk-table {
+  margin-bottom: 0;
+}
+
+.app-summary-card .govuk-summary-list__row:last-child,
+.app-summary-card .govuk-summary-list__row:last-child > *,
+.app-summary-card .govuk-table__row:last-child .govuk-table__cell {
+  border-bottom: 0;
+}
+@media print {
+  .app-summary-card__header {
+    break-inside: avoid;
+  }
+
+  .app-summary-card__actions {
+    display: none;
+  }
 }

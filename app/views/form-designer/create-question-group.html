@@ -19,7 +19,7 @@
         <span class="govuk-caption-l">{{formTitle}}</span>
         <h1 class="govuk-heading-l">{{pageTitle|safe}}</h1>
 
-        {% set namePrefix = "pages[" + pageIndex + "]" %}
+        {% set groupPrefix = "groups" %}
 
         {{ govukInput({
           label: {
@@ -30,7 +30,7 @@
             text: "This will help you find the group when adding new pages or when you need to come back to make changes. Use a descriptive name for example, ‘Applicant information’"
           },
           id: "group-name",
-          name: "groupName"
+          name: "group-name"
         }) }}
 
         <div class="govuk-form-group">
@@ -46,18 +46,18 @@
             <div class="govuk-date-input" id="add-loop">
               <div class="govuk-date-input__item">
                 <div class="govuk-form-group">
-                  <label class="govuk-label govuk-date-input__label" for="add-loop-min">
+                  <label class="govuk-label govuk-date-input__label" for="group-loop-min">
                     Min
                   </label>
-                  <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="padd-loop-min" name="{{namePrefix}}[add-loop-min]" type="text" inputmode="numeric" value="{{pageData['add-loop-min']}}">
+                  <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="group-loop-min" name="group-loop-min" type="text" inputmode="numeric" value="{{groupPrefix['add-loop-min']}}">
                 </div>
               </div>
               <div class="govuk-date-input__item">
                 <div class="govuk-form-group">
-                  <label class="govuk-label govuk-date-input__label" for="add-loop-max">
+                  <label class="govuk-label govuk-date-input__label" for="group-loop-max">
                     Max
                   </label>
-                  <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="add-loop-max" name="{{namePrefix}}[add-loop-max]" type="text" inputmode="numeric" value="{{pageData['add-loop-max']}}">
+                  <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="group-loop-max" name="group-loop-max" type="text" inputmode="numeric" value="{{groupPrefix['add-loop-max']}}">
                 </div>
               </div>
             </div>

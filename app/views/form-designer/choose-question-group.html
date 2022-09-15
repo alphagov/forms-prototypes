@@ -1,6 +1,6 @@
 {% extends "layout-govuk-forms.html" %}
 
-{% set pageTitle = 'Choose quesiton group' %}
+{% set pageTitle = 'Choose question group' %}
 
 {% block pageTitle %}
   {{pageTitle|safe}} - GOV.UK Forms
@@ -20,33 +20,26 @@
 
         {% set namePrefix = "pages[" + pageIndex + "]" %}
 
-        {%
-          set radioItems = [
-            {
-              value: "group1",
-              text: "Question group 1",
-              checked: checked(namePrefix + "['group']", "group1")
-            },
-            {
-              value: "group2",
-              text: "Question group 2",
-              checked: checked(namePrefix + "['group']", "group2")
-            }
-          ]
-        %}
+        <div class="govuk-form-group">
+          <fieldset class="govuk-fieldset">
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+              <h1 class="govuk-fieldset__heading">
+                {{pageTitle}}
+              </h1>
+            </legend>
+            <div class="govuk-radios" data-module="govuk-radios">
+            {% for group in data.groups %}
+              <div class="govuk-radios__item">
+                <input class="govuk-radios__input" id="question-group-{{loop.index}}" name="questionGroup" type="radio" value="{{group['name']}}"  {{ checked(namePrefix + "['group']", group['name']) }}>
+                <label class="govuk-label govuk-radios__label" for="question-group-{{loop.index}}">
+                  {{group['name']}}
+                </label>
+              </div>
+            {% endfor %}
+            </div>
 
-        {{ govukRadios({
-          idPrefix: "group",
-          name: namePrefix + "[group]",
-          fieldset: {
-            legend: {
-              text: pageTitle,
-              isPageHeading: true,
-              classes: "govuk-fieldset__legend--l"
-            }
-          },
-          items: radioItems
-        }) }}
+          </fieldset>
+        </div>
 
         {{ govukButton({
           text:  "Create a new group",

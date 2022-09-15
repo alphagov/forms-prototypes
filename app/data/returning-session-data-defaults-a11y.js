@@ -65,6 +65,7 @@ module.exports = {
       pageIndex: '5'
     }
   ],
+  groups: [],
   status: 'Draft',
   confirmationTitle: 'Your form has been submitted',
   checkAnswersTitle: 'Check your answers before submitting your form',
