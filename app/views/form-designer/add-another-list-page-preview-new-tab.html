@@ -1,0 +1,152 @@
+{% extends "layout.html" %}
+{% set mainClasses = "main--draft govuk-main-wrapper--auto-spacing" %}
+
+{% set pageTitle = groupName or 'Group name' %}
+
+{% set loopMin = 0 %}
+{% set loopMax = 100 %}
+
+{% for group in data.groups %}
+{% if groupName == group.name %}
+{% set loopMin = group['add-loop-min'] %}
+{% set loopMax = group['add-loop-max'] %}
+{% endif %}
+{% endfor %}
+
+{% block pageTitle %}
+  {{pageTitle}} - Preview - GOV.UK
+{% endblock %}
+
+{% block beforeContent %}
+  {% set prevPageId = pageId | int - 1 %}
+  {% if prevPageId > 0 %}
+    <a class="govuk-back-link" href="{{prevPageId}}">Back</a>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+
+    <h1 class="govuk-panel__title">
+      {{pageTitle}} <span class="govuk-visually-hidden">preview</span>
+    </h1>
+
+    <div class="govuk-form-group">
+
+      <dl class="govuk-summary-list">
+      {% for page in data.pages -%}
+
+        {% set questionTitle = page["long-title"] or "Page " + page["pageIndex"] %}
+
+        {% if questionTitle %}
+        {% if page.group == groupName %}
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+            {{page['long-title']}}
+          </dt>
+          <dd class="govuk-summary-list__value">
+            {% if (data[loop.index]) or (data[loop.index + '-year']) %}
+              {% if page['type'] == 'date' %}
+                {{data[loop.index + '-day']}}
+                {% if (data[loop.index + '-day']) %}/{% endif %}
+                {{data[loop.index + '-month'] or '01'}} / {{data[loop.index + '-year']}}
+              {% elif page['type'] == 'address' %}
+                {{data[loop.index + '-address-line-1']}}<br>
+                {% if data[loop.index + '-address-line-2'] %}{{data[loop.index + '-address-line-2']}}<br>{% endif %}
+                {{data[loop.index + '-address-town']}}<br>
+                {{data[loop.index + '-address-postcode']}}
+              {% elif page['type'] == 'select' and not page['oneOption'] %}
+                {{data[loop.index]|join(", ")}}
+              {% else %}
+                {{data[loop.index]}}
+              {% endif %}
+            {% else %}
+              Not completed
+            {% endif %}
+          </dd>
+          <dd class="govuk-summary-list__actions" style="width: 30%;">
+            <ul class="govuk-summary-list__actions-list">
+              <li class="govuk-summary-list__actions-list-item">
+                <a class="govuk-link" href="../page-preview-new-tab/{{page.pageIndex|int + 1}}">
+                  <span aria-hidden="true">Change</span>
+                  <span class="govuk-visually-hidden">Change {{page['long-title']}}</span>
+                </a>
+              </li>
+              <li class="govuk-summary-list__actions-list-item">
+                <a class="govuk-link" href="page-preview-remove-list-answer/{{data[page.pageIndex|int + 1] or 1}}">
+                  <span aria-hidden="true">Remove</span>
+                  <span class="govuk-visually-hidden">Remove {{page['long-title']}} from the list</span>
+                </a>
+              </li>
+            </ul>
+          </dd>
+        </div>
+        {% endif %}
+        {% endif %}
+        {% endfor %}
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+            What is an example question?
+          </dt>
+          <dd class="govuk-summary-list__value">
+            Example answer
+          </dd>
+          <dd class="govuk-summary-list__actions" style="width: 30%;">
+            <ul class="govuk-summary-list__actions-list">
+              <li class="govuk-summary-list__actions-list-item">
+                <a class="govuk-link" href="page-preview-new-tab/{{data[page.pageIndex] or 1}}">
+                  <span aria-hidden="true">Change</span>
+                  <span class="govuk-visually-hidden">Change example answer</span>
+                </a>
+              </li>
+              <li class="govuk-summary-list__actions-list-item">
+                <a class="govuk-link" href="page-preview-remove-list-answer/{{data[page.pageIndex] or 1}}">
+                  <span aria-hidden="true">Remove</span>
+                  <span class="govuk-visually-hidden">Remove example answer from the list</span>
+                </a>
+              </li>
+            </ul>
+          </dd>
+        </div>
+      </dl>
+
+    </div>
+    <form method="post" novalidate action="">
+      <div class="govuk-form-group">
+        <fieldset class="govuk-fieldset" aria-describedby="add-another-hint">
+          <legend class="govuk-fieldset__legend govuk-fieldset__legend govuk-fieldset__legend--m">
+            Do you need to add another answer?
+          </legend>
+          <div id="add-another-hint" class="govuk-hint">
+            You must tell us about all your directors.
+          </div>
+          <div class="govuk-radios govuk-radios--inline" data-module="govuk-radios">
+            <div class="govuk-radios__item">
+              <input class="govuk-radios__input" id="add-another" name="add-another" type="radio" value="Yes">
+              <label class="govuk-label govuk-radios__label" for="add-another">
+                Yes
+              </label>
+            </div>
+            <div class="govuk-radios__item">
+              <input class="govuk-radios__input" id="add-another-2" name="add-another" type="radio" value="No">
+              <label class="govuk-label govuk-radios__label" for="add-another-2">
+                No
+              </label>
+            </div>
+          </div>
+
+        </fieldset>
+      </div>
+
+      {{ govukButton({
+        text: "Continue",
+        attributes: {
+          target: "_parent"
+        }
+      }) }}
+    </form>
+
+  </div>
+</div>
+{% endblock %}

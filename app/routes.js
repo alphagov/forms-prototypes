@@ -408,6 +408,38 @@ router.get('/form-designer/page-preview/:pageId', function (req, res) {
   })
 })
 
+// Renders the add another interrupt page
+router.get('/form-designer/add-another-page-preview-new-tab/:pageId', function (req, res) {
+  req.session.data.action = ''
+  var pageId = req.params.pageId
+  var pageIndex = parseInt(pageId) - 1
+  var pageData = req.session.data.pages[pageIndex]
+  var groupName = pageData.group
+
+  res.render('form-designer/add-another-page-preview-new-tab', {
+    pageId: pageId,
+    pageIndex: pageIndex,
+    pageData: pageData,
+    groupName: groupName
+  })
+})
+
+// Renders the add another list page
+router.get('/form-designer/add-another-list-page-preview-new-tab/:pageId', function (req, res) {
+  req.session.data.action = ''
+  var pageId = req.params.pageId
+  var pageIndex = parseInt(pageId) - 1
+  var pageData = req.session.data.pages[pageIndex]
+  var groupName = pageData.group
+
+  res.render('form-designer/add-another-list-page-preview-new-tab', {
+    pageId: pageId,
+    pageIndex: pageIndex,
+    pageData: pageData,
+    groupName: groupName
+  })
+})
+
 // Renders the new-tab page preview, set to a specific page
 router.get('/form-designer/page-preview-new-tab/:pageId', function (req, res) {
   req.session.data.action = ''

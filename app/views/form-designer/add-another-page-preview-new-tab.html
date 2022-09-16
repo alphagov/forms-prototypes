@@ -1,0 +1,59 @@
+{% extends "layout.html" %}
+{% set mainClasses = "main--draft govuk-main-wrapper--auto-spacing" %}
+
+{% set pageTitle = groupName or 'Group name' %}
+
+{% set loopMin = 0 %}
+{% set loopMax = 100 %}
+
+{% for group in data.groups %}
+{% if groupName == group.name %}
+{% set loopMin = group['add-loop-min'] %}
+{% set loopMax = group['add-loop-max'] %}
+{% endif %}
+{% endfor %}
+
+{% block pageTitle %}
+  {{pageTitle}} - Preview - GOV.UK
+{% endblock %}
+
+{% block beforeContent %}
+  {% set prevPageId = pageId | int - 1 %}
+  {% if prevPageId > 0 %}
+    <a class="govuk-back-link" href="{{prevPageId}}">Back</a>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+
+    <h1 class="govuk-panel__title">
+      {{pageTitle}} <span class="govuk-visually-hidden">preview</span>
+    </h1>
+
+    <p class="govuk-body">
+      You can add up to {{loopMax}}.
+    </p>
+
+    <p class="govuk-body">
+      What you will be asked:
+    </p>
+
+    <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-8">
+      {% for page in data.pages %}
+      {% if page.group == groupName %}
+      <li>{{page['long-title']}}</li>
+      {% endif %}
+      {% endfor %}
+    </ul>
+
+    {{ govukButton({
+      text: "Continue",
+      attributes: {
+        target: "_parent"
+      }
+    }) }}
+  </div>
+</div>
+{% endblock %}
