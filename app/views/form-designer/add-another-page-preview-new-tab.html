@@ -1,27 +1,27 @@
-{% extends "layout.html" %}
+{% extends "layout-govuk-form-preview.html" %}
 {% set mainClasses = "main--draft govuk-main-wrapper--auto-spacing" %}
 
-{% set pageTitle = groupName or 'Group name' %}
+{% set pageTitle = data.questionGroup or 'Group name' %}
 
 {% set loopMin = 0 %}
 {% set loopMax = 100 %}
 
 {% for group in data.groups %}
-{% if groupName == group.name %}
+{% if data.questionGroup == group.name %}
 {% set loopMin = group['add-loop-min'] %}
 {% set loopMax = group['add-loop-max'] %}
 {% endif %}
 {% endfor %}
-
-{% block pageTitle %}
-  {{pageTitle}} - Preview - GOV.UK
-{% endblock %}
 
 {% block beforeContent %}
   {% set prevPageId = pageId | int - 1 %}
   {% if prevPageId > 0 %}
     <a class="govuk-back-link" href="{{prevPageId}}">Back</a>
   {% endif %}
+{% endblock %}
+
+{% block pageTitle %}
+  {{ pageTitle }} - Preview - {{ data['formTitle'] }} - GOV.UK
 {% endblock %}
 
 {% block content %}
@@ -42,7 +42,7 @@
 
     <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-8">
       {% for page in data.pages %}
-      {% if page.group == groupName %}
+      {% if page.group == data.questionGroup %}
       <li>{{page['long-title']}}</li>
       {% endif %}
       {% endfor %}

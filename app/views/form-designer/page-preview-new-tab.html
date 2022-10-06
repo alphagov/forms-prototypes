@@ -18,6 +18,8 @@
   {% set nextPageId = pageId | int + 1 %}
   {% set isLastQuestionPage = pageId == data['highestPageId'] %}
   {% set formAction = "../check-answers-page-preview-new-tab" if isLastQuestionPage else nextPageId %}
+  <!-- set nextPage to be add another interrupt if next page is part of question group -->
+  <!-- set nextPage to be add another list view if next page is outside of question group -->
 
   <form class="form" action='{{formAction}}' method="post">
     <div class="govuk-grid-row">
