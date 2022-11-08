@@ -3,7 +3,7 @@
 {% set pageTitle = 'Add a declaration' %}
 
 {% block pageTitle %}
-  {{ "Error: " if containsErrors }}Edit {{pageTitle|lower}} - GOV.UK Forms
+  {{ "Error: " if containsErrors }}{{pageTitle}} - GOV.UK Forms
 {% endblock %}
 
 {% block beforeContent %}
@@ -72,7 +72,7 @@
         name: "isDeclarationComplete",
         fieldset: {
           legend: {
-            text: "Have you completed this section?",
+            text: "Do you want to mark this task as complete?",
             isPageHeading: false,
             classes: "govuk-fieldset__legend--m"
           }
@@ -80,12 +80,12 @@
         items: [
           {
             value: "yes",
-            text: "Yes, I have completed this section",
+            text: "Yes",
             checked: checked('isDeclarationComplete', "yes")
           },
           {
             value: "no",
-            text: "No, I will come back later",
+            text: "No, I’ll come back later",
             checked: checked('isDeclarationComplete', "no")
           }
         ],
@@ -101,7 +101,7 @@
           value: "continue"
         }) }}
         {{ govukButton({
-          text:  "Save and preview",
+          text:  "Save",
           name: "action",
           value: "update",
           classes: "govuk-button--secondary"
@@ -109,22 +109,6 @@
       </div>
 
     </div>
-
-    <div class="govuk-grid-column-one-third">
-      <div class="preview-pane-wrapper">
-        <h2 class="govuk-heading-m">
-          Page preview
-        </h2>
-        <div class="preview-header">
-          <p class="preview-link govuk-body-s">
-            <!-- <a href="#" target="_blank" onclick="document.getElementById('form').submit();">Refresh</a> &nbsp;|&nbsp; -->
-            <!-- <a href="../check-answers-page-preview-new-tab" target="_blank">Open in a new tab</a> -->
-          </p>
-        </div>
-        <iframe sandbox="allow-same-origin allow-scripts" title="Page preview" data-module="app-example-frame" class="preview-pane app-example__frame app-example__frame--resizable" src="../check-answers-page-preview" frameborder="1" loading="lazy" id="iFrameResizer0" ></iframe>
-      </div>
-    </div>
-
   </div>
 
 </form>

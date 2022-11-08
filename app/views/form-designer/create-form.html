@@ -10,7 +10,7 @@
 <!-- if form has a title sections completed =+ 1 -->
 {% if data['formTitle'] %}{% set sections = sections + 1 %}{% endif %}
 <!-- if questions added sections completed =+ 1 --> <!-- still needs implemented -->
-{% if data['formsQuestions'] %}{% set sections = sections + 1 %}{% endif %}
+{% if data['isQuestionsComplete'] === 'yes' %}{% set sections = sections + 1 %}{% endif %}
 <!-- if summary page reviewed and confirmed sections completed =+ 1 -->
 {% if data['isDeclarationComplete'] === 'yes' %}{% set sections = sections + 1 %}{% endif %}
 <!-- if confirmation page reviewed and confirmed sections completed =+ 1 -->
@@ -28,11 +28,11 @@
 
 
 {% block pageTitle %}
-  {{pageTitle}}: {{ data['formTitle'] }} - GOV.UK Forms
+  {{pageTitle}}: {{ data['formTitle'] }} - {{serviceName}}
 {% endblock %}
 
 {% block beforeContent %}
-  <a class="govuk-back-link" href="form-home">Back to forms</a>
+  <a class="govuk-back-link" href="form-home">Back to your forms</a>
 {% endblock %}
 
 {% block content %}
@@ -52,21 +52,28 @@
       {% set nextPageId = data['highestPageId'] | int + 1 %}
       {% set totalPageNum = data['highestPageId'] | int + 2 %}
 
-      {% if data['status'] === 'Live' %}
+      {% if data.status === 'Live' %}
         <h2 class="govuk-heading-s govuk-!-margin-bottom-2">Form is live</h2>
+
         <p class="govuk-body">The URL for your form is:</p>
         <p class="govuk-body">
-          <input class="govuk-input" type="text" id="formURL" value="forms.service.gov.uk/example-url" style="background-color:#f3f2f1;border-color:#b1b4b6;">
+          <strong id="formURL" value="https://forms.service.gov.uk/form/58/form-name">https://forms.service.gov.uk/form/58/form-name</strong>
         </p>
-        <div class="tooltip">
-          <span class="tooltiptext govuk-body" id="copyURLTooltip">Copy to clipboard</span>
-          <button class="govuk-button govuk-button--secondary" type="button" onclick="copyURL()">
-            Copy URL
-          </button>
+        <button class="govuk-button govuk-button--secondary" type="button" onclick="copyURL()">
+          Copy URL to clipboard
+        </button>
+
+        <div class="govuk-inset-text">
+          <p class="govuk-body">
+            Any changes you make to the questions in your form will be updated in the live form immediately.
+          </p>
+          <p class="govuk-body">
+            This could have an impact on people who are filling in the form at the same time. They may lose any answers they have already provided and may need to start again.
+          </p>
         </div>
       {% else %}
         <h2 class="govuk-heading-s govuk-!-margin-bottom-2">Form incomplete</h2>
-        <p class="govuk-body govuk-!-margin-bottom-7">You have completed {{sections}} of 9 sections.</p>
+        <p class="govuk-body govuk-!-margin-bottom-7">You have completed {{sections}} of 9 tasks.</p>
       {% endif %}
 
       <ol class="app-task-list">
@@ -92,7 +99,7 @@
                 </a>
               </span>
               {% if data['status'] === 'Draft' %}
-              <strong class="govuk-tag {% if data.pages.length %}govuk-tag--blue{%else %}govuk-tag--grey{% endif %} app-task-list__tag" id="add-questions-status">{% if data.pages.length %}In progress{% else %}Not started {% endif %}</strong>
+              <strong class="govuk-tag {% if data.isQuestionsComplete === 'yes' %}{% elif data.pages.length and data.isQuestionsComplete === 'no' %}govuk-tag--blue{% else %}govuk-tag--grey{% endif %} app-task-list__tag" id="add-questions-status">{% if data.isQuestionsComplete === 'yes' %}Completed{% elif data.pages.length and data.isQuestionsComplete === 'no' %}In progress{% else %}Not started{% endif %}</strong>
               {% endif %}
             </li>
             <li class="app-task-list__item">
@@ -128,7 +135,7 @@
                 </a>
               </span>
               {% if data['status'] === 'Draft' %}
-              <strong class="govuk-tag {% if not data['formsEmail'] %}govuk-tag--grey{% endif %} app-task-list__tag" id="processing-email-status">{% if data['formsEmail'] %}Completed{% else %}Not started{% endif %}</strong>
+              <strong class="govuk-tag {% if not data.formsEmail %}govuk-tag--grey{% elif data.formsEmail and ((data.confirmationCode === '000000') or not data.confirmationCode) %}govuk-tag--blue{% endif %} app-task-list__tag" id="processing-email-status">{% if data.formsEmail and ((data.confirmationCode === '000000') or not data.confirmationCode) %}In progress{% elif data.formsEmail and data.confirmationCode !== '000000' %}Completed{% else %}Not started{% endif %}</strong>
               {% endif %}
             </li>
             <li class="app-task-list__item">
@@ -138,7 +145,7 @@
                 {% if data['formsEmail'] or data['status'] === 'Live' %}</a>{% endif %}
               </span>
               {% if data['status'] === 'Draft' %}
-              <strong class="govuk-tag {% if not data['confirmationCode'] or (data['confirmationCode'] === '000000') %}govuk-tag--grey{% endif %} app-task-list__tag" id="verified-email-status">{% if not data['formsEmail'] %}Cannot start yet{% elif not data['confirmationCode'] or (data['confirmationCode'] === '000000') %}Not started{% else %}Completed{% endif %}</strong>{% endif %}
+              <strong class="govuk-tag {% if not data['confirmationCode'] %}govuk-tag--grey{% elif data['confirmationCode'] === '000000' %}govuk-tag--blue{% endif %} app-task-list__tag" id="verified-email-status">{% if not data['formsEmail'] %}Cannot start yet{% elif not data['confirmationCode'] %}Not started{% elif data['confirmationCode'] === '000000' %}In progress{% else %}Completed{% endif %}</strong>{% endif %}
             </li>
           </ul>
         </li>
@@ -194,6 +201,14 @@
 
       </ol>
 
+      {% if data.pages.length %}
+      <p class="govuk-body govuk-!-margin-bottom-9">
+        <a class="govuk-link" href="/form-designer/page-preview-new-tab/1" target="_blank" rel="noopener noreferrer">
+          Preview this form in new tab
+        </a>
+      </p>
+      {% endif %}
+
       {% if data['status'] === 'Live' %}
       <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Publish your form on GOV.UK</h2>
       <p class="govuk-body">
@@ -218,19 +233,15 @@
 {% block pageScripts %}
 <script type="text/javascript">
   function copyURL() {
-    /* Get the text field */
-    var copyText = document.getElementById("formURL");
+    /* Create new range so we can select a node */
+    var range = document.createRange();
 
-    /* Select the text field */
-    copyText.select();
-    copyText.setSelectionRange(0, 99999); /* For mobile devices */
+    /* Select the contents within node id "formURL" */
+    range.selectNodeContents(document.getElementById("formURL"));
 
-     /* Copy the text inside the text field */
-    navigator.clipboard.writeText(copyText.value);
+    /* Copy the text from the node */
+    navigator.clipboard.writeText(range);
 
-    /* Alert the copied text */
-    var tooltip = document.getElementById("copyURLTooltip");
-    tooltip.innerHTML = "Copied to clipboard";
   }
 </script>
 {% endblock %}

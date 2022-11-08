@@ -7,7 +7,9 @@
 {% endblock %}
 
 {% block beforeContent %}
-  <a class="govuk-back-link" href="../create-form">Back</a>
+  <a class="govuk-back-link" href="../create-form" target="_parent">
+    Back to create a form
+  </a>
 {% endblock %}
 
 {% block content %}
@@ -24,7 +26,7 @@
       <h1 class="govuk-heading-l">{{pageTitle|safe}}</h1>
 
       <p class="govuk-body">
-        You need to provide an email address for completed forms to be sent to for processing. It should be a shared government email inbox. 
+        You need to provide an email address for completed forms to be sent to for processing. It should be a shared government email inbox.
       </p>
 
       <p class="govuk-body">
@@ -52,7 +54,9 @@
           <input type="hidden" name="currentFormsEmail" value="{{data['currentFormsEmail'] or data['formsEmail']}}">
         {% endif %}
 
-        <button type="submit" class="govuk-button">Continue</button>
+        {{ govukButton({
+          text: "Save and continue"
+        }) }}
       </form>
     </div>
   </div>

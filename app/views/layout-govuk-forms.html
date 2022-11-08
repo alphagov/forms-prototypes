@@ -45,7 +45,18 @@
     homepageUrl: "/",
     productName: "Forms",
     serviceUrl: "/",
-    containerClasses: "govuk-width-container"
+    containerClasses: "govuk-width-container",
+    navigationClasses: "govuk-header__navigation--end",
+    navigation: [
+    {
+      href: "#signon",
+      text: "Firstname Lastname"
+    },
+    {
+      href: "#logged-out",
+      text: "Sign out"
+    }
+  ]
   }) }}
 {% endblock %}
 
