@@ -143,6 +143,15 @@
 
           {{ govukInput({
             label: {
+              text: "County (optional)"
+            },
+            classes: "govuk-!-width-two-thirds",
+            id: "address-county",
+            name: "address-county"
+          }) }}
+
+          {{ govukInput({
+            label: {
               text: "Postcode"
             },
             classes: "govuk-input--width-10",

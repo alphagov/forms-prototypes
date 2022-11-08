@@ -237,6 +237,40 @@ router.get('/form-designer/edit-page/:pageId', function (req, res) {
   }
 })
 
+
+
+// If user is marking questions as complete...
+router.get('/form-designer/question-list', function (
+  req,
+  res
+) {
+  const errors = {};
+  const { isQuestionsComplete } = req.session.data
+
+  // If the formsEmail is blank, create an error to be displayed to the user
+  if (!isQuestionsComplete?.length) {
+    errors.isQuestionsComplete = {
+      text: 'Select ‘Yes’ if you are finished adding and editing your questions',
+      href: "#isQuestionsComplete"
+    }
+  }
+
+  // Convert the errors into a list, so we can use it in the template
+  const errorList = Object.values(errors)
+  // If there are no errors, redirect the user to the next page
+  // otherwise, show the page again with the errors set
+  const containsErrors = errorList.length > 0
+  if(containsErrors) {
+    // Reset the state so they can be reused
+    req.session.data.action = undefined
+    res.render('form-designer/form-index', { errors, errorList, containsErrors })
+  } else {
+    // Reset the state so they can be reused
+    req.session.data.action = undefined
+    res.redirect('/form-designer/create-form')
+  }
+})
+
 // Route used to delete question
 router.get('/form-designer/delete/:pageId/', function (
   req,

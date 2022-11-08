@@ -15,20 +15,19 @@
 
     <p class="govuk-body">The URL for your form is:</p>
     <p class="govuk-body">
-      <input class="govuk-input" type="text" id="formURL" value="forms.service.gov.uk/example-url" style="background-color:#f3f2f1;border-color:#b1b4b6;">
+      <strong id="formURL" value="https://forms.service.gov.uk/form/58/form-name">https://forms.service.gov.uk/form/58/form-name</strong>
     </p>
-    <div class="tooltip">
-      <span class="tooltiptext govuk-body" id="copyURLTooltip">Copy to clipboard</span>
-      <button class="govuk-button govuk-button--secondary" type="button" onclick="copyURL()">
-        Copy URL
-      </button>
-    </div>
+    <button class="govuk-button govuk-button--secondary" type="button" onclick="copyURL()">
+      Copy URL to clipboard
+    </button>
 
     <p class="govuk-body">
       The form will not be indexed by search engines, so people will not be able to find it easily. Contact your GOV.UK publishing team to publish a link to your form on GOV.UK so people can find it.
     </p>
 
-    <a href="create-form" class="govuk-body govuk-link govuk-link--no-visited-state">Continue to form details</a>
+    <a href="create-form" class="govuk-body govuk-link govuk-link--no-visited-state">
+      Continue to your form
+    </a>
 
   </div>
 
@@ -39,19 +38,15 @@
 {% block pageScripts %}
 <script type="text/javascript">
   function copyURL() {
-    /* Get the text field */
-    var copyText = document.getElementById("formURL");
+    /* Create new range so we can select a node */
+    var range = document.createRange();
 
-    /* Select the text field */
-    copyText.select();
-    copyText.setSelectionRange(0, 99999); /* For mobile devices */
+    /* Select the contents within node id "formURL" */
+    range.selectNodeContents(document.getElementById("formURL"));
 
-     /* Copy the text inside the text field */
-    navigator.clipboard.writeText(copyText.value);
+    /* Copy the text from the node */
+    navigator.clipboard.writeText(range);
 
-    /* Alert the copied text */
-    var tooltip = document.getElementById("copyURLTooltip");
-    tooltip.innerHTML = "Copied to clipboard";
   }
 </script>
 {% endblock %}

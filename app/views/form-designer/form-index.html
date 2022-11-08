@@ -3,112 +3,149 @@
 {% set pageTitle = 'Add and edit your questions' %}
 
 {% block pageTitle %}
-  {{pageTitle}}: {{ data['formTitle'] }} - GOV.UK Forms
+{{pageTitle}}: {{ data['formTitle'] }} - GOV.UK Forms
 {% endblock %}
 
 {% block beforeContent %}
-  <a class="govuk-back-link" href="create-form">Back to {% if data['status'] === 'Live' %}your form{% else %}create a form{% endif %}</a>
+<a class="govuk-back-link" href="create-form">Back to {% if data['status'] === 'Live' %}your form{% else %}create a form{% endif %}</a>
 {% endblock %}
 
 {% block content %}
-  <form id="form" class="form" action="../edit-page/{{ pageId }}" method="post">
-    <div class="govuk-grid-row">
-      <div class="govuk-grid-column-two-thirds">
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
 
-        {% if data['status'] === 'Live' %}
-        <div class="govuk-notification-banner" role="alert" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
-          <div class="govuk-notification-banner__header">
-            <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
-              Important
-            </h2>
-          </div>
-          <div class="govuk-notification-banner__content">
-            <h3 class="govuk-notification-banner__heading">
-              Any changes you make to a live form will be updated in the form immediately.
-            </h3>
-            <p class="govuk-body">
-              This could have an impact on people who are filling in the form at the same time. They may lose any answers they have already provided and may need to start again. 
-            </p>
-          </div>
-        </div>
-        {% endif %}
+    {% if data['status'] === 'Live' %}
+    <div class="govuk-notification-banner" role="alert" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+      <div class="govuk-notification-banner__header">
+        <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+          Important
+        </h2>
+      </div>
+      <div class="govuk-notification-banner__content">
+        <h3 class="govuk-notification-banner__heading">
+          Any changes you make to a live form will be updated in the form immediately.
+        </h3>
+        <p class="govuk-body">
+          This could have an impact on people who are filling in the form at the same time. They may lose any answers they have already provided and may need to start again. 
+        </p>
+      </div>
+    </div>
+    {% endif %}
 
-        <span class="govuk-caption-l">{{ data['formTitle'] }}</span>
-        <h1 class="govuk-heading-l govuk-!-margin-bottom-2">{{pageTitle}}</h1>
-        {% if data['status'] %}
-        <div>
-          {{govukTag({
-            text: data['status'],
-            classes: "govuk-!-margin-bottom-7 govuk-tag--purple" if data['status'] === 'Draft' else "govuk-!-margin-bottom-7 govuk-tag--turquoise"
-          })}}
-        </div>
-        {% endif %}
+    <span class="govuk-caption-l">{{ data['formTitle'] }}</span>
+    <h1 class="govuk-heading-l govuk-!-margin-bottom-2">{{pageTitle}}</h1>
+    {% if data['status'] %}
+    <div>
+      {{ govukTag({
+        text: data['status'],
+        classes: "govuk-!-margin-bottom-7 govuk-tag--purple" if data['status'] === 'Draft' else "govuk-!-margin-bottom-7 govuk-tag--turquoise"
+      }) }}
+    </div>
+    {% endif %}
 
-        {% set nextPageId = data['highestPageId'] | int + 1 %}
-        {% set totalPageNum = data['highestPageId'] | int + 2 %}
+    {% set nextPageId = data['highestPageId'] | int + 1 %}
+    {% set totalPageNum = data['highestPageId'] | int + 2 %}
 
+    <form id="form" class="form" action="../edit-page/{{ pageId }}" method="post">
+      <div class="govuk-button-group">
         {{ govukButton({
           text: "Add a question",
           href: "choose-page-type/" + nextPageId,
           classes: "govuk-!-margin-bottom-7"
         }) }}
+        {% if data.pages.length %}
+        <a class="govuk-link" href="/form-designer/page-preview-new-tab/1" target="_blank" rel="noopener noreferrer">
+          Preview this form in new tab
+        </a>
+        {% endif %}
+      </div>
+    </form>
 
-      {% if data.pages.length %}
+    {% if data.pages.length %}
 
-        <h2 class="govuk-heading-m">Your questions</h2>
+    <h2 class="govuk-heading-m">Your questions</h2>
 
-        <p class="govuk-body govuk-!-margin-bottom-9">
-          <a href="/form-designer/page-preview-new-tab/1" target="_blank">Preview the form in a new tab</a>
-        <p>
+    <dl class="govuk-summary-list">
 
-        <dl class="govuk-summary-list">
+      {% for page in data.pages -%}
 
-          {% for page in data.pages -%}
+      {% set questionTitle =  page["long-title"] or "Page " + page["pageIndex"] %}
 
-            {% set questionTitle =  page["long-title"] or "Page " + page["pageIndex"] %}
+      {% if questionTitle %}
 
-            {% if questionTitle %}
-
-              <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key govuk-!-font-weight-regular">
-                  <!--Q{{page["pageIndex"] | int + 1}}.-->
-                  {{questionTitle}}
-                </dt>
-                <dd class="govuk-summary-list__actions">
-                  <div class="govuk-button-group form-action-group govuk-!-margin-bottom-0">
-                    <div class="form-actions-reordering">
-                    {% if page.pageIndex > 0 %}
-                      {{ govukButton({
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key govuk-!-font-weight-regular">
+          <!--Q{{page["pageIndex"] | int + 1}}.-->
+          {{questionTitle}}
+        </dt>
+        <dd class="govuk-summary-list__actions">
+          <div class="govuk-button-group form-action-group govuk-!-margin-bottom-0">
+            <div class="form-actions-reordering">
+              {% if page.pageIndex > 0 %}
+              {{ govukButton({
                           html: "Move up <span class='govuk-visually-hidden'>" + questionTitle + "</span>",
                           classes: "govuk-button--secondary",
                           href: "reorder-page/" + (page.pageIndex | int + 1) + "/up"
                         }) }}
-                    {% endif %}
+              {% endif %}
 
-                    {% if page.pageIndex < data.pages | length - 1 %}
-                      {{ govukButton({
+              {% if page.pageIndex < data.pages | length - 1 %}
+              {{ govukButton({
                           html: "Move down <span class='govuk-visually-hidden'>" + questionTitle + "</span>",
                           classes: "govuk-button--secondary",
                           href: "reorder-page/" + (page.pageIndex | int + 1) + "/down"
                         }) }}
-                    {% endif %}
-                    <div>
+              {% endif %}
+              <div>
 
-                    <a class="govuk-link govuk-link--no-visited-state"href="edit-page/{{page.pageIndex | int + 1}}">
-                      Edit<span class="govuk-visually-hidden"> {{questionTitle}}</span>
-                    </a>
-                  </div>
-                </dd>
+                <a class="govuk-link govuk-link--no-visited-state" href="edit-page/{{page.pageIndex | int + 1}}">
+                  Edit<span class="govuk-visually-hidden"> {{questionTitle}}</span>
+                </a>
               </div>
-            {% endif %}
-
-          {%- endfor %}
-          </dl>
-        {% endif %}
-
+        </dd>
       </div>
+      {% endif %}
 
-    </div>
-  </form>
+      {%- endfor %}
+    </dl>
+
+    <form id="form" class="form" action="question-list" method="post">
+      {{ govukRadios({
+        classes: "govuk-radios",
+        idPrefix: "isQuestionsComplete",
+        name: "isQuestionsComplete",
+        fieldset: {
+          legend: {
+            text: "Have you finished editing your questions?",
+            isPageHeading: false,
+            classes: "govuk-fieldset__legend--m"
+          }
+        },
+        hint: {
+          text: "Selecting ‘Yes’ will mark this task as complete. You will still be able to make more changes if you need to."
+        },
+        items: [
+          {
+            value: "yes",
+            text: "Yes"
+          },
+          {
+            value: "no",
+            text: "No, I’ll come back later"
+          }
+        ],
+        errorMessage: { text: errors['isQuestionsComplete'].text } if errors['isQuestionsComplete'].text
+      }) }}
+      {{ govukButton({
+        text: "Save and continue",
+        name: "action",
+        value: "continue"
+      }) }}
+    </form>
+    {% endif %}
+
+  </div>
+
+</div>
 
 {% endblock %}
