@@ -2,6 +2,9 @@
 {% set mainClasses = "main--draft govuk-main-wrapper--auto-spacing" %}
 
 {% set pageTitle = pageData['long-title'] or 'Question text' %}
+{% if pageData['questionOptional'] %}
+{% set pageTitle = pageTitle + ' (optional)' %}
+{% endif %}
 
 {% block beforeContent %}
   {% set prevPageId = pageId | int - 1 %}

@@ -83,6 +83,29 @@
 
         <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 
+        {{ govukCheckboxes({
+          idPrefix: "questionOptional",
+          name: namePrefix + "[questionOptional]",
+          fieldset: {
+            legend: {
+              text: "Question settings",
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          items: [
+            {
+              value: "questionOptional",
+              text: "Make this question optional",
+              hint: {
+                text: "‘(optional)’ will be added to the end of the question text"
+              },
+              checked: checked(namePrefix + "['questionOptional']", "questionOptional")
+            }
+          ]
+        }) }}
+
+        <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+
         <dl class="govuk-summary-list">
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">
