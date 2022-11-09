@@ -1,7 +1,7 @@
 {% extends "layout-govuk-forms.html" %}
 
 {% set pageTitle -%}
-  {% if pageData['long-title'] %}
+  {{ "Error: " if containsErrors }}{% if pageData['long-title'] %}
     {{pageData['long-title']}}
   {% else %}
     Edit question

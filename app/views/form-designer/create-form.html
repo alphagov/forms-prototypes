@@ -99,7 +99,7 @@
                 </a>
               </span>
               {% if data['status'] === 'Draft' %}
-              <strong class="govuk-tag {% if data.isQuestionsComplete === 'yes' %}{% elif data.pages.length and data.isQuestionsComplete === 'no' %}govuk-tag--blue{% else %}govuk-tag--grey{% endif %} app-task-list__tag" id="add-questions-status">{% if data.isQuestionsComplete === 'yes' %}Completed{% elif data.pages.length and data.isQuestionsComplete === 'no' %}In progress{% else %}Not started{% endif %}</strong>
+              <strong class="govuk-tag {% if data.isQuestionsComplete === 'yes' %}{% elif data.pages.length %}govuk-tag--blue{% else %}govuk-tag--grey{% endif %} app-task-list__tag" id="add-questions-status">{% if data.isQuestionsComplete === 'yes' %}Completed{% elif data.pages.length %}In progress{% else %}Not started{% endif %}</strong>
               {% endif %}
             </li>
             <li class="app-task-list__item">

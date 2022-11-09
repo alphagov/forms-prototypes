@@ -66,6 +66,7 @@
         }
       }) }}
 
+      {% if data.status === 'Draft' %}
       {{ govukRadios({
         classes: "govuk-radios",
         idPrefix: "isDeclarationComplete",
@@ -91,6 +92,7 @@
         ],
         errorMessage: { text: errors['isDeclarationComplete'].text } if errors['isDeclarationComplete'].text
       }) }}
+      {% endif %}
 
       <input type="hidden" id="currentPageId" name="currentPageId" value="{{pageId}}">
 

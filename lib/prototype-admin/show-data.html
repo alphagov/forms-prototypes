@@ -15,9 +15,9 @@
 
 {% block content %}
 
-<form method="post">
+<form id="form" class="form" action="show-data" method="post">
   <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
+    <div class="govuk-grid-full-width">
       <h1 class="govuk-heading-xl">
         Show session data
       </h1>
@@ -31,6 +31,14 @@
             </dt>
             <dd class="govuk-summary-list__value">
               {{obj|safe}}
+            </dd>
+            <dd class="govuk-summary-list__actions">
+              {{ govukButton({
+                html: 'Remove<span class="govuk-visually-hidden"> ' + key + '</span>',
+                name: "action",
+                value: key,
+                classes: "govuk-button--warning govuk-!-margin-0"
+              }) }}
             </dd>
           </div>
           {% endif %}
@@ -71,14 +79,15 @@
           {% endfor %}
         </tbody>
       </table>
-
     </div>
+
     <div class="govuk-grid-column-full">
-          <h2 class="govuk-heading-m">
-            Data in JSON format
-          </h2>
-          <pre>{{ data | dump(2) | safe }}</p>
-        </div>
+      <h2 class="govuk-heading-m">
+        Data in JSON format
+      </h2>
+      <pre>{{ data | dump(2) | safe }}</pre>
+    </div>
+
   </div>
 </form>
 

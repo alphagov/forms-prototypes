@@ -630,4 +630,12 @@ router.post('/form-designer/provide-support-details', function (req, res) {
   }
 })
 
+// Function to remove individual data items, for basic testing
+router.get('/prototype-admin/show-data', (req, res, next) => {
+  const removeKey = req.session.data.action
+  console.log(req.session.data[removeKey])
+  req.session.data[removeKey] = undefined
+  next()
+})
+
 module.exports = router
