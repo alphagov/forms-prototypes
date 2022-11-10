@@ -68,5 +68,6 @@ module.exports = {
   status: 'Draft',
   confirmationTitle: 'Your form has been submitted',
   checkAnswersTitle: 'Check your answers before submitting your form',
-  formTitle: 'Take your pet abroad'
+  formTitle: 'Take your pet abroad',
+  isQuestionsComplete: 'no'
 }

@@ -2,6 +2,9 @@
 {% set mainClasses = "main--draft govuk-main-wrapper--auto-spacing" %}
 
 {% set pageTitle = pageData['long-title'] or 'Question text' %}
+{% if pageData['questionOptional'] %}
+{% set pageTitle = pageTitle + ' (optional)' %}
+{% endif %}
 
 {% block beforeContent %}
   {% set prevPageId = pageId | int - 1 %}
@@ -139,6 +142,15 @@
             name: pageId + "-address-town",
             autocomplete: "address-level2",
             value: data[(pageId | int) + '-address-town']
+          }) }}
+
+          {{ govukInput({
+            label: {
+              text: "County (optional)"
+            },
+            classes: "govuk-!-width-two-thirds",
+            id: "address-county",
+            name: "address-county"
           }) }}
 
           {{ govukInput({

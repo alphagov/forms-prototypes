@@ -84,5 +84,6 @@ module.exports = {
   status: 'Draft',
   confirmationTitle: 'Your form has been submitted',
   checkAnswersTitle: 'Check your answers before submitting your form',
-  formTitle: 'Amendment form: redundancy claim for holiday pay'
+  formTitle: 'Amendment form: redundancy claim for holiday pay',
+  isQuestionsComplete: 'no'
 }

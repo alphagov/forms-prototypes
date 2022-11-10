@@ -3,7 +3,7 @@
 {% set pageTitle = 'Form submitted page' %}
 
 {% block pageTitle %}
-  {{ "Error: " if containsErrors }}Edit {{pageTitle|lower}} - GOV.UK Forms
+  {{ "Error: " if containsErrors }}{{pageTitle}} - GOV.UK Forms
 {% endblock %}
 
 {% block beforeContent %}
@@ -46,11 +46,11 @@
       <p class="govuk-body">This page will be shown after someone has completed and submitted the form to let them know that the form has been submitted successfully.</p>
 
       <p class="govuk-body">Add some content to let people know what will happen next and when, so they know what to expect.</p>
-      
+
       <h2 class="govuk-heading-s">Example</h2>
 
       {{ govukInsetText({
-          text: "We'll send you an email to let you know the outcome. You'll usually get a response within 10 working days."
+          text: "We’ll send you an email to let you know the outcome. You'll usually get a response within 10 working days."
         }) }}
 
       {{ govukCharacterCount({
@@ -74,7 +74,7 @@
           value: "continue"
         }) }}
         {{ govukButton({
-          text:  "Save and preview",
+          text:  "Save",
           name: "action",
           value: "update",
           classes: "govuk-button--secondary"
@@ -82,20 +82,6 @@
       </div>
 
     </div>
-
-    <div class="govuk-grid-column-one-third">
-      <div class="preview-pane-wrapper">
-        <h2 class="govuk-heading-m">
-          Page preview
-        </h2>
-        <div class="preview-header">
-
-        </div>
-        <iframe sandbox="allow-same-origin allow-scripts" title="Page preview" data-module="app-example-frame" class="preview-pane app-example__frame app-example__frame--resizable" src="../confirmation-page-preview" frameborder="1" loading="lazy"
-          id="iFrameResizer0" scrolling="no"></iframe>
-      </div>
-    </div>
-
   </div>
 
 </form>

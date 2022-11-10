@@ -19,7 +19,9 @@
   {% elif prevPageId > 0 %}
     <a class="govuk-back-link" href="../edit-page/{{prevPageId}}">Back</a>
   {% else %}
-    <a class="govuk-back-link" href="../form-index" target="_parent">Back</a>
+    <a class="govuk-back-link" href="../create-form" target="_parent">
+      Back to create a form
+    </a>
   {% endif %}
 {% endblock %}
 
@@ -121,7 +123,6 @@
         {{ govukRadios({
           idPrefix: "type",
           name: namePrefix + "[type]",
-          classes: "govuk-radios--small",
           fieldset: {
             legend: {
               text: "What kind of answer do you need to this question?",
@@ -148,7 +149,7 @@
         </div>
 
         <p class="govuk-body">
-          <a class="govuk-link govuk-link--no-visited-state" href="../form-index">Go to form overview</a>
+          <a class="govuk-link govuk-link--no-visited-state" href="../form-index">Go to your questions</a>
         </p>
 
       </div>
