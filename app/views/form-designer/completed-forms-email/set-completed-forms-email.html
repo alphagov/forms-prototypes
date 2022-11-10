@@ -51,9 +51,6 @@
           errorMessage: { text: errors['formsEmail'].text } if errors['formsEmail'].text
         }) }}
 
-        {% if not data['currentFormsEmail'] or data['currentFormsEmail'] == '' %}
-          <input type="hidden" name="currentFormsEmail" value="{{data['currentFormsEmail'] or data['formsEmail']}}">
-        {% endif %}
 
         {{ govukButton({
           text: "Save and continue"

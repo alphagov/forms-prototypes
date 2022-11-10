@@ -408,6 +408,11 @@ router.post('/form-designer/completed-forms-email/set-completed-forms-email', fu
   const errors = {};
   const { formsEmail, currentFormsEmail } = req.session.data
 
+  if (formsEmail.includes(formsEmail)) {
+    req.session.data.oldFormsEmail = req.session.data.currentFormsEmail
+    req.session.data.currentFormsEmail = formsEmail
+  }
+
   // If the formsEmail is blank, create an error to be displayed to the user
   if (!formsEmail?.length) {
     errors.formsEmail = {
@@ -437,6 +442,12 @@ router.post('/form-designer/completed-forms-email/change-email-address', functio
   const errors = {};
   const { changeFormsEmail } = req.session.data
 
+  if (changeFormsEmail === 'no') {
+    req.session.data.formsEmail = req.session.data.oldFormsEmail
+    req.session.data.currentFormsEmail = req.session.data.formsEmail
+    req.session.data.oldFormsEmail = undefined
+  }
+
   // If the changeFormsEmail has selection, create an error to be displayed to the user
   if (!changeFormsEmail || !changeFormsEmail.length) {
     errors['formsEmail'] = {
@@ -454,6 +465,7 @@ router.post('/form-designer/completed-forms-email/change-email-address', functio
     res.render('form-designer/completed-forms-email/change-email-address', { errors, errorList, containsErrors })
   } else {
     if(changeFormsEmail === 'yes') {
+      req.session.data.confirmationCode = undefined
       res.redirect('confirmation-code-sent')
     } else {
       res.redirect('set-completed-forms-email')
@@ -485,6 +497,7 @@ router.post('/form-designer/completed-forms-email/add-confirmation-code', functi
     if(confirmationCode === '000000') {
       res.redirect('confirmation-code-expired')
     } else {
+      req.session.data.oldFormsEmail = undefined
       req.session.data.currentFormsEmail = req.session.data.formsEmail
       res.redirect('email-confirmation')
     }

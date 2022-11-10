@@ -137,10 +137,10 @@
               {% if data['status'] === 'Draft' %}
               <strong class="govuk-tag {% if not data.formsEmail %}govuk-tag--grey{% elif data.formsEmail and ((data.confirmationCode === '000000') or not data.confirmationCode) %}govuk-tag--blue{% endif %} app-task-list__tag" id="processing-email-status">{% if data.formsEmail and ((data.confirmationCode === '000000') or not data.confirmationCode) %}In progress{% elif data.formsEmail and data.confirmationCode !== '000000' %}Completed{% else %}Not started{% endif %}</strong>
               {% endif %}
-              {% if data.currentFormsEmail or data.formsEmail %}
+              {% if data.oldFormsEmail or data.formsEmail %}
               <br>
               <span class="app-task-list__hint govuk-hint">
-                Completed forms will be sent to {{data.currentFormsEmail or data.formsEmail}}
+                Completed forms will be sent to {{data.oldFormsEmail or data.formsEmail}}
               </span>
               {% endif %}
             </li>
