@@ -485,6 +485,7 @@ router.post('/form-designer/completed-forms-email/add-confirmation-code', functi
     if(confirmationCode === '000000') {
       res.redirect('confirmation-code-expired')
     } else {
+      req.session.data.currentFormsEmail = req.session.data.formsEmail
       res.redirect('email-confirmation')
     }
   }
