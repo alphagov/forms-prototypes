@@ -38,7 +38,9 @@
         }) }}
 
         <p class="govuk-body">
-          <a href="confirmation-code-sent" class="govuk-link">Send a new confirmation code to {{data['formsEmail'] or 'email@address.com' | safe}}</a>
+          <a href="confirmation-code-sent" class="govuk-link">
+            Send a new confirmation code to {{data.formsEmail or 'email@address.com' | safe}}
+          </a>
         <p>
 
         {{ govukButton({

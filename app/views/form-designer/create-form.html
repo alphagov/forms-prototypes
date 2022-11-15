@@ -137,6 +137,13 @@
               {% if data['status'] === 'Draft' %}
               <strong class="govuk-tag {% if not data.formsEmail %}govuk-tag--grey{% elif data.formsEmail and ((data.confirmationCode === '000000') or not data.confirmationCode) %}govuk-tag--blue{% endif %} app-task-list__tag" id="processing-email-status">{% if data.formsEmail and ((data.confirmationCode === '000000') or not data.confirmationCode) %}In progress{% elif data.formsEmail and data.confirmationCode !== '000000' %}Completed{% else %}Not started{% endif %}</strong>
               {% endif %}
+              {% if data.oldFormsEmail or data.formsEmail %}
+              <br>
+              <span class="app-task-list__hint govuk-hint">
+                Completed forms will be sent to: <br>
+                {{data.oldFormsEmail or data.formsEmail}}
+              </span>
+              {% endif %}
             </li>
             <li class="app-task-list__item">
               <span class="app-task-list__task-name">
@@ -145,7 +152,8 @@
                 {% if data['formsEmail'] or data['status'] === 'Live' %}</a>{% endif %}
               </span>
               {% if data['status'] === 'Draft' %}
-              <strong class="govuk-tag {% if not data['confirmationCode'] %}govuk-tag--grey{% elif data['confirmationCode'] === '000000' %}govuk-tag--blue{% endif %} app-task-list__tag" id="verified-email-status">{% if not data['formsEmail'] %}Cannot start yet{% elif not data['confirmationCode'] %}Not started{% elif data['confirmationCode'] === '000000' %}In progress{% else %}Completed{% endif %}</strong>{% endif %}
+              <strong class="govuk-tag {% if (not data['formsEmail']) or (not data['confirmationCode']) %}govuk-tag--grey{% elif data['confirmationCode'] === '000000' %}govuk-tag--blue{% endif %} app-task-list__tag" id="verified-email-status">{% if not data['formsEmail'] %}Cannot start yet{% elif not data['confirmationCode'] %}Not started{% elif data['confirmationCode'] === '000000' %}In progress{% else %}Completed{% endif %}</strong>
+              {% endif %}
             </li>
           </ul>
         </li>

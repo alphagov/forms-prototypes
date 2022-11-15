@@ -24,7 +24,7 @@
       <h1 class="govuk-heading-l">{{pageTitle|safe}}</h1>
 
       <p class="govuk-body">
-        Completed forms will be sent to {{data['formsEmail'] or 'first.email@address.com' | safe}} instead of {{data['currentFormsEmail'] or 'second.email@address.com' | safe}}.
+        Completed forms will be sent to {{data.formsEmail or 'first.email@address.com' | safe}} instead of {{data.oldFormsEmail or 'second.email@address.com' | safe}}.
       </p>
 
       <form method="post">
