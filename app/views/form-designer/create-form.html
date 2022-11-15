@@ -140,7 +140,8 @@
               {% if data.oldFormsEmail or data.formsEmail %}
               <br>
               <span class="app-task-list__hint govuk-hint">
-                Completed forms will be sent to {{data.oldFormsEmail or data.formsEmail}}
+                Completed forms will be sent to: <br>
+                {{data.oldFormsEmail or data.formsEmail}}
               </span>
               {% endif %}
             </li>
