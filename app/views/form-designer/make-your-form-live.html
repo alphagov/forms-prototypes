@@ -32,17 +32,8 @@
     <p>
 
     <p class="govuk-body">
-      Make sure you are happy with the form before you make it live. After you have made your form live:
+      After you have made your form live, completed forms will be sent to {{data['formsEmail'] or 'email@address.com' | safe}}.
     </p>
-    <ul class="govuk-list govuk-list--bullet">
-      <li>
-        completed forms will be sent to {{data['formsEmail'] or 'email@address.com' | safe}}
-      </li>
-      <li>
-        you will not be able to change the name of the form
-      </li>
-    </ul>
-
 
     {% set html %}
     <p class="govuk-notification-banner__heading">
