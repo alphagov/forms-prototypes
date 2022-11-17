@@ -55,13 +55,17 @@
 {% endblock %}
 
 {% block beforeContent %}
-  {% if data.referer and (('edit-answer-type' in data.referer) or ('settings' in data.referer)) and (pageId === data.referer.split('/') | last) %}
+  {% if data.referer and ('edit-answer-type' in data.referer) and (pageId === data.referer.split('/') | last) %}
     <a class="govuk-back-link" href="../edit-answer-type/{{pageId}}">
       Back
     </a>
+  {% elif data.referer and ('settings' in data.referer) and (pageId === data.referer.split('/') | last) %}
+    <a class="govuk-back-link" href="../settings/{{pageId}}">
+      Back
+    </a>
   {% else %}
-    <a class="govuk-back-link" href="../create-form" target="_parent">
-      Back to create a form
+    <a class="govuk-back-link" href="../form-index" target="_parent">
+      Back to your questions
     </a>
   {% endif %}
 {% endblock %}
