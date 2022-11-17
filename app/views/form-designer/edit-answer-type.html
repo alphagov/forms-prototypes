@@ -16,11 +16,11 @@
   {% set prevPageId = pageId | int - 1 %}
   {% if ('edit-page' in data.referer) and (pageId === data.referer.split('/') | last) %}
     <a class="govuk-back-link" href="../edit-page/{{pageId}}">Back</a>
-  {% elif prevPageId > 0 %}
+  {% elif ('edit-page' in data.referer) and (prevPageId > 0) %}
     <a class="govuk-back-link" href="../edit-page/{{prevPageId}}">Back</a>
   {% else %}
-    <a class="govuk-back-link" href="../create-form" target="_parent">
-      Back to create a form
+    <a class="govuk-back-link" href="../form-index" target="_parent">
+      Back to your questions
     </a>
   {% endif %}
 {% endblock %}
