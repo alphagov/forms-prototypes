@@ -213,6 +213,7 @@
             hint: {text: pageData['hint-text']},
             id: pageId,
             name: pageId,
+            autocomplete: "organization",
             value: data[pageId | int]
           }) }}
         {% endif %}
@@ -342,16 +343,19 @@
             {
               name: "day",
               classes: "govuk-input--width-2",
+              autocomplete: "bday-day" if pageData['input'] === 'yes',
               value: data[pageId + '-day']
             },
             {
               name: "month",
               classes: "govuk-input--width-2",
+              autocomplete: "bday-month" if pageData['input'] === 'yes',
               value: data[pageId + '-month']
             },
             {
               name: "year",
               classes: "govuk-input--width-4",
+              autocomplete: "bday-year" if pageData['input'] === 'yes',
               value: data[pageId + '-year']
             }
           ]
