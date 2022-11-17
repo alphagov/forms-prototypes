@@ -1,0 +1,95 @@
+{% extends "layout-govuk-forms.html" %}
+
+{% set pageTitle -%}
+  {{ "Error: " if containsErrors }} Ask for a selection from a list
+{%- endset %}
+
+{% block pageTitle %}
+  {{pageTitle|safe}} - GOV.UK Forms
+{% endblock %}
+
+{% block beforeContent %}
+  <a class="govuk-back-link" href="../edit-answer-type/{{pageId}}">
+    Back
+  </a>
+{% endblock %}
+
+{% block content %}
+
+  <form id="form" class="form" action="../settings/{{pageId}}" method="post">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+
+        <span class="govuk-caption-l">Question {{pageId}}</span>
+        <h1 class="govuk-heading-l">{{pageTitle|safe}}</h1>
+
+        {% set namePrefix = "pages[" + pageIndex + "]" %}
+
+        <h2 class="govuk-heading-m">Edit your list of options</h2>
+        {{ govukCheckboxes({
+          idPrefix: "oneOption",
+          name: "oneOption",
+          fieldset: {
+            legend: {
+              text: "People can only select one option"
+            }
+          },
+          items: [
+            {
+              value: "oneOption",
+              text: "People can only select one option",
+              checked: checked(namePrefix + "['oneOption']", "oneOption")
+            }
+          ]
+        }) }}
+
+        {% set optionArray = []'item-list'][{}] or [{},{}] %}
+        <ol class="govuk-list">
+        {% for option in optionArray %}
+          {% set optionRow -%}option{{loop.index0}}{%- endset %}
+          <li>
+            <label class="govuk-label" for="option-{{loop.index0}}">
+              Option {{loop.index}}
+            </label>
+            <input class="govuk-input govuk-input--width-20" id="option-{{loop.index0}}" name="[item-list]" type="text" value="{{pageData['item-list'][loop.index0]}}">
+            {{ govukButton({
+              html: 'Remove <span class="govuk-visually-hidden">option ' + loop.index + '</span>',
+              name: "action",
+              value: "removeOption-" + loop.index0,
+              classes: "govuk-button--secondary govuk-!-margin-bottom-3"
+            }) }}
+          </li>
+        {% endfor %}
+        </ol>
+
+        {{ govukButton({
+          text: "Add another option",
+          name: "action",
+          value: "addAnother",
+          classes: "govuk-button--secondary"
+        }) }}
+
+        <input type="hidden" id="type" name="{{namePrefix}}[type]" value="{{pageData['type']}}">
+        <input type="hidden" id="long-title" name="{{namePrefix}}[long-title]" value="{{pageData['long-title']}}">
+        <input type="hidden" id="hint-text" name="{{namePrefix}}[hint-text]" value="{{pageData['hint-text']}}">
+        <input type="hidden" id="index" name="{{namePrefix}}[pageIndex]'" value="{{[pageIndex]}}">
+
+        <div class="govuk-button-group">
+          {{ govukButton({
+            text: "Save and continue",
+            name: "action",
+            value: "editPage"
+          }) }}
+        </div>
+
+        <p class="govuk-body">
+          <a class="govuk-link govuk-link--no-visited-state" href="../form-index">Go to your questions</a>
+        </p>
+
+      </div>
+
+    </div>
+
+  </form>
+
+{% endblock %}

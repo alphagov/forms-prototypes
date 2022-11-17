@@ -38,6 +38,62 @@
         {%
           set radioItems = [
             {
+              value: "personName",
+              text: "Person’s name",
+              checked: checked(namePrefix + "['type']", "personName")
+            },
+            {
+              value: "companyName",
+              text: "Company or organisation’s name",
+              checked: checked(namePrefix + "['type']", "companyName")
+            },
+            {
+              value: "email",
+              text: "Email address",
+              checked: checked(namePrefix + "['type']", "email")
+            },
+            {
+              value: "phone",
+              text: "Phone number",
+              checked: checked(namePrefix + "['type']", "phone")
+            },
+            {
+              value: "national-insurance-number",
+              text: "National Insurance number",
+              checked: checked(namePrefix + "['type']", "national-insurance-number")
+            },
+            {
+              value: "address",
+              text: "Address",
+              checked: checked(namePrefix + "['type']", "address")
+            },
+            {
+              value: "date",
+              text: "Date",
+              checked: checked(namePrefix + "['type']", "date")
+            },
+            {
+              value: "select",
+              text: "Selection from a list",
+              checked: checked(namePrefix + "['type']", "select")
+            },
+            {
+              value: "number",
+              text: "Number",
+              checked: checked(namePrefix + "['type']", "number")
+            },
+            {
+              value: "text",
+              text: "Text",
+              checked: checked(namePrefix + "['type']", "text")
+            }
+          ]
+        %}
+
+        {# ORIGINAL - commented out
+        {%
+          set radioItems = [
+            {
               value: "text",
               text: "Single line of text",
               checked: checked(namePrefix + "['type']", "text") or allEmpty,
@@ -118,7 +174,7 @@
               }
             }
           ]
-        %}
+        %}#}
 
         {{ govukRadios({
           idPrefix: "type",
@@ -130,14 +186,9 @@
               classes: "govuk-fieldset__legend--l"
             }
           },
-          hint: {
-            text: "The answer will be checked to make sure it’s in the selected format."
-          },
           items: radioItems
         }) }}
 
-        <input type="hidden" id="long-title" name="{{namePrefix}}[long-title]" value="{{pageData['long-title']}}">
-        <input type="hidden" id="hint-text" name="{{namePrefix}}[hint-text]" value="{{pageData['hint-text']}}">
         <input type="hidden" id="index" name="{{namePrefix}}[pageIndex]'" value="{{[pageIndex]}}">
 
         <div class="govuk-button-group">

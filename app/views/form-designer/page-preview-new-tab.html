@@ -33,74 +33,225 @@
 
         #}
 
-          {# If the page has no intro, set the heading inside of the macros #}
-          {# The heading doubles up as the label #}
-          {% set label = {
-            text: pageTitle,
-            classes: "govuk-label--l",
-            isPageHeading: true
-          }%}
+        {# If the page has no intro, set the heading inside of the macros #}
+        {# The heading doubles up as the label #}
+        {% set label = {
+          text: pageTitle,
+          classes: "govuk-label--l",
+          isPageHeading: true
+        }%}
 
-        {# Single line text fields #}
-        {% if pageData['type'] == 'text' %}
-          {{ govukInput({
-            label: label,
-            hint: {text: pageData['hint-text']},
-            id: pageId,
-            name: pageId,
-            value: data[pageId | int]
-          }) }}
+        {# Full name in a single field #}
+        {% if pageData['type'] === 'personName' %}
+          {% if pageData['input'] === 'multi-field' %}
+
+            {% call govukFieldset({
+              legend: {
+                text: pageTitle,
+                classes: "govuk-fieldset__legend--l",
+                isPageHeading: true
+              }
+            }) %}
+
+              {% if pageData['hint-text'] %}
+              <p class="govuk-hint">{{pageData['hint-text']}}</p>
+              {% endif %}
+
+              {% if pageData['title'] === 'yes' %}
+              {{ govukInput({
+                label: {
+                  html: 'Title'
+                },
+                classes: "govuk-!-width-one-quarter",
+                id: pageId + "-name-title",
+                name: pageId + "-name-title",
+                autocomplete: "honorific-prefix",
+                value: data[(pageId | int) + "-name-title"]
+              }) }}
+              {% endif %}
+
+              {{ govukInput({
+                label: {
+                  html: 'First name'
+                },
+                classes: "govuk-!-width-one-half",
+                id: pageId + "-first-name",
+                name: pageId + "-first-name",
+                autocomplete: "given-name",
+                value: data[(pageId | int) + "-first-name"]
+              }) }}
+
+              {{ govukInput({
+                label: {
+                  html: 'Last name'
+                },
+                classes: "govuk-!-width-one-half",
+                id: pageId + "-last-name",
+                name: pageId + "-last-name",
+                autocomplete: "family-name",
+                value: data[(pageId | int) + "-last-name"]
+              }) }}
+
+            {% endcall %}
+
+          {% elif pageData['input'] === 'multi-field-plus' %}
+
+            {% call govukFieldset({
+              legend: {
+                text: pageTitle,
+                classes: "govuk-fieldset__legend--l",
+                isPageHeading: true
+              }
+            }) %}
+
+              {% if pageData['hint-text'] %}
+              <p class="govuk-hint">{{pageData['hint-text']}}</p>
+              {% endif %}
+
+              {% if pageData['title'] === 'yes' %}
+              {{ govukInput({
+                label: {
+                  html: 'Title'
+                },
+                classes: "govuk-!-width-one-quarter",
+                id: pageId + "-name-title",
+                name: pageId + "-name-title",
+                autocomplete: "honorific-prefix",
+                value: data[(pageId | int) + "-name-title"]
+              }) }}
+              {% endif %}
+
+              {{ govukInput({
+                label: {
+                  html: 'First name'
+                },
+                classes: "govuk-!-width-one-half",
+                id: pageId + "-first-name",
+                name: pageId + "-first-name",
+                autocomplete: "given-name",
+                value: data[(pageId | int) + "-first-name"]
+              }) }}
+
+              {{ govukInput({
+                label: {
+                  html: 'Middle names'
+                },
+                classes: "govuk-!-width-two-thirds",
+                id: pageId + "-middle-names",
+                name: pageId + "-middle-names",
+                autocomplete: "additional-name",
+                value: data[(pageId | int) + "-middle-names"]
+              }) }}
+
+              {{ govukInput({
+                label: {
+                  html: 'Last name'
+                },
+                classes: "govuk-!-width-one-half",
+                id: pageId + "-last-name",
+                name: pageId + "-last-name",
+                autocomplete: "family-name",
+                value: data[(pageId | int) + "-last-name"]
+              }) }}
+
+            {% endcall %}
+          {% elif (pageData['input'] === 'single-field') and (pageData['title'] === 'yes') %}
+
+            {% call govukFieldset({
+              legend: {
+                text: pageTitle,
+                classes: "govuk-fieldset__legend--l",
+                isPageHeading: true
+              }
+            }) %}
+
+              {% if pageData['hint-text'] %}
+              <p class="govuk-hint">{{pageData['hint-text']}}</p>
+              {% endif %}
+
+              {{ govukInput({
+                label: {
+                  html: 'Title'
+                },
+                classes: "govuk-!-width-one-quarter",
+                id: pageId + "-name-title",
+                name: pageId + "-name-title",
+                autocomplete: "honorific-prefix",
+                value: data[(pageId | int) + "-name-title"]
+              }) }}
+
+              {{ govukInput({
+                label: {
+                  html: 'Full name'
+                },
+                id: pageId + "-full-name",
+                name: pageId + "-full-name",
+                autocomplete: "name",
+                value: data[(pageId | int) + "-full-name"]
+              }) }}
+
+            {% endcall %}
+
+          {% else %}
+
+            {{ govukInput({
+              label: label,
+              hint: {text: pageData['hint-text']},
+              id: pageId,
+              name: pageId,
+              autocomplete: "name",
+              value: data[pageId | int]
+            }) }}
+          {% endif %}
+
         {% endif %}
 
-        {# Number fields #}
-        {% if pageData['type'] == 'number' %}
+        {# Company or organisation’s name #}
+        {% if pageData['type'] === 'companyName' %}
           {{ govukInput({
             label: label,
             hint: {text: pageData['hint-text']},
             id: pageId,
             name: pageId,
-            inputmode: "numeric",
-            pattern: "[0-9]*",
-            spellcheck: false,
             value: data[pageId | int]
           }) }}
         {% endif %}
 
         {% if pageData['type'] == 'email' %}
           {{ govukInput({
-          label: label,
-          hint: { text: pageData['hint-text'] },
-          id: pageId,
-          name: pageId,
-          type: "email",
-          autocomplete: "email",
-          spellcheck: false,
-          value: data[pageId | int]
-        }) }}
+            label: label,
+            hint: { text: pageData['hint-text'] },
+            id: pageId,
+            name: pageId,
+            type: "email",
+            autocomplete: "email",
+            spellcheck: false,
+            value: data[pageId | int]
+          }) }}
         {% endif %}
 
         {% if pageData['type'] == 'phone' %}
           {{ govukInput({
-          label: label,
-          id: pageId,
-          name: pageId,
-          type: "tel",
-          autocomplete: "tel",
-          classes: "govuk-input--width-20",
-          value: data[pageId | int]
-        }) }}
+            label: label,
+            id: pageId,
+            name: pageId,
+            type: "tel",
+            autocomplete: "tel",
+            classes: "govuk-input--width-20",
+            value: data[pageId | int]
+          }) }}
         {% endif %}
 
         {% if pageData['type'] == 'national-insurance-number' %}
           {{ govukInput({
-          label: label,
-          hint: { text: pageData['hint-text'] },
-          classes: "govuk-input--width-10",
-          id: pageId,
-          name: pageId,
-          spellcheck: false,
-          value: data[pageId | int]
-        }) }}
+            label: label,
+            hint: { text: pageData['hint-text'] },
+            classes: "govuk-input--width-10",
+            id: pageId,
+            name: pageId,
+            spellcheck: false,
+            value: data[pageId | int]
+          }) }}
         {% endif %}
 
         {% if pageData['type'] == 'address' %}
@@ -112,6 +263,10 @@
               isPageHeading: true
             }
           }) %}
+
+          {% if pageData['hint-text'] %}
+          <p class="govuk-hint">{{pageData['hint-text']}}</p>
+          {% endif %}
 
           {{ govukInput({
             label: {
@@ -165,39 +320,6 @@
           }) }}
 
           {% endcall %}
-        {% endif %}
-
-      {# Keeping the character limit options for now in case we want to test it later #}
-
-        {# Textarea with character limit #}
-        {# {% if (pageData['type'] == 'textarea') and (pageData['char-limit'] == 'none') %}
-          {{ govukTextarea({
-          label: label,
-          hint: {text: pageData['hint-text']},
-          id: pageId,
-          name: pageId
-        }) }}
-        {% endif %} #}
-
-        {# Textarea with no character limit #}
-        {# {% if (pageData['type'] == 'textarea') and not (pageData['char-limit'] == 'none') %}
-          {{ govukCharacterCount({
-          name: pageId,
-          id: pageId,
-          maxlength: pageData['char-limit'],
-          label: label,
-          hint: {text: pageData['hint-text']}
-        }) }}
-        {% endif %} #}
-
-        {# Textarea no, no, there's no limits #}
-        {% if (pageData['type'] == 'textarea') %}
-        {{ govukTextarea({
-          name: pageId,
-          id: pageId,
-          label: label,
-          hint: {text: pageData['hint-text']}
-        }) }}
         {% endif %}
 
         {# Date field #}
@@ -327,6 +449,69 @@
               </div>
             </fieldset>
           </div>
+        {% endif %}
+
+        {# Number fields #}
+        {% if pageData['type'] == 'number' %}
+          {{ govukInput({
+            label: label,
+            hint: {text: pageData['hint-text']},
+            id: pageId,
+            name: pageId,
+            inputmode: "numeric",
+            pattern: "[0-9]*",
+            spellcheck: false,
+            value: data[pageId | int]
+          }) }}
+        {% endif %}
+
+        {# Text information fields #}
+        {% if pageData['type'] === 'text' %}
+          {% if pageData['input'] === 'single-line-input' %}
+
+            {# Single line text fields #}
+            {{ govukInput({
+              label: label,
+              hint: {text: pageData['hint-text']},
+              id: pageId,
+              name: pageId,
+              value: data[pageId | int]
+            }) }}
+
+          {% else %}
+
+            {# Keeping the character limit options for now in case we want to test it later #}
+
+            {# Textarea with character limit #}
+            {# {% if pageData['char-limit'] == 'none' %}
+              {{ govukTextarea({
+              label: label,
+              hint: {text: pageData['hint-text']},
+              id: pageId,
+              name: pageId
+            }) }}
+            {% endif %} #}
+
+            {# Textarea with no character limit #}
+            {# {% if not (pageData['char-limit'] == 'none') %}
+              {{ govukCharacterCount({
+              name: pageId,
+              id: pageId,
+              maxlength: pageData['char-limit'],
+              label: label,
+              hint: {text: pageData['hint-text']}
+            }) }}
+            {% endif %} #}
+
+            {# Textarea no, no, there's no limits #}
+            {{ govukTextarea({
+              name: pageId,
+              id: pageId,
+              label: label,
+              hint: {text: pageData['hint-text']}
+            }) }}
+
+          {% endif %}
         {% endif %}
 
         {# Help text #}

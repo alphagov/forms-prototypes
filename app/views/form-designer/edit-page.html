@@ -1,29 +1,53 @@
 {% extends "layout-govuk-forms.html" %}
 
 {% set pageTitle -%}
-  {{ "Error: " if containsErrors }}{% if pageData['long-title'] %}
-    {{pageData['long-title']}}
-  {% else %}
-    Edit question
-  {% endif %}
+  {{ "Error: " if containsErrors }}Edit question
 {%- endset %}
 
-{% if pageData['type'] === 'text' %}
-{% set answerType = 'Single line of text' %}
-{% elif pageData['type'] === 'textarea' %}
-{% set answerType = 'Multiple lines of text' %}
+{% if pageData['type'] === 'personName' %}
+  {% set answerType = 'Person’s name' %}
+{% elif pageData['type'] === 'companyName' %}
+  {% set answerType = 'Company or organisation’s name' %}
 {% elif pageData['type'] === 'email' %}
-{% set answerType = 'Email address' %}
-{% elif pageData['type'] === 'national-insurance-number' %}
-{% set answerType = 'National Insurance number' %}
+  {% set answerType = 'Email address' %}
 {% elif pageData['type'] === 'phone' %}
-{% set answerType = 'Phone number' %}
+  {% set answerType = 'Phone number' %}
+{% elif pageData['type'] === 'national-insurance-number' %}
+  {% set answerType = 'National Insurance number' %}
 {% elif pageData['type'] === 'select' %}
-{% set answerType = 'One or more selected options from a list' %}
-{% elif pageData['type'] === 'yesorno' %}
-{% set answerType = 'Yes or no' %}
+  {% set answerType = 'Selection from a list' %}
 {% else %}
-{% set answerType = pageData['type']|capitalize %}
+  {% set answerType = pageData['type']|capitalize %}
+{% endif %}
+
+{% if pageData['type'] === 'personName' %}
+  {% if pageData['input'] === 'single-field' %}
+    {% set inputType = 'Full name in a single field' %}
+  {% elif pageData['input'] === 'multi-field' %}
+    {% set inputType = 'First and last names in separate fields' %}
+  {% elif pageData['input'] === 'multi-field-plus' %}
+    {% set inputType = 'First, middle and last names in separate fields' %}
+  {% endif %}
+{% elif pageData['type'] === 'address' %}
+  {% if ('uk-address' in pageData['input']) and ('international-address' in pageData['input']) %}
+    {% set inputType = 'UK and international addresses' %}
+  {% elif 'uk-address' in pageData['input'] %}
+    {% set inputType = 'UK addresses' %}
+  {% elif 'international-address' in pageData['input'] %}
+    {% set inputType = 'International addresses' %}
+  {% endif %}
+{% elif pageData['type'] === 'date' %}
+  {% if pageData['input'] === 'yes' %}
+    {% set inputType = 'Date of birth' %}
+  {% else %}
+    {% set inputType = 'Other date' %}
+  {% endif %}
+{% elif pageData['type'] === 'text' %}
+  {% if pageData['input'] === 'single-line-input' %}
+    {% set inputType = 'A single line of text' %}
+  {% else %}
+    {% set inputType = 'More than a single line of text' %}
+  {% endif %}
 {% endif %}
 
 {% block pageTitle %}
@@ -31,7 +55,7 @@
 {% endblock %}
 
 {% block beforeContent %}
-  {% if data.referer and ('edit-answer-type' in data.referer) and (pageId === data.referer.split('/') | last) %}
+  {% if data.referer and (('edit-answer-type' in data.referer) or ('settings' in data.referer)) and (pageId === data.referer.split('/') | last) %}
     <a class="govuk-back-link" href="../edit-answer-type/{{pageId}}">
       Back
     </a>
@@ -63,7 +87,7 @@
             text: "Ask a question the way you would in person. For example ‘What is your address?’"
           },
           id: "long-title",
-          name: namePrefix + "[long-title]",
+          name: "long-title",
           value: pageData['long-title']
         }) }}
 
@@ -77,7 +101,7 @@
             text: "Use hint text to help people answer the question. For example, to explain the format the answer should be in, or where to find the information you’ve asked for."
           },
           id: "hint-text",
-          name: namePrefix + "[hint-text]",
+          name: "hint-text",
           value: pageData['hint-text']
         }) }}
 
@@ -85,7 +109,7 @@
 
         {{ govukCheckboxes({
           idPrefix: "questionOptional",
-          name: namePrefix + "[questionOptional]",
+          name: "questionOptional",
           fieldset: {
             legend: {
               text: "Question settings",
@@ -120,56 +144,65 @@
               </a>
             </dd>
           </div>
+          {% if pageData['input'] %}
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+              Input type
+            </dt>
+            <dd class="govuk-summary-list__value">
+              {{inputType}}
+            </dd>
+            <dd class="govuk-summary-list__actions">
+              <a class="govuk-link govuk-link--no-visited-state" href="/form-designer/settings/{{pageIndex + 1}}#input">
+                Change <span class="govuk-visually-hidden">input type {{inputType}}<span>
+              </a>
+            </dd>
+          </div>
+          {% endif %}
+          {% if pageData['title'] %}
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+              Title needed
+            </dt>
+            <dd class="govuk-summary-list__value">
+              {{pageData['title']|capitalize}}
+            </dd>
+            <dd class="govuk-summary-list__actions">
+              <a class="govuk-link govuk-link--no-visited-state" href="/form-designer/settings/{{pageIndex + 1}}#title">
+                Change <span class="govuk-visually-hidden">title needed {{pageData['title']|capitalize}}<span>
+              </a>
+            </dd>
+          </div>
+          {% endif %}
+          {% if pageData['item-list'] %}
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+              Options
+            </dt>
+            <dd class="govuk-summary-list__value">
+              {% for item in pageData['item-list'] %}{{item}}{% if not loop.last %}, {% endif %}{% endfor %}
+            </dd>
+            <dd class="govuk-summary-list__actions">
+              <a class="govuk-link govuk-link--no-visited-state" href="/form-designer/settings/{{pageIndex + 1}}#option-0">
+                Change <span class="govuk-visually-hidden">options<span>
+              </a>
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+              Only select one option
+            </dt>
+            <dd class="govuk-summary-list__value">
+              {{'Yes' if pageData['oneOption'] else 'No'}}
+            </dd>
+            <dd class="govuk-summary-list__actions">
+              <a class="govuk-link govuk-link--no-visited-state" href="/form-designer/settings/{{pageIndex + 1}}#oneOption">
+                Change <span class="govuk-visually-hidden">only select one option<span>
+              </a>
+            </dd>
+          </div>
+          {% endif %}
         </dl>
-
-        {% if pageData['type'] === 'select' %}
-        <h2 class="govuk-heading-m">Edit your list of options</h2>
-        {{ govukCheckboxes({
-          idPrefix: "oneOption",
-          name: namePrefix + "[oneOption]",
-          fieldset: {
-            legend: {
-              text: "People can only select one option"
-            }
-          },
-          items: [
-            {
-              value: "oneOption",
-              text: "People can only select one option",
-              checked: checked(namePrefix + "['oneOption']", "oneOption")
-            }
-          ]
-        }) }}
-
-        {% set optionArray = pageData['item-list'] or [{},{}] %}
-        <ol class="govuk-list">
-        {% for option in optionArray %}
-          {% set optionRow -%}option{{loop.index0}}{%- endset %}
-          <li>
-            <label class="govuk-label" for="option-{{loop.index0}}">
-              Option {{loop.index}}
-            </label>
-            <input class="govuk-input govuk-input--width-20" id="option-{{loop.index0}}" name="{{namePrefix}}[item-list]" type="text" value="{{pageData['item-list'][loop.index0]}}">
-            {{ govukButton({
-              html: 'Remove <span class="govuk-visually-hidden">option ' + loop.index + '</span>',
-              name: "action",
-              value: "removeOption-" + loop.index0,
-              classes: "govuk-button--secondary govuk-!-margin-bottom-3"
-            }) }}
-          </li>
-        {% endfor %}
-        </ol>
-
-        {{ govukButton({
-          text: "Add another option",
-          name: "action",
-          value: "addAnother",
-          classes: "govuk-button--secondary"
-        }) }}
-        {% endif %}
-
-        <input type="hidden" id="type" name="{{namePrefix}}[type]'" value="{{pageData['type']}}">
-        <input type="hidden" id="index" name="{{namePrefix}}[pageIndex]'" value="{{[pageIndex]}}">
 
         <div class="govuk-button-group">
           {% if pageId >= data['highestPageId'] %}

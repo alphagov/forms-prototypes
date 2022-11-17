@@ -59,9 +59,114 @@ router.get('/form-designer/edit-answer-type/:pageId', function (req, res) {
   req.session.data.highestPageId = req.session.data.pages.length
 
   if (action == 'editPage') {
+    req.session.data.action = undefined
+    if (pageData['type'] === 'personName') {
+      // person's name route
+      res.redirect('/form-designer/settings/' + pageId)
+    } else if (pageData['type'] === 'address') {
+      // address route
+      res.redirect('/form-designer/settings/' + pageId)
+    } else if (pageData['type'] === 'date') {
+      // date route
+      res.redirect('/form-designer/settings/' + pageId)
+    } else if (pageData['type'] === 'select') {
+      // selection from a list route
+      res.redirect('/form-designer/settings/' + pageId)
+    } else if (pageData['type'] === 'text') {
+      // text route
+      res.redirect('/form-designer/settings/' + pageId)
+    } else {
+      res.redirect('/form-designer/edit-page/' + pageId)
+    }
+  } else {
+    req.session.data.action = undefined
+    res.render('form-designer/edit-answer-type', {
+      pageId: pageId,
+      pageIndex: pageIndex,
+      pageData: pageData,
+      editingExistingQuestion: req.session.data.pages[pageIndex] !== undefined
+    })
+  }
+})
+
+router.get('/form-designer/settings/:pageId', function (req, res) {
+  var action = req.session.data.action
+  var pageId = req.params.pageId
+  var enableMultipleChoiceAnswerType =
+    process.env.ENABLE_MULTIPLE_CHOICE_ANSWER_TYPE === 'true'
+
+  // If user pressed the 'Update preview' button or back link...
+  var pageIndex = parseInt(pageId) - 1
+  var pageData = req.session.data.pages[pageIndex]
+
+  // Update the 'Highest page Id'
+  // req.session.data.highestPageId = req.session.data.pages.length
+
+  if (req.session.data.input) {
+    pageData['input'] = req.session.data.input
+    req.session.data.input = undefined
+  }
+  if (req.session.data.title) {
+    pageData['title'] = req.session.data.title
+    req.session.data.title = undefined
+  }
+
+  if (req.session.data['item-list']) {
+    var itemList = req.session.data['item-list']
+    var lastItem = itemList.length - 1
+    if (itemList[lastItem] === '') {
+      itemList.pop()
+    }
+    pageData['item-list'] = itemList
+    pageData['oneOption'] = req.session.data['oneOption']
+    req.session.data['item-list'] = undefined
+    req.session.data.oneOption = undefined
+  }
+
+  if (action === 'addAnother') {
+
+    if (itemList[lastItem]) {
+      itemList.push("")
+    }
+
+    // reset the action to avoid a loop
+    req.session.data.action = undefined
+
+    res.render('form-designer/settings', {
+      pageId: pageId,
+      pageIndex: pageIndex,
+      pageData: pageData,
+      editingExistingQuestion: req.session.data.pages[pageIndex] !== undefined
+    })
+  } else if (action.includes('removeOption')) {
+    var remove = req.session.data.action.split("-")
+    var itemToRemove = remove.pop()
+
+    if (itemToRemove > -1) { // only splice array when item is found
+      if (itemList.length <= 2) {
+        itemList.push("")
+      }
+      itemList.splice(itemToRemove, 1); // 2nd parameter means remove one item only
+    }
+
+    // reset the action to avoid a loop
+    req.session.data.action = undefined
+
+    res.render('form-designer/settings', {
+      pageId: pageId,
+      pageIndex: pageIndex,
+      typeData: req.session.data.pages.type,
+      pageData: pageData,
+      editingExistingQuestion: req.session.data.pages[pageIndex] !== undefined,
+      enableMultipleChoiceAnswerType
+    })
+
+  } else if (action == 'editPage') {
+    req.session.data.action = undefined
     res.redirect('/form-designer/edit-page/' + pageId)
   } else {
-    res.render('form-designer/edit-answer-type', {
+    req.session.data.action = undefined
+    res.render('form-designer/settings', {
       pageId: pageId,
       pageIndex: pageIndex,
       pageData: pageData,
@@ -79,8 +184,24 @@ router.get('/form-designer/edit-page/:pageId', function (req, res) {
     process.env.ENABLE_MULTIPLE_CHOICE_ANSWER_TYPE === 'true'
 
   // Update the 'Highest page Id'
-  req.session.data.highestPageId = req.session.data.pages.length
+  // req.session.data.highestPageId = req.session.data.pages.length
   var createNextPageId = parseInt(req.session.data.highestPageId) + 1
+
+  var pageIndex = parseInt(pageId) - 1
+  var pageData = req.session.data.pages[pageIndex]
+
+  if (req.session.data['long-title']) {
+    pageData['long-title'] = req.session.data['long-title']
+    req.session.data['long-title'] = undefined
+  }
+  if (req.session.data['hint-text']) {
+    pageData['hint-text'] = req.session.data['hint-text']
+    req.session.data['hint-text'] = undefined
+  }
+  if (req.session.data['questionOptional']) {
+    pageData['questionOptional'] = req.session.data['questionOptional']
+    req.session.data['questionOptional'] = undefined
+  }
 
   // Edit declaration page errors
   if (pageId == 'check-answers') {
@@ -162,64 +283,15 @@ router.get('/form-designer/edit-page/:pageId', function (req, res) {
     // If user pressed the 'Edit next page' button...
   } else if (action == 'editNextPage') {
     // reset the action to avoid a loop
-    req.session.data.action = ''
+    req.session.data.action = undefined
 
     res.redirect('/form-designer/edit-page/' + editNextPageId)
 
     // If user pressed the 'Update preview' button or back link...
   } else if (action === 'deletePage') {
     // reset the action to avoid a loop
-    req.session.data.action = ''
+    req.session.data.action = undefined
     return res.redirect(`/form-designer/delete/${pageId}`)
-  } else if (action === 'addAnother') {
-    // If user pressed the 'Update preview' button or back link...
-    var pageIndex = parseInt(pageId) - 1
-    var pageData = req.session.data.pages[pageIndex]
-
-    var itemList = req.session.data.pages[pageIndex]['item-list']
-    var lastItem = itemList.length - 1
-
-    if (itemList[lastItem]) {
-      itemList.push("")
-    }
-
-    // reset the action to avoid a loop
-    req.session.data.action = ''
-    res.render('form-designer/edit-page', {
-      pageId: pageId,
-      pageIndex: pageIndex,
-      typeData: req.session.data.pages.type,
-      pageData: pageData,
-      editingExistingQuestion: req.session.data.pages[pageIndex] !== undefined,
-      enableMultipleChoiceAnswerType
-    })
-  } else if (action.includes('removeOption')) {
-
-    // If user pressed the 'Update preview' button or back link...
-    var pageIndex = parseInt(pageId) - 1
-    var pageData = req.session.data.pages[pageIndex]
-
-    var itemList = req.session.data.pages[pageIndex]['item-list']
-    var remove = req.session.data.action.split("-")
-    var itemToRemove = remove.pop()
-
-    if (itemToRemove > -1) { // only splice array when item is found
-      if (itemList.length <= 2) {
-        itemList.push("")
-      }
-      itemList.splice(itemToRemove, 1); // 2nd parameter means remove one item only
-    }
-
-    // reset the action to avoid a loop
-    req.session.data.action = ''
-    res.render('form-designer/edit-page', {
-      pageId: pageId,
-      pageIndex: pageIndex,
-      typeData: req.session.data.pages.type,
-      pageData: pageData,
-      editingExistingQuestion: req.session.data.pages[pageIndex] !== undefined,
-      enableMultipleChoiceAnswerType
-    })
 
   } else {
     // If user pressed the 'Update preview' button or back link...
@@ -333,13 +405,13 @@ router.get('/form-designer/reorder-page/:pageId/:direction', function (
 
 // Renders the page type chooser, set to a specific page
 router.get('/form-designer/choose-page-type/:pageId', function (req, res) {
-  req.session.data.action = ''
+  req.session.data.action = undefined
   res.redirect(`/form-designer/edit-answer-type/${req.params.pageId}`)
 })
 
 // Renders the in-page preview, set to a specific page
 router.get('/form-designer/page-preview/:pageId', function (req, res) {
-  req.session.data.action = ''
+  req.session.data.action = undefined
   var pageId = req.params.pageId
   var pageIndex = parseInt(pageId) - 1
   var pageData = req.session.data.pages[pageIndex]
@@ -353,7 +425,7 @@ router.get('/form-designer/page-preview/:pageId', function (req, res) {
 
 // Renders the new-tab page preview, set to a specific page
 router.get('/form-designer/page-preview-new-tab/:pageId', function (req, res) {
-  req.session.data.action = ''
+  req.session.data.action = undefined
   var pageId = req.params.pageId
   var pageIndex = parseInt(pageId) - 1
   var pageData = req.session.data.pages[pageIndex]
@@ -595,8 +667,6 @@ router.post('/form-designer/provide-support-details', function (req, res) {
   const errors = {};
   const { supportDetails, emailSupport, phoneSupport, onlineSupportLink, onlineSupportText } = req.session.data
 
-  console.log(supportDetails)
-
   // If the user hasn't selected an option
   if (!supportDetails?.length) {
     errors['supportDetails'] = {
@@ -647,7 +717,6 @@ router.post('/form-designer/provide-support-details', function (req, res) {
 // Function to remove individual data items, for basic testing
 router.get('/prototype-admin/show-data', (req, res, next) => {
   const removeKey = req.session.data.action
-  console.log(req.session.data[removeKey])
   req.session.data[removeKey] = undefined
   next()
 })
