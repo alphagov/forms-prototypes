@@ -269,6 +269,7 @@
           <p class="govuk-hint">{{pageData['hint-text']}}</p>
           {% endif %}
 
+          {% if ('uk-address' in pageData['input']) and not ('international-address' in pageData['input']) %}
           {{ govukInput({
             label: {
               html: 'Address line 1'
@@ -305,8 +306,9 @@
               text: "County (optional)"
             },
             classes: "govuk-!-width-two-thirds",
-            id: "address-county",
-            name: "address-county"
+            id: pageId + "-address-county",
+            name: pageId + "-address-county",
+            value: data[(pageId | int) + '-address-county']
           }) }}
 
           {{ govukInput({
@@ -319,6 +321,33 @@
             autocomplete: "postal-code",
             value: data[(pageId | int) + '-address-postcode']
           }) }}
+
+          {#{% elif 'international-address' in pageData['input'] %}#}
+          {% else %}
+
+          {{ govukTextarea({
+            label: {
+              text: "Street address"
+            },
+            id: pageId + "-address-street-address",
+            name: pageId + "-address-street-address",
+            autocomplete: "street-address",
+            value: data[(pageId | int) + '-address-street-address']
+          }) }}
+
+          {{ govukInput({
+            label: {
+              text: "Country"
+            },
+            classes: "govuk-input--width-20",
+            id: pageId + "-address-country-name",
+            name: pageId + "-address-country-name",
+            autocomplete: "country-name",
+            value: data[(pageId | int) + '-address-country-name']
+          }) }}
+
+          {% endif %}
+
 
           {% endcall %}
         {% endif %}
