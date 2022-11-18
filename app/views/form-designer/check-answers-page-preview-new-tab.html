@@ -32,7 +32,16 @@
         </dt>
         <dd class="govuk-summary-list__value">
           {% if (page) or (data[loop.index + '-year']) %}
-            {% if page['type'] == 'date' %}
+            {% if page['type'] == 'personName' %}
+              {% if (page['title'] === 'yes') and (data[loop.index + '-name-title']) %}{{data[loop.index + '-name-title']}}{% endif %}
+              {% if page['input'] === 'single-field' %}
+                {{data[loop.index + '-full-name']}}
+              {% else %}
+                {{data[loop.index + '-first-name']}}
+                {% if data[loop.index + '-middle-names'] %}{{data[loop.index + '-middle-names']}}{% endif %}
+                {{data[loop.index + '-last-name']}}
+              {% endif %}
+            {% elif page['type'] == 'date' %}
               {{data[loop.index + '-day']}}
               {% if (data[loop.index + '-day']) %}/{% endif %}
               {{data[loop.index + '-month'] or '01'}} / {{data[loop.index + '-year']}}

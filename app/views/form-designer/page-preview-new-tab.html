@@ -43,7 +43,7 @@
 
         {# Full name in a single field #}
         {% if pageData['type'] === 'personName' %}
-          {% if pageData['input'] === 'multi-field' %}
+          {% if (pageData['input'] === 'multi-field') or (pageData['input'] === 'multi-field-plus') %}
 
             {% call govukFieldset({
               legend: {
@@ -81,57 +81,7 @@
                 value: data[(pageId | int) + "-first-name"]
               }) }}
 
-              {{ govukInput({
-                label: {
-                  html: 'Last name'
-                },
-                classes: "govuk-!-width-one-half",
-                id: pageId + "-last-name",
-                name: pageId + "-last-name",
-                autocomplete: "family-name",
-                value: data[(pageId | int) + "-last-name"]
-              }) }}
-
-            {% endcall %}
-
-          {% elif pageData['input'] === 'multi-field-plus' %}
-
-            {% call govukFieldset({
-              legend: {
-                text: pageTitle,
-                classes: "govuk-fieldset__legend--l",
-                isPageHeading: true
-              }
-            }) %}
-
-              {% if pageData['hint-text'] %}
-              <p class="govuk-hint">{{pageData['hint-text']}}</p>
-              {% endif %}
-
-              {% if pageData['title'] === 'yes' %}
-              {{ govukInput({
-                label: {
-                  html: 'Title'
-                },
-                classes: "govuk-!-width-one-quarter",
-                id: pageId + "-name-title",
-                name: pageId + "-name-title",
-                autocomplete: "honorific-prefix",
-                value: data[(pageId | int) + "-name-title"]
-              }) }}
-              {% endif %}
-
-              {{ govukInput({
-                label: {
-                  html: 'First name'
-                },
-                classes: "govuk-!-width-one-half",
-                id: pageId + "-first-name",
-                name: pageId + "-first-name",
-                autocomplete: "given-name",
-                value: data[(pageId | int) + "-first-name"]
-              }) }}
-
+              {% if pageData['input'] === 'multi-field-plus' %}
               {{ govukInput({
                 label: {
                   html: 'Middle names'
@@ -142,6 +92,7 @@
                 autocomplete: "additional-name",
                 value: data[(pageId | int) + "-middle-names"]
               }) }}
+              {% endif %}
 
               {{ govukInput({
                 label: {
@@ -155,6 +106,7 @@
               }) }}
 
             {% endcall %}
+
           {% elif (pageData['input'] === 'single-field') and (pageData['title'] === 'yes') %}
 
             {% call govukFieldset({
@@ -196,12 +148,12 @@
 
             {{ govukInput({
               label: label,
-              hint: {text: pageData['hint-text']},
-              id: pageId,
-              name: pageId,
+              id: pageId + "-full-name",
+              name: pageId + "-full-name",
               autocomplete: "name",
-              value: data[pageId | int]
+              value: data[(pageId | int) + "-full-name"]
             }) }}
+
           {% endif %}
 
         {% endif %}
