@@ -181,7 +181,7 @@
 
           <div class="govuk-checkboxes govuk-!-margin-bottom-7" data-module="govuk-checkboxes">
             <div class="govuk-checkboxes__item">
-              <input class="govuk-checkboxes__input" id="oneOption" name="oneOption" type="checkbox" value="oneOption" checked({{namePrefix}}['oneOption'])>
+              <input class="govuk-checkboxes__input" id="oneOption" name="oneOption" type="checkbox" value="oneOption" {{checked(namePrefix + "['oneOption']", "oneOption")}}>
               <label class="govuk-label govuk-checkboxes__label" for="oneOption">
                 People can only select one option
               </label>

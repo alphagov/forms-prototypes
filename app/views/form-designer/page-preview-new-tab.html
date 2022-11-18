@@ -473,7 +473,8 @@
               label: label,
               hint: {text: pageData['hint-text']},
               id: pageId,
-              name: pageId
+              name: pageId,
+              value: data[pageId | int]
             }) }}
             {% endif %} #}
 
@@ -484,7 +485,8 @@
               id: pageId,
               maxlength: pageData['char-limit'],
               label: label,
-              hint: {text: pageData['hint-text']}
+              hint: {text: pageData['hint-text']},
+              value: data[pageId | int]
             }) }}
             {% endif %} #}
 
@@ -493,7 +495,8 @@
               name: pageId,
               id: pageId,
               label: label,
-              hint: {text: pageData['hint-text']}
+              hint: {text: pageData['hint-text']},
+              value: data[pageId | int]
             }) }}
 
           {% endif %}
