@@ -1,0 +1,81 @@
+{% extends "layout-govuk-forms.html" %}
+
+{% set pageTitle -%}
+  {{ "Error: " if containsErrors }} Ask for an address
+{%- endset %}
+
+{% block pageTitle %}
+  {{pageTitle|safe}} - GOV.UK Forms
+{% endblock %}
+
+{% block beforeContent %}
+  <a class="govuk-back-link" href="../edit-answer-type/{{pageId}}">
+    Back
+  </a>
+{% endblock %}
+
+{% block content %}
+
+  <form id="form" class="form" action="../settings/{{pageId}}" method="post">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+
+        <span class="govuk-caption-l">Question {{pageId}}</span>
+        <h1 class="govuk-heading-l">{{pageTitle|safe}}</h1>
+
+        {% set namePrefix = "pages[" + pageIndex + "]" %}
+
+        {%
+          set checkboxItems = [
+            {
+              value: "uk-address",
+              text: "UK addresses",
+              checked: checked(namePrefix + "['input']", "uk-address")
+            },
+            {
+              value: "international-address",
+              text: "International addresses",
+              checked: checked(namePrefix + "['input']", "international-address")
+            }
+          ]
+        %}
+
+        {{ govukCheckboxes({
+          idPrefix: "input",
+          name: namePrefix + "[input]",
+          fieldset: {
+            legend: {
+              text: "What kind of addresses do you expect to receive?",
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          hint: {
+            text: 'Select all that apply'
+          },
+          items: checkboxItems
+        }) }}
+
+        <input type="hidden" id="type" name="{{namePrefix}}[type]" value="{{pageData['type']}}">
+        <input type="hidden" id="long-title" name="{{namePrefix}}[long-title]" value="{{pageData['long-title']}}">
+        <input type="hidden" id="hint-text" name="{{namePrefix}}[hint-text]" value="{{pageData['hint-text']}}">
+        <input type="hidden" id="index" name="{{namePrefix}}[pageIndex]'" value="{{[pageIndex]}}">
+
+        <div class="govuk-button-group">
+          {{ govukButton({
+            text: "Save and continue",
+            name: "action",
+            value: "editPage"
+          }) }}
+        </div>
+
+        <p class="govuk-body">
+          <a class="govuk-link govuk-link--no-visited-state" href="../form-index">Go to your questions</a>
+        </p>
+
+      </div>
+
+    </div>
+
+  </form>
+
+{% endblock %}

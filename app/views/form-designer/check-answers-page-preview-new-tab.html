@@ -31,19 +31,30 @@
           <!--Q{{page["pageIndex"] | int + 1}}.--> {{questionTitle}}
         </dt>
         <dd class="govuk-summary-list__value">
-
-          {% if (data[loop.index]) or (data[loop.index + '-year']) %}
-            {% if page['type'] == 'date' %}
-              {{data[loop.index + '-day']}}
-              {% if (data[loop.index + '-day']) %}/{% endif %}
-              {{data[loop.index + '-month'] or '01'}} / {{data[loop.index + '-year']}}
-            {% elif page['type'] == 'address' %}
-              {{data[loop.index + '-address-line-1']}}<br>
-              {% if data[loop.index + '-address-line-2'] %}{{data[loop.index + '-address-line-2']}}<br>{% endif %}
-              {{data[loop.index + '-address-town']}}<br>
-              {{data[loop.index + '-address-postcode']}}
+          {% if (page and (data[loop.index])) or (data[loop.index + '-year']) or (data[loop.index + '-address-street-address']) %}
+            {% if page['type'] == 'personName' %}
+              {% if (page['title'] === 'yes') and (data[loop.index + '-name-title']) %}{{data[loop.index + '-name-title']}}{% endif %}
+              {% if page['input'] === 'single-field' %}
+                {{data[loop.index + '-full-name']}}
+              {% else %}
+                {{data[loop.index + '-first-name']}}
+                {% if data[loop.index + '-middle-names'] %}{{data[loop.index + '-middle-names']}}{% endif %}
+                {{data[loop.index + '-last-name']}}
+              {% endif %}
+            {% elif page['type'] == 'date' -%}
+              {% if (data[loop.index + '-day']) %}{{data[loop.index + '-day']}}/{% endif %}{% if (data[loop.index + '-month']) %}{{data[loop.index + '-month']}}{% if (data[loop.index + '-year']) %}/{% endif %}{% endif %}{% if (data[loop.index + '-year']) %}{{data[loop.index + '-year']}}{% endif %}
+            {%- elif page['type'] == 'address' %}
+              {% if ('uk-address' in page['input']) and not ('international-address' in page['input']) %}
+                {{data[loop.index + '-address-line-1']}}<br>
+                {% if data[loop.index + '-address-line-2'] %}{{data[loop.index + '-address-line-2']}}<br>{% endif %}
+                {{data[loop.index + '-address-town']}}<br>
+                {{data[loop.index + '-address-postcode']}}
+              {% else %}
+                {{data[loop.index + '-address-street-address'] | replace(",","") | replace(".","") | nl2br | safe}}<br>
+                {% if data[loop.index + '-address-country-name'] %}{{data[loop.index + '-address-country-name']}}{% endif %}
+              {% endif %}
             {% elif page['type'] == 'select' and not page['oneOption'] %}
-              {{data[loop.index]|join(", ")}}
+              {{data[loop.index]|join(", ") if data[loop.index]}}
             {% else %}
               {{data[loop.index]}}
             {% endif %}

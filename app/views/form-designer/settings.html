@@ -1,0 +1,268 @@
+{% extends "layout-govuk-forms.html" %}
+
+{% set pageTitle -%}
+  {{ "Error: " if containsErrors }}
+  {% if pageData['type'] === 'personName' %}
+    Ask for a person’s name
+  {% elif pageData['type'] === 'address' %}
+    Ask for an address
+  {% elif pageData['type'] === 'date' %}
+    Ask for a date
+  {% elif pageData['type'] === 'select' %}
+    Ask for a selection from a list
+  {% elif pageData['type'] === 'text' %}
+    Ask for text information
+  {% endif %}
+{%- endset %}
+
+{% block pageTitle %}
+  {{pageTitle|safe}} - GOV.UK Forms
+{% endblock %}
+
+{% block beforeContent %}
+  <a class="govuk-back-link" href="../edit-answer-type/{{pageId}}">
+    Back
+  </a>
+{% endblock %}
+
+{% block content %}
+
+  <form id="form" class="form" action="../settings/{{pageId}}" method="post">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+
+        <span class="govuk-caption-l">Question {{pageId}}</span>
+        {% if not pageData['type'] === 'select' %}
+        <h1 class="govuk-heading-l">{{pageTitle|safe}}</h1>
+        {% endif %}
+
+        {% set namePrefix = "pages[" + pageIndex + "]" %}
+
+        {% if pageData['type'] === 'personName' %}
+        {%
+          set radioItems = [
+            {
+              value: "single-field",
+              text: "Full name in a single field",
+              checked: checked(namePrefix + "['input']", "single-field")
+            },
+            {
+              value: "multi-field",
+              text: "First and last names in separate fields",
+              checked: checked(namePrefix + "['input']", "multi-field")
+            },
+            {
+              value: "multi-field-plus",
+              text: "First, middle and last names in separate fields",
+              hint: {
+                text: 'Middle name will not be mandatory'
+              },
+              checked: checked(namePrefix + "['input']", "multi-field-plus")
+            }
+          ]
+        %}
+
+        {{ govukRadios({
+          idPrefix: "input",
+          name: "input",
+          fieldset: {
+            legend: {
+              text: "How do you need to collect the name?",
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          hint: {
+            text: 'A single name field is easiest for people to complete - only ask for names separately if you need the individual parts of the name.'
+          },
+          items: radioItems
+        }) }}
+
+        {%
+          set radioItems = [
+            {
+              value: "yes",
+              text: "Yes",
+              checked: checked(namePrefix + "['title']", "yes")
+            },
+            {
+              value: "no",
+              text: "No",
+              checked: checked(namePrefix + "['title']", "no")
+            }
+          ]
+        %}
+
+        {{ govukRadios({
+          idPrefix: "title",
+          name: "title",
+          fieldset: {
+            legend: {
+              text: "Do you need the person’s title?",
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          hint: {
+            text: 'For example Mr, Mrs, Mx, Miss'
+          },
+          items: radioItems
+        }) }}
+        {% endif %}
+
+        {% if pageData['type'] === 'address' %}
+        {%
+          set checkboxItems = [
+            {
+              value: "uk-address",
+              text: "UK addresses",
+              checked: checked(namePrefix + "['input']", "uk-address")
+            },
+            {
+              value: "international-address",
+              text: "International addresses",
+              checked: checked(namePrefix + "['input']", "international-address")
+            }
+          ]
+        %}
+
+        {{ govukCheckboxes({
+          idPrefix: "input",
+          name: "input",
+          fieldset: {
+            legend: {
+              text: "What kind of addresses do you expect to receive?",
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          hint: {
+            text: 'Select all that apply'
+          },
+          items: checkboxItems
+        }) }}
+        {% endif %}
+
+        {% if pageData['type'] === 'date' %}
+        {%
+          set radioItems = [
+            {
+              value: "yes",
+              text: "Yes",
+              checked: checked(namePrefix + "['input']", "yes")
+            },
+            {
+              value: "no",
+              text: "No",
+              checked: checked(namePrefix + "['input']", "no")
+            }
+          ]
+        %}
+
+        {{ govukRadios({
+          idPrefix: "input",
+          name: "input",
+          fieldset: {
+            legend: {
+              text: "Are you asking for someone’s date of birth?",
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          items: radioItems
+        }) }}
+        {% endif %}
+
+        {# Selection from a list #}
+        {% if pageData['type'] === 'select' %}
+          {% call govukFieldset({
+            legend: {
+              text: pageTitle,
+              classes: "govuk-fieldset__legend--l",
+              isPageHeading: true
+            }
+          }) %}
+
+          <div class="govuk-checkboxes govuk-!-margin-bottom-7" data-module="govuk-checkboxes">
+            <div class="govuk-checkboxes__item">
+              <input class="govuk-checkboxes__input" id="oneOption" name="oneOption" type="checkbox" value="oneOption" {{checked(namePrefix + "['oneOption']", "oneOption")}}>
+              <label class="govuk-label govuk-checkboxes__label" for="oneOption">
+                People can only select one option
+              </label>
+            </div>
+          </div>
+
+          {% set optionArray = pageData['item-list'] or [{},{}] %}
+          <ol class="govuk-list">
+          {% for option in optionArray %}
+            {% set optionRow -%}option{{loop.index0}}{%- endset %}
+            <li>
+              <label class="govuk-label" for="option-{{loop.index0}}">
+                Option {{loop.index}}
+              </label>
+              <input class="govuk-input govuk-input--width-20" id="option-{{loop.index0}}" name="[item-list]" type="text" value="{{pageData['item-list'][loop.index0]}}">
+              {{ govukButton({
+                html: 'Remove <span class="govuk-visually-hidden">option ' + loop.index + '</span>',
+                name: "action",
+                value: "removeOption-" + loop.index0,
+                classes: "govuk-button--secondary govuk-!-margin-bottom-3"
+              }) }}
+            </li>
+          {% endfor %}
+          </ol>
+
+          {% endcall %}
+
+          {{ govukButton({
+            text: "Add another option",
+            name: "action",
+            value: "addAnother",
+            classes: "govuk-button--secondary"
+          }) }}
+        {% endif %}
+
+        {# Text input #}
+        {% if pageData['type'] === 'text' %}
+        {%
+          set radioItems = [
+            {
+              value: "single-line-input",
+              text: "A single line of text",
+              checked: checked(namePrefix + "['input']", "single-line-input")
+            },
+            {
+              value: "multi-line-input",
+              text: "More than a single line of text",
+              checked: checked(namePrefix + "['input']", "multi-line-input")
+            }
+          ]
+        %}
+
+        {{ govukRadios({
+          idPrefix: "input",
+          name: "input",
+          fieldset: {
+            legend: {
+              text: "How much text will people need to provide?",
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          items: radioItems
+        }) }}
+        {% endif %}
+
+        <div class="govuk-button-group">
+          {{ govukButton({
+            text: "Save and continue",
+            name: "action",
+            value: "editPage"
+          }) }}
+        </div>
+
+        <p class="govuk-body">
+          <a class="govuk-link govuk-link--no-visited-state" href="../form-index">Go to your questions</a>
+        </p>
+
+      </div>
+
+    </div>
+
+  </form>
+
+{% endblock %}
