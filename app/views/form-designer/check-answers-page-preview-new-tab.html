@@ -54,7 +54,7 @@
                 {% if data[loop.index + '-address-country-name'] %}{{data[loop.index + '-address-country-name']}}{% endif %}
               {% endif %}
             {% elif page['type'] == 'select' and not page['oneOption'] %}
-              {{data[loop.index]|join(", ")}}
+              {{data[loop.index]|join(", ") if data[loop.index]}}
             {% else %}
               {{data[loop.index]}}
             {% endif %}

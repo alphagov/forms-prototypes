@@ -186,6 +186,7 @@
         {% if pageData['type'] == 'phone' %}
           {{ govukInput({
             label: label,
+            hint: { text: pageData['hint-text'] },
             id: pageId,
             name: pageId,
             type: "tel",

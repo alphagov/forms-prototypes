@@ -4,23 +4,11 @@
   {{ "Error: " if containsErrors }}Edit question
 {%- endset %}
 
+{% set answerType = pageData['type']|capitalize %}
 {% if pageData['type'] === 'personName' %}
+  {% set questionHint = data.personNameQuestionHint %}
+  {% set hintHint = data.personNameHintHint %}
   {% set answerType = 'Person’s name' %}
-{% elif pageData['type'] === 'companyName' %}
-  {% set answerType = 'Company or organisation’s name' %}
-{% elif pageData['type'] === 'email' %}
-  {% set answerType = 'Email address' %}
-{% elif pageData['type'] === 'phone' %}
-  {% set answerType = 'Phone number' %}
-{% elif pageData['type'] === 'national-insurance-number' %}
-  {% set answerType = 'National Insurance number' %}
-{% elif pageData['type'] === 'select' %}
-  {% set answerType = 'Selection from a list' %}
-{% else %}
-  {% set answerType = pageData['type']|capitalize %}
-{% endif %}
-
-{% if pageData['type'] === 'personName' %}
   {% if pageData['input'] === 'single-field' %}
     {% set inputType = 'Full name in a single field' %}
   {% elif pageData['input'] === 'multi-field' %}
@@ -28,7 +16,25 @@
   {% elif pageData['input'] === 'multi-field-plus' %}
     {% set inputType = 'First, middle and last names in separate fields' %}
   {% endif %}
+{% elif pageData['type'] === 'companyName' %}
+  {% set questionHint = data.companyNameQuestionHint %}
+  {% set hintHint = data.companyNameHintHint %}
+  {% set answerType = 'Company or organisation’s name' %}
+{% elif pageData['type'] === 'email' %}
+  {% set questionHint = data.emailQuestionHint %}
+  {% set hintHint = data.emailHintHint %}
+  {% set answerType = 'Email address' %}
+{% elif pageData['type'] === 'phone' %}
+  {% set questionHint = data.phoneQuestionHint %}
+  {% set hintHint = data.phoneHintHint %}
+  {% set answerType = 'Phone number' %}
+{% elif pageData['type'] === 'national-insurance-number' %}
+  {% set questionHint = data.ninoQuestionHint %}
+  {% set hintHint = data.ninoHintHint %}
+  {% set answerType = 'National Insurance number' %}
 {% elif pageData['type'] === 'address' %}
+  {% set questionHint = data.addressQuestionHint %}
+  {% set hintHint = data.addressHintHint %}
   {% if ('uk-address' in pageData['input']) and ('international-address' in pageData['input']) %}
     {% set inputType = 'UK and international addresses' %}
   {% elif 'uk-address' in pageData['input'] %}
@@ -38,16 +44,39 @@
   {% endif %}
 {% elif pageData['type'] === 'date' %}
   {% if pageData['input'] === 'yes' %}
+    {% set questionHint = data.dobQuestionHint %}
+    {% set hintHint = data.dobHintHint %}
     {% set inputType = 'Date of birth' %}
   {% else %}
+    {% set questionHint = data.dateQuestionHint %}
+    {% set hintHint = data.dateHintHint %}
     {% set inputType = 'Other date' %}
   {% endif %}
+{% elif pageData['type'] === 'select' %}
+  {% set answerType = 'Selection from a list' %}
+  {% if pageData['oneOption'] %}
+    {% set questionHint = data.selectionOneOptionQuestionHint %}
+    {% set hintHint = data.selectionOneOptionHintHint %}
+  {% else %}
+    {% set questionHint = data.selectionMultipleOptionsQuestionHint %}
+    {% set hintHint = data.selectionMultipleOptionsHintHint %}
+  {% endif %}
+{% elif pageData['type'] === 'number' %}
+  {% set questionHint = data.numberQuestionHint %}
+  {% set hintHint = data.numberHintHint %}
 {% elif pageData['type'] === 'text' %}
   {% if pageData['input'] === 'single-line-input' %}
+    {% set questionHint = data.textSingleLineQuestionHint %}
+    {% set hintHint = data.textSingleLineHintHint %}
     {% set inputType = 'A single line of text' %}
   {% else %}
+    {% set questionHint = data.textMultipleLinesQuestionHint %}
+    {% set hintHint = data.textMultipleLinesHintHint %}
     {% set inputType = 'More than a single line of text' %}
   {% endif %}
+{% else %}
+  {% set questionHint = 'Ask a question the way you would in person. For example ‘What is your address?’' %}
+  {% set hintHint = "Use hint text to help people answer the question. For example, to explain the format the answer should be in, or where to find the information you’ve asked for." %}
 {% endif %}
 
 {% block pageTitle %}
@@ -88,7 +117,7 @@
             classes: "govuk-label--m"
           },
           hint: {
-            text: "Ask a question the way you would in person. For example ‘What is your address?’"
+            text: questionHint
           },
           id: "long-title",
           name: "long-title",
@@ -102,7 +131,7 @@
             classes: "govuk-label--m"
           },
           hint: {
-            text: "Use hint text to help people answer the question. For example, to explain the format the answer should be in, or where to find the information you’ve asked for."
+            text: hintHint
           },
           id: "hint-text",
           name: "hint-text",
