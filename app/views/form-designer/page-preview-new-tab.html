@@ -150,6 +150,9 @@
               label: label,
               id: pageId + "-full-name",
               name: pageId + "-full-name",
+              hint: {
+                text: pageData['hint-text']
+              },
               autocomplete: "name",
               value: data[(pageId | int) + "-full-name"]
             }) }}
