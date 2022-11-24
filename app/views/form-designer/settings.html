@@ -32,12 +32,13 @@
       <div class="govuk-grid-column-two-thirds">
 
         <span class="govuk-caption-l">Question {{pageId}}</span>
-        {% if not pageData['type'] === 'select' %}
-        <h1 class="govuk-heading-l">{{pageTitle|safe}}</h1>
+        {% if pageData['type'] === 'personName' %}
+        <h1 class="govuk-heading-l">{{pageTitle}}</h1>
         {% endif %}
 
         {% set namePrefix = "pages[" + pageIndex + "]" %}
 
+        {# Person’s name #}
         {% if pageData['type'] === 'personName' %}
         {%
           set radioItems = [
@@ -108,6 +109,7 @@
         }) }}
         {% endif %}
 
+        {# Address #}
         {% if pageData['type'] === 'address' %}
         {%
           set checkboxItems = [
@@ -130,7 +132,8 @@
           fieldset: {
             legend: {
               text: "What kind of addresses do you expect to receive?",
-              classes: "govuk-fieldset__legend--m"
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--l"
             }
           },
           hint: {
@@ -140,6 +143,7 @@
         }) }}
         {% endif %}
 
+        {# Date #}
         {% if pageData['type'] === 'date' %}
         {%
           set radioItems = [
@@ -162,7 +166,8 @@
           fieldset: {
             legend: {
               text: "Are you asking for someone’s date of birth?",
-              classes: "govuk-fieldset__legend--m"
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--l"
             }
           },
           items: radioItems
@@ -174,8 +179,8 @@
           {% call govukFieldset({
             legend: {
               text: pageTitle,
-              classes: "govuk-fieldset__legend--l",
-              isPageHeading: true
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--l"
             }
           }) %}
 
@@ -240,7 +245,8 @@
           fieldset: {
             legend: {
               text: "How much text will people need to provide?",
-              classes: "govuk-fieldset__legend--m"
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--l"
             }
           },
           items: radioItems
