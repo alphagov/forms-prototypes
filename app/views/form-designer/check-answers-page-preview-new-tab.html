@@ -31,7 +31,7 @@
           <!--Q{{page["pageIndex"] | int + 1}}.--> {{questionTitle}}
         </dt>
         <dd class="govuk-summary-list__value">
-          {% if (page and (data[loop.index])) or (data[loop.index + '-year']) or (data[loop.index + '-address-street-address']) %}
+          {% if (data[loop.index]) or (data[loop.index + '-year']) or (data[loop.index + '-address-street-address']) or (data[loop.index + '-full-name']) or (data[loop.index + '-first-name']) %}
             {% if page['type'] == 'personName' %}
               {% if (page['title'] === 'yes') and (data[loop.index + '-name-title']) %}{{data[loop.index + '-name-title']}}{% endif %}
               {% if page['input'] === 'single-field' %}
