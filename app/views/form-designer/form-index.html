@@ -77,7 +77,7 @@
 
       {% for page in data.pages -%}
 
-      {% set questionTitle =  page["long-title"] or "Page " + page["pageIndex"] %}
+      {% set questionTitle =  page["long-title"] or "Page " + (page["pageIndex"]|int + 1) %}
       {% if page['questionOptional'] %}
       {% set questionTitle = questionTitle + ' (optional)' %}
       {% endif %}
