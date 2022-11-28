@@ -213,7 +213,11 @@
               Options
             </dt>
             <dd class="govuk-summary-list__value">
-              {% for item in pageData['item-list'] %}{{item}}{% if not loop.last %}, {% endif %}{% endfor %}
+              {% if (pageData['item-list']|length|int >= 1) %}
+                {% for item in pageData['item-list'] %}{{item}}{% if not loop.last %}, {% endif %}{% endfor %}
+              {% else %}
+                No options added
+              {% endif %}
             </dd>
             <dd class="govuk-summary-list__actions">
               <a class="govuk-link govuk-link--no-visited-state" href="/form-designer/settings/{{pageIndex + 1}}#option-0">
