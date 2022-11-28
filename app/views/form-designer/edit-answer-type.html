@@ -178,7 +178,7 @@
 
         {{ govukRadios({
           idPrefix: "type",
-          name: namePrefix + "[type]",
+          name: "type",
           fieldset: {
             legend: {
               text: "What kind of answer do you need to this question?",
@@ -189,7 +189,7 @@
           items: radioItems
         }) }}
 
-        <input type="hidden" id="index" name="{{namePrefix}}[pageIndex]'" value="{{[pageIndex]}}">
+        <!-- <input type="hidden" id="index" name="{{namePrefix}}[pageIndex]'" value="{{[pageIndex]}}"> -->
 
         <div class="govuk-button-group">
           {{ govukButton({
