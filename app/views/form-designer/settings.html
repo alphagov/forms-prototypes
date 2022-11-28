@@ -193,7 +193,7 @@
             </div>
           </div>
 
-          {% set optionArray = pageData['item-list'] or [{},{}] %}
+          {% set optionArray = pageData['item-list'] if (pageData['item-list']|length|int >= 2) else [{},{}] %}
           <ol class="govuk-list">
           {% for option in optionArray %}
             {% set optionRow -%}option{{loop.index0}}{%- endset %}
