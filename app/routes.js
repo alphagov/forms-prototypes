@@ -52,13 +52,25 @@ router.get('/form-designer/edit-answer-type/:pageId', function (req, res) {
   var pageId = req.params.pageId
 
   // If user pressed the 'Update preview' button or back link...
-  var pageIndex = parseInt(pageId) - 1
-  var pageData = req.session.data.pages[pageIndex]
+  const pageIndex = parseInt(pageId) - 1
+  const pageData = req.session.data.pages[pageIndex]
 
   // Update the 'Highest page Id'
   req.session.data.highestPageId = req.session.data.pages.length
 
+  if (!pageData) {
+    req.session.data.pages.push({
+      'pageIndex': pageIndex
+    })
+  }
+
   if (action == 'editPage') {
+
+    if (req.session.data.type) {
+      pageData['type'] = req.session.data.type
+    }
+    req.session.data.type = undefined
+
     req.session.data.action = undefined
     if (pageData['type'] === 'personName') {
       // person's name route
@@ -79,6 +91,7 @@ router.get('/form-designer/edit-answer-type/:pageId', function (req, res) {
       res.redirect('/form-designer/edit-page/' + pageId)
     }
   } else {
+
     req.session.data.action = undefined
     res.render('form-designer/edit-answer-type', {
       pageId: pageId,
@@ -104,12 +117,12 @@ router.get('/form-designer/settings/:pageId', function (req, res) {
 
   if (req.session.data.input) {
     pageData['input'] = req.session.data.input
-    req.session.data.input = undefined
   }
+  req.session.data.input = undefined
   if (req.session.data.title) {
     pageData['title'] = req.session.data.title
-    req.session.data.title = undefined
   }
+  req.session.data.title = undefined
 
   if (req.session.data['item-list']) {
     var itemList = req.session.data['item-list']
@@ -119,9 +132,9 @@ router.get('/form-designer/settings/:pageId', function (req, res) {
     }
     pageData['item-list'] = itemList
     pageData['oneOption'] = req.session.data['oneOption']
-    req.session.data['item-list'] = undefined
-    req.session.data.oneOption = undefined
   }
+  req.session.data['item-list'] = undefined
+  req.session.data.oneOption = undefined
 
   if (action === 'addAnother') {
 
@@ -192,15 +205,29 @@ router.get('/form-designer/edit-page/:pageId', function (req, res) {
 
   if (req.session.data['long-title']) {
     pageData['long-title'] = req.session.data['long-title']
-    req.session.data['long-title'] = undefined
   }
+  req.session.data['long-title'] = undefined
   if (req.session.data['hint-text']) {
     pageData['hint-text'] = req.session.data['hint-text']
-    req.session.data['hint-text'] = undefined
   }
+  req.session.data['hint-text'] = undefined
   if (req.session.data['questionOptional']) {
     pageData['questionOptional'] = req.session.data['questionOptional']
-    req.session.data['questionOptional'] = undefined
+  }
+  req.session.data['questionOptional'] = undefined
+
+  console.log('Here')
+  if (pageData) {
+    if (pageData['type'] !== 'personName') {
+      pageData['title'] = undefined
+    }
+    if (pageData['type'] !== 'select') {
+      pageData['item-list'] = undefined
+      pageData['oneOption'] = undefined
+    }
+    if ((pageData['type'] !== 'address') && (pageData['type'] !== 'personName') && (pageData['type'] !== 'date') && (pageData['type'] !== 'text')) {
+      pageData['input'] = undefined
+    }
   }
 
   // Edit declaration page errors
