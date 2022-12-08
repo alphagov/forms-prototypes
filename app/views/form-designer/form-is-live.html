@@ -1,17 +1,17 @@
 {% extends "layout-govuk-forms.html" %}
 
+{% set pageTitle = 'Your form is live' %}
+
 {% block pageTitle %}
-  Your form is live: {{ data['formTitle'] }}
+  {{pageTitle}}: {{ data['formTitle'] }} - GOV.UK Forms
 {% endblock %}
 
 {% block content %}
-
-
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
 
     <span class="govuk-caption-l">{{ data['formTitle'] }}</span>
-    <h1 class="govuk-heading-l">Your form is live</h1>
+    <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
 
     <p class="govuk-body">The URL for your form is:</p>
     <p class="govuk-body">

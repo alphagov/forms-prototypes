@@ -1,8 +1,9 @@
 {% extends "layout-govuk-forms.html" %}
 
+{% set pageTitle = 'What is the name of your form?' %}
 
 {% block pageTitle %}
-  {{ "Error: " if containsErrors }}What is the name of your form? - GOV.UK Forms
+  {{ "Error: " if containsErrors }}{{pageTitle}} - GOV.UK Forms
 {% endblock %}
 
 {% block beforeContent %}
@@ -10,37 +11,37 @@
 {% endblock %}
 
 {% block content %}
-  {% if containsErrors %}
-    {{ govukErrorSummary({
-      titleText: "There is a problem",
-      errorList: errorList
-    }) }}
-  {% endif %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form class="form" method="post" novalidate>
 
-    <div class="govuk-grid-row">
-      <div class="govuk-grid-column-two-thirds">
-      <form class="form" method="post">
+        {% if containsErrors %}
+          {{ govukErrorSummary({
+            titleText: "There is a problem",
+            errorList: errorList
+          }) }}
+        {% endif %}
 
         {{ govukInput({
-        label: {
-        text: "What is the name of your form?",
-        classes: "govuk-label--l",
-        isPageHeading: true
-        },
-        hint: {
-          text: "The form name will be shown at the top of each page of the form. Use a name that describes what the form will help people to do. For example ‘Apply for a juggling licence’."
-        },
-        id: "form-title",
-        name: "formTitle",
-        value: data['formTitle'],
-        errorMessage: { text: errors['formTitle'].text } if errors['formTitle'].text
+          label: {
+          text: pageTitle,
+          classes: "govuk-label--l",
+          isPageHeading: true
+          },
+          hint: {
+            text: "The form name will be shown at the top of each page of the form. Use a name that describes what the form will help people to do. For example ‘Apply for a juggling licence’."
+          },
+          id: "form-title",
+          name: "formTitle",
+          value: data['formTitle'],
+          errorMessage: { text: errors['formTitle'].text } if errors['formTitle'].text
         }) }}
 
-
-        <button class="govuk-button" data-module="govuk-button">Save and continue</button>
+        {{ govukButton({
+          text: "Save and continue"
+        }) }}
 
       </form>
-      </div>
     </div>
-
+  </div>
 {% endblock %}

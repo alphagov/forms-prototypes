@@ -3,22 +3,14 @@
 {% set pageTitle = 'Add and edit your questions' %}
 
 {% block pageTitle %}
-{{ "Error: " if containsErrors }}{{pageTitle}}: {{ data['formTitle'] }} - GOV.UK Forms
+  {{ "Error: " if containsErrors }}{{pageTitle}}: {{ data['formTitle'] }} - GOV.UK Forms
 {% endblock %}
 
 {% block beforeContent %}
-<a class="govuk-back-link" href="create-form">Back to {% if data['status'] === 'Live' %}your form{% else %}create a form{% endif %}</a>
+  <a class="govuk-back-link" href="create-form">Back to {{ "your form" if data['status'] === 'Live' else "create a form" }}</a>
 {% endblock %}
 
 {% block content %}
-
-{% if containsErrors %}
-  {{ govukErrorSummary({
-    titleText: "There is a problem",
-    errorList: errorList
-  }) }}
-{% endif %}
-
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
 
@@ -54,7 +46,7 @@
     {% set nextPageId = data['highestPageId'] | int + 1 %}
     {% set totalPageNum = data['highestPageId'] | int + 2 %}
 
-    <form id="form" class="form" action="../edit-page/{{ pageId }}" method="post">
+    <form id="form" class="form" action="../edit-page/{{ pageId }}" method="post" novalidate>
       <div class="govuk-button-group">
         {{ govukButton({
           text: "Add a question",
@@ -77,7 +69,7 @@
 
       {% for page in data.pages -%}
 
-      {% set questionTitle =  page["long-title"] or "Page " + (page["pageIndex"]|int + 1) %}
+      {% set questionTitle =  page["long-title"] or "Question " + (page["pageIndex"]|int + 1) %}
       {% if page['questionOptional'] %}
       {% set questionTitle = questionTitle + ' (optional)' %}
       {% endif %}

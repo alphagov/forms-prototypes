@@ -1,45 +1,49 @@
 {% extends "layout-govuk-forms.html" %}
 
-{% set pageTitle = 'Home' %}
+{% set pageTitle = 'Your forms' %}
 
 {% block pageTitle %}
   {{pageTitle}} - {{serviceName}}
 {% endblock %}
 
 {% block content %}
-  <h1 class="govuk-heading-l">{{serviceName}}</h1>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
 
-  {{ govukButton({
-    text: "Create a form",
-    href: "form-create-a-form.html",
-    isStartButton: true
-  }) }}
+      <h1 class="govuk-heading-l">{{ serviceName }}</h1>
 
-  {% if data['formTitle'] %}
-  <table class="govuk-table">
-    <caption class="govuk-table__caption govuk-table__caption--m">Your forms</caption>
-    <thead class="govuk-table__head">
-      <tr class="govuk-table__row">
-        <th scope="col" class="govuk-table__header">Form name</th>
-        <th scope="col" class="govuk-table__header govuk-table__header--numeric">Status</th>
-      </tr>
-    </thead>
-    <tbody class="govuk-table__body">
-      <tr class="govuk-table__row">
-        <th scope="row" class="govuk-table__header">
-          <a class="govuk-link" href="create-form">{{data.formTitle}}</a>
-        </th>
-        <td class="govuk-table__cell govuk-table__cell--numeric">
-        {% if data['status'] %}
-          {{govukTag({
-            text: data['status'],
-            classes: "govuk-!-margin-bottom-0 govuk-tag--purple" if data['status'] === 'Draft' else "govuk-!-margin-bottom-0 govuk-tag--turquoise"
-          })}}
-          {% endif %}
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  {% endif %}
+      {{ govukButton({
+        text: "Create a form",
+        href: "form-create-a-form.html",
+        isStartButton: true
+      }) }}
 
+      {% if data['formTitle'] %}
+      <table class="govuk-table">
+        <caption class="govuk-table__caption govuk-table__caption--m">Your forms</caption>
+        <thead class="govuk-table__head">
+          <tr class="govuk-table__row">
+            <th scope="col" class="govuk-table__header">Form name</th>
+            <th scope="col" class="govuk-table__header govuk-table__header--numeric">Status</th>
+          </tr>
+        </thead>
+        <tbody class="govuk-table__body">
+          <tr class="govuk-table__row">
+            <th scope="row" class="govuk-table__header">
+              <a class="govuk-link" href="create-form">{{data.formTitle}}</a>
+            </th>
+            <td class="govuk-table__cell govuk-table__cell--numeric">
+            {% if data['status'] %}
+              {{govukTag({
+                text: data['status'],
+                classes: "govuk-!-margin-bottom-0 govuk-tag--purple" if data['status'] === 'Draft' else "govuk-!-margin-bottom-0 govuk-tag--turquoise"
+              })}}
+              {% endif %}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      {% endif %}
+    </div>
+  </div>
 {% endblock %}

@@ -20,40 +20,41 @@
 {% endblock %}
 
 {% block content %}
-
-{% if containsErrors %}
-  {{ govukErrorSummary({
-    titleText: "There is a problem",
-    errorList: errorList
-  }) }}
-{% endif %}
-
-<form id="form" class="form" action="confirmation" method="post">
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
+      <form id="form" class="form" action="confirmation" method="post" novalidate>
 
-      <span class="govuk-caption-l">{{ data['formTitle'] }}</span>
-      <h1 class="govuk-heading-l">{{pageTitle}}</h1>
+        {% if containsErrors %}
+          {{ govukErrorSummary({
+            titleText: "There is a problem",
+            errorList: errorList
+          }) }}
+        {% endif %}
 
-      {#
+        <span class="govuk-caption-l">{{ data['formTitle'] }}</span>
+        <h1 class="govuk-heading-l">{{pageTitle}}</h1>
 
-        Every field id is prefixed with a unique page id.
-        So we can have separate configurations for every page.
+        {#
+          Every field id is prefixed with a unique page id.
+          So we can have separate configurations for every page.
+        #}
+        {% set pagePrefix = "p" + pageId + "-" %}
 
-      #}
-      {% set pagePrefix = "p" + pageId + "-" %}
+        <p class="govuk-body">
+          This page will be shown after someone has completed and submitted the form to let them know that the form has been submitted successfully.
+        </p>
 
-      <p class="govuk-body">This page will be shown after someone has completed and submitted the form to let them know that the form has been submitted successfully.</p>
+        <p class="govuk-body">
+          Add some content to let people know what will happen next and when, so they know what to expect.
+        </p>
 
-      <p class="govuk-body">Add some content to let people know what will happen next and when, so they know what to expect.</p>
+        <h2 class="govuk-heading-s">Example</h2>
 
-      <h2 class="govuk-heading-s">Example</h2>
-
-      {{ govukInsetText({
+        {{ govukInsetText({
           text: "We’ll send you an email to let you know the outcome. You'll usually get a response within 10 working days."
         }) }}
 
-      {{ govukCharacterCount({
+        {{ govukCharacterCount({
           name: "confirmationNext",
           id: "confirmationNext",
           maxlength: 2000,
@@ -65,25 +66,23 @@
           errorMessage: { text: errors['confirmationNext'].text } if errors['confirmationNext'].text
         }) }}
 
-      <input type="hidden" id="currentPageId" name="currentPageId" value="{{pageId}}">
+        <input type="hidden" id="currentPageId" name="currentPageId" value="{{pageId}}">
 
-      <div class="govuk-button-group">
-        {{ govukButton({
-          text: "Save and continue",
-          name: "action",
-          value: "continue"
-        }) }}
-        {{ govukButton({
-          text:  "Save",
-          name: "action",
-          value: "update",
-          classes: "govuk-button--secondary"
-        }) }}
-      </div>
+        <div class="govuk-button-group">
+          {{ govukButton({
+            text: "Save and continue",
+            name: "action",
+            value: "continue"
+          }) }}
+          {{ govukButton({
+            text:  "Save",
+            name: "action",
+            value: "update",
+            classes: "govuk-button--secondary"
+          }) }}
+        </div>
 
+      </form>
     </div>
   </div>
-
-</form>
-
 {% endblock %}

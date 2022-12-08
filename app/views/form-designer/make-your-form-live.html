@@ -3,7 +3,7 @@
 {% set pageTitle = 'Make your form live' %}
 
 {% block pageTitle %}
-  {{ "Error: " if containsErrors }} {{pageTitle}} - {{ data['formTitle'] }} - GOV.UK Forms
+  {{ "Error: " if containsErrors }}{{pageTitle}} - {{ data['formTitle'] }} - GOV.UK Forms
 {% endblock %}
 
 {% block beforeContent %}
@@ -13,42 +13,41 @@
 {% endblock %}
 
 {% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form method="post" novalidate>
 
-{% if containsErrors %}
-  {{ govukErrorSummary({
-    titleText: "There is a problem",
-    errorList: errorList
-  }) }}
-{% endif %}
+        {% if containsErrors %}
+        {{ govukErrorSummary({
+          titleText: "There is a problem",
+          errorList: errorList
+        }) }}
+        {% endif %}
 
-<div class="govuk-grid-row">
-  <div class="govuk-grid-column-two-thirds">
+        <span class="govuk-caption-l">{{ data['formTitle'] }}</span>
+        <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
 
-    <span class="govuk-caption-l">{{ data['formTitle'] }}</span>
-    <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
+        <p class="govuk-body">
+          When you make your form live you will get a URL for the form. The form will not be indexed by search engines, so people will not be able to find it easily. Contact your GOV.UK publishing team to publish a link to your form on GOV.UK so people can find it. 
+        <p>
 
-    <p class="govuk-body">
-      When you make your form live you will get a URL for the form. The form will not be indexed by search engines, so people will not be able to find it easily. Contact your GOV.UK publishing team to publish a link to your form on GOV.UK so people can find it. 
-    <p>
+        <p class="govuk-body">
+          After you have made your form live, completed forms will be sent to {{data['formsEmail'] or 'email@address.com' | safe}}.
+        </p>
 
-    <p class="govuk-body">
-      After you have made your form live, completed forms will be sent to {{data['formsEmail'] or 'email@address.com' | safe}}.
-    </p>
+        {% set html %}
+        <p class="govuk-notification-banner__heading">
+          Any changes you make to a live form will be updated in the form immediately.
+        </p>
+        <p class="govuk-body">
+          This could have an impact on people who are filling in the form at the same time. They may lose any answers they have already provided and may need to start again. 
+        </p>
+        {% endset %}
 
-    {% set html %}
-    <p class="govuk-notification-banner__heading">
-      Any changes you make to a live form will be updated in the form immediately.
-    </p>
-    <p class="govuk-body">
-      This could have an impact on people who are filling in the form at the same time. They may lose any answers they have already provided and may need to start again. 
-    </p>
-    {% endset %}
+        {{ govukNotificationBanner({
+          html: html
+        }) }}
 
-    {{ govukNotificationBanner({
-      html: html
-    }) }}
-
-    <form method="post">
         {{ govukRadios({
           classes: "govuk-radios--inline",
           idPrefix: "makeFormLive",
@@ -76,10 +75,8 @@
         {{ govukButton({
           text: "Save and continue"
         }) }}
-    </form>
 
+      </form>
+    </div>
   </div>
-
-</div>
-
 {% endblock %}

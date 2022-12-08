@@ -16,7 +16,7 @@
 {%- endset %}
 
 {% block pageTitle %}
-  {{pageTitle|safe}} - GOV.UK Forms
+  {{ "Error: " if containsErrors }}{{pageTitle}} - GOV.UK Forms
 {% endblock %}
 
 {% block beforeContent %}
@@ -26,14 +26,20 @@
 {% endblock %}
 
 {% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form id="form" class="form" action="../settings/{{pageId}}" method="post" novalidate>
 
-  <form id="form" class="form" action="../settings/{{pageId}}" method="post">
-    <div class="govuk-grid-row">
-      <div class="govuk-grid-column-two-thirds">
+        {% if containsErrors %}
+        {{ govukErrorSummary({
+          titleText: "There is a problem",
+          errorList: errorList
+        }) }}
+        {% endif %}
 
         <span class="govuk-caption-l">Question {{pageId}}</span>
         {% if pageData['type'] === 'personName' %}
-        <h1 class="govuk-heading-l">{{pageTitle}}</h1>
+        <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
         {% endif %}
 
         {% set namePrefix = "pages[" + pageIndex + "]" %}
@@ -253,22 +259,17 @@
         }) }}
         {% endif %}
 
-        <div class="govuk-button-group">
-          {{ govukButton({
-            text: "Save and continue",
-            name: "action",
-            value: "editPage"
-          }) }}
-        </div>
+        {{ govukButton({
+          text: "Save and continue",
+          name: "action",
+          value: "editPage"
+        }) }}
 
         <p class="govuk-body">
           <a class="govuk-link govuk-link--no-visited-state" href="../form-index">Go to your questions</a>
         </p>
 
-      </div>
-
+      </form>
     </div>
-
-  </form>
-
+  </div>
 {% endblock %}

@@ -41,19 +41,22 @@ router.post('/example-2/save-progress-check', function (req, res) {
 // ROUTES FOR FORM DESIGNER
 //
 
+// Set a value to use in the back button to return to previous page
 router.use('/form-designer/*', function (req, res, next) {
   const referer = req.headers.referer ?? '';
+  // Should validate the referer URL is part of our application
   req.session.data.referer = referer
   next();
 })
 
 router.get('/form-designer/edit-answer-type/:pageId', function (req, res) {
   var action = req.session.data.action
-  var pageId = req.params.pageId
+  // clear the action so it doesn't change the next page load
+  req.session.data.action = undefined
 
-  // If user pressed the 'Update preview' button or back link...
-  const pageIndex = parseInt(pageId) - 1
-  const pageData = req.session.data.pages[pageIndex]
+  var pageId = req.params.pageId
+  var pageIndex = parseInt(pageId) - 1
+  var pageData = req.session.data.pages[pageIndex]
 
   // Update the 'Highest page Id'
   req.session.data.highestPageId = req.session.data.pages.length
@@ -70,8 +73,6 @@ router.get('/form-designer/edit-answer-type/:pageId', function (req, res) {
       pageData['type'] = req.session.data.type
     }
     req.session.data.type = undefined
-
-    req.session.data.action = undefined
     if (pageData['type'] === 'personName') {
       // person's name route
       res.redirect('/form-designer/settings/' + pageId)
@@ -91,8 +92,6 @@ router.get('/form-designer/edit-answer-type/:pageId', function (req, res) {
       res.redirect('/form-designer/edit-page/' + pageId)
     }
   } else {
-
-    req.session.data.action = undefined
     res.render('form-designer/edit-answer-type', {
       pageId: pageId,
       pageIndex: pageIndex,
@@ -191,6 +190,9 @@ router.get('/form-designer/settings/:pageId', function (req, res) {
 // Renders the page editor, set to a specific page
 router.get('/form-designer/edit-page/:pageId', function (req, res) {
   var action = req.session.data.action
+  // clear the action so it doesn't change the next page load
+  req.session.data.action = undefined
+
   var pageId = req.params.pageId
   var editNextPageId = parseInt(pageId) + 1
   var enableMultipleChoiceAnswerType =
@@ -203,20 +205,28 @@ router.get('/form-designer/edit-page/:pageId', function (req, res) {
   var pageIndex = parseInt(pageId) - 1
   var pageData = req.session.data.pages[pageIndex]
 
-  if (req.session.data['long-title']) {
+  const errors = {};
+  const title = req.session.data['long-title']
+  if (!title || !title.length) {
+    errors['long-title'] = {
+      text: 'Enter question text',
+      href: "#long-title"
+    }
+  } else {
     pageData['long-title'] = req.session.data['long-title']
   }
   req.session.data['long-title'] = undefined
+
   if (req.session.data['hint-text']) {
     pageData['hint-text'] = req.session.data['hint-text']
   }
   req.session.data['hint-text'] = undefined
+
   if (req.session.data['questionOptional']) {
     pageData['questionOptional'] = req.session.data['questionOptional']
   }
   req.session.data['questionOptional'] = undefined
 
-  console.log('Here')
   if (pageData) {
     if (pageData['type'] !== 'personName') {
       pageData['title'] = undefined
@@ -235,16 +245,7 @@ router.get('/form-designer/edit-page/:pageId', function (req, res) {
     const errors = {};
     const { isDeclarationComplete } = req.session.data
 
-    // If declaration is blank, create an error to be displayed to the user
-    // if (!checkAnswersDeclaration?.length) {
-    //   errors.checkAnswersDeclaration = {
-    //     text: 'Enter a declaration',
-    //     href: "#checkAnswersDeclaration"
-    //   }
-    // }
-
     // Confirm if task is completed or not on declaration page
-
     if (!isDeclarationComplete || !isDeclarationComplete.length) {
       errors['isDeclarationComplete'] = {
         text: 'Select no if you want to complete this section later',
@@ -258,12 +259,8 @@ router.get('/form-designer/edit-page/:pageId', function (req, res) {
     // otherwise, show the page again with the errors set
     const containsErrors = errorList.length > 0
     if(containsErrors && action !== 'gogogo' && action !== '') {
-      // Reset the state so they can be reused
-      req.session.data.action = undefined
       res.render('form-designer/edit-check-answers-page', { errors, errorList, containsErrors })
     } else if(action == 'continue') {
-      // Reset the state so they can be reused
-      req.session.data.action = undefined
       res.redirect('/form-designer/create-form')
     } else {
       res.render('form-designer/edit-check-answers-page')
@@ -288,40 +285,27 @@ router.get('/form-designer/edit-page/:pageId', function (req, res) {
     // otherwise, show the page again with the errors set
     const containsErrors = errorList.length > 0
     if(containsErrors && action !== 'gogogo' && action !== '') {
-      // Reset the state so they can be reused
-      req.session.data.action = undefined
       res.render('form-designer/edit-confirmation-page', { errors, errorList, containsErrors })
     } else if(action == 'continue') {
-      // Reset the state so they can be reused
-      req.session.data.action = undefined
       res.redirect('/form-designer/create-form')
     } else {
       res.render('form-designer/edit-confirmation-page')
     }
 
-    // If user is updating the start page...
-  } else if (pageId == 0 && (action == 'update' || action == '')) {
-    res.render('form-designer/edit-start-page')
-
-    // If user pressed the 'Create next page' button...
+    // If user pressed the 'Create next question' button...
   } else if (action == 'createNextPage') {
     res.redirect('/form-designer/choose-page-type/' + createNextPageId)
 
-    // If user pressed the 'Edit next page' button...
+    // If user pressed the 'Edit next question' button...
   } else if (action == 'editNextPage') {
-    // reset the action to avoid a loop
-    req.session.data.action = undefined
-
     res.redirect('/form-designer/edit-page/' + editNextPageId)
 
-    // If user pressed the 'Update preview' button or back link...
+    // If user pressed the 'Delete question' button...
   } else if (action === 'deletePage') {
-    // reset the action to avoid a loop
-    req.session.data.action = undefined
     return res.redirect(`/form-designer/delete/${pageId}`)
 
-  } else {
     // If user pressed the 'Update preview' button or back link...
+  } else {
     var pageIndex = parseInt(pageId) - 1
     var pageData = req.session.data.pages[pageIndex]
 
@@ -339,10 +323,7 @@ router.get('/form-designer/edit-page/:pageId', function (req, res) {
 
 
 // If user is marking questions as complete...
-router.get('/form-designer/question-list', function (
-  req,
-  res
-) {
+router.get('/form-designer/question-list', function (req, res) {
   const errors = {};
   const { isQuestionsComplete } = req.session.data
 
@@ -371,10 +352,7 @@ router.get('/form-designer/question-list', function (
 })
 
 // Route used to delete question
-router.get('/form-designer/delete/:pageId/', function (
-  req,
-  res
-) {
+router.get('/form-designer/delete/:pageId/', function (req, res) {
   const { action } = req.session.data
   const pageIndex = parseInt(req.params.pageId, 10) - 1
   const pageData = req.session.data.pages[pageIndex]
@@ -414,10 +392,7 @@ router.get('/form-designer/delete/:pageId/', function (
 
 
 // Route used by the reordering buttons in form-index.html
-router.get('/form-designer/reorder-page/:pageId/:direction', function (
-  req,
-  res
-) {
+router.get('/form-designer/reorder-page/:pageId/:direction', function (req, res) {
   const { pageId, direction } = req.params
   const newArrayPosition = direction === 'down' ? pageId : pageId - 2
   const { pages } = req.session.data

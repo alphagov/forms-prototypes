@@ -22,9 +22,9 @@
   {% set isLastQuestionPage = pageId == data['highestPageId'] %}
   {% set formAction = "../check-answers-page-preview-new-tab" if isLastQuestionPage else nextPageId %}
 
-  <form class="form" action='{{formAction}}' method="post">
-    <div class="govuk-grid-row">
-      <div class="govuk-grid-column-two-thirds">
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form class="form" action='{{formAction}}' method="post" novalidate>
 
         {#
 
@@ -402,9 +402,7 @@
 
               {% if not pageData['intro-text'] %}
                 <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-                  <h1 class="govuk-fieldset__heading">
-                    {{ pageTitle }}
-                  </h1>
+                  <h1 class="govuk-fieldset__heading">{{ pageTitle }}</h1>
                 </legend>
               {% endif %}
 
@@ -531,37 +529,37 @@
         }) }}
 
         {% if data['supportDetails'] %}
-        {% set supportTextHtml %}
-        <div class="app-prose-scope">
-          {% if 'email' in data['supportDetails'] -%}
-          <h3 class="govuk-heading-s">Email</h3>
-          <p class="govuk-body">
-            <a class="govuk-link" href="mailto:{{data['emailSupport'] or 'support@department.gov.uk' | safe}}">{{data['emailSupport'] or 'support@department.gov.uk' | safe}}</a>
-          </p>
-          {%- endif %}
-          {% if 'phone' in data['supportDetails'] -%}
-          <h3 class="govuk-heading-s">Phone</h3>
-          <p class="govuk-body">{{data['phoneSupport'] | striptags(true) | escape | nl2br }}</p>
-          <p class="govuk-body">
-            <a class="govuk-link" href="https://www.gov.uk/call-charges" target="_blank">Find out about call charges</a>
-          </p>
-          {%- endif %}
-          {% if 'online' in data['supportDetails'] -%}
-          <h3 class="govuk-heading-s">Online</h3>
-          <p class="govuk-body">
-            <a class="govuk-link" href="{{data['onlineSupportLink']}}" target="_blank">{{data['onlineSupportText'] | safe}} (opens in new tab)</a>
-          </p>
-          {%- endif %}
-        </div>
-        {% endset -%}
+          {% set supportTextHtml %}
+          <div class="app-prose-scope">
+            {% if 'email' in data['supportDetails'] -%}
+            <h3 class="govuk-heading-s">Email</h3>
+            <p class="govuk-body">
+              <a class="govuk-link" href="mailto:{{data['emailSupport'] or 'support@department.gov.uk' | safe}}">{{data['emailSupport'] or 'support@department.gov.uk' | safe}}</a>
+            </p>
+            {%- endif %}
+            {% if 'phone' in data['supportDetails'] -%}
+            <h3 class="govuk-heading-s">Phone</h3>
+            <p class="govuk-body">{{data['phoneSupport'] | striptags(true) | escape | nl2br }}</p>
+            <p class="govuk-body">
+              <a class="govuk-link" href="https://www.gov.uk/call-charges" target="_blank">Find out about call charges</a>
+            </p>
+            {%- endif %}
+            {% if 'online' in data['supportDetails'] -%}
+            <h3 class="govuk-heading-s">Online</h3>
+            <p class="govuk-body">
+              <a class="govuk-link" href="{{data['onlineSupportLink']}}" target="_blank">{{data['onlineSupportText'] | safe}} (opens in new tab)</a>
+            </p>
+            {%- endif %}
+          </div>
+          {% endset -%}
 
-        {{ govukDetails({
-          summaryText: "Get help with this form",
-          html: supportTextHtml
-        }) }}
+          {{ govukDetails({
+            summaryText: "Get help with this form",
+            html: supportTextHtml
+          }) }}
         {% endif %}
 
-      </div>
+      </form>
     </div>
-  </form>
+  </div>
 {% endblock %}

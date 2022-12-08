@@ -1,9 +1,10 @@
 {% extends "layout-govuk-forms.html" %}
 
-{% block pageTitle %}
-  Delete page - GOV.UK Forms
-{% endblock %}
+{% set pageTitle = 'Are you sure you want to delete this question?' %}
 
+{% block pageTitle %}
+  {{ "Error: " if containsErrors }}{{pageTitle}} - GOV.UK Forms
+{% endblock %}
 
 {% block beforeContent %}
   <a class="govuk-back-link" href="{{data['referer']}}">Back</a>
@@ -12,26 +13,41 @@
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <form method="post">
+      <form id="form" class="form" method="post" novalidate>
+
+        {% if containsErrors %}
+        {{ govukErrorSummary({
+          titleText: "There is a problem",
+          errorList: errorList
+        }) }}
+        {% endif %}
+
+        {{ govukRadios({
+          name: "delete",
+          fieldset: {
+            legend: {
+              text: pageTitle,
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--l"
+            }
+          },
+          items: [
+            {
+              value: "Yes",
+              text: "Yes"
+            },
+            {
+              value: "No",
+              text: "No"
+            }
+          ]
+        }) }}
+
         <input type="hidden" name="action" value="delete">
-        <div class="govuk-form-group">
-          <fieldset class="govuk-fieldset">
-            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-              <h1 class="govuk-fieldset__heading">Are you sure you want to delete this question?</h1>
-            </legend>
-            <div class="govuk-radios">
-              <div class="govuk-radios__item">
-                <input id="yes" type="radio" name="delete" class="govuk-radios__input" value="Yes">
-                <label class="govuk-radios__label" for="yes">Yes</label>
-              </div>
-              <div class="govuk-radios__item">
-                <input id="no" type="radio" name="delete" class="govuk-radios__input" value="No">
-                <label class="govuk-radios__label" for="no">No</label>
-              </div>
-            </div>
-          </fieldset>
-        </div>
-        <button type="submit" class="govuk-button">Save and continue</button>
+
+        {{ govukButton({
+          text: "Save and continue"
+        }) }}
       </form>
     </div>
   </div>

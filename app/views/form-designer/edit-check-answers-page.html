@@ -20,99 +20,101 @@
 {% endblock %}
 
 {% block content %}
-
-{% if containsErrors %}
-  {{ govukErrorSummary({
-    titleText: "There is a problem",
-    errorList: errorList
-  }) }}
-{% endif %}
-
-<form id="form" class="form" action="check-answers" method="post">
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
+      <form id="form" class="form" action="check-answers" method="post" novalidate>
 
-      <span class="govuk-caption-l">{{ data['formTitle'] }}</span>
-      <h1 class="govuk-heading-l">{{pageTitle}}</h1>
+        {% if containsErrors %}
+          {{ govukErrorSummary({
+            titleText: "There is a problem",
+            errorList: errorList
+          }) }}
+        {% endif %}
 
-      {#
+        <span class="govuk-caption-l">{{ data['formTitle'] }}</span>
+        <h1 class="govuk-heading-l">{{pageTitle}}</h1>
 
-      Every field id is prefixed with a unique page id.
-      So we can have separate configurations for every page.
+        {#
+        Every field id is prefixed with a unique page id.
+        So we can have separate configurations for every page.
+        #}
 
-      #}
-      {% set pagePrefix = "p" + pageId + "-" %}
+        {% set pagePrefix = "p" + pageId + "-" %}
 
-      <p class="govuk-body">When someone has answered all the questions in your form, they will be shown a page that lists all of their answers. The page will ask them to check their answers before they submit the form.</p>
+        <p class="govuk-body">
+          When someone has answered all the questions in your form, they will be shown a page that lists all of their answers. The page will ask them to check their answers before they submit the form.
+        </p>
 
-      <p class="govuk-body">You can add a declaration to this page. A declaration is some content that people must confirm they understand and agree to before they submit the form.</p>
+        <p class="govuk-body">
+          You can add a declaration to this page. A declaration is some content that people must confirm they understand and agree to before they submit the form.
+        </p>
 
-      <p class="govuk-body">You might want to add a declaration if you need people to confirm they have provided accurate information, or that they understand the consequences of providing false information.</p>
+        <p class="govuk-body">
+          You might want to add a declaration if you need people to confirm they have provided accurate information, or that they understand the consequences of providing false information.
+        </p>
 
-      <h2 class="govuk-heading-s">Example</h2>
+        <h2 class="govuk-heading-s">Example</h2>
 
-      {{ govukInsetText({
-        text: "By submitting this form you are confirming that, to the best of your knowledge, the answers you are providing are correct."
-      }) }}
+        {{ govukInsetText({
+          text: "By submitting this form you are confirming that, to the best of your knowledge, the answers you are providing are correct."
+        }) }}
 
-      {{ govukCharacterCount({
-        name: "checkAnswersDeclaration",
-        id: "checkAnswersDeclaration",
-        maxlength: 2000,
-        value: data['checkAnswersDeclaration'],
-        label: {
-          text: "Enter a declaration for people to agree to (optional)",
-          classes: "govuk-label--m"
-        }
-      }) }}
-
-      {% if data.status === 'Draft' %}
-      {{ govukRadios({
-        classes: "govuk-radios",
-        idPrefix: "isDeclarationComplete",
-        name: "isDeclarationComplete",
-        fieldset: {
-          legend: {
-            text: "Do you want to mark this task as complete?",
-            isPageHeading: false,
-            classes: "govuk-fieldset__legend--m"
+        {{ govukCharacterCount({
+          name: "checkAnswersDeclaration",
+          id: "checkAnswersDeclaration",
+          maxlength: 2000,
+          value: data['checkAnswersDeclaration'],
+          label: {
+            text: "Enter a declaration for people to agree to (optional)",
+            classes: "govuk-label--m"
           }
-        },
-        items: [
-          {
-            value: "yes",
-            text: "Yes",
-            checked: checked('isDeclarationComplete', "yes")
+        }) }}
+
+        {% if data.status === 'Draft' %}
+        {{ govukRadios({
+          classes: "govuk-radios",
+          idPrefix: "isDeclarationComplete",
+          name: "isDeclarationComplete",
+          fieldset: {
+            legend: {
+              text: "Do you want to mark this task as complete?",
+              isPageHeading: false,
+              classes: "govuk-fieldset__legend--m"
+            }
           },
-          {
-            value: "no",
-            text: "No, I’ll come back later",
-            checked: checked('isDeclarationComplete', "no")
-          }
-        ],
-        errorMessage: { text: errors['isDeclarationComplete'].text } if errors['isDeclarationComplete'].text
-      }) }}
-      {% endif %}
-
-      <input type="hidden" id="currentPageId" name="currentPageId" value="{{pageId}}">
-
-      <div class="govuk-button-group">
-        {{ govukButton({
-          text: "Save and continue",
-          name: "action",
-          value: "continue"
+          items: [
+            {
+              value: "yes",
+              text: "Yes",
+              checked: checked('isDeclarationComplete', "yes")
+            },
+            {
+              value: "no",
+              text: "No, I’ll come back later",
+              checked: checked('isDeclarationComplete', "no")
+            }
+          ],
+          errorMessage: { text: errors['isDeclarationComplete'].text } if errors['isDeclarationComplete'].text
         }) }}
-        {{ govukButton({
-          text:  "Save",
-          name: "action",
-          value: "update",
-          classes: "govuk-button--secondary"
-        }) }}
-      </div>
+        {% endif %}
 
+        <input type="hidden" id="currentPageId" name="currentPageId" value="{{pageId}}">
+
+        <div class="govuk-button-group">
+          {{ govukButton({
+            text: "Save and continue",
+            name: "action",
+            value: "continue"
+          }) }}
+          {{ govukButton({
+            text:  "Save",
+            name: "action",
+            value: "update",
+            classes: "govuk-button--secondary"
+          }) }}
+        </div>
+
+      </form>
     </div>
   </div>
-
-</form>
-
 {% endblock %}

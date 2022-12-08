@@ -1,34 +1,47 @@
 {% extends "layout-govuk-forms.html" %}
 
-
-{% set pageTitle -%}
-{% if data['status'] === 'Live' %}Your form{% else %}Create a form{% endif %}
-{%- endset %}
+{% set pageTitle = 'Your form' if data['status'] === 'Live' else 'Create a form' %}
 
 <!-- Do some checks to see how many sections are "Completed" -->
 {% set sections = 0 %}
-<!-- if form has a title sections completed =+ 1 -->
-{% if data['formTitle'] %}{% set sections = sections + 1 %}{% endif %}
-<!-- if questions added sections completed =+ 1 --> <!-- still needs implemented -->
-{% if data['isQuestionsComplete'] === 'yes' %}{% set sections = sections + 1 %}{% endif %}
-<!-- if summary page reviewed and confirmed sections completed =+ 1 -->
-{% if data['isDeclarationComplete'] === 'yes' %}{% set sections = sections + 1 %}{% endif %}
-<!-- if confirmation page reviewed and confirmed sections completed =+ 1 -->
-{% if data['confirmationNext'] %}{% set sections = sections + 1 %}{% endif %}
+<!-- if form has a title completed = sections =+ 1 -->
+{% if (data['formTitle']) %}
+{% set sections = sections + 1 %}
+{% endif %}
+<!-- if questions are marked as completed = sections =+ 1 -->
+{% if (data['isQuestionsComplete'] === 'yes') %}
+{% set sections = sections + 1 %}
+{% endif %}
+<!-- if declaration marked complete = sections =+ 1 -->
+{% if (data['isDeclarationComplete'] === 'yes') %}
+{% set sections = sections + 1 %}
+{% endif %}
+<!-- if what happens next completed = sections =+ 1 -->
+{% if (data['confirmationNext']) %}
+{% set sections = sections + 1 %}
+{% endif %}
 
-<!-- if processing email address added sections completed =+ 1 -->
-{% if data['formsEmail'] %}{% set sections = sections + 1 %}{% endif %}
-<!-- if processing email verified sections completed =+ 1 -->
-{% if data['confirmationCode'] and (data['confirmationCode'] !== '000000') %}{% set sections = sections + 1 %}{% endif %}
+<!-- if processing email address added = sections =+ 1 -->
+{% if (data['formsEmail']) %}
+{% set sections = sections + 1 %}
+{% endif %}
+<!-- if processing email verified = sections =+ 1 -->
+{% if (data['confirmationCode'] and (data['confirmationCode'] !== '000000')) %}
+{% set sections = sections + 1 %}
+{% endif %}
 
-<!-- if privacy information link added sections completed =+ 1 -->
-{% if data['privacyInformation']%}{% set sections = sections + 1 %}{% endif %}
-<!-- if support contact details added sections completed =+ 1 -->
-{% if data['supportDetails']%}{% set sections = sections + 1 %}{% endif %}
+<!-- if privacy information link added = sections =+ 1 -->
+{% if (data['privacyInformation']) %}
+{% set sections = sections + 1 %}
+{% endif %}
+<!-- if support contact details added = sections =+ 1 -->
+{% if (data['supportDetails']) %}
+{% set sections = sections + 1 %}
+{% endif %}
 
 
 {% block pageTitle %}
-  {{pageTitle}}: {{ data['formTitle'] }} - {{serviceName}}
+  {{pageTitle}}: {{ data['formTitle']|safe }} - {{serviceName}}
 {% endblock %}
 
 {% block beforeContent %}

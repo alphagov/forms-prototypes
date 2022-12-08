@@ -1,15 +1,9 @@
 {% extends "layout-govuk-forms.html" %}
 
-{% set pageTitle -%}
-  {% if pageData['long-title'] %}
-    {{pageData['long-title']}}
-  {% else %}
-    Edit question
-  {% endif %}
-{%- endset %}
+{% set pageTitle = 'What kind of answer do you need to this question?' %}
 
 {% block pageTitle %}
-  {{pageTitle|safe}} - GOV.UK Forms
+  {{ "Error: " if containsErrors }}{{pageTitle}} - GOV.UK Forms
 {% endblock %}
 
 {% block beforeContent %}
@@ -19,17 +13,21 @@
   {% elif ('edit-page' in data.referer) and (prevPageId > 0) %}
     <a class="govuk-back-link" href="../edit-page/{{prevPageId}}">Back</a>
   {% else %}
-    <a class="govuk-back-link" href="../form-index" target="_parent">
-      Back to your questions
-    </a>
+    <a class="govuk-back-link" href="../form-index" target="_parent">Back to your questions</a>
   {% endif %}
 {% endblock %}
 
 {% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form id="form" class="form" action="../edit-answer-type/{{pageId}}" method="post" novalidate>
 
-  <form id="form" class="form" action="../edit-answer-type/{{pageId}}" method="post">
-    <div class="govuk-grid-row">
-      <div class="govuk-grid-column-two-thirds">
+        {% if containsErrors %}
+        {{ govukErrorSummary({
+          titleText: "There is a problem",
+          errorList: errorList
+        }) }}
+        {% endif %}
 
         <span class="govuk-caption-l">Question {{pageId}}</span>
 
@@ -90,98 +88,12 @@
           ]
         %}
 
-        {# ORIGINAL - commented out
-        {%
-          set radioItems = [
-            {
-              value: "text",
-              text: "Single line of text",
-              checked: checked(namePrefix + "['type']", "text") or allEmpty,
-              hint: {
-                text: "For a short answer"
-              }
-            },
-            {
-              value: "textarea",
-              text: "Multiple lines of text",
-              checked: checked(namePrefix + "['type']", "textarea"),
-              hint: {
-                text: "For a longer answer"
-              }
-            },
-            {
-              value: "number",
-              text: "Number",
-              checked: checked(namePrefix + "['type']", "number"),
-              hint: {
-                text: "Requires a numerical answer"
-              }
-            },
-            {
-              value: "address",
-              text: "Address",
-              checked: checked(namePrefix + "['type']", "address"),
-              hint: {
-                text: "To collect an address with separate fields for line 1, line 2, town or city, county and postcode"
-              }
-            },
-            {
-              value: "date",
-              text: "Date",
-              checked: checked(namePrefix + "['type']", "date"),
-              hint: {
-                text: "Requires a day, month and year"
-              }
-            },
-            {
-              value: "email",
-              text: "Email address",
-              checked: checked(namePrefix + "['type']", "email"),
-              hint: {
-                text: "Requires an answer in the format of an email address"
-              }
-            },
-            {
-              value: "national-insurance-number",
-              text: "National Insurance number",
-              checked: checked(namePrefix + "['type']", "national-insurance-number"),
-              hint: {
-                text: "Requires an answer in the format of a National Insurance number"
-              }
-            },
-            {
-              value: "phone",
-              text: "Phone number",
-              checked: checked(namePrefix + "['type']", "phone"),
-              hint: {
-                text: "Requires an answer in the format of a phone number"
-              }
-            },
-            {
-              value: "select",
-              text: "One or more selected options from a list",
-              checked: checked(namePrefix + "['type']", "select"),
-              hint: {
-                text: "Create a list of options for people to select from"
-              }
-            },
-            {
-              value: "yesorno",
-              text: "Yes or no",
-              checked: checked(namePrefix + "['type']", "yesorno"),
-              hint: {
-                text: "People have to select either yes or no"
-              }
-            }
-          ]
-        %}#}
-
         {{ govukRadios({
           idPrefix: "type",
           name: "type",
           fieldset: {
             legend: {
-              text: "What kind of answer do you need to this question?",
+              text: pageTitle,
               isPageHeading: true,
               classes: "govuk-fieldset__legend--l"
             }
@@ -189,24 +101,17 @@
           items: radioItems
         }) }}
 
-        <!-- <input type="hidden" id="index" name="{{namePrefix}}[pageIndex]'" value="{{[pageIndex]}}"> -->
-
-        <div class="govuk-button-group">
-          {{ govukButton({
-            text: "Save and continue",
-            name: "action",
-            value: "editPage"
-          }) }}
-        </div>
+        {{ govukButton({
+          text: "Save and continue",
+          name: "action",
+          value: "editPage"
+        }) }}
 
         <p class="govuk-body">
           <a class="govuk-link govuk-link--no-visited-state" href="../form-index">Go to your questions</a>
         </p>
 
-      </div>
-
+      </form>
     </div>
-
-  </form>
-
+  </div>
 {% endblock %}
