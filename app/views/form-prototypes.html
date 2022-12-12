@@ -1,178 +1,180 @@
 {% extends "layout.html" %}
 
+{% set pageTitle = 'Form prototypes' %}
+
 {% block pageTitle %}
-  Form examples
+{{ pageTitle }}
 {% endblock %}
 
 {% block content %}
 
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
 
-      <span class="govuk-caption-xl">GOV.UK Forms</span>
-      <h1 class="govuk-heading-xl">
-        Form prototypes
-      </h1>
+    <span class="govuk-caption-xl">{{ serviceName }}</span>
+    <h1 class="govuk-heading-xl">{{ pageTitle }}</h1>
 
-      <p class="govuk-body-l">Some examples of common kinds of government form, using components and patterns from the GOV.UK Design System.<p>
+    <p class="govuk-body-l">
+      Some examples of common kinds of government form, using components and patterns from the GOV.UK Design System.
+    <p>
 
-          <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+    <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
 
-          <h2 class="govuk-heading-m">
-        A simple form
-      </h2>
+    <h2 class="govuk-heading-m">
+      A simple form
+    </h2>
 
-          <p>
-            <b>
-              <a href="/example-1/start">View the form</a>
-            </b>
-          </p>
+    <p class="govuk-body">
+      <b>
+        <a href="/example-1/start">View the form</a>
+      </b>
+    </p>
 
-          <p>
-        An 8 question linear form with no sections or skip logic.
-        Features include help text, character count and conditional reveals.
-        There's a declaration built into the 'check your answers' page.
-      </p>
+    <p class="govuk-body">
+      An 8 question linear form with no sections or skip logic.
+      Features include help text, character count and conditional reveals.
+      There's a declaration built into the 'check your answers' page.
+    </p>
 
-          <details class="govuk-details" data-module="govuk-details">
-            <summary class="govuk-details__summary">
-              <span class="govuk-details__summary-text">
-            View list of pages in form
-          </span>
-            </summary>
-            <div class="govuk-details__text">
-              <ol class="govuk-list govuk-list--number">
-                <li>
-                  <a href="/example-1/start">Start</a>
-                </li>
-                <li>
-                  <a href="/example-1/question-1">Name</a>
-                </li>
-                <li>
-                  <a href="/example-1/question-2">Date of birth</a>
-                </li>
-                <li>
-                  <a href="/example-1/question-3">Address</a>
-                </li>
-                <li>
-                  <a href="/example-1/question-4">Email address</a>
-                </li>
-                <li>
-                  <a href="/example-1/question-5">National Insurance number</a>
-                </li>
-                <li>
-                  <a href="/example-1/question-6">Telephone number</a>
-                </li>
-                <li>
-                  <a href="/example-1/question-7">Pet species</a>
-                </li>
-                <li>
-                  <a href="/example-1/question-8">Pet description</a>
-                </li>
-                <li>
-                  <a href="/example-1/check-your-answers">Check your answers</a>
-                </li>
-                <li>
-                  <a href="/example-1/confirmation">Confirmation</a>
-                </li>
-              </ol>
-            </div>
-          </details>
+    <details class="govuk-details" data-module="govuk-details">
+      <summary class="govuk-details__summary">
+        <span class="govuk-details__summary-text">
+          View list of pages in form
+        </span>
+      </summary>
+      <div class="govuk-details__text">
+        <ol class="govuk-list govuk-list--number">
+          <li>
+            <a href="/example-1/start">Start</a>
+          </li>
+          <li>
+            <a href="/example-1/question-1">Name</a>
+          </li>
+          <li>
+            <a href="/example-1/question-2">Date of birth</a>
+          </li>
+          <li>
+            <a href="/example-1/question-3">Address</a>
+          </li>
+          <li>
+            <a href="/example-1/question-4">Email address</a>
+          </li>
+          <li>
+            <a href="/example-1/question-5">National Insurance number</a>
+          </li>
+          <li>
+            <a href="/example-1/question-6">Telephone number</a>
+          </li>
+          <li>
+            <a href="/example-1/question-7">Pet species</a>
+          </li>
+          <li>
+            <a href="/example-1/question-8">Pet description</a>
+          </li>
+          <li>
+            <a href="/example-1/check-your-answers">Check your answers</a>
+          </li>
+          <li>
+            <a href="/example-1/confirmation">Confirmation</a>
+          </li>
+        </ol>
+      </div>
+    </details>
 
-          <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+    <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
 
-          <h2 class="govuk-heading-m">
-        A more complex form
-      </h2>
+    <h2 class="govuk-heading-m">
+      A more complex form
+    </h2>
 
-          <p>
-            <b>
-              <a href="/example-2/start">View the form</a>
-            </b>
-          </p>
+    <p class="govuk-body">
+      <b>
+        <a href="/example-2/start">View the form</a>
+      </b>
+    </p>
 
-          <p>
-        This example groups the questions from the previous form into sections and adds an eligibility check and a task list.
-      </p>
+    <p class="govuk-body">
+      This example groups the questions from the previous form into sections and adds an eligibility check and a task list.
+    </p>
 
-          <details class="govuk-details" data-module="govuk-details">
-            <summary class="govuk-details__summary">
-              <span class="govuk-details__summary-text">
-            View list of pages in form
-          </span>
-            </summary>
-            <div class="govuk-details__text">
+    <details class="govuk-details" data-module="govuk-details">
+      <summary class="govuk-details__summary">
+        <span class="govuk-details__summary-text">
+          View list of pages in form
+        </span>
+      </summary>
+      <div class="govuk-details__text">
 
-              <ol class="govuk-list govuk-list--number">
-                <li>
-                  <a href="/example-2/start">Start</a>
-                </li>
-                <li>
-                  <a href="/example-2/task-list">Task List</a>
-                </li>
-              </ol>
+        <ol class="govuk-list govuk-list--number">
+          <li>
+            <a href="/example-2/start">Start</a>
+          </li>
+          <li>
+            <a href="/example-2/task-list">Task List</a>
+          </li>
+        </ol>
 
-              <h3 class="govuk-heading-s">
-            Check before you start
-          </h3>
-              <ol class="govuk-list govuk-list--number" start="3">
-                <li>
-                  <a href="/example-2/eligibility-check">Where you live</a>
-                </li>
-              </ol>
+        <h3 class="govuk-heading-s">
+          Check before you start
+        </h3>
+        <ol class="govuk-list govuk-list--number" start="3">
+          <li>
+            <a href="/example-2/eligibility-check">Where you live</a>
+          </li>
+        </ol>
 
-              <h3 class="govuk-heading-s">
-            About you
-          </h3>
-              <ol class="govuk-list govuk-list--number" start="4">
-                <li>
-                  <a href="/example-2/question-1">Name</a>
-                </li>
-                <li>
-                  <a href="/example-2/question-2">Date of birth</a>
-                </li>
-                <li>
-                  <a href="/example-2/question-3">Address</a>
-                </li>
-                <li>
-                  <a href="/example-2/question-4">Email address</a>
-                </li>
-                <li>
-                  <a href="/example-2/question-5">National Insurance number</a>
-                </li>
-                <li>
-                  <a href="/example-2/question-6">Telephone number</a>
-                </li>
-              </ol>
+        <h3 class="govuk-heading-s">
+          About you
+        </h3>
+        <ol class="govuk-list govuk-list--number" start="4">
+          <li>
+            <a href="/example-2/question-1">Name</a>
+          </li>
+          <li>
+            <a href="/example-2/question-2">Date of birth</a>
+          </li>
+          <li>
+            <a href="/example-2/question-3">Address</a>
+          </li>
+          <li>
+            <a href="/example-2/question-4">Email address</a>
+          </li>
+          <li>
+            <a href="/example-2/question-5">National Insurance number</a>
+          </li>
+          <li>
+            <a href="/example-2/question-6">Telephone number</a>
+          </li>
+        </ol>
 
-              <h3 class="govuk-heading-s">
-              About your pet
-            </h3>
+        <h3 class="govuk-heading-s">
+          About your pet
+        </h3>
 
-              <ol class="govuk-list govuk-list--number" start="10">
-                <li>
-                  <a href="/example-2/question-7">Pet species</a>
-                </li>
-                <li>
-                  <a href="/example-2/question-8">Pet description</a>
-                </li>
-              </ol>
+        <ol class="govuk-list govuk-list--number" start="10">
+          <li>
+            <a href="/example-2/question-7">Pet species</a>
+          </li>
+          <li>
+            <a href="/example-2/question-8">Pet description</a>
+          </li>
+        </ol>
 
-              <h3 class="govuk-heading-s">
-            Apply
-          </h3>
+        <h3 class="govuk-heading-s">
+          Apply
+        </h3>
 
-              <ol class="govuk-list govuk-list--number" start="12">
-                <li>
-                  <a href="/example-2/check-your-answers">Check your answers</a>
-                </li>
-                <li>
-                  <a href="/example-2/confirmation">Confirmation</a>
-                </li>
-              </ol>
-            </details>
+        <ol class="govuk-list govuk-list--number" start="12">
+          <li>
+            <a href="/example-2/check-your-answers">Check your answers</a>
+          </li>
+          <li>
+            <a href="/example-2/confirmation">Confirmation</a>
+          </li>
+        </ol>
+    </details>
 
-          </div>
-        </div>
+  </div>
+</div>
 
-      {% endblock %}
+{% endblock %}

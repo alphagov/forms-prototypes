@@ -45,7 +45,7 @@
 {% endblock %}
 
 {% block beforeContent %}
-  <a class="govuk-back-link" href="form-home">Back to your forms</a>
+  <a class="govuk-back-link" href="your-forms">Back to your forms</a>
 {% endblock %}
 
 {% block content %}
@@ -98,7 +98,7 @@
             {% if data['status'] === 'Draft' %}
             <li class="app-task-list__item">
               <span class="app-task-list__task-name">
-                <a href="form-create-a-form" aria-describedby="name-of-form-status">
+                <a href="name-your-form" aria-describedby="name-of-form-status">
                   Edit the name of your form
                 </a>
               </span>
@@ -107,7 +107,7 @@
             {% endif %}
             <li class="app-task-list__item">
               <span class="app-task-list__task-name">
-                <a href="{% if data['status'] === 'Live' %}are-you-sure-you-want-to-edit-live-questions{% else %}form-index{% endif %}" aria-describedby="add-questions-status">
+                <a href="{% if data['status'] === 'Live' %}are-you-sure-you-want-to-edit-live-questions{% else %}your-questions{% endif %}" aria-describedby="add-questions-status">
                   Add and edit your questions
                 </a>
               </span>
@@ -117,7 +117,7 @@
             </li>
             <li class="app-task-list__item">
               <span class="app-task-list__task-name">
-                <a href="edit-page/check-answers" aria-describedby="add-declaration-status">
+                <a href="pages/check-answers/edit" aria-describedby="add-declaration-status">
                   Add a declaration for people to agree to
                 </a>
               </span>
@@ -126,7 +126,7 @@
             </li>
             <li class="app-task-list__item">
               <span class="app-task-list__task-name">
-                <a href="edit-page/confirmation" aria-describedby="add-what-happens-next-status">
+                <a href="pages/confirmation/edit" aria-describedby="add-what-happens-next-status">
                   Add information about what happens next
                 </a>
               </span>
@@ -224,7 +224,7 @@
 
       {% if data.pages.length %}
       <p class="govuk-body govuk-!-margin-bottom-9">
-        <a class="govuk-link" href="/form-designer/page-preview-new-tab/1" target="_blank" rel="noopener noreferrer">
+        <a class="govuk-link" href="/form-designer/preview/0" target="_blank" rel="noopener noreferrer">
           Preview this form in a new tab
         </a>
       </p>

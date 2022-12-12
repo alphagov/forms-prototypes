@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block beforeContent %}
-  <a class="govuk-back-link" href="page-preview-new-tab/{{data['highestPageId']}}">Back</a>
+  <a class="govuk-back-link" href="{{data['pages'] | length - 1}}">Back</a>
 {% endblock %}
 
 {% block content %}
@@ -31,39 +31,39 @@
           <!--Q{{page["pageIndex"] | int + 1}}.--> {{questionTitle}}
         </dt>
         <dd class="govuk-summary-list__value">
-          {% if (data[loop.index]) or (data[loop.index + '-year']) or (data[loop.index + '-address-street-address']) or (data[loop.index + '-address-line-1']) or (data[loop.index + '-address-postcode']) or (data[loop.index + '-full-name']) or (data[loop.index + '-first-name']) %}
+          {% if (data[loop.index0]) or (data[loop.index0 + '-year']) or (data[loop.index0 + '-address-street-address']) or (data[loop.index0 + '-address-line-1']) or (data[loop.index0 + '-address-postcode']) or (data[loop.index0 + '-full-name']) or (data[loop.index0 + '-first-name']) %}
             {% if page['type'] == 'personName' %}
-              {% if (page['title'] === 'yes') and (data[loop.index + '-name-title']) %}{{data[loop.index + '-name-title']}}{% endif %}
+              {% if (page['title'] === 'yes') and (data[loop.index0 + '-name-title']) %}{{data[loop.index0 + '-name-title']}}{% endif %}
               {% if page['input'] === 'single-field' %}
-                {{data[loop.index + '-full-name']}}
+                {{data[loop.index0 + '-full-name']}}
               {% else %}
-                {{data[loop.index + '-first-name']}}
-                {% if data[loop.index + '-middle-names'] %}{{data[loop.index + '-middle-names']}}{% endif %}
-                {{data[loop.index + '-last-name']}}
+                {{data[loop.index0 + '-first-name']}}
+                {% if data[loop.index0 + '-middle-names'] %}{{data[loop.index0 + '-middle-names']}}{% endif %}
+                {{data[loop.index0 + '-last-name']}}
               {% endif %}
             {% elif page['type'] == 'date' -%}
-              {% if (data[loop.index + '-day']) %}{{data[loop.index + '-day']}}/{% endif %}{% if (data[loop.index + '-month']) %}{{data[loop.index + '-month']}}{% if (data[loop.index + '-year']) %}/{% endif %}{% endif %}{% if (data[loop.index + '-year']) %}{{data[loop.index + '-year']}}{% endif %}
+              {% if (data[loop.index0 + '-day']) %}{{data[loop.index0 + '-day']}}/{% endif %}{% if (data[loop.index0 + '-month']) %}{{data[loop.index0 + '-month']}}{% if (data[loop.index0 + '-year']) %}/{% endif %}{% endif %}{% if (data[loop.index0 + '-year']) %}{{data[loop.index0 + '-year']}}{% endif %}
             {%- elif page['type'] == 'address' %}
               {% if ('uk-address' in page['input']) and not ('international-address' in page['input']) %}
-                {{data[loop.index + '-address-line-1']}}<br>
-                {% if data[loop.index + '-address-line-2'] %}{{data[loop.index + '-address-line-2']}}<br>{% endif %}
-                {{data[loop.index + '-address-town']}}<br>
-                {{data[loop.index + '-address-postcode']}}
+                {{data[loop.index0 + '-address-line-1']}}<br>
+                {% if data[loop.index0 + '-address-line-2'] %}{{data[loop.index0 + '-address-line-2']}}<br>{% endif %}
+                {{data[loop.index0 + '-address-town']}}<br>
+                {{data[loop.index0 + '-address-postcode']}}
               {% else %}
-                {{data[loop.index + '-address-street-address'] | replace(",","") | replace(".","") | nl2br | safe}}<br>
-                {% if data[loop.index + '-address-country-name'] %}{{data[loop.index + '-address-country-name']}}{% endif %}
+                {{data[loop.index0 + '-address-street-address'] | replace(",","") | replace(".","") | nl2br | safe}}<br>
+                {% if data[loop.index0 + '-address-country-name'] %}{{data[loop.index0 + '-address-country-name']}}{% endif %}
               {% endif %}
             {% elif page['type'] == 'select' and not page['oneOption'] %}
-              {{data[loop.index]|join(", ") if data[loop.index]}}
+              {{data[loop.index0]|join(", ") if data[loop.index0]}}
             {% else %}
-              {{data[loop.index]}}
+              {{data[loop.index0]}}
             {% endif %}
           {% else %}
             Not completed
           {% endif %}
         </dd>
           <dd class="govuk-summary-list__actions">
-              <a class="govuk-link govuk-link--no-visited-state" href="page-preview-new-tab/{{loop.index}}">
+              <a class="govuk-link govuk-link--no-visited-state" href="{{loop.index0}}?cya=true">
                 Change <span class="govuk-visually-hidden">{{questionTitle}}<span>
               </a>
           </dd>
@@ -92,7 +92,7 @@
     {% endif %}
     {{ govukButton({
       text: buttonText,
-      href: "confirmation-page-preview-new-tab",
+      href: "confirmation",
       attributes: {
         target: "_parent"
       }

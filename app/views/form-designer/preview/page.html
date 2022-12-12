@@ -8,7 +8,9 @@
 
 {% block beforeContent %}
   {% set prevPageId = pageId | int - 1 %}
-  {% if prevPageId > 0 %}
+  {% if data.cya %}
+    <a class="govuk-back-link" href="check-answers">Back</a>
+  {% elif prevPageId >= 0 %}
     <a class="govuk-back-link" href="{{prevPageId}}">Back</a>
   {% endif %}
 {% endblock %}
@@ -24,7 +26,7 @@
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <form class="form" action='{{formAction}}' method="post" novalidate>
+      <form class="form" method="post" novalidate>
 
         {#
 

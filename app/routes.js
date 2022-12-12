@@ -49,402 +49,13 @@ router.use('/form-designer/*', function (req, res, next) {
   next();
 })
 
-router.get('/form-designer/edit-answer-type/:pageId', function (req, res) {
-  var action = req.session.data.action
-  // clear the action so it doesn't change the next page load
-  req.session.data.action = undefined
-
-  var pageId = req.params.pageId
-  var pageIndex = parseInt(pageId) - 1
-  var pageData = req.session.data.pages[pageIndex]
-
-  // Update the 'Highest page Id'
-  req.session.data.highestPageId = req.session.data.pages.length
-
-  if (!pageData) {
-    req.session.data.pages.push({
-      'pageIndex': pageIndex
-    })
-  }
-
-  if (action == 'editPage') {
-
-    if (req.session.data.type) {
-      pageData['type'] = req.session.data.type
-    }
-    req.session.data.type = undefined
-    if (pageData['type'] === 'personName') {
-      // person's name route
-      res.redirect('/form-designer/settings/' + pageId)
-    } else if (pageData['type'] === 'address') {
-      // address route
-      res.redirect('/form-designer/settings/' + pageId)
-    } else if (pageData['type'] === 'date') {
-      // date route
-      res.redirect('/form-designer/settings/' + pageId)
-    } else if (pageData['type'] === 'select') {
-      // selection from a list route
-      res.redirect('/form-designer/settings/' + pageId)
-    } else if (pageData['type'] === 'text') {
-      // text route
-      res.redirect('/form-designer/settings/' + pageId)
-    } else {
-      res.redirect('/form-designer/edit-page/' + pageId)
-    }
-  } else {
-    res.render('form-designer/edit-answer-type', {
-      pageId: pageId,
-      pageIndex: pageIndex,
-      pageData: pageData,
-      editingExistingQuestion: req.session.data.pages[pageIndex] !== undefined
-    })
-  }
-})
-
-router.get('/form-designer/settings/:pageId', function (req, res) {
-  var action = req.session.data.action
-  var pageId = req.params.pageId
-  var enableMultipleChoiceAnswerType =
-    process.env.ENABLE_MULTIPLE_CHOICE_ANSWER_TYPE === 'true'
-
-  // If user pressed the 'Update preview' button or back link...
-  var pageIndex = parseInt(pageId) - 1
-  var pageData = req.session.data.pages[pageIndex]
-
-  // Update the 'Highest page Id'
-  // req.session.data.highestPageId = req.session.data.pages.length
-
-  if (req.session.data.input) {
-    pageData['input'] = req.session.data.input
-  }
-  req.session.data.input = undefined
-  if (req.session.data.title) {
-    pageData['title'] = req.session.data.title
-  }
-  req.session.data.title = undefined
-
-  if (req.session.data['item-list']) {
-    var itemList = req.session.data['item-list']
-    var lastItem = itemList.length - 1
-    if (itemList[lastItem] === '') {
-      itemList.pop()
-    }
-    pageData['item-list'] = itemList
-    pageData['oneOption'] = req.session.data['oneOption']
-  }
-  req.session.data['item-list'] = undefined
-  req.session.data.oneOption = undefined
-
-  if (action === 'addAnother') {
-
-    if (itemList[lastItem]) {
-      itemList.push("")
-    }
-
-    // reset the action to avoid a loop
-    req.session.data.action = undefined
-
-    res.render('form-designer/settings', {
-      pageId: pageId,
-      pageIndex: pageIndex,
-      pageData: pageData,
-      editingExistingQuestion: req.session.data.pages[pageIndex] !== undefined
-    })
-  } else if (action.includes('removeOption')) {
-    var remove = req.session.data.action.split("-")
-    var itemToRemove = remove.pop()
-
-    if (itemToRemove > -1) { // only splice array when item is found
-      if (itemList.length <= 2) {
-        itemList.push("")
-      }
-      itemList.splice(itemToRemove, 1); // 2nd parameter means remove one item only
-    }
-
-    // reset the action to avoid a loop
-    req.session.data.action = undefined
-
-    res.render('form-designer/settings', {
-      pageId: pageId,
-      pageIndex: pageIndex,
-      typeData: req.session.data.pages.type,
-      pageData: pageData,
-      editingExistingQuestion: req.session.data.pages[pageIndex] !== undefined,
-      enableMultipleChoiceAnswerType
-    })
-
-  } else if (action == 'editPage') {
-    req.session.data.action = undefined
-    res.redirect('/form-designer/edit-page/' + pageId)
-  } else {
-    req.session.data.action = undefined
-    res.render('form-designer/settings', {
-      pageId: pageId,
-      pageIndex: pageIndex,
-      pageData: pageData,
-      editingExistingQuestion: req.session.data.pages[pageIndex] !== undefined
-    })
-  }
-})
-
-// Renders the page editor, set to a specific page
-router.get('/form-designer/edit-page/:pageId', function (req, res) {
-  var action = req.session.data.action
-  // clear the action so it doesn't change the next page load
-  req.session.data.action = undefined
-
-  var pageId = req.params.pageId
-  var editNextPageId = parseInt(pageId) + 1
-  var enableMultipleChoiceAnswerType =
-    process.env.ENABLE_MULTIPLE_CHOICE_ANSWER_TYPE === 'true'
-
-  // Update the 'Highest page Id'
-  // req.session.data.highestPageId = req.session.data.pages.length
-  var createNextPageId = parseInt(req.session.data.highestPageId) + 1
-
-  var pageIndex = parseInt(pageId) - 1
-  var pageData = req.session.data.pages[pageIndex]
-
-  const errors = {};
-  const title = req.session.data['long-title']
-  if (!title || !title.length) {
-    errors['long-title'] = {
-      text: 'Enter question text',
-      href: "#long-title"
-    }
-  } else {
-    pageData['long-title'] = req.session.data['long-title']
-  }
-  req.session.data['long-title'] = undefined
-
-  if (req.session.data['hint-text']) {
-    pageData['hint-text'] = req.session.data['hint-text']
-  }
-  req.session.data['hint-text'] = undefined
-
-  if (req.session.data['questionOptional']) {
-    pageData['questionOptional'] = req.session.data['questionOptional']
-  }
-  req.session.data['questionOptional'] = undefined
-
-  if (pageData) {
-    if (pageData['type'] !== 'personName') {
-      pageData['title'] = undefined
-    }
-    if (pageData['type'] !== 'select') {
-      pageData['item-list'] = undefined
-      pageData['oneOption'] = undefined
-    }
-    if ((pageData['type'] !== 'address') && (pageData['type'] !== 'personName') && (pageData['type'] !== 'date') && (pageData['type'] !== 'text')) {
-      pageData['input'] = undefined
-    }
-  }
-
-  // Edit declaration page errors
-  if (pageId == 'check-answers') {
-    const errors = {};
-    const { isDeclarationComplete } = req.session.data
-
-    // Confirm if task is completed or not on declaration page
-    if (!isDeclarationComplete || !isDeclarationComplete.length) {
-      errors['isDeclarationComplete'] = {
-        text: 'Select no if you want to complete this section later',
-        href: "#isDeclarationComplete"
-      }
-    }
-
-    // Convert the errors into a list, so we can use it in the template
-    const errorList = Object.values(errors)
-    // If there are no errors, redirect the user to the next page
-    // otherwise, show the page again with the errors set
-    const containsErrors = errorList.length > 0
-    if(containsErrors && action !== 'gogogo' && action !== '') {
-      res.render('form-designer/edit-check-answers-page', { errors, errorList, containsErrors })
-    } else if(action == 'continue') {
-      res.redirect('/form-designer/create-form')
-    } else {
-      res.render('form-designer/edit-check-answers-page')
-    }
-
-    // If user is updating the confirmation page...
-  } else if (pageId == 'confirmation') {
-    const errors = {};
-    const { confirmationNext } = req.session.data
-
-    // If the formsEmail is blank, create an error to be displayed to the user
-    if (!confirmationNext?.length) {
-      errors.confirmationNext = {
-        text: 'Enter what happens next',
-        href: "#confirmationNext"
-      }
-    }
-
-    // Convert the errors into a list, so we can use it in the template
-    const errorList = Object.values(errors)
-    // If there are no errors, redirect the user to the next page
-    // otherwise, show the page again with the errors set
-    const containsErrors = errorList.length > 0
-    if(containsErrors && action !== 'gogogo' && action !== '') {
-      res.render('form-designer/edit-confirmation-page', { errors, errorList, containsErrors })
-    } else if(action == 'continue') {
-      res.redirect('/form-designer/create-form')
-    } else {
-      res.render('form-designer/edit-confirmation-page')
-    }
-
-    // If user pressed the 'Create next question' button...
-  } else if (action == 'createNextPage') {
-    res.redirect('/form-designer/choose-page-type/' + createNextPageId)
-
-    // If user pressed the 'Edit next question' button...
-  } else if (action == 'editNextPage') {
-    res.redirect('/form-designer/edit-page/' + editNextPageId)
-
-    // If user pressed the 'Delete question' button...
-  } else if (action === 'deletePage') {
-    return res.redirect(`/form-designer/delete/${pageId}`)
-
-    // If user pressed the 'Update preview' button or back link...
-  } else {
-    var pageIndex = parseInt(pageId) - 1
-    var pageData = req.session.data.pages[pageIndex]
-
-    res.render('form-designer/edit-page', {
-      pageId: pageId,
-      pageIndex: pageIndex,
-      typeData: req.session.data.pages.type,
-      pageData: pageData,
-      editingExistingQuestion: req.session.data.pages[pageIndex] !== undefined,
-      enableMultipleChoiceAnswerType
-    })
-  }
-})
-
-
-
-// If user is marking questions as complete...
-router.get('/form-designer/question-list', function (req, res) {
-  const errors = {};
-  const { isQuestionsComplete } = req.session.data
-
-  // If the formsEmail is blank, create an error to be displayed to the user
-  if (!isQuestionsComplete?.length) {
-    errors.isQuestionsComplete = {
-      text: 'Select ‘Yes’ if you are finished adding and editing your questions',
-      href: "#isQuestionsComplete"
-    }
-  }
-
-  // Convert the errors into a list, so we can use it in the template
-  const errorList = Object.values(errors)
-  // If there are no errors, redirect the user to the next page
-  // otherwise, show the page again with the errors set
-  const containsErrors = errorList.length > 0
-  if(containsErrors) {
-    // Reset the state so they can be reused
-    req.session.data.action = undefined
-    res.render('form-designer/form-index', { errors, errorList, containsErrors })
-  } else {
-    // Reset the state so they can be reused
-    req.session.data.action = undefined
-    res.redirect('/form-designer/create-form')
-  }
-})
-
-// Route used to delete question
-router.get('/form-designer/delete/:pageId/', function (req, res) {
-  const { action } = req.session.data
-  const pageIndex = parseInt(req.params.pageId, 10) - 1
-  const pageData = req.session.data.pages[pageIndex]
-
-  if(!(pageIndex in req.session.data.pages)) {
-    throw Error('Page not found');
-  }
-
-  if(action === 'delete' && req.session.data.delete === 'Yes') {
-    // Create an array of pages without the one we want to remove
-    const pages = req.session.data.pages
-      .filter(element => parseInt(element.pageIndex, 10) !== pageIndex)
-      .map(setPageIndexToArrayPosition)
-
-    // Save the pages
-    req.session.data.pages = pages
-    // Update the highestPageId so when user creates a new question after
-    // deleting the right id is used
-    req.session.data.highestPageId = req.session.data.pages.length
-
-    // Reset the state so they can be reused
-    req.session.data.action = undefined
-    req.session.data.delete = undefined
-    return res.redirect('/form-designer/form-index')
-  } else if(action === 'delete' && req.session.data.delete === 'No') {
-    // Reset the state so they can be reused
-    req.session.data.action = undefined
-    req.session.data.delete = undefined
-    return res.redirect(`/form-designer/edit-page/${pageIndex + 1}`)
-  } else {
-
-    res.render('form-designer/delete.html', {
-      pageData
-    })
-  }
-})
-
-
-// Route used by the reordering buttons in form-index.html
-router.get('/form-designer/reorder-page/:pageId/:direction', function (req, res) {
-  const { pageId, direction } = req.params
-  const newArrayPosition = direction === 'down' ? pageId : pageId - 2
-  const { pages } = req.session.data
-
-  const pageToMove = pages.splice(pageId - 1, 1)[0]
-  pages.splice(newArrayPosition, 0, pageToMove)
-
-  req.session.data.pages = pages.map(setPageIndexToArrayPosition)
-
-  res.redirect('/form-designer/form-index')
-})
-
-// Renders the page type chooser, set to a specific page
-router.get('/form-designer/choose-page-type/:pageId', function (req, res) {
-  req.session.data.action = undefined
-  res.redirect(`/form-designer/edit-answer-type/${req.params.pageId}`)
-})
-
-// Renders the in-page preview, set to a specific page
-router.get('/form-designer/page-preview/:pageId', function (req, res) {
-  req.session.data.action = undefined
-  var pageId = req.params.pageId
-  var pageIndex = parseInt(pageId) - 1
-  var pageData = req.session.data.pages[pageIndex]
-
-  res.render('form-designer/page-preview', {
-    pageId: pageId,
-    pageIndex: pageIndex,
-    pageData: pageData
-  })
-})
-
-// Renders the new-tab page preview, set to a specific page
-router.get('/form-designer/page-preview-new-tab/:pageId', function (req, res) {
-  req.session.data.action = undefined
-  var pageId = req.params.pageId
-  var pageIndex = parseInt(pageId) - 1
-  var pageData = req.session.data.pages[pageIndex]
-
-  res.render('form-designer/page-preview-new-tab', {
-    pageId: pageId,
-    pageIndex: pageIndex,
-    pageData: pageData
-  })
-})
-
-// Renders the page which asks for form name, handling validation errors
-router.post('/form-designer/form-create-a-form', function (req, res) {
-  const errors = {};
+/* ==== Create a new form ==== */
+// Edit form name, handling validation errors
+router.post('/form-designer/name-your-form', function (req, res) {
   const { formTitle } = req.session.data
 
-  // If the formTitle is blank, create an error to be displayed to the user
+  const errors = {};
+  // if the formTitle is blank, then error
   if (!formTitle || !formTitle.length) {
     errors['formTitle'] = {
       text: 'Enter a form name',
@@ -458,25 +69,573 @@ router.post('/form-designer/form-create-a-form', function (req, res) {
   // otherwise, show the page again with the errors set
   const containsErrors = errorList.length > 0
   if(containsErrors) {
-    res.render('form-designer/form-create-a-form', { errors, errorList, containsErrors })
+    res.render('form-designer/name-your-form', { errors, errorList, containsErrors })
   } else {
-    res.redirect('create-form')
+    res.redirect('your-form')
   }
 })
 
+/* ==== Adding pages to a form ==== */
+// Create a new page
+router.get('/form-designer/pages/new', function (req, res) {
+  var pageId = parseInt(req.params.pageId, 10)
+  var pageIndex = pageId
+  var pageData = req.session.data.pages[pageIndex]
+
+  const nextPageId = req.session.data.pages.length
+
+  if (!pageData) {
+    req.session.data.pages.push({
+      'pageIndex': nextPageId
+    })
+  }
+
+  res.redirect(`/form-designer/pages/${nextPageId}/edit-answer-type`)
+})
+
+// Edit a user-created answer type
+router.get('/form-designer/pages/:pageId(\\d+)/edit-answer-type', function (req, res) {
+  var pageId = parseInt(req.params.pageId, 10)
+  var pageIndex = pageId
+  var pageData = req.session.data.pages[pageIndex]
+  return res.render('form-designer/pages/edit-answer-type', {
+    pageId: pageId,
+    pageIndex: pageIndex,
+    pageData: pageData
+  })
+})
+
+// Route used to find correct next step - answer type > settings page || edit question page
+router.post('/form-designer/pages/:pageId(\\d+)/edit-answer-type', function (req, res) {
+  var pageId = parseInt(req.params.pageId, 10)
+  var pageIndex = pageId
+  var pageData = req.session.data.pages[pageIndex]
+
+  const type = req.session.data.type
+  req.session.data.type = undefined
+
+  const errors = {};
+  const complete = req.session.data.isDeclarationComplete
+
+  // if no selection made, then throw an error
+  if (!type || !type.length) {
+    errors['type'] = {
+      text: 'Select type of answer you will need',
+      href: "#type"
+    }
+  } else {
+    pageData['type'] = type
+  }
+
+  // Convert the errors into a list, so we can use it in the template
+  const errorList = Object.values(errors)
+  // If there are no errors, redirect the user to the next page
+  // otherwise, show the page again with the errors set
+  const containsErrors = errorList.length > 0
+  // If there are errors on the page, redisplay it with the errors
+  if(containsErrors) {
+    return res.render('form-designer/pages/edit-answer-type', {
+      pageId: pageId,
+      pageIndex: pageIndex,
+      pageData: pageData,
+      errors,
+      errorList,
+      containsErrors
+    })
+  } else if (type === 'personName') {
+    // person's name route
+    return res.redirect('edit-settings')
+  } else if (type === 'address') {
+    // address route
+    return res.redirect('edit-settings')
+  } else if (type === 'date') {
+    // date route
+    return res.redirect('edit-settings')
+  } else if (type === 'select') {
+    // selection from a list route
+    return res.redirect('edit-settings')
+  } else if (type === 'text') {
+    // text route
+    return res.redirect('edit-settings')
+  } else {
+    return res.redirect('edit')
+  }
+})
+
+// Edit a user-created answer type settings
+router.get('/form-designer/pages/:pageId(\\d+)/edit-settings', function (req, res) {
+  var pageId = parseInt(req.params.pageId, 10)
+  var pageIndex = pageId
+  var pageData = req.session.data.pages[pageIndex]
+  return res.render('form-designer/pages/edit-settings', {
+    pageId: pageId,
+    pageIndex: pageIndex,
+    pageData: pageData,
+    editingExistingQuestion: req.session.data.pages[pageIndex] !== undefined
+  })
+})
+
+// Route used to find correct next step - settings page > edit question page
+router.post('/form-designer/pages/:pageId(\\d+)/edit-settings', function (req, res) {
+  var action = req.session.data.action
+  // clear the action so it doesn't change the next page load
+  req.session.data.action = undefined
+
+  var pageId = parseInt(req.params.pageId, 10)
+  var pageIndex = pageId
+  var pageData = req.session.data.pages[pageIndex]
+
+  // Get basic errors
+  const errors = {};
+  // if no input is selected throw error, else add input to pageData
+  if (pageData['type'] === 'personName' || pageData['type'] === 'address' || pageData['type'] === 'date' || pageData['type'] === 'text') {
+    if (!req.session.data.input || !req.session.data.input.length) {
+      errors['input'] = {
+        text: 'Select an input type',
+        href: "#input"
+      }
+    } else {
+      pageData['input'] = req.session.data.input
+    }
+  }
+  req.session.data.input = undefined
+
+  // if asking for person’s name and title answer not selected throw error, else add input to pageData
+  if (pageData['type'] === 'personName') {
+    if (!req.session.data.title || !req.session.data.title.length) {
+      errors['title'] = {
+        text: 'Select ‘Yes’ if you need a title',
+        href: "#title"
+      }
+    } else {
+      pageData['title'] = req.session.data.title
+    }
+  }
+  req.session.data.title = undefined
+
+  // if select option from list and no, or 1, input is given throw error, else add input to pageData
+  var itemList = req.session.data['item-list']
+  const oneOption = req.session.data.oneOption
+
+  req.session.data['item-list'] = undefined
+  req.session.data.oneOption = undefined
+
+  if (pageData['type'] === 'select') {
+    const lastItem = itemList.length - 1
+    // check for empty values
+    const tempList = itemList.filter(element => {
+      if (Object.keys(element).length !== 0) {
+        return true
+      }
+      return false
+    })
+    itemList = tempList
+    if (!itemList.length) {
+      errors['item-list'] = {
+        text: 'Enter some options',
+        href: "#option-0"
+      }
+    } else if (itemList.length < 2) {
+      errors['item-list'] = {
+        text: 'Enter at least two options',
+        href: "#option-0"
+      }
+    }
+    pageData['item-list'] = itemList
+    pageData['oneOption'] = oneOption
+  }
+
+  // Convert the errors into a list, so we can use it in the template
+  const errorList = Object.values(errors)
+  // If there are no errors, redirect the user to the next page
+  // otherwise, show the page again with the errors set
+  const containsErrors = errorList.length > 0
+  // If there are errors on the page, redisplay it with the errors
+  if(containsErrors) {
+    return res.render('form-designer/pages/edit-settings', {
+      pageId: pageId,
+      pageIndex: pageIndex,
+      pageData: pageData,
+      editingExistingQuestion: req.session.data.pages[pageIndex] !== undefined,
+      errors,
+      errorList,
+      containsErrors
+    })
+  } else if (action === 'addAnother') {
+    const lastItem = itemList.length - 1
+    if (itemList[lastItem]) {
+      itemList.push("")
+    }
+    return res.render('form-designer/pages/edit-settings', {
+      pageId: pageId,
+      pageIndex: pageIndex,
+      pageData: pageData
+    })
+  } else if (action.includes('removeOption')) {
+    // get item position to remove via remove button value
+    var remove = action.split("-")
+    var itemToRemove = remove.pop()
+    // only splice array when item is found
+    if (itemToRemove > -1) {
+      // if options are now less than 2 add an empty option input
+      if (itemList.length <= 2) {
+        itemList.push("")
+      }
+      // 2nd parameter means remove one item only
+      itemList.splice(itemToRemove, 1)
+    }
+    return res.render('form-designer/pages/edit-settings', {
+      pageId: pageId,
+      pageIndex: pageIndex,
+      pageData: pageData
+    })
+  } else {
+    return res.redirect('edit')
+  }
+})
+
+// Edit a user-created question
+router.get('/form-designer/pages/:pageId(\\d+)/edit', function (req, res) {
+  var pageId = parseInt(req.params.pageId, 10)
+  var pageIndex = pageId
+  var pageData = req.session.data.pages[pageIndex]
+  return res.render('form-designer/pages/edit', {
+    pageId: pageId,
+    pageIndex: pageIndex,
+    pageData: pageData,
+    editingExistingQuestion: req.session.data.pages[pageIndex] !== undefined
+  })
+})
+
+// Route used to find correct next step - edit question page > answer type
+router.post('/form-designer/pages/:pageId(\\d+)/edit', function (req, res) {
+  var action = req.session.data.action
+  // clear the action so it doesn't change the next page load
+  req.session.data.action = undefined
+
+  var pageId = parseInt(req.params.pageId, 10)
+  var pageIndex = pageId
+  var pageData = req.session.data.pages[pageIndex]
+
+  var editNextPageId = pageId + 1
+  // No need to validate if the user wants to delete this page anyway
+  if (action === 'deletePage') {
+    return res.redirect(`delete`)
+  }
+
+  const errors = {};
+  const title = req.session.data['long-title']
+
+  // if no question text given, then throw an error
+  if (!title || !title.length) {
+    errors['long-title'] = {
+      text: 'Enter question text',
+      href: "#long-title"
+    }
+  // otherwise add question text to pageData
+  } else {
+    pageData['long-title'] = req.session.data['long-title']
+  }
+  req.session.data['long-title'] = undefined
+
+  // if hint text is added, add it to pageData
+  if (req.session.data['hint-text']) {
+    pageData['hint-text'] = req.session.data['hint-text']
+  }
+  req.session.data['hint-text'] = undefined
+
+  // if question is made optional, add it to pageData
+  if (req.session.data['questionOptional']) {
+    pageData['questionOptional'] = req.session.data['questionOptional']
+  }
+  req.session.data['questionOptional'] = undefined
+
+  // if pageData exists, clear out any unused selections to reduce errors
+  if (pageData) {
+    // if type is NOT person’s name, remove title from pageData
+    if (pageData['type'] !== 'personName') {
+      pageData['title'] = undefined
+    }
+    // if type is NOT select from a list, remove options list and single option selection from pageData
+    if (pageData['type'] !== 'select') {
+      pageData['item-list'] = undefined
+      pageData['oneOption'] = undefined
+    }
+    // if type does NOT have settings page, remove input from pageData
+    if ((pageData['type'] !== 'address') && (pageData['type'] !== 'personName') && (pageData['type'] !== 'date') && (pageData['type'] !== 'text')) {
+      pageData['input'] = undefined
+    }
+  }
+
+  // Convert the errors into a list, so we can use it in the template
+  const errorList = Object.values(errors)
+  // If there are no errors, redirect the user to the next page
+  // otherwise, show the page again with the errors set
+  const containsErrors = errorList.length > 0
+  // If there are errors on the page, redisplay it with the errors
+  if(containsErrors) {
+    return res.render('form-designer/pages/edit', {
+      pageId: pageId,
+      pageIndex: pageIndex,
+      pageData: pageData,
+      editingExistingQuestion: req.session.data.pages[pageIndex] !== undefined,
+      errors,
+      errorList,
+      containsErrors
+    })
+  } else if (action == 'createNextPage') {
+    return res.redirect(`/form-designer/pages/new`)
+  } else if (action == 'editNextPage') {
+    return res.redirect(`/form-designer/pages/${editNextPageId}/edit`)
+  } else {
+    return res.redirect(req.path)
+  }
+})
+
+/* ==== Managing questions in a form ==== */
+// Route used to delete question
+router.post('/form-designer/pages/:pageId/delete', function (req, res) {
+  const { action } = req.session.data
+  const pageIndex = parseInt(req.params.pageId, 10)
+  const shouldDelete = req.session.data.delete
+  req.session.data.action = undefined
+  req.session.data.delete = undefined
+
+  if(!(pageIndex in req.session.data.pages)) {
+    throw Error('Page not found');
+  }
+
+  if(action === 'delete' && shouldDelete === 'Yes') {
+    // Create an array of pages without the one we want to remove
+    const pages = req.session.data.pages
+      .filter(element => parseInt(element.pageIndex, 10) !== pageIndex)
+      .map(setPageIndexToArrayPosition)
+
+    // Save the pages
+    req.session.data.pages = pages
+    return res.redirect('/form-designer/your-questions')
+  } else if(action === 'delete' && shouldDelete  === 'No') {
+    return res.redirect(`/form-designer/pages/${pageIndex}/edit`)
+  } else {
+    return res.redirect(req.path)
+  }
+})
+
+// Delete user selected question
+router.get('/form-designer/pages/:pageId/delete', function (req, res) {
+  const pageIndex = parseInt(req.params.pageId, 10)
+  const pageData = req.session.data.pages[pageIndex]
+
+  if(!(pageIndex in req.session.data.pages)) {
+    throw Error('Page not found');
+  }
+
+  res.render('form-designer/pages/delete.html', {
+    pageData
+  })
+})
+
+// Route used by the reordering buttons in your-questions.html
+router.get('/form-designer/pages/:pageId/reorder/:direction', function (req, res) {
+  const { pageId, direction } = req.params
+  const newArrayPosition = direction === 'down' ? pageId : pageId - 2
+  const { pages } = req.session.data
+
+  const pageToMove = pages.splice(pageId - 1, 1)[0]
+  pages.splice(newArrayPosition, 0, pageToMove)
+
+  req.session.data.pages = pages.map(setPageIndexToArrayPosition)
+
+  res.redirect('/form-designer/your-questions')
+})
+
+// Route for user marking questions as complete
+router.get('/form-designer/question-list', function (req, res) {
+  const { isQuestionsComplete } = req.session.data
+
+  const errors = {}
+  // if no option is selected, then error
+  if (!isQuestionsComplete?.length) {
+    errors.isQuestionsComplete = {
+      text: 'Select ‘Yes’ if you are finished adding and editing your questions',
+      href: "#isQuestionsComplete"
+    }
+  }
+
+  // Convert the errors into a list, so we can use it in the template
+  const errorList = Object.values(errors)
+  // If there are no errors, redirect the user to the next page
+  // otherwise, show the page again with the errors set
+  const containsErrors = errorList.length > 0
+  if(containsErrors) {
+    res.render('form-designer/your-questions', { errors, errorList, containsErrors })
+  } else {
+    res.redirect('/form-designer/your-form')
+  }
+})
+
+
+/* ==== Managing additional pages in a form ==== */
+// Route used to check Declaration is complete - Check your answers (CYA)
+router.post('/form-designer/pages/check-answers/edit', function (req, res) {
+  const action = req.session.data.action
+  req.session.data.action = undefined
+
+  var pageId = parseInt(req.params.pageId, 10)
+  var pageIndex = pageId
+  var pageData = req.session.data.pages[pageIndex]
+
+  const errors = {};
+  const complete = req.session.data.isDeclarationComplete
+
+  // if no selection made, then throw an error
+  if (!complete || !complete.length) {
+    errors['isDeclarationComplete'] = {
+      text: 'Select ‘Yes’ if you are finished editing your declaration',
+      href: "#isDeclarationComplete"
+    }
+  }
+
+  // Convert the errors into a list, so we can use it in the template
+  const errorList = Object.values(errors)
+  // If there are no errors, redirect the user to the next page
+  // otherwise, show the page again with the errors set
+  const containsErrors = errorList.length > 0
+  // If there are errors on the page, redisplay it with the errors
+  if(containsErrors) {
+    return res.render('form-designer/pages/check-answers/edit', {
+      pageId: pageId,
+      pageIndex: pageIndex,
+      pageData: pageData,
+      errors,
+      errorList,
+      containsErrors
+    })
+  } else if (action === 'update') {
+    return res.render('form-designer/pages/check-answers/edit', {
+      pageId: pageId,
+      pageIndex: pageIndex,
+      pageData: pageData
+    })
+  } else {
+    return res.redirect('../../your-form')
+  }
+})
+
+// Route used to check What happens next (WHN) content has been added
+router.post('/form-designer/pages/confirmation/edit', function (req, res) {
+  const action = req.session.data.action
+  req.session.data.action = undefined
+
+  var pageId = parseInt(req.params.pageId, 10)
+  var pageIndex = pageId
+  var pageData = req.session.data.pages[pageIndex]
+
+  const errors = {};
+  const whatHappensNext = req.session.data.confirmationNext
+
+  // if no selection made, then throw an error
+  if (!whatHappensNext || !whatHappensNext.length) {
+    errors['confirmationNext'] = {
+      text: 'Enter information about what will happen next',
+      href: "#confirmationNext"
+    }
+  }
+
+  // Convert the errors into a list, so we can use it in the template
+  const errorList = Object.values(errors)
+  // If there are no errors, redirect the user to the next page
+  // otherwise, show the page again with the errors set
+  const containsErrors = errorList.length > 0
+  // If there are errors on the page, redisplay it with the errors
+  if(containsErrors) {
+    return res.render('form-designer/pages/confirmation/edit', {
+      pageId: pageId,
+      pageIndex: pageIndex,
+      pageData: pageData,
+      editingExistingQuestion: req.session.data.pages[pageIndex] !== undefined,
+      errors,
+      errorList,
+      containsErrors
+    })
+  } else if (action === 'update') {
+    return res.render('form-designer/pages/confirmation/edit', {
+      pageId: pageId,
+      pageIndex: pageIndex,
+      pageData: pageData
+    })
+  } else {
+    return res.redirect('../../your-form')
+  }
+})
+
+
+/* ==== Page previews ==== */
+// Renders the in-page preview, set to a specific page
+router.get('/form-designer/pages/:pageId/preview', function (req, res) {
+  req.session.data.action = undefined
+  var pageId = req.params.pageId
+  var pageIndex = parseInt(pageId)
+  var pageData = req.session.data.pages[pageIndex]
+
+  res.render('form-designer/pages/preview', {
+    pageId: pageId,
+    pageIndex: pageIndex,
+    pageData: pageData
+  })
+})
+
+// This is just for convience to to the new-tab preview for this page
+router.get('/form-designer/pages/:pageId/view', function (req, res) {
+  return res.redirect(`/form-designer/view/${req.params.pageId}`)
+})
+
+// Routing for new-tab page previews, set to a specific page
+router.post('/form-designer/preview/:pageId(\\d+)', function (req, res) {
+  var cya = req.session.data.cya
+  req.session.data.cya = undefined
+  var pageId = req.params.pageId
+  var pageIndex = parseInt(pageId)
+  const isLastQuestionPage = pageIndex === (req.session.data.pages.length - 1)
+
+  // if last question in form OR user clicked on change link from CYA, then go to CYA
+  if(isLastQuestionPage || cya === 'true') {
+    return res.redirect('check-answers')
+  } else {
+    return res.redirect(`${pageIndex + 1}`)
+  }
+})
+
+// Renders the new-tab page preview, set to a specific page
+router.get('/form-designer/preview/:pageId(\\d+)', function (req, res) {
+  var pageId = req.params.pageId
+  var pageIndex = parseInt(pageId)
+  var pageData = req.session.data.pages[pageIndex]
+  const isLastQuestionPage = pageIndex === (req.session.data.pages.length - 1)
+
+  res.render('form-designer/preview/page', {
+    pageId: pageId,
+    pageIndex: pageIndex,
+    pageData: pageData,
+    isLastQuestionPage
+  })
+})
+
+
+/* ==== Pre-filled form journeys ==== */
+// Uses return data for dummy "Take your pet abroad" form
 router.get('/form-designer/returning', (req, res) => {
   req.session.data = returningSessionDataDefaultsA11y
-  res.redirect('/form-designer/form-list-a11y')
+  res.redirect('/form-designer/your-forms')
 })
-
+// Uses return data for IS example "Amendment form: redundancy claim for holiday pay" form
 router.get('/form-designer/returning-again', (req, res) => {
   req.session.data = returningSessionDataDefaults
-  res.redirect('/form-designer/form-list')
+  res.redirect('/form-designer/your-forms')
 })
 
 
-// Routing for publishing steps
-
+/* ==== Routing for publishing steps ==== */
 // Renders the page which asks for form submissions email address, handling validation errors
 router.post('/form-designer/completed-forms-email/set-completed-forms-email', function (req, res) {
   const errors = {};
@@ -578,7 +737,6 @@ router.post('/form-designer/completed-forms-email/add-confirmation-code', functi
   }
 })
 
-
 // Renders the page which asks to confirm editing live questions/form, handling validation errors
 router.post('/form-designer/are-you-sure-you-want-to-edit-live-questions', function (req, res) {
   const errors = {};
@@ -601,13 +759,12 @@ router.post('/form-designer/are-you-sure-you-want-to-edit-live-questions', funct
     res.render('form-designer/are-you-sure-you-want-to-edit-live-questions', { errors, errorList, containsErrors })
   } else {
     if(editLiveQuestions === 'yes') {
-      res.redirect('form-index')
+      res.redirect('your-questions')
     } else {
-      res.redirect('create-form')
+      res.redirect('your-form')
     }
   }
 })
-
 
 // Renders the page to confirm making form Live, handling validation errors
 router.post('/form-designer/make-your-form-live', function (req, res) {
@@ -633,11 +790,10 @@ router.post('/form-designer/make-your-form-live', function (req, res) {
       req.session.data.status = "Live"
       res.redirect('form-is-live')
     } else {
-      res.redirect('create-form')
+      res.redirect('your-form')
     }
   }
 })
-
 
 // Renders the page for creator to add privacy information link, handling validation errors
 router.post('/form-designer/provide-link-to-privacy-information', function (req, res) {
@@ -659,10 +815,9 @@ router.post('/form-designer/provide-link-to-privacy-information', function (req,
   if(containsErrors) {
     res.render('form-designer/provide-link-to-privacy-information', { errors, errorList, containsErrors })
   } else {
-    res.redirect('create-form')
+    res.redirect('your-form')
   }
 })
-
 
 // Renders the page for creator to add support contacts, handling validation errors
 router.post('/form-designer/provide-support-details', function (req, res) {
@@ -712,7 +867,7 @@ router.post('/form-designer/provide-support-details', function (req, res) {
   if(containsErrors) {
     res.render('form-designer/provide-support-details', { errors, errorList, containsErrors })
   } else {
-    res.redirect('create-form')
+    res.redirect('your-form')
   }
 })
 
