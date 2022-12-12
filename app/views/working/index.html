@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+
+{% set pageTitle = 'Example pages' %}
+
+{% block pageTitle %}
+{{ pageTitle }}
+{% endblock %}
+
+{% block beforeContent %}
+  <a class="govuk-back-link" href="../index">Back</a>
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+
+    <span class="govuk-caption-xl">{{ serviceName }}</span>
+    <h1 class="govuk-heading-xl">{{ pageTitle }}</h1>
+
+    <div class="app-prose-scope">
+      {% markdown %}
+
+      ---
+
+      ## Adding numbers to the question list view
+
+      - [Version A: summary list](numbering-questions-list/your-questions-a)<br>
+        Uses current `dl` and can still expand to use full page width if nevessary.
+        We could also visually hide "question" text, as per the order list single line version.
+
+      - [Version B: ordered list](numbering-questions-list/your-questions-b)<br>
+        Gives us more space to include extra information/detail about the question down the left hand side, although this does push the action buttons and "Edit" link further down the box - would mean we need to include custom CSS to fix issues?
+
+      - [Version C: ordered list single line](numbering-questions-list/your-questions-c)<br>
+        As above, but is only showing the number with "question" as visually hidden text.
+        Looks neat but worried the number could just get lost on the page, but gives a nice introduction to numbers and might be a good base point for us to test from?
+
+      - [Version D: table](numbering-questions-list/your-questions-d)<br>
+        Using `table` component to display each item gives meaningful headings making visually hidden text less of a requirement.
+        Could be difficult for some screen reader, or other assistive tech, users with actions in a table - maybe something to test?
+        Overall, looks neat and allows for expansion to use full width if required.
+
+      - [Version E: table full width](numbering-questions-list/your-questions-e)<br>
+        As above, but using the `full-width` styling.
+
+      ---
+
+      {% endmarkdown %}
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}
