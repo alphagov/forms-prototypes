@@ -9,20 +9,16 @@
 {% block beforeContent %}
   {% set prevPageId = pageId | int - 1 %}
   {% if prevPageId > 0 %}
-    <a class="govuk-back-link" href="{{prevPageId}}">
-      Back
-    </a>
+    <a class="govuk-back-link" href="{{prevPageId}}">Back</a>
   {% else %}
-    <a class="govuk-back-link" href="../create-form" target="_parent">
-      Back to create a form
-    </a>
+    <a class="govuk-back-link" href="../../your-form" target="_parent">Back to create a form</a>
   {% endif %}
 {% endblock %}
 
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <form id="form" class="form" action="check-answers" method="post" novalidate>
+      <form id="form" class="form" method="post" novalidate>
 
         {% if containsErrors %}
           {{ govukErrorSummary({

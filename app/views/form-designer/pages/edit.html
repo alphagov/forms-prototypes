@@ -82,16 +82,16 @@
 {% endblock %}
 
 {% block beforeContent %}
-  {% if data.referer and ('edit-answer-type' in data.referer) and (pageId === data.referer.split('/') | last) %}
-    <a class="govuk-back-link" href="../edit-answer-type/{{pageId}}">
+  {% if data.referer and ('edit-answer-type' in data.referer) %}
+    <a class="govuk-back-link" href="edit-answer-type">
       Back
     </a>
-  {% elif data.referer and ('settings' in data.referer) and (pageId === data.referer.split('/') | last) %}
-    <a class="govuk-back-link" href="../settings/{{pageId}}">
+  {% elif data.referer and ('settings' in data.referer) %}
+    <a class="govuk-back-link" href="edit-settings">
       Back
     </a>
   {% else %}
-    <a class="govuk-back-link" href="../form-index" target="_parent">
+    <a class="govuk-back-link" href="../../clear-empty" target="_parent">
       Back to your questions
     </a>
   {% endif %}
@@ -100,7 +100,7 @@
 {% block content %}
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
-        <form id="form" class="form" action="../edit-page/{{pageId}}" method="post" novalidate>
+        <form id="form" class="form" method="post" novalidate>
 
           {% if containsErrors %}
           {{ govukErrorSummary({
@@ -109,7 +109,7 @@
           }) }}
           {% endif %}
 
-          <span class="govuk-caption-l">Question {{pageId}}</span>
+          <span class="govuk-caption-l">Question {{ pageId | int + 1 }}</span>
           <h1 class="govuk-heading-l">{{pageTitle}}</h1>
 
           {% set namePrefix = "pages[" + pageIndex + "]" %}
@@ -177,7 +177,7 @@
                 {{answerType}}
               </dd>
               <dd class="govuk-summary-list__actions">
-                <a class="govuk-link govuk-link--no-visited-state" href="/form-designer/edit-answer-type/{{pageIndex + 1}}">
+                <a class="govuk-link govuk-link--no-visited-state" href="edit-answer-type">
                   Change <span class="govuk-visually-hidden">answer type {{answerType}}<span>
                 </a>
               </dd>
@@ -191,7 +191,7 @@
                 {{inputType}}
               </dd>
               <dd class="govuk-summary-list__actions">
-                <a class="govuk-link govuk-link--no-visited-state" href="/form-designer/settings/{{pageIndex + 1}}#input">
+                <a class="govuk-link govuk-link--no-visited-state" href="edit-settings#input">
                   Change <span class="govuk-visually-hidden">input type {{inputType}}<span>
                 </a>
               </dd>
@@ -206,7 +206,7 @@
                 {{pageData['title']|capitalize}}
               </dd>
               <dd class="govuk-summary-list__actions">
-                <a class="govuk-link govuk-link--no-visited-state" href="/form-designer/settings/{{pageIndex + 1}}#title">
+                <a class="govuk-link govuk-link--no-visited-state" href="edit-settings#title">
                   Change <span class="govuk-visually-hidden">title needed {{pageData['title']|capitalize}}<span>
                 </a>
               </dd>
@@ -225,7 +225,7 @@
                 {% endif %}
               </dd>
               <dd class="govuk-summary-list__actions">
-                <a class="govuk-link govuk-link--no-visited-state" href="/form-designer/settings/{{pageIndex + 1}}#option-0">
+                <a class="govuk-link govuk-link--no-visited-state" href="edit-settings#option-0">
                   Change <span class="govuk-visually-hidden">options<span>
                 </a>
               </dd>
@@ -238,7 +238,7 @@
                 {{'Yes' if pageData['oneOption'] else 'No'}}
               </dd>
               <dd class="govuk-summary-list__actions">
-                <a class="govuk-link govuk-link--no-visited-state" href="/form-designer/settings/{{pageIndex + 1}}#oneOption">
+                <a class="govuk-link govuk-link--no-visited-state" href="edit-settings#oneOption">
                   Change <span class="govuk-visually-hidden">only select one option<span>
                 </a>
               </dd>
@@ -274,16 +274,16 @@
           </div>
 
           {% if editingExistingQuestion %}
-            {{ govukButton({
-              text: "Delete question",
-              classes: "govuk-button--warning",
-              name: "action",
-              value: "deletePage"
-            }) }}
+          {{ govukButton({
+            text: "Delete question",
+            classes: "govuk-button--warning",
+            name: "action",
+            value: "deletePage"
+          }) }}
           {% endif %}
 
           <p class="govuk-body">
-            <a class="govuk-link govuk-link--no-visited-state" href="../form-index">Go to your questions</a>
+            <a class="govuk-link govuk-link--no-visited-state" href="../../clear-empty">Go to your questions</a>
           </p>
 
       </form>

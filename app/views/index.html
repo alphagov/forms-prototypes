@@ -1,25 +1,27 @@
 {% extends "layout.html" %}
 
+{% set pageTitle = 'Form prototypes' %}
+
 {% block pageTitle %}
-  Form examples
+{{ pageTitle }}
 {% endblock %}
 
 {% block content %}
 
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
 
-      <span class="govuk-caption-xl">GOV.UK Forms</span>
-      <h1 class="govuk-heading-xl">
-        Prototypes
-      </h1>
+    <span class="govuk-caption-xl">{{ serviceName }}</span>
+    <h1 class="govuk-heading-xl">{{ pageTitle }}</h1>
 
-      <p class="govuk-body-l">Prototypes from the GOV.UK Forms team in the Government Digital Service.<p>
+    <p class="govuk-body-l">
+      Prototypes from the GOV.UK Forms team in the Government Digital Service.
+    <p>
 
-          <div class="app-prose-scope">
-            {% markdown %}
+    <div class="app-prose-scope">
+      {% markdown %}
 
-            ---
+      ---
 
       ## [Form prototypes](form-prototypes)
       Some examples of common kinds of government form, using components and patterns from the GOV.UK Design System.
@@ -35,9 +37,9 @@
       [Source code available on GitHub](https://github.com/alphagov/forms-prototypes)
 
       {% endmarkdown %}
-      </div>
-
     </div>
+
   </div>
+</div>
 
 {% endblock %}

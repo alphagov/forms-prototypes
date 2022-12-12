@@ -9,18 +9,18 @@
 {% block beforeContent %}
   {% set prevPageId = pageId | int - 1 %}
   {% if ('edit-page' in data.referer) and (pageId === data.referer.split('/') | last) %}
-    <a class="govuk-back-link" href="../edit-page/{{pageId}}">Back</a>
+    <a class="govuk-back-link" href="../{{pageId}}/edit-page">Back</a>
   {% elif ('edit-page' in data.referer) and (prevPageId > 0) %}
-    <a class="govuk-back-link" href="../edit-page/{{prevPageId}}">Back</a>
+    <a class="govuk-back-link" href="../{{prevPageId}}/edit-page">Back</a>
   {% else %}
-    <a class="govuk-back-link" href="../form-index" target="_parent">Back to your questions</a>
+    <a class="govuk-back-link" href="../../clear-empty" target="_parent">Back to your questions</a>
   {% endif %}
 {% endblock %}
 
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <form id="form" class="form" action="../edit-answer-type/{{pageId}}" method="post" novalidate>
+      <form id="form" class="form" action="../{{pageId}}/edit-answer-type" method="post" novalidate>
 
         {% if containsErrors %}
         {{ govukErrorSummary({
@@ -29,7 +29,7 @@
         }) }}
         {% endif %}
 
-        <span class="govuk-caption-l">Question {{pageId}}</span>
+        <span class="govuk-caption-l">Question {{ pageId | int + 1 }}</span>
 
         {% set namePrefix = "pages[" + pageIndex + "]" %}
 
@@ -98,7 +98,8 @@
               classes: "govuk-fieldset__legend--l"
             }
           },
-          items: radioItems
+          items: radioItems,
+          errorMessage: { text: errors['type'].text } if errors['type'].text
         }) }}
 
         {{ govukButton({
@@ -108,7 +109,7 @@
         }) }}
 
         <p class="govuk-body">
-          <a class="govuk-link govuk-link--no-visited-state" href="../form-index">Go to your questions</a>
+          <a class="govuk-link govuk-link--no-visited-state" href="../../clear-empty">Go to your questions</a>
         </p>
 
       </form>

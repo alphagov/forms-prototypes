@@ -1,6 +1,6 @@
 {% extends "layout-govuk-forms.html" %}
 
-{% set pageTitle = 'Your forms' %}
+{% set pageTitle = 'Home' %}
 
 {% block pageTitle %}
   {{pageTitle}} - {{serviceName}}
@@ -8,13 +8,12 @@
 
 {% block content %}
   <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-
-      <h1 class="govuk-heading-l">{{ serviceName }}</h1>
+    <div class="govuk-grid-column-full">
+      <h1 class="govuk-heading-l">{{serviceName}}</h1>
 
       {{ govukButton({
         text: "Create a form",
-        href: "form-create-a-form.html",
+        href: "name-your-form",
         isStartButton: true
       }) }}
 
@@ -30,7 +29,7 @@
         <tbody class="govuk-table__body">
           <tr class="govuk-table__row">
             <th scope="row" class="govuk-table__header">
-              <a class="govuk-link" href="create-form">{{data.formTitle}}</a>
+              <a class="govuk-link" href="your-form">{{data['formTitle']}}</a>
             </th>
             <td class="govuk-table__cell govuk-table__cell--numeric">
             {% if data['status'] %}
@@ -44,6 +43,7 @@
         </tbody>
       </table>
       {% endif %}
+
     </div>
   </div>
 {% endblock %}

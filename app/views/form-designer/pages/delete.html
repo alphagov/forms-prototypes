@@ -40,7 +40,8 @@
               value: "No",
               text: "No"
             }
-          ]
+          ],
+          errorMessage: { text: errors['delete'].text } if errors['delete'].text
         }) }}
 
         <input type="hidden" name="action" value="delete">
