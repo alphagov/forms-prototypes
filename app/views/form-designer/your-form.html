@@ -107,7 +107,7 @@
             {% endif %}
             <li class="app-task-list__item">
               <span class="app-task-list__task-name">
-                <a href="{% if data['status'] === 'Live' %}are-you-sure-you-want-to-edit-live-questions{% else %}your-questions{% endif %}" aria-describedby="add-questions-status">
+                <a href="{% if data['status'] === 'Live' %}are-you-sure-you-want-to-edit-live-questions{% else %}clear-empty{% endif %}" aria-describedby="add-questions-status">
                   Add and edit your questions
                 </a>
               </span>

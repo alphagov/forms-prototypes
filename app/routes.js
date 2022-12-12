@@ -76,6 +76,23 @@ router.post('/form-designer/name-your-form', function (req, res) {
 })
 
 /* ==== Adding pages to a form ==== */
+// .get method to remove empty pages where no answer type has been chosen
+// could be removed if we fix the "/pages/new" .get method below
+router.get('/form-designer/clear-empty', function (req, res) {
+  // remove empty pageData if there is only one object (pageIndex) in array
+  const pages = req.session.data.pages.filter(element => {
+    if (Object.keys(element).length > 1) {
+      return true
+    }
+    return false
+  })
+
+  // Save the pages
+  req.session.data.pages = pages
+
+  return res.redirect(`/form-designer/your-questions`)
+})
+
 // Create a new page
 router.get('/form-designer/pages/new', function (req, res) {
   var pageId = parseInt(req.params.pageId, 10)
@@ -120,7 +137,7 @@ router.post('/form-designer/pages/:pageId(\\d+)/edit-answer-type', function (req
   // if no selection made, then throw an error
   if (!type || !type.length) {
     errors['type'] = {
-      text: 'Select type of answer you will need',
+      text: 'Select the type of answer you need',
       href: "#type"
     }
   } else {
@@ -142,23 +159,32 @@ router.post('/form-designer/pages/:pageId(\\d+)/edit-answer-type', function (req
       errorList,
       containsErrors
     })
-  } else if (type === 'personName') {
-    // person's name route
-    return res.redirect('edit-settings')
-  } else if (type === 'address') {
-    // address route
-    return res.redirect('edit-settings')
-  } else if (type === 'date') {
-    // date route
-    return res.redirect('edit-settings')
-  } else if (type === 'select') {
-    // selection from a list route
-    return res.redirect('edit-settings')
-  } else if (type === 'text') {
-    // text route
-    return res.redirect('edit-settings')
   } else {
-    return res.redirect('edit')
+    const nextPageId = req.session.data.pages.length
+
+    if (!pageData) {
+      req.session.data.pages.push({
+        'pageIndex': nextPageId
+      })
+    }
+    if (type === 'personName') {
+      // person's name route
+      return res.redirect('edit-settings')
+    } else if (type === 'address') {
+      // address route
+      return res.redirect('edit-settings')
+    } else if (type === 'date') {
+      // date route
+      return res.redirect('edit-settings')
+    } else if (type === 'select') {
+      // selection from a list route
+      return res.redirect('edit-settings')
+    } else if (type === 'text') {
+      // text route
+      return res.redirect('edit-settings')
+    } else {
+      return res.redirect('edit')
+    }
   }
 })
 
@@ -170,8 +196,7 @@ router.get('/form-designer/pages/:pageId(\\d+)/edit-settings', function (req, re
   return res.render('form-designer/pages/edit-settings', {
     pageId: pageId,
     pageIndex: pageIndex,
-    pageData: pageData,
-    editingExistingQuestion: req.session.data.pages[pageIndex] !== undefined
+    pageData: pageData
   })
 })
 
@@ -187,31 +212,6 @@ router.post('/form-designer/pages/:pageId(\\d+)/edit-settings', function (req, r
 
   // Get basic errors
   const errors = {};
-  // if no input is selected throw error, else add input to pageData
-  if (pageData['type'] === 'personName' || pageData['type'] === 'address' || pageData['type'] === 'date' || pageData['type'] === 'text') {
-    if (!req.session.data.input || !req.session.data.input.length) {
-      errors['input'] = {
-        text: 'Select an input type',
-        href: "#input"
-      }
-    } else {
-      pageData['input'] = req.session.data.input
-    }
-  }
-  req.session.data.input = undefined
-
-  // if asking for person’s name and title answer not selected throw error, else add input to pageData
-  if (pageData['type'] === 'personName') {
-    if (!req.session.data.title || !req.session.data.title.length) {
-      errors['title'] = {
-        text: 'Select ‘Yes’ if you need a title',
-        href: "#title"
-      }
-    } else {
-      pageData['title'] = req.session.data.title
-    }
-  }
-  req.session.data.title = undefined
 
   // if select option from list and no, or 1, input is given throw error, else add input to pageData
   var itemList = req.session.data['item-list']
@@ -232,18 +232,62 @@ router.post('/form-designer/pages/:pageId(\\d+)/edit-settings', function (req, r
     itemList = tempList
     if (!itemList.length) {
       errors['item-list'] = {
-        text: 'Enter some options',
+        text: 'Enter at least 2 options',
         href: "#option-0"
       }
     } else if (itemList.length < 2) {
       errors['item-list'] = {
-        text: 'Enter at least two options',
+        text: 'Enter at least 2 options',
         href: "#option-0"
       }
     }
     pageData['item-list'] = itemList
     pageData['oneOption'] = oneOption
+  } else if (!req.session.data.input || !req.session.data.input.length) {
+  // if no input is selected throw error, else add input to pageData
+    if (pageData['type'] === 'personName') {
+      errors['input'] = {
+        text: 'Select how you need to collect the name',
+        href: "#input"
+      }
+    } else if (pageData['type'] === 'address') {
+      errors['input'] = {
+        text: 'Select the kind of addresses you expect to receive',
+        href: "#input"
+      }
+    } else if (pageData['type'] === 'date') {
+      errors['input'] = {
+        text: 'Select yes if you’re asking for a date of birth',
+        href: "#input"
+      }
+    } else if (pageData['type'] === 'text') {
+      errors['input'] = {
+        text: 'Select how much text people will need to provide',
+        href: "#input"
+      }
+    } else {
+      errors['input'] = {
+        text: 'Select an answer',
+        href: "#input"
+      }
+    }
+  } else {
+    pageData['input'] = req.session.data.input
   }
+  req.session.data.input = undefined
+
+  // if asking for person’s name and title answer not selected throw error, else add input to pageData
+  if (pageData['type'] === 'personName') {
+    if (!req.session.data.title || !req.session.data.title.length) {
+      errors['title'] = {
+        text: 'Select yes if you need a title',
+        href: "#title"
+      }
+    } else {
+      pageData['title'] = req.session.data.title
+    }
+  }
+  req.session.data.title = undefined
 
   // Convert the errors into a list, so we can use it in the template
   const errorList = Object.values(errors)
@@ -256,7 +300,6 @@ router.post('/form-designer/pages/:pageId(\\d+)/edit-settings', function (req, r
       pageId: pageId,
       pageIndex: pageIndex,
       pageData: pageData,
-      editingExistingQuestion: req.session.data.pages[pageIndex] !== undefined,
       errors,
       errorList,
       containsErrors
@@ -329,7 +372,7 @@ router.post('/form-designer/pages/:pageId(\\d+)/edit', function (req, res) {
   // if no question text given, then throw an error
   if (!title || !title.length) {
     errors['long-title'] = {
-      text: 'Enter question text',
+      text: 'Enter a question',
       href: "#long-title"
     }
   // otherwise add question text to pageData
@@ -405,7 +448,27 @@ router.post('/form-designer/pages/:pageId/delete', function (req, res) {
     throw Error('Page not found');
   }
 
-  if(action === 'delete' && shouldDelete === 'Yes') {
+  const errors = {};
+  if (!shouldDelete || !shouldDelete.length) {
+    errors['delete'] = {
+      text: 'Select yes if you want to delete this question',
+      href: "#delete"
+    }
+  }
+
+  // Convert the errors into a list, so we can use it in the template
+  const errorList = Object.values(errors)
+  // If there are no errors, redirect the user to the next page
+  // otherwise, show the page again with the errors set
+  const containsErrors = errorList.length > 0
+  // If there are errors on the page, redisplay it with the errors
+  if(containsErrors) {
+    return res.render('form-designer/pages/delete', {
+      errors,
+      errorList,
+      containsErrors
+    })
+  } else if(action === 'delete' && shouldDelete === 'Yes') {
     // Create an array of pages without the one we want to remove
     const pages = req.session.data.pages
       .filter(element => parseInt(element.pageIndex, 10) !== pageIndex)
@@ -413,7 +476,7 @@ router.post('/form-designer/pages/:pageId/delete', function (req, res) {
 
     // Save the pages
     req.session.data.pages = pages
-    return res.redirect('/form-designer/your-questions')
+    return res.redirect('/form-designer/clear-empty')
   } else if(action === 'delete' && shouldDelete  === 'No') {
     return res.redirect(`/form-designer/pages/${pageIndex}/edit`)
   } else {
@@ -446,7 +509,7 @@ router.get('/form-designer/pages/:pageId/reorder/:direction', function (req, re
 
   req.session.data.pages = pages.map(setPageIndexToArrayPosition)
 
-  res.redirect('/form-designer/your-questions')
+  res.redirect('/form-designer/clear-empty')
 })
 
 // Route for user marking questions as complete
@@ -457,7 +520,7 @@ router.get('/form-designer/question-list', function (req, res) {
   // if no option is selected, then error
   if (!isQuestionsComplete?.length) {
     errors.isQuestionsComplete = {
-      text: 'Select ‘Yes’ if you are finished adding and editing your questions',
+      text: 'Select yes if you have finished adding and editing your questions',
       href: "#isQuestionsComplete"
     }
   }
@@ -491,7 +554,7 @@ router.post('/form-designer/pages/check-answers/edit', function (req, res) {
   // if no selection made, then throw an error
   if (!complete || !complete.length) {
     errors['isDeclarationComplete'] = {
-      text: 'Select ‘Yes’ if you are finished editing your declaration',
+      text: 'Select yes if you want to mark this task as complete',
       href: "#isDeclarationComplete"
     }
   }
@@ -537,7 +600,7 @@ router.post('/form-designer/pages/confirmation/edit', function (req, res) {
   // if no selection made, then throw an error
   if (!whatHappensNext || !whatHappensNext.length) {
     errors['confirmationNext'] = {
-      text: 'Enter information about what will happen next',
+      text: 'Enter some information about what happens next',
       href: "#confirmationNext"
     }
   }
@@ -553,7 +616,6 @@ router.post('/form-designer/pages/confirmation/edit', function (req, res) {
       pageId: pageId,
       pageIndex: pageIndex,
       pageData: pageData,
-      editingExistingQuestion: req.session.data.pages[pageIndex] !== undefined,
       errors,
       errorList,
       containsErrors
@@ -684,7 +746,7 @@ router.post('/form-designer/completed-forms-email/change-email-address', functio
   // If the changeFormsEmail has selection, create an error to be displayed to the user
   if (!changeFormsEmail || !changeFormsEmail.length) {
     errors['formsEmail'] = {
-      text: 'Select yes if you want to change the email',
+      text: 'Select yes if you want to change the email address',
       href: "#forms-email"
     }
   }
@@ -759,7 +821,7 @@ router.post('/form-designer/are-you-sure-you-want-to-edit-live-questions', funct
     res.render('form-designer/are-you-sure-you-want-to-edit-live-questions', { errors, errorList, containsErrors })
   } else {
     if(editLiveQuestions === 'yes') {
-      res.redirect('your-questions')
+      res.redirect('clear-empty')
     } else {
       res.redirect('your-form')
     }
@@ -803,7 +865,7 @@ router.post('/form-designer/provide-link-to-privacy-information', function (req,
   // If the user haven't selected yes or no
   if (!privacyInformation?.length) {
     errors['privacyInformation'] = {
-      text: 'Enter a link to privacy information',
+      text: 'Enter a link',
       href: "#privacy-information"
     }
   }
@@ -841,21 +903,21 @@ router.post('/form-designer/provide-support-details', function (req, res) {
   // If the user has selected telephone but hasn't entered any detail
   if (supportDetails?.includes('phone') && !phoneSupport?.length) {
     errors['phoneSupport'] = {
-      text: 'Enter a phone number and opening hours',
+      text: 'Enter the phone number and its opening times',
       href: "#email-support"
     }
   }
   // If the user has selected online but hasn't entered a link
   if (supportDetails?.includes('online') && !onlineSupportLink?.length) {
     errors['onlineSupportLink'] = {
-      text: 'Enter an online contact link',
+      text: 'Enter a link',
       href: "#email-support"
     }
   }
   // If the user has selected online but hasn't entered any descriptive text for the link
   if (supportDetails?.includes('online') && !onlineSupportText?.length) {
     errors['onlineSupportText'] = {
-      text: 'Enter an online contact link description',
+      text: 'Enter a link description',
       href: "#email-support"
     }
   }

@@ -13,7 +13,7 @@
   {% elif ('edit-page' in data.referer) and (prevPageId > 0) %}
     <a class="govuk-back-link" href="../{{prevPageId}}/edit-page">Back</a>
   {% else %}
-    <a class="govuk-back-link" href="../../your-questions" target="_parent">Back to your questions</a>
+    <a class="govuk-back-link" href="../../clear-empty" target="_parent">Back to your questions</a>
   {% endif %}
 {% endblock %}
 
@@ -109,7 +109,7 @@
         }) }}
 
         <p class="govuk-body">
-          <a class="govuk-link govuk-link--no-visited-state" href="../../your-questions">Go to your questions</a>
+          <a class="govuk-link govuk-link--no-visited-state" href="../../clear-empty">Go to your questions</a>
         </p>
 
       </form>
