@@ -917,7 +917,7 @@ router.post('/form-designer/provide-support-details', function (req, res) {
   // If the user has selected online but hasn't entered any descriptive text for the link
   if (supportDetails?.includes('online') && !onlineSupportText?.length) {
     errors['onlineSupportText'] = {
-      text: 'Enter a link description',
+      text: 'Enter an online contact link description',
       href: "#email-support"
     }
   }
