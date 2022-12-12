@@ -1,0 +1,174 @@
+{% extends "layout-govuk-forms.html" %}
+{% import '../numbering-questions-list/data.js' as data %}
+
+{% set pageTitle = 'Add and edit your questions' %}
+
+{% block pageTitle %}
+  {{ "Error: " if containsErrors }}{{pageTitle}}: {{ data.dummy['formTitle'] }} - GOV.UK Forms
+{% endblock %}
+
+{% block beforeContent %}
+  <a class="govuk-back-link" href="../index">Back</a>
+{% endblock %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+
+    {% if containsErrors %}
+    {{ govukErrorSummary({
+      titleText: "There is a problem",
+      errorList: errorList
+    }) }}
+    {% endif %}
+
+    {% if data.dummy['status'] === 'Live' %}
+    <div class="govuk-notification-banner" role="alert" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+      <div class="govuk-notification-banner__header">
+        <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+          Important
+        </h2>
+      </div>
+      <div class="govuk-notification-banner__content">
+        <h3 class="govuk-notification-banner__heading">
+          Any changes you make to a live form will be updated in the form immediately.
+        </h3>
+        <p class="govuk-body">
+          This could have an impact on people who are filling in the form at the same time. They may lose any answers they have already provided and may need to start again. 
+        </p>
+      </div>
+    </div>
+    {% endif %}
+
+    <span class="govuk-caption-l">{{ data.dummy['formTitle'] }}</span>
+    <h1 class="govuk-heading-l govuk-!-margin-bottom-2">{{pageTitle}}</h1>
+    {% if data.dummy['status'] %}
+    <div>
+      {{ govukTag({
+        text: data.dummy['status'],
+        classes: "govuk-!-margin-bottom-7 govuk-tag--purple" if data.dummy['status'] === 'Draft' else "govuk-!-margin-bottom-7 govuk-tag--turquoise"
+      }) }}
+    </div>
+    {% endif %}
+
+    {% set nextPageId = data.dummy['highestPageId'] | int + 1 %}
+    {% set totalPageNum = data.dummy['highestPageId'] | int + 2 %}
+
+    <form id="form" class="form" action="/form-designer/pages/new" method="post" novalidate>
+      <div class="govuk-button-group">
+        {{ govukButton({
+          text: "Add a question",
+          classes: "govuk-!-margin-bottom-7"
+        }) }}
+        {% if data.dummy.pages.length %}
+        <a class="govuk-link" href="/form-designer/preview/0" target="_blank" rel="noopener noreferrer">
+          Preview this form in a new tab
+        </a>
+        {% endif %}
+      </div>
+    </form>
+
+    {% if data.dummy.pages.length %}
+
+    <h2 class="govuk-heading-m">Your questions</h2>
+
+    <dl class="govuk-summary-list">
+
+      {% for page in data.dummy.pages -%}
+
+      {% set questionTitle =  page["long-title"] or "Question " + (page["pageIndex"]|int + 1) %}
+      {% if page['questionOptional'] %}
+      {% set questionTitle = questionTitle + ' (optional)' %}
+      {% endif %}
+
+      {% if questionTitle %}
+
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+          Question {{loop.index}}
+        </dt>
+        <dd class="govuk-summary-list__value">
+          {{questionTitle}}
+        </dd>
+        <dd class="govuk-summary-list__actions">
+          <div class="govuk-button-group form-action-group govuk-!-margin-bottom-0">
+            <div class="form-actions-reordering">
+              {% if page.pageIndex > 0 %}
+              {{ govukButton({
+                html: "Move up <span class='govuk-visually-hidden'>" + questionTitle + "</span>",
+                classes: "govuk-button--secondary",
+                href: "pages/" + (page.pageIndex | int + 1) + "/reorder/up"
+              }) }}
+              {% endif %}
+
+              {% if page.pageIndex < data.dummy.pages | length - 1 %}
+              {{ govukButton({
+                html: "Move down <span class='govuk-visually-hidden'>" + questionTitle + "</span>",
+                classes: "govuk-button--secondary",
+                href: "pages/" + (page.pageIndex | int + 1) + "/reorder/down"
+              }) }}
+              {% endif %}
+              <div>
+                <a class="govuk-link govuk-link--no-visited-state" href="pages/{{ page.pageIndex | int }}/edit">
+                  Edit<span class="govuk-visually-hidden"> {{questionTitle}}</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </dd>
+      </div>
+      {% endif %}
+
+      {%- endfor %}
+    </dl>
+
+    {% if data.dummy.status === 'Draft' %}
+    <form id="form" class="form" action="question-list" method="post">
+      {{ govukRadios({
+        classes: "govuk-radios",
+        idPrefix: "isQuestionsComplete",
+        name: "isQuestionsComplete",
+        fieldset: {
+          legend: {
+            text: "Have you finished editing your questions?",
+            isPageHeading: false,
+            classes: "govuk-fieldset__legend--m"
+          }
+        },
+        hint: {
+          text: "Selecting ‘Yes’ will mark this task as complete. You will still be able to make more changes if you need to."
+        },
+        items: [
+          {
+            value: "yes",
+            text: "Yes"
+          },
+          {
+            value: "no",
+            text: "No, I’ll come back later"
+          }
+        ],
+        errorMessage: { text: errors['isQuestionsComplete'].text } if errors['isQuestionsComplete'].text
+      }) }}
+      {{ govukButton({
+        text: "Save and continue",
+        name: "action",
+        value: "continue"
+      }) }}
+    </form>
+    {% else %}
+    <form id="form" class="form" action="your-form" method="post">
+    {{ govukButton({
+      text: "Save and continue",
+      name: "action",
+      value: "continue"
+    }) }}
+    </form>
+    {% endif %}
+
+    {% endif %}
+  </div>
+
+</div>
+
+{% endblock %}
