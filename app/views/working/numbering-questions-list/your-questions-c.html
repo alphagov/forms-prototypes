@@ -72,7 +72,7 @@
 
     <h2 class="govuk-heading-m">Your questions</h2>
 
-    <ul class="app-task-list__items govuk-!-padding-left-0">
+    <ol class="app-task-list__items govuk-!-padding-left-0">
 
     {% for page in data.dummy.pages -%}
 
@@ -112,7 +112,7 @@
       {% endif %}
 
       {%- endfor %}
-    </ul>
+    </ol>
 
     {% if data.dummy.status === 'Draft' %}
     <form id="form" class="form" action="question-list" method="post">
