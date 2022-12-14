@@ -72,51 +72,47 @@
 
     <h2 class="govuk-heading-m">Your questions</h2>
 
-    <ol class="app-task-list">
-      <li>
-        <ul class="app-task-list__items govuk-!-padding-left-0">
+    <ul class="app-task-list__items govuk-!-padding-left-0">
 
-        {% for page in data.dummy.pages -%}
+    {% for page in data.dummy.pages -%}
 
-        {% set questionTitle =  page["long-title"] or "Question " + (page["pageIndex"]|int + 1) %}
-        {% if page['questionOptional'] %}
-        {% set questionTitle = questionTitle + ' (optional)' %}
-        {% endif %}
+    {% set questionTitle =  page["long-title"] or "Question " + (page["pageIndex"]|int + 1) %}
+    {% if page['questionOptional'] %}
+    {% set questionTitle = questionTitle + ' (optional)' %}
+    {% endif %}
 
-        {% if questionTitle %}
-          <li class="app-task-list__item">
-            <span class="app-task-list__task-name">
-              <span class="govuk-visually-hidden">Question </span>{{loop.index}}. {{questionTitle}}
-            </span>
-            <div class="form-actions-reordering app-task-list__tag">
-              {% if page.pageIndex > 0 %}
-              {{ govukButton({
-                html: "Move up <span class='govuk-visually-hidden'>" + questionTitle + "</span>",
-                classes: "govuk-button--secondary",
-                href: "pages/" + (page.pageIndex | int + 1) + "/reorder/up"
-              }) }}
-              {% endif %}
-
-              {% if page.pageIndex < data.dummy.pages | length - 1 %}
-              {{ govukButton({
-                html: "Move down <span class='govuk-visually-hidden'>" + questionTitle + "</span>",
-                classes: "govuk-button--secondary",
-                href: "pages/" + (page.pageIndex | int + 1) + "/reorder/down"
-              }) }}
-              {% endif %}
-              <div>
-                <a class="app-task-list__tag govuk-link govuk-link--no-visited-state" href="pages/{{ page.pageIndex | int }}/edit">
-                  Edit<span class="govuk-visually-hidden"> {{questionTitle}}</span>
-                </a>
-              </div>
-            </div>
-          </li>
+    {% if questionTitle %}
+      <li class="app-task-list__item">
+        <span class="app-task-list__task-name">
+          <span class="govuk-visually-hidden">Question </span>{{loop.index}}. {{questionTitle}}
+        </span>
+        <div class="form-actions-reordering app-task-list__tag">
+          {% if page.pageIndex > 0 %}
+          {{ govukButton({
+            html: "Move up <span class='govuk-visually-hidden'>" + questionTitle + "</span>",
+            classes: "govuk-button--secondary",
+            href: "pages/" + (page.pageIndex | int + 1) + "/reorder/up"
+          }) }}
           {% endif %}
 
-          {%- endfor %}
-        </ul>
+          {% if page.pageIndex < data.dummy.pages | length - 1 %}
+          {{ govukButton({
+            html: "Move down <span class='govuk-visually-hidden'>" + questionTitle + "</span>",
+            classes: "govuk-button--secondary",
+            href: "pages/" + (page.pageIndex | int + 1) + "/reorder/down"
+          }) }}
+          {% endif %}
+          <div>
+            <a class="app-task-list__tag govuk-link govuk-link--no-visited-state" href="pages/{{ page.pageIndex | int }}/edit">
+              Edit<span class="govuk-visually-hidden"> {{questionTitle}}</span>
+            </a>
+          </div>
+        </div>
       </li>
-    </ol>
+      {% endif %}
+
+      {%- endfor %}
+    </ul>
 
     {% if data.dummy.status === 'Draft' %}
     <form id="form" class="form" action="question-list" method="post">
