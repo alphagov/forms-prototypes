@@ -108,9 +108,12 @@ router.get('/form-designer/clear-empty', function (req, res) {
     }
     return false
   })
-
   // Save the pages
   req.session.data.pages = pages
+
+  // reset highestPageId to number of pages
+  req.session.data.highestPageId = parseInt(pages.length - 1)
+
   return res.redirect(`/form-designer/your-questions`)
 })
 
@@ -425,7 +428,7 @@ router.get('/form-designer/pages/:pageId(\\d+)/edit', function (req, res) {
     pageIndex: pageIndex,
     pageData: pageData,
     successMessage,
-    editingExistingQuestion: req.session.data.pages[pageIndex] !== undefined
+    editingExistingQuestion: req.session.data.pages[pageIndex]['long-title'] !== undefined
   })
 })
 
@@ -491,11 +494,7 @@ router.post('/form-designer/pages/:pageId(\\d+)/edit', function (req, res) {
 
   // content to display in notification banners
   var saved = 'Your changes have been saved'
-  if(action == 'createNextPage') {
-    var saveAndContinue = 'Question ' + (parseInt(pageId) + 1) + ' has been added'
-  } else {
-    var saveAndContinue = 'Question ' + (parseInt(pageId) + 1) + ' has been saved'
-  }
+  var saveAndContinue = 'Question ' + (parseInt(pageId) + 1) + ' has been saved'
 
   // Convert the errors into a list, so we can use it in the template
   const errorList = Object.values(errors)
@@ -508,12 +507,13 @@ router.post('/form-designer/pages/:pageId(\\d+)/edit', function (req, res) {
       pageId: pageId,
       pageIndex: pageIndex,
       pageData: pageData,
-      editingExistingQuestion: req.session.data.pages[pageIndex] !== undefined,
+      editingExistingQuestion: req.session.data.pages[pageIndex]['long-title'] !== undefined,
       errors,
       errorList,
       containsErrors
     })
   } else if (action == 'createNextPage') {
+    req.session.data.highestPageId = parseInt(req.session.data.highestPageId) + 1
     req.session.data.successMessage = saveAndContinue
     return res.redirect(`/form-designer/pages/new`)
   } else if (action == 'editNextPage') {
