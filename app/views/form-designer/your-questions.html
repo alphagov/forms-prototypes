@@ -69,9 +69,9 @@
 
     {% if data.pages.length %}
 
-    <h2 class="govuk-heading-m">Your questions</h2>
+    <h2 class="govuk-heading-m" id="question-list">Your questions</h2>
 
-    <dl class="govuk-summary-list">
+    <dl class="govuk-summary-list" aria-describedby="question-list">
 
       {% for page in data.pages -%}
 
@@ -83,10 +83,13 @@
       {% if questionTitle %}
 
       <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key govuk-!-font-weight-regular">
+        <dt class="govuk-summary-list__key app-summary-list__key">
+          {{loop.index}}
+        </dt>
+        <dd class="govuk-summary-list__value">
           <!--Q{{page["pageIndex"] | int + 1}}.-->
           {{questionTitle}}
-        </dt>
+        </dd>
         <dd class="govuk-summary-list__actions">
           <div class="govuk-button-group form-action-group govuk-!-margin-bottom-0">
             <div class="form-actions-reordering">
