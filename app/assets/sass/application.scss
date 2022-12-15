@@ -194,6 +194,12 @@ $govuk-assets-path: "/govuk/assets/";
 }
 
 
+// Summary list overwrites
+.app-summary-list__key {
+  width: 10%;
+}
+
+
 // Copy URL styling
 // Tooltip
 .tooltip {
