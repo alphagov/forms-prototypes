@@ -52,6 +52,13 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
+      {% if data.successMessage %}
+      {{ govukNotificationBanner({
+        type: 'success',
+        text: data.successMessage
+      }) }}
+      {% endif %}
+
       <span class="govuk-caption-l">{{ data['formTitle'] }}</span>
       <h1 class="govuk-heading-l govuk-!-margin-bottom-2">{{pageTitle}}</h1>
       {% if data['status'] %}
@@ -253,6 +260,7 @@
 
 {% block pageScripts %}
 <script type="text/javascript">
+
   function copyURL() {
     /* Create new range so we can select a node */
     var range = document.createRange();
@@ -262,7 +270,10 @@
 
     /* Copy the text from the node */
     navigator.clipboard.writeText(range);
-
   }
+
+  // call function from `assets/javascripts/application.js`
+  removeSuccessNotification();
+
 </script>
 {% endblock %}

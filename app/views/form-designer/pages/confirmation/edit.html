@@ -18,6 +18,14 @@
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
+
+      {% if successMessage %}
+      {{ govukNotificationBanner({
+        type: 'success',
+        text: successMessage
+      }) }}
+      {% endif %}
+
       <form id="form" class="form" method="post" novalidate>
 
         {% if containsErrors %}
@@ -81,4 +89,11 @@
       </form>
     </div>
   </div>
+{% endblock %}
+
+{% block pageScripts %}
+<script type="text/javascript">
+  // call function from `assets/javascripts/application.js`
+  removeSuccessNotification();
+</script>
 {% endblock %}
