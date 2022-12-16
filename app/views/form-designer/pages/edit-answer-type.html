@@ -73,12 +73,18 @@
             {
               value: "select",
               text: "Selection from a list of options",
-              checked: checked(namePrefix + "['type']", "select")
+              checked: checked(namePrefix + "['type']", "select"),
+              hint: {
+                text: "You’ll be able to create a list of options for people to select from"
+              }
             },
             {
               value: "number",
               text: "Number",
-              checked: checked(namePrefix + "['type']", "number")
+              checked: checked(namePrefix + "['type']", "number"),
+              hint: {
+                text: "People will only be able to enter whole or decimal numbers"
+              }
             },
             {
               value: "text",
