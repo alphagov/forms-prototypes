@@ -38,8 +38,9 @@ router.post('/example-2/save-progress-check', function (req, res) {
   }
 })
 
+// =====================================
 // ROUTES FOR FORM DESIGNER
-//
+// =====================================
 
 // Set a value to use in the back button to return to previous page
 router.use('/form-designer/*', function (req, res, next) {
@@ -49,7 +50,10 @@ router.use('/form-designer/*', function (req, res, next) {
   next();
 })
 
-/* ==== Create a new form ==== */
+/* =====
+Create a new form
+===== */
+
 // Edit form name, handling validation errors
 router.post('/form-designer/name-your-form', function (req, res) {
   const { formTitle } = req.session.data
@@ -71,11 +75,29 @@ router.post('/form-designer/name-your-form', function (req, res) {
   if(containsErrors) {
     res.render('form-designer/name-your-form', { errors, errorList, containsErrors })
   } else {
+    // set a success message for saving
+    req.session.data.successMessage = 'Your new form name has been saved'
     res.redirect('your-form')
   }
 })
 
-/* ==== Adding pages to a form ==== */
+
+// Your form task list page - used to load and clear out success pageData
+// could we also add timer to the notification banner here?
+// .govuk-notification-banner__header
+router.get('/form-designer/your-form', function (req, res) {
+  var successMessage = req.session.data.successMessage
+  req.session.data.successMessage = undefined
+  return res.render('form-designer/your-form', {
+    successMessage: successMessage
+  })
+})
+
+
+/* =====
+Adding pages to a form
+===== */
+
 // .get method to remove empty pages where no answer type has been chosen
 // could be removed if we fix the "/pages/new" .get method below
 router.get('/form-designer/clear-empty', function (req, res) {
@@ -86,12 +108,62 @@ router.get('/form-designer/clear-empty', function (req, res) {
     }
     return false
   })
-
   // Save the pages
   req.session.data.pages = pages
 
+  // reset highestPageId to number of pages
+  req.session.data.highestPageId = parseInt(pages.length - 1)
+
   return res.redirect(`/form-designer/your-questions`)
 })
+
+// Your form task list page - used to load and clear out success pageData
+// could we also add timer to the notification banner here?
+// .govuk-notification-banner__header
+router.get('/form-designer/your-questions', function (req, res) {
+  var successMessage = req.session.data.successMessage
+  req.session.data.successMessage = undefined
+  return res.render('form-designer/your-questions', {
+    successMessage: successMessage
+  })
+})
+
+// Route for user marking questions as complete
+router.post('/form-designer/your-questions', function (req, res) {
+  const { isQuestionsComplete } = req.session.data
+
+  // content to display in notification banners
+  var saved = 'Questions have been saved'
+  var savedAndComplete = 'Questions have been saved and marked as complete'
+
+  const errors = {}
+  // if no option is selected, then error
+  if (!isQuestionsComplete?.length) {
+    errors.isQuestionsComplete = {
+      text: 'Select yes if you have finished adding and editing your questions',
+      href: "#isQuestionsComplete"
+    }
+  }
+
+  // Convert the errors into a list, so we can use it in the template
+  const errorList = Object.values(errors)
+  // If there are no errors, redirect the user to the next page
+  // otherwise, show the page again with the errors set
+  const containsErrors = errorList.length > 0
+  if(containsErrors) {
+    res.render('form-designer/your-questions', { errors, errorList, containsErrors })
+  } else {
+    if(isQuestionsComplete === 'yes') {
+      // set a success message for saving and marking as complete
+      req.session.data.successMessage = savedAndComplete
+    } else {
+      // set a success message for saving
+      req.session.data.successMessage = saved
+    }
+    res.redirect('/form-designer/your-form')
+  }
+})
+
 
 // Create a new page
 router.get('/form-designer/pages/new', function (req, res) {
@@ -115,10 +187,15 @@ router.get('/form-designer/pages/:pageId(\\d+)/edit-answer-type', function (req,
   var pageId = parseInt(req.params.pageId, 10)
   var pageIndex = pageId
   var pageData = req.session.data.pages[pageIndex]
+
+  var successMessage = req.session.data.successMessage
+  req.session.data.successMessage = undefined
+
   return res.render('form-designer/pages/edit-answer-type', {
     pageId: pageId,
     pageIndex: pageIndex,
-    pageData: pageData
+    pageData: pageData,
+    successMessage
   })
 })
 
@@ -342,11 +419,16 @@ router.get('/form-designer/pages/:pageId(\\d+)/edit', function (req, res) {
   var pageId = parseInt(req.params.pageId, 10)
   var pageIndex = pageId
   var pageData = req.session.data.pages[pageIndex]
+
+  var successMessage = req.session.data.successMessage
+  req.session.data.successMessage = undefined
+
   return res.render('form-designer/pages/edit', {
     pageId: pageId,
     pageIndex: pageIndex,
     pageData: pageData,
-    editingExistingQuestion: req.session.data.pages[pageIndex] !== undefined
+    successMessage,
+    editingExistingQuestion: req.session.data.pages[pageIndex]['long-title'] !== undefined
   })
 })
 
@@ -410,6 +492,10 @@ router.post('/form-designer/pages/:pageId(\\d+)/edit', function (req, res) {
     }
   }
 
+  // content to display in notification banners
+  var saved = 'Your changes have been saved'
+  var saveAndContinue = 'Question ' + (parseInt(pageId) + 1) + ' has been saved'
+
   // Convert the errors into a list, so we can use it in the template
   const errorList = Object.values(errors)
   // If there are no errors, redirect the user to the next page
@@ -421,21 +507,28 @@ router.post('/form-designer/pages/:pageId(\\d+)/edit', function (req, res) {
       pageId: pageId,
       pageIndex: pageIndex,
       pageData: pageData,
-      editingExistingQuestion: req.session.data.pages[pageIndex] !== undefined,
+      editingExistingQuestion: req.session.data.pages[pageIndex]['long-title'] !== undefined,
       errors,
       errorList,
       containsErrors
     })
   } else if (action == 'createNextPage') {
+    req.session.data.highestPageId = parseInt(req.session.data.highestPageId) + 1
+    req.session.data.successMessage = saveAndContinue
     return res.redirect(`/form-designer/pages/new`)
   } else if (action == 'editNextPage') {
+    req.session.data.successMessage = saveAndContinue
     return res.redirect(`/form-designer/pages/${editNextPageId}/edit`)
   } else {
+    req.session.data.successMessage = saved
     return res.redirect(req.path)
   }
 })
 
-/* ==== Managing questions in a form ==== */
+/* =====
+Managing questions in a form
+===== */
+
 // Route used to delete question
 router.post('/form-designer/pages/:pageId/delete', function (req, res) {
   const { action } = req.session.data
@@ -507,38 +600,20 @@ router.get('/form-designer/pages/:pageId/reorder/:direction', function (req, re
   const pageToMove = pages.splice(pageId - 1, 1)[0]
   pages.splice(newArrayPosition, 0, pageToMove)
 
+  // content to display in notification banners
+  var successMessage = '‘' + pageToMove['long-title'] + '’' + ' has been moved ' + direction + ' to number ' + (parseInt(newArrayPosition) + 1)
+
   req.session.data.pages = pages.map(setPageIndexToArrayPosition)
 
+  req.session.data.successMessage = successMessage
   res.redirect('/form-designer/clear-empty')
 })
 
-// Route for user marking questions as complete
-router.get('/form-designer/question-list', function (req, res) {
-  const { isQuestionsComplete } = req.session.data
 
-  const errors = {}
-  // if no option is selected, then error
-  if (!isQuestionsComplete?.length) {
-    errors.isQuestionsComplete = {
-      text: 'Select yes if you have finished adding and editing your questions',
-      href: "#isQuestionsComplete"
-    }
-  }
+/* =====
+Managing additional pages in a form
+===== */
 
-  // Convert the errors into a list, so we can use it in the template
-  const errorList = Object.values(errors)
-  // If there are no errors, redirect the user to the next page
-  // otherwise, show the page again with the errors set
-  const containsErrors = errorList.length > 0
-  if(containsErrors) {
-    res.render('form-designer/your-questions', { errors, errorList, containsErrors })
-  } else {
-    res.redirect('/form-designer/your-form')
-  }
-})
-
-
-/* ==== Managing additional pages in a form ==== */
 // Route used to check Declaration is complete - Check your answers (CYA)
 router.post('/form-designer/pages/check-answers/edit', function (req, res) {
   const action = req.session.data.action
@@ -550,6 +625,11 @@ router.post('/form-designer/pages/check-answers/edit', function (req, res) {
 
   const errors = {};
   const complete = req.session.data.isDeclarationComplete
+  const declarationContent = req.session.data.checkAnswersDeclaration
+
+  // content to display in notification banners
+  var saved = 'Declaration has been saved'
+  var savedAndComplete = 'Declaration has been saved and marked as complete'
 
   // if no selection made, then throw an error
   if (!complete || !complete.length) {
@@ -565,7 +645,16 @@ router.post('/form-designer/pages/check-answers/edit', function (req, res) {
   // otherwise, show the page again with the errors set
   const containsErrors = errorList.length > 0
   // If there are errors on the page, redisplay it with the errors
-  if(containsErrors) {
+  if (action === 'update') {
+    // set a success message for saving
+    req.session.data.successMessage = saved
+    return res.render('form-designer/pages/check-answers/edit', {
+      pageId: pageId,
+      pageIndex: pageIndex,
+      pageData: pageData,
+      successMessage: saved
+    })
+  } else if(containsErrors) {
     return res.render('form-designer/pages/check-answers/edit', {
       pageId: pageId,
       pageIndex: pageIndex,
@@ -574,13 +663,14 @@ router.post('/form-designer/pages/check-answers/edit', function (req, res) {
       errorList,
       containsErrors
     })
-  } else if (action === 'update') {
-    return res.render('form-designer/pages/check-answers/edit', {
-      pageId: pageId,
-      pageIndex: pageIndex,
-      pageData: pageData
-    })
   } else {
+    if(complete === 'yes') {
+      // set a success message for saving
+      req.session.data.successMessage = savedAndComplete
+    } else {
+      // set a success message for saving
+      req.session.data.successMessage = saved
+    }
     return res.redirect('../../your-form')
   }
 })
@@ -596,6 +686,9 @@ router.post('/form-designer/pages/confirmation/edit', function (req, res) {
 
   const errors = {};
   const whatHappensNext = req.session.data.confirmationNext
+
+  // content to display in notification banners
+  var saved = 'What happens next has been saved'
 
   // if no selection made, then throw an error
   if (!whatHappensNext || !whatHappensNext.length) {
@@ -624,15 +717,21 @@ router.post('/form-designer/pages/confirmation/edit', function (req, res) {
     return res.render('form-designer/pages/confirmation/edit', {
       pageId: pageId,
       pageIndex: pageIndex,
-      pageData: pageData
+      pageData: pageData,
+      successMessage: saved
     })
   } else {
+    // set a success message for saving
+    req.session.data.successMessage = saved
     return res.redirect('../../your-form')
   }
 })
 
 
-/* ==== Page previews ==== */
+/* =====
+Page previews
+===== */
+
 // Renders the in-page preview, set to a specific page
 router.get('/form-designer/pages/:pageId/preview', function (req, res) {
   req.session.data.action = undefined
@@ -684,20 +783,10 @@ router.get('/form-designer/preview/:pageId(\\d+)', function (req, res) {
 })
 
 
-/* ==== Pre-filled form journeys ==== */
-// Uses return data for dummy "Take your pet abroad" form
-router.get('/form-designer/returning', (req, res) => {
-  req.session.data = returningSessionDataDefaultsA11y
-  res.redirect('/form-designer/your-forms')
-})
-// Uses return data for IS example "Amendment form: redundancy claim for holiday pay" form
-router.get('/form-designer/returning-again', (req, res) => {
-  req.session.data = returningSessionDataDefaults
-  res.redirect('/form-designer/your-forms')
-})
+/* =====
+Routing for publishing steps
+===== */
 
-
-/* ==== Routing for publishing steps ==== */
 // Renders the page which asks for form submissions email address, handling validation errors
 router.post('/form-designer/completed-forms-email/set-completed-forms-email', function (req, res) {
   const errors = {};
@@ -799,63 +888,10 @@ router.post('/form-designer/completed-forms-email/add-confirmation-code', functi
   }
 })
 
-// Renders the page which asks to confirm editing live questions/form, handling validation errors
-router.post('/form-designer/are-you-sure-you-want-to-edit-live-questions', function (req, res) {
-  const errors = {};
-  const { editLiveQuestions } = req.session.data
 
-  // If the changeFormsEmail has selection, create an error to be displayed to the user
-  if (!editLiveQuestions || !editLiveQuestions.length) {
-    errors['editLiveQuestions'] = {
-      text: 'Select no if you do not want to edit your questions',
-      href: "#editLiveQuestions"
-    }
-  }
-
-  // Convert the errors into a list, so we can use it in the template
-  const errorList = Object.values(errors)
-  // If there are no errors, redirect the user to the next page
-  // otherwise, show the page again with the errors set
-  const containsErrors = errorList.length > 0
-  if(containsErrors) {
-    res.render('form-designer/are-you-sure-you-want-to-edit-live-questions', { errors, errorList, containsErrors })
-  } else {
-    if(editLiveQuestions === 'yes') {
-      res.redirect('clear-empty')
-    } else {
-      res.redirect('your-form')
-    }
-  }
-})
-
-// Renders the page to confirm making form Live, handling validation errors
-router.post('/form-designer/make-your-form-live', function (req, res) {
-  const errors = {};
-  const { makeFormLive } = req.session.data
-
-  // If the user haven't selected yes or no
-  if (!makeFormLive || !makeFormLive.length) {
-    errors['makeFormLive'] = {
-      text: 'Select no if you do not want to make your form live yet',
-      href: "#makeFormLive"
-    }
-  }
-  // Convert the errors into a list, so we can use it in the template
-  const errorList = Object.values(errors)
-  // If there are no errors, redirect the user to the next page
-  // otherwise, show the page again with the errors set
-  const containsErrors = errorList.length > 0
-  if(containsErrors) {
-    res.render('form-designer/make-your-form-live', { errors, errorList, containsErrors })
-  } else {
-    if(makeFormLive === 'yes') {
-      req.session.data.status = "Live"
-      res.redirect('form-is-live')
-    } else {
-      res.redirect('your-form')
-    }
-  }
-})
+/* =====
+Provide privacy and contact details
+===== */
 
 // Renders the page for creator to add privacy information link, handling validation errors
 router.post('/form-designer/provide-link-to-privacy-information', function (req, res) {
@@ -877,6 +913,8 @@ router.post('/form-designer/provide-link-to-privacy-information', function (req,
   if(containsErrors) {
     res.render('form-designer/provide-link-to-privacy-information', { errors, errorList, containsErrors })
   } else {
+    // set a success message for saving
+    req.session.data.successMessage = 'Privacy information link has been saved'
     res.redirect('your-form')
   }
 })
@@ -929,9 +967,100 @@ router.post('/form-designer/provide-support-details', function (req, res) {
   if(containsErrors) {
     res.render('form-designer/provide-support-details', { errors, errorList, containsErrors })
   } else {
+    // set a success message for saving
+    req.session.data.successMessage = 'Support contact details have been saved'
     res.redirect('your-form')
   }
 })
+
+
+/* =====
+Make your form live
+===== */
+
+// Renders the page to confirm making form Live, handling validation errors
+router.post('/form-designer/make-your-form-live', function (req, res) {
+  const errors = {};
+  const { makeFormLive } = req.session.data
+
+  // If the user haven't selected yes or no
+  if (!makeFormLive || !makeFormLive.length) {
+    errors['makeFormLive'] = {
+      text: 'Select no if you do not want to make your form live yet',
+      href: "#makeFormLive"
+    }
+  }
+  // Convert the errors into a list, so we can use it in the template
+  const errorList = Object.values(errors)
+  // If there are no errors, redirect the user to the next page
+  // otherwise, show the page again with the errors set
+  const containsErrors = errorList.length > 0
+  if(containsErrors) {
+    res.render('form-designer/make-your-form-live', { errors, errorList, containsErrors })
+  } else {
+    if(makeFormLive === 'yes') {
+      req.session.data.status = "Live"
+      res.redirect('form-is-live')
+    } else {
+      res.redirect('your-form')
+    }
+  }
+})
+
+
+/* =====
+Editing a live forms
+===== */
+
+// Renders the page which asks to confirm editing live questions/form, handling validation errors
+router.post('/form-designer/are-you-sure-you-want-to-edit-live-questions', function (req, res) {
+  const errors = {};
+  const { editLiveQuestions } = req.session.data
+
+  // If the changeFormsEmail has selection, create an error to be displayed to the user
+  if (!editLiveQuestions || !editLiveQuestions.length) {
+    errors['editLiveQuestions'] = {
+      text: 'Select no if you do not want to edit your questions',
+      href: "#editLiveQuestions"
+    }
+  }
+
+  // Convert the errors into a list, so we can use it in the template
+  const errorList = Object.values(errors)
+  // If there are no errors, redirect the user to the next page
+  // otherwise, show the page again with the errors set
+  const containsErrors = errorList.length > 0
+  if(containsErrors) {
+    res.render('form-designer/are-you-sure-you-want-to-edit-live-questions', { errors, errorList, containsErrors })
+  } else {
+    if(editLiveQuestions === 'yes') {
+      res.redirect('clear-empty')
+    } else {
+      res.redirect('your-form')
+    }
+  }
+})
+
+
+/* =====
+Pre-filled form journeys
+===== */
+
+// Uses return data for dummy "Take your pet abroad" form
+router.get('/form-designer/returning', (req, res) => {
+  req.session.data = returningSessionDataDefaultsA11y
+  res.redirect('/form-designer/your-forms')
+})
+// Uses return data for IS example "Amendment form: redundancy claim for holiday pay" form
+router.get('/form-designer/returning-again', (req, res) => {
+  req.session.data = returningSessionDataDefaults
+  res.redirect('/form-designer/your-forms')
+})
+
+
+/* =====
+Prototype functions
+===== */
 
 // Function to remove individual data items, for basic testing
 router.get('/prototype-admin/show-data', (req, res, next) => {

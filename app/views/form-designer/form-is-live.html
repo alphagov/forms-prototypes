@@ -2,6 +2,9 @@
 
 {% set pageTitle = 'Your form is live' %}
 
+{% set formTitle = data['formTitle'] or 'Apply for a juggling licence' %}
+{% set titleURL = formTitle | lower | replace(':', '') | replace('-', '') | replace(',', '') | replace(' ', '-') %}
+
 {% block pageTitle %}
   {{pageTitle}}: {{ data['formTitle'] }} - GOV.UK Forms
 {% endblock %}
@@ -10,12 +13,16 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
 
-    <span class="govuk-caption-l">{{ data['formTitle'] }}</span>
-    <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
+    {{ govukPanel({
+      titleText: pageTitle
+    }) }}
 
-    <p class="govuk-body">The URL for your form is:</p>
+    <h2 class="govuk-heading-m">Form name</h2>
+    <p class="govuk-bogy">{{ formTitle }}</p>
+
+    <h2 class="govuk-heading-m">Form URL</h2>
     <p class="govuk-body">
-      <strong id="formURL" value="https://forms.service.gov.uk/form/58/form-name">https://forms.service.gov.uk/form/58/form-name</strong>
+      <span id="formURL" value="https://forms.service.gov.uk/form/58/{{titleURL}}">https://forms.service.gov.uk/form/58/{{titleURL}}</span>
     </p>
     <button class="govuk-button govuk-button--secondary" type="button" onclick="copyURL()">
       Copy URL to clipboard
