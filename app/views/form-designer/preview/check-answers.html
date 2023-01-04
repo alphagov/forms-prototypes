@@ -53,7 +53,7 @@
                 {{data[loop.index0 + '-address-street-address'] | replace(",","") | replace(".","") | nl2br | safe}}<br>
                 {% if data[loop.index0 + '-address-country-name'] %}{{data[loop.index0 + '-address-country-name']}}{% endif %}
               {% endif %}
-            {% elif page['type'] == 'select' and not page['oneOption'] %}
+            {% elif page['type'] == 'select' and not page['listSettings'].includes('oneOption') %}
               {{data[loop.index0]|join(", ") if data[loop.index0]}}
             {% else %}
               {{data[loop.index0]}}

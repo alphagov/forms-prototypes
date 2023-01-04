@@ -8,7 +8,7 @@
   {% elif pageData['type'] === 'date' %}
     Ask for a date
   {% elif pageData['type'] === 'select' %}
-    Ask for a selection from a list
+    Create a list of options
   {% elif pageData['type'] === 'text' %}
     Ask for text information
   {% endif %}
@@ -185,49 +185,60 @@
 
         {# Selection from a list #}
         {% if pageData['type'] === 'select' %}
-          {% call govukFieldset({
-            legend: {
-              text: pageTitle,
-              isPageHeading: true,
-              classes: "govuk-fieldset__legend--l"
-            }
+          <h1 class="govuk-heading-l">{{pageTitle}}</h1>
+
+          {% call govukCheckboxes({
+            name:   "listSettings",
+            fieldset: {
+              legend: {
+              text: "List settings",
+              isPageHeading: false,
+              classes: "govuk-fieldset__legend--m"
+              }
+            },
+            items: [
+              {
+                value: "oneOption",
+                text: "People can only select one option",
+                checked: checked(namePrefix + "['listSettings']", "oneOption")
+              },
+              {
+                value: "noneOption",
+                text: "Include an option for ‘None of the above",
+                checked: checked(namePrefix + "['listSettings']", "noneOption")
+              } 
+            ]
           }) %}
-
-          <div class="govuk-checkboxes govuk-!-margin-bottom-7" data-module="govuk-checkboxes">
-            <div class="govuk-checkboxes__item">
-              <input class="govuk-checkboxes__input" id="oneOption" name="oneOption" type="checkbox" value="oneOption" {{checked(namePrefix + "['oneOption']", "oneOption")}}>
-              <label class="govuk-label govuk-checkboxes__label" for="oneOption">
-                People can only select one option
-              </label>
-            </div>
-          </div>
-
+          {% endcall %}
+          
           <div class="govuk-form{% if errors['item-list'].text %} govuk-form-group--error{% endif %}">
             <p id="option-0-error" class="govuk-error-message">
               <span class="govuk-visually-hidden">Error:</span>{{ errors['item-list'].text }}
             </p>
 
             {% set optionArray = pageData['item-list'] if (pageData['item-list']|length|int >= 2) else [{},{}] %}
-            <ol class="govuk-list">
-            {% for option in optionArray %}
-              {% set optionRow -%}option{{loop.index0}}{%- endset %}
-              <li>
-                <label class="govuk-label" for="option-{{loop.index0}}">
-                  Option {{loop.index}}
-                </label>
-                <input class="govuk-input govuk-input--width-20" id="option-{{loop.index0}}" name="[item-list]" type="text" value="{{pageData['item-list'][loop.index0]}}">
-                {{ govukButton({
-                  html: 'Remove <span class="govuk-visually-hidden">option ' + loop.index + '</span>',
-                  name: "action",
-                  value: "removeOption-" + loop.index0,
-                  classes: "govuk-button--secondary govuk-!-margin-bottom-3"
-                }) }}
-              </li>
-            {% endfor %}
-            </ol>
+            <fieldset class="govuk-fieldset">
+              <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">Add options to your list</legend>
+              <p class="govuk-hint">You can add up to 20 options</p>
+              <ul class="govuk-list">
+              {% for option in optionArray %}
+                {% set optionRow -%}option{{loop.index0}}{%- endset %}
+                <li>
+                  <label class="govuk-label" for="option-{{loop.index0}}">
+                    Option {{loop.index}}
+                  </label>
+                  <input class="govuk-input govuk-input--width-20" id="option-{{loop.index0}}" name="[item-list]" type="text" value="{{pageData['item-list'][loop.index0]}}">
+                  {{ govukButton({
+                    html: 'Remove <span class="govuk-visually-hidden">option ' + loop.index + '</span>',
+                    name: "action",
+                    value: "removeOption-" + loop.index0,
+                    classes: "govuk-button--secondary govuk-!-margin-bottom-3"
+                  }) }}
+                </li>
+              {% endfor %}
+              </ul>
+            </fieldset>
           </div>
-
-          {% endcall %}
 
           {{ govukButton({
             text: "Add another option",
@@ -235,6 +246,7 @@
             value: "addAnother",
             classes: "govuk-button--secondary"
           }) }}
+          <br>
         {% endif %}
 
         {# Text input #}

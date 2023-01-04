@@ -292,10 +292,14 @@ router.post('/form-designer/pages/:pageId(\\d+)/edit-settings', function (req, r
 
   // if select option from list and no, or 1, input is given throw error, else add input to pageData
   var itemList = req.session.data['item-list']
-  const oneOption = req.session.data.oneOption
+  var listSettings = req.session.data['listSettings']
+  // const oneOption = req.session.data.oneOption
+
+  // pageData['listSettings'] = listSettings
 
   req.session.data['item-list'] = undefined
-  req.session.data.oneOption = undefined
+  req.session.data['listSettings'] = undefined
+  // req.session.data.oneOption = undefined
 
   if (pageData['type'] === 'select') {
     const lastItem = itemList.length - 1
@@ -319,7 +323,7 @@ router.post('/form-designer/pages/:pageId(\\d+)/edit-settings', function (req, r
       }
     }
     pageData['item-list'] = itemList
-    pageData['oneOption'] = oneOption
+    pageData['listSettings'] = listSettings
   } else if (!req.session.data.input || !req.session.data.input.length) {
   // if no input is selected throw error, else add input to pageData
     if (pageData['type'] === 'personName') {
@@ -484,7 +488,7 @@ router.post('/form-designer/pages/:pageId(\\d+)/edit', function (req, res) {
     // if type is NOT select from a list, remove options list and single option selection from pageData
     if (pageData['type'] !== 'select') {
       pageData['item-list'] = undefined
-      pageData['oneOption'] = undefined
+      pageData['listSettings'] = undefined
     }
     // if type does NOT have settings page, remove input from pageData
     if ((pageData['type'] !== 'address') && (pageData['type'] !== 'personName') && (pageData['type'] !== 'date') && (pageData['type'] !== 'text')) {
