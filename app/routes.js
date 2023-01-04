@@ -293,13 +293,9 @@ router.post('/form-designer/pages/:pageId(\\d+)/edit-settings', function (req, r
   // if select option from list and no, or 1, input is given throw error, else add input to pageData
   var itemList = req.session.data['item-list']
   var listSettings = req.session.data['listSettings']
-  // const oneOption = req.session.data.oneOption
-
-  // pageData['listSettings'] = listSettings
 
   req.session.data['item-list'] = undefined
   req.session.data['listSettings'] = undefined
-  // req.session.data.oneOption = undefined
 
   if (pageData['type'] === 'select') {
     const lastItem = itemList.length - 1
