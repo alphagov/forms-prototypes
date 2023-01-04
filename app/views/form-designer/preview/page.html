@@ -379,7 +379,7 @@
               <div id="question-{{pageId}}-hint" class="govuk-hint">
                 {{ pageData['hint-text']}}
               </div>
-              <div class="govuk-radios">
+              <div class="govuk-radios" data-module="govuk-radios">
                 {% for itemRaw in itemsArray %}
                 {% set item = itemRaw | trim %}
                   <div class="govuk-radios__item">
@@ -420,7 +420,7 @@
               <div id="question-{{pageId}}-hint" class="govuk-hint">
                 {{ pageData['hint-text']}}
               </div>
-              <div class="govuk-checkboxes">
+              <div class="govuk-checkboxes" data-module="govuk-checkboxes">
                 {% if pageData['item-list'] %}
                   {% for item in itemsArray %}
                   <div class="govuk-checkboxes__item">

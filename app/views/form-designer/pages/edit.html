@@ -151,6 +151,8 @@
             value: pageData['hint-text']
           }) }}
 
+           {% if pageData['type'] != 'select' %}
+
           <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 
           {{ govukCheckboxes({
@@ -174,7 +176,9 @@
             ]
           }) }}
 
-          <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+          <hr class="govuk-section-break govuk-section-break--s govuk-section-break--visible">
+
+          {% endif %}
 
           <dl class="govuk-summary-list">
             <div class="govuk-summary-list__row">
