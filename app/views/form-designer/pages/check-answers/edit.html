@@ -1,6 +1,6 @@
 {% extends "layout-govuk-forms.html" %}
 
-{% set pageTitle = 'Add a declaration' %}
+{% set pageTitle = 'Add a declaration for people to agree to' %}
 
 {% block pageTitle %}
   {{ "Error: " if containsErrors }}{{pageTitle}} - GOV.UK Forms
@@ -46,11 +46,11 @@
         {% set pagePrefix = "p" + pageId + "-" %}
 
         <p class="govuk-body">
-          When someone has answered all the questions in your form, they will be shown a page that lists all of their answers. The page will ask them to check their answers before they submit the form.
+          When someone has answered all the questions in your form, they’ll be shown a page that lists all their answers. The page will ask them to check their answers before they submit the form.
         </p>
 
         <p class="govuk-body">
-          You can add a declaration to this page. A declaration is some content that people must confirm they understand and agree to before they submit the form.
+          You can add a declaration to this page. A declaration is a statement that people must confirm they understand and agree to before they submit the form.
         </p>
 
         <p class="govuk-body">
@@ -60,7 +60,7 @@
         <h2 class="govuk-heading-s">Example</h2>
 
         {{ govukInsetText({
-          text: "By submitting this form you are confirming that, to the best of your knowledge, the answers you are providing are correct."
+          text: "By submitting this form you’re confirming that, to the best of your knowledge, the answers you’re providing are correct."
         }) }}
 
         {{ govukCharacterCount({
