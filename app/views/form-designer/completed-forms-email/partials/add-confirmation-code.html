@@ -1,0 +1,23 @@
+<form method="post">
+{{ govukInput({
+    label: {
+    text: "Confirm the email address for completed forms",
+    classes: "govuk-label--m",
+    isPageHeading: false
+    },
+    classes: "govuk-!-width-two-thirds",
+    id: "confirmation-code",
+    name: "confirmationCode",
+    errorMessage: { text: errors['confirmationCode'].text } if errors['confirmationCode'].text
+}) }}
+
+<p class="govuk-body">
+    <a href="confirmation-code-sent" class="govuk-link">
+    Resend confirmation code
+    </a>
+<p>
+
+{{ govukButton({
+    text: "Save and continue"
+}) }}
+</form>
