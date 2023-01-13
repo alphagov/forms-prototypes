@@ -2,8 +2,10 @@
 
 {% set pageTitle = 'Email address confirmed' %}
 
+{% set formTitle = data['formTitle'] or 'Apply for a juggling licence' %}
+
 {% block pageTitle %}
-  {{pageTitle|safe}} - GOV.UK Forms
+  {{pageTitle}}: {{ data['formTitle'] }} - GOV.UK Forms
 {% endblock %}
 
 {% block beforeContent %}
@@ -13,7 +15,9 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-      <h1 class="govuk-heading-l">{{pageTitle|safe}}</h1>
+       {{ govukPanel({
+      titleText: pageTitle
+      }) }}
 
       <p class="govuk-body">
         Completed forms will be sent to {{data.formsEmail or 'email@address.com' | safe}}.
