@@ -784,7 +784,7 @@ router.get('/form-designer/preview/:pageId(\\d+)', function (req, res) {
 
 
 /* =====
-Routing for publishing steps
+Routing for setting an email steps
 ===== */
 
 // Renders the page which asks for form submissions email address, handling validation errors
@@ -813,54 +813,56 @@ router.post('/form-designer/completed-forms-email/set-completed-forms-email', fu
   if(containsErrors) {
     res.render('form-designer/completed-forms-email/set-completed-forms-email', { errors, errorList, containsErrors })
   } else {
-    if(currentFormsEmail && (currentFormsEmail != formsEmail)) {
-      res.redirect('change-email-address')
-    } else {
-      res.redirect('confirmation-code-sent')
-    }
+    res.redirect('confirmation-code-sent')
+    // if(currentFormsEmail && (currentFormsEmail != formsEmail)) {
+    //   res.redirect('change-email-address')
+    // } else {
+    //   res.redirect('confirmation-code-sent')
+    // }
   }
 })
 
 // Renders the page which asks to confirm wanting to change submission email address, handling validation errors
-router.post('/form-designer/completed-forms-email/change-email-address', function (req, res) {
-  const errors = {};
-  const { changeFormsEmail } = req.session.data
+// router.post('/form-designer/completed-forms-email/change-email-address', function (req, res) {
+//   const errors = {};
+//   const { changeFormsEmail } = req.session.data
 
-  if (changeFormsEmail === 'no') {
-    req.session.data.formsEmail = req.session.data.oldFormsEmail
-    req.session.data.currentFormsEmail = req.session.data.formsEmail
-    req.session.data.oldFormsEmail = undefined
-  }
+//   if (changeFormsEmail === 'no') {
+//     req.session.data.formsEmail = req.session.data.oldFormsEmail
+//     req.session.data.currentFormsEmail = req.session.data.formsEmail
+//     req.session.data.oldFormsEmail = undefined
+//   }
 
-  // If the changeFormsEmail has selection, create an error to be displayed to the user
-  if (!changeFormsEmail || !changeFormsEmail.length) {
-    errors['formsEmail'] = {
-      text: 'Select yes if you want to change the email address',
-      href: "#forms-email"
-    }
-  }
+//   // If the changeFormsEmail has selection, create an error to be displayed to the user
+//   if (!changeFormsEmail || !changeFormsEmail.length) {
+//     errors['formsEmail'] = {
+//       text: 'Select yes if you want to change the email address',
+//       href: "#forms-email"
+//     }
+//   }
 
-  // Convert the errors into a list, so we can use it in the template
-  const errorList = Object.values(errors)
-  // If there are no errors, redirect the user to the next page
-  // otherwise, show the page again with the errors set
-  const containsErrors = errorList.length > 0
-  if(containsErrors) {
-    res.render('form-designer/completed-forms-email/change-email-address', { errors, errorList, containsErrors })
-  } else {
-    if(changeFormsEmail === 'yes') {
-      req.session.data.confirmationCode = undefined
-      res.redirect('confirmation-code-sent')
-    } else {
-      res.redirect('set-completed-forms-email')
-    }
-  }
-})
+//   // Convert the errors into a list, so we can use it in the template
+//   const errorList = Object.values(errors)
+//   // If there are no errors, redirect the user to the next page
+//   // otherwise, show the page again with the errors set
+//   const containsErrors = errorList.length > 0
+//   if(containsErrors) {
+//     res.render('form-designer/completed-forms-email/change-email-address', { errors, errorList, containsErrors })
+//   } else {
+//     if(changeFormsEmail === 'yes') {
+//       req.session.data.confirmationCode = undefined
+//       res.redirect('confirmation-code-sent')
+//     } else {
+//       res.redirect('set-completed-forms-email')
+//     }
+//   }
+// })
 
 // Renders the page which asks for email confirmation code, handling validation errors
-router.post('/form-designer/completed-forms-email/add-confirmation-code', function (req, res) {
+router.post('/form-designer/completed-forms-email/completed-forms-email', function (req, res) {
   const errors = {};
   const { formsEmail, confirmationCode } = req.session.data
+  const { formsNewEmail, confirmationCodeNew } = req.session.data
 
   // If the formsEmail is blank, create an error to be displayed to the user
   if (!confirmationCode?.length) {
@@ -876,7 +878,7 @@ router.post('/form-designer/completed-forms-email/add-confirmation-code', functi
   // otherwise, show the page again with the errors set
   const containsErrors = errorList.length > 0
   if(containsErrors) {
-    res.render('form-designer/completed-forms-email/add-confirmation-code', { errors, errorList, containsErrors })
+    res.render('form-designer/completed-forms-email/completed-forms-email', { errors, errorList, containsErrors })
   } else {
     if(confirmationCode === '000000') {
       res.redirect('confirmation-code-expired')
