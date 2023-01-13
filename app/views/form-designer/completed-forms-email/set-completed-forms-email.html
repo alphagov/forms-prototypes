@@ -1,6 +1,7 @@
 {% extends "layout-govuk-forms.html" %}
 
 {% set pageTitle = 'Set the email address for completed forms' %}
+{% set formTitle = data['formTitle'] or 'Apply for a juggling licence' %}
 
 {% block pageTitle %}
   {{ "Error:" if containsErrors }}{{pageTitle|safe}} - GOV.UK Forms
@@ -23,6 +24,7 @@
         }) }}
       {% endif %}
 
+      <span class="govuk-caption-l">{{ data['formTitle'] }}</span>
       <h1 class="govuk-heading-l">{{pageTitle|safe}}</h1>
 
       <p class="govuk-body">
