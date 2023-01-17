@@ -157,22 +157,26 @@
               {% set emailLinkURL = 'completed-forms-email/completed-forms-email' %}
             {% endif %}
 
-            {% if not (data['formsEmail']) and not (data['confirmationCode']) %}
-              {% set emailLinkText = 'Set the email address completed forms will be sent to' %}
-            {% elif not (data['confirmationCode']) %}
-              {% set emailLinkText = 'Add confirmation code for email' %}
-            {% else %}
-              {% set emailLinkText = 'Email address for completed forms' %}
-            {% endif %}
-
             <span class="app-task-list__task-name">
               <a href="{{ emailLinkURL }}" aria-describedby="processing-email-status">
-                {{ emailLinkText }}
+                Set the email address completed forms will be sent to
               </a>
             </span>
 
+            {# Refactor this logic outside of class attribute #}
+
+            {% if not (data['formsEmail']) %}
+              {% set statusTag = 'govuk-tag--grey' %}
+              {% set statusText = 'Not started' %}
+            {% elif (data['formsEmail']) and not(data['confirmationCode']) or (data['confirmationCode'] === '000000') %}
+              {% set statusTag = 'govuk-tag--blue' %}
+              {% set statusText = 'In progress' %}
+            {% else %}
+              {% set statusText = 'Completed' %}
+            {% endif%}
+
             {% if data['status'] === 'Draft' %}
-            <strong class="govuk-tag {% if not data.formsEmail %}govuk-tag--grey{% elif data.formsEmail and ((data.confirmationCode === '000000') or not data.confirmationCode) %}govuk-tag--blue{% endif %} app-task-list__tag" id="processing-email-status">{% if data.formsEmail and ((data.confirmationCode === '000000') or not data.confirmationCode) %}In progress{% elif data.formsEmail and data.confirmationCode !== '000000' %}Completed{% else %}Not started{% endif %}</strong>
+            <strong class="govuk-tag {{ statusTag }} app-task-list__tag" id="processing-email-status">{{ statusText }}</strong>
             {% endif %}
 
             </li>
