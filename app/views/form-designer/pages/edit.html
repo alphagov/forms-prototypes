@@ -247,7 +247,7 @@
                 Only select one option
               </dt>
               <dd class="govuk-summary-list__value">
-                {{'Yes' if pageData['listSettings'].includes('oneOption') else 'No'}}
+                {{'Yes' if pageData['listSettings'] and pageData['listSettings'].includes('oneOption') else 'No'}}
               </dd>
               <dd class="govuk-summary-list__actions">
                 <a class="govuk-link govuk-link--no-visited-state" href="edit-settings#oneOption">
@@ -260,7 +260,7 @@
                 Include 'none of the above' option
               </dt>
               <dd class="govuk-summary-list__value">
-                {{'Yes' if pageData['listSettings'].includes('noneOption') else 'No'}}
+                {{'Yes' if pageData['listSettings'] and pageData['listSettings'].includes('noneOption') else 'No'}}
               </dd>
               <dd class="govuk-summary-list__actions">
                 <a class="govuk-link govuk-link--no-visited-state" href="edit-settings#noneOption">
