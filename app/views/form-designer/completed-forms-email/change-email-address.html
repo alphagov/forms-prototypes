@@ -41,25 +41,6 @@
         Completed forms will continue to be sent to {{ data['formsEmail']}} until the new email address is confirmed.
       </p>
 
-      {# <form method="post">
-
-        {{ govukInput({
-          label: {
-            text: "What email address should completed forms be sent to?",
-            classes: "govuk-label--m"
-          },
-          classes: "govuk-!-width-two-thirds",
-          id: "forms-email-new",
-          name: "formsEmailNew",
-          errorMessage: { text: errors['formsEmailNew'].text } if errors['formsEmailNew'].text
-        }) }}
-
-
-        {{ govukButton({
-          text: "Save and continue"
-        }) }}
-      </form> #}
-
       <form method="post">
 
         {{ govukInput({
