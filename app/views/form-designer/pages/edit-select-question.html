@@ -1,0 +1,86 @@
+{% extends "layout-govuk-forms.html" %}
+
+{% set pageTitle = "What's your question?" %}
+
+{% set answerType = pageData['type']|capitalize %}
+
+{% if pageData['type'] === 'select' %}
+  {% set answerType = 'Selection from a list' %}
+  {% if pageData['oneOption'] %}
+    {% set questionHint = data.selectionOneOptionQuestionHint %}
+  {% else %}
+    {% set questionHint = data.selectionMultipleOptionsQuestionHint %}
+  {% endif %}
+{% else %}
+  {% set questionHint = 'Ask a question the way you would in person. For example ‘What is your address?’' %}
+{% endif %}
+
+{% block pageTitle %}
+  {{ "Error: " if containsErrors }}{{pageTitle}} - GOV.UK Forms
+{% endblock %}
+
+{% block beforeContent %}
+{% if data.referer and ('edit-answer-type' in data.referer) %}
+    <a class="govuk-back-link" href="edit-answer-type">
+      Back
+    </a>
+  {% elif data.referer and ('settings' in data.referer) %}
+    <a class="govuk-back-link" href="edit-settings">
+      Back
+    </a>
+  {% else %}
+  <a class="govuk-back-link" href="edit-answer-type">
+    Back
+  </a>
+{% endif%}
+{% endblock %}
+
+{% block content %}
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+
+        <form id="form" class="form" method="post" novalidate>
+          {% if containsErrors %}
+          {{ govukErrorSummary({
+            titleText: "There is a problem",
+            errorList: errorList
+          }) }}
+          {% endif %}
+
+          <span class="govuk-caption-l">Question {{ pageId | int + 1 }}</span>
+
+          {% set namePrefix = "pages[" + pageIndex + "]" %}
+
+          <!-- Long question text input -->
+          {{ govukInput({
+            label: {
+               text: pageTitle,
+               classes: "govuk-label--l",
+               isPageHeading: true
+            },
+            hint: {
+              text: questionHint
+            },
+            id: "long-title",
+            name: "long-title",
+            value: pageData['long-title'],
+            errorMessage: { text: errors['long-title'].text } if errors['long-title'].text
+          }) }}
+
+          <div class="govuk-button-group">
+              {{ govukButton({
+                text: "Continue"
+              }) }}
+          </div>
+
+      </form>
+    </div>
+  </div>
+{% endblock %}
+
+{% block pageScripts %}
+<script type="text/javascript">
+  // call function from `assets/javascripts/application.js`
+  // removeSuccessNotification();
+</script>
+{% endblock %}

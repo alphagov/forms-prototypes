@@ -19,9 +19,23 @@
 {% endblock %}
 
 {% block beforeContent %}
+{% if data.referer and ('edit-answer-type' in data.referer) %}
+    <a class="govuk-back-link" href="edit-answer-type">
+      Back
+    </a>
+  {% elif data.referer and ('settings' in data.referer) %}
+    <a class="govuk-back-link" href="edit-settings">
+      Back
+    </a>
+  {% elif data.referer and ('edit-select-question' in data.referer) %}
+    <a class="govuk-back-link" href="edit-select-question">
+      Back
+    </a>
+  {% else %}
   <a class="govuk-back-link" href="edit-answer-type">
     Back
   </a>
+{% endif%}
 {% endblock %}
 
 {% block content %}
@@ -282,14 +296,14 @@
         {% endif %}
 
         {{ govukButton({
-          text: "Save and continue",
+          text: "Continue",
           name: "action",
           value: "editPage"
         }) }}
 
-        <p class="govuk-body">
+        {# <p class="govuk-body">
           <a class="govuk-link govuk-link--no-visited-state" href="../../clear-empty">Go to your questions</a>
-        </p>
+        </p> #}
 
       </form>
     </div>

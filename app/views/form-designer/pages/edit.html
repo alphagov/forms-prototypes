@@ -305,11 +305,12 @@
             name: "action",
             value: "deletePage"
           }) }}
-          {% endif %}
 
+          {# Move go to your questions link only if a question is saved #}
           <p class="govuk-body">
             <a class="govuk-link govuk-link--no-visited-state" href="../../clear-empty">Go to your questions</a>
           </p>
+          {% endif %}
 
       </form>
     </div>
