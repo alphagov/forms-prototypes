@@ -1,0 +1,148 @@
+{% extends "layout-govuk-forms.html" %}
+
+{% if data['formsEmail'] and not (data['confirmationCode']) %}
+  {% set pageTitle = 'Confirm the email address for completed forms' %}
+{% endif %}
+
+{% if data['formsEmail'] and data['confirmationCode']%}
+  {% set pageTitle = 'Email address for completed forms' %}
+{% endif %}
+
+{% if data['currentFormsEmail'] and not (data['confirmationCode']) %}
+  {% set pageTitle = 'Confirm the new email address for completed forms' %}
+{% endif %}
+
+{% set formTitle = data['formTitle'] or 'Apply for a juggling licence' %}
+
+{% block pageTitle %}
+  {{ "Error:" if containsErrors }}{{pageTitle}}: {{ data['formTitle'] }} - GOV.UK Forms
+{% endblock %}
+
+{% block beforeContent %}
+  <a class="govuk-back-link" href="../your-form" target="_parent">
+    Back to create a form
+  </a>
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      {% if data.successMessage %}
+        {{ govukNotificationBanner({
+          type: 'success',
+          text: data.successMessage
+        }) }}
+      {% endif %}
+
+      {% if containsErrors %}
+        {{ govukErrorSummary({
+          titleText: "There is a problem",
+          errorList: errorList
+        }) }}
+      {% endif %}
+
+      <span class="govuk-caption-l">{{ data['formTitle'] }}</span>
+      <h1 class="govuk-heading-l">{{pageTitle|safe}}</h1>
+
+      {% if (data['confirmationCode']) and not (data['oldFormsEmail']) %}
+        <p class="govuk-body">
+          Completed forms will be sent to this email address.
+        </p>
+
+
+      {% endif %}
+
+      {% if (data['formsEmail']) and not (data['oldFormsEmail']) %}
+
+      {{govukSummaryList({
+        rows: [
+        {
+          key: {
+            text:"Email" 
+          },
+          value: {
+            text: data['formsEmail'] or 'email@address.com' | safe
+          },
+          actions: {
+            items: [
+            {
+              href: "change-email-address",
+              text: "Change",
+              visuallyHiddenText: "email"
+            }]
+          }
+        }]
+      })
+      }}
+
+    {% endif %}
+
+    {% if (data['oldFormsEmail']) and not (data['confirmationCode']) %}
+    
+    <h2 class="govuk-heading-m">Completed forms currently go to this email address</h2>
+
+    {{govukSummaryList({
+        rows: [
+        {
+          key: {
+            text:"Current email address" 
+          },
+          value: {
+            text: data['oldFormsEmail'] or 'email@address.com' | safe
+          },
+          actions: {
+            items: [
+            {
+              href: "change-email-address",
+              text: "Change",
+              visuallyHiddenText: "email"
+            }]
+          }
+        }]
+      })
+    }}
+
+    <h2 class="govuk-heading-m">New email address to be confirmed</h2>
+
+    {{govukSummaryList({
+        rows: [
+        {
+          key: {
+            text:"Pending email address" 
+          },
+          value: {
+            text: data['currentFormsEmail'] or 'email@address.com' | safe
+          },
+          actions: {
+            items: [
+            {
+              href: "cancel-new-email-change",
+              text: "Cancel",
+              visuallyHiddenText: "email"
+            }]
+          }
+        }]
+      })
+     }}
+
+    <p class="govuk-body">
+    A confirmation code has been sent to {{ data['currentFormsEmail']}}. Enter the code to confirm the new email address.
+    </p>
+
+    {% endif %}
+
+    {# If email not confirmed show confirmation code part #}
+
+      {% if not (data['confirmationCode']) %}
+        {% include './partials/add-confirmation-code.html' %}
+      {% else %}
+      <p class="govuk-body">
+        <a href="../your-form" class="govuk-link">Back to create a form</a>
+      </p>
+      {% endif %}
+    </div>
+  </div>
+
+
+{% endblock %}

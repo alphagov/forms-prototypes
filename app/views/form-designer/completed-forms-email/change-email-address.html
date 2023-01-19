@@ -1,9 +1,10 @@
 {% extends "layout-govuk-forms.html" %}
 
-{% set pageTitle = 'Are you sure you want to change this email address?' %}
+{% set pageTitle = 'Change the email address for completed forms' %}
+{% set formTitle = data['formTitle'] or 'Apply for a juggling licence' %}
 
 {% block pageTitle %}
-  {{ "Error:" if containsErrors }}{{pageTitle|safe}} - GOV.UK Forms
+  {{ "Error:" if containsErrors }}{{pageTitle}}: {{ data['formTitle'] }} - GOV.UK Forms
 {% endblock %}
 
 {% block beforeContent %}
@@ -21,39 +22,42 @@
         }) }}
       {% endif %}
 
+      <span class="govuk-caption-l">{{ data['formTitle'] }}</span>
       <h1 class="govuk-heading-l">{{pageTitle|safe}}</h1>
 
       <p class="govuk-body">
-        Completed forms will be sent to {{data.formsEmail or 'first.email@address.com' | safe}} instead of {{data.oldFormsEmail or 'second.email@address.com' | safe}}.
+        Provide a new email address for completed forms to be sent to for processing. It should be a shared government email inbox.
+      </p>
+
+      <p class="govuk-body">
+        To make sure the email address you provide is correct, we’ll send an email to it with a confirmation code and your email address.
+      </p>
+
+      <p class="govuk-body">
+        The recipient will be asked to give you the code. You'll then need to enter the code to confirm the email address.
+      </p>
+
+      <p class="govuk-body">
+        Completed forms will continue to be sent to {{ data['formsEmail']}} until the new email address is confirmed.
       </p>
 
       <form method="post">
 
-        {{ govukRadios({
-          idPrefix: "change-email-yesno",
-          name: "changeFormsEmail",
-          fieldset: {
-            legend: {
-              text: pageTitle|safe,
-              classes: "govuk-visually-hidden"
-            }
+        {{ govukInput({
+          label: {
+            text: "What email address should completed forms be sent to?",
+            classes: "govuk-label--m"
           },
-          items: [
-            {
-              value: "yes",
-              text: "Yes",
-              checked: data['change-email-yesno'] == 'yes'
-            },
-            {
-              value: "no",
-              text: "No",
-              checked: data['change-email-yesno'] == 'no'
-            }
-          ],
-          errorMessage: { text: errors['changeFormsEmail'].text } if errors['changeFormsEmail'].text
+          classes: "govuk-!-width-two-thirds",
+          id: "forms-email",
+          name: "formsEmail",
+          errorMessage: { text: errors['formsEmail'].text } if errors['formsEmail'].text
         }) }}
 
-        <button type="submit" class="govuk-button">Continue</button>
+
+        {{ govukButton({
+          text: "Save and continue"
+        }) }}
       </form>
     </div>
   </div>

@@ -149,31 +149,36 @@
           </h2>
           <ul class="app-task-list__items">
             <li class="app-task-list__item">
-              <span class="app-task-list__task-name">
-                <a href="completed-forms-email/set-completed-forms-email" aria-describedby="processing-email-status">
-                  Set the email address completed forms will be sent to
-                </a>
-              </span>
-              {% if data['status'] === 'Draft' %}
-              <strong class="govuk-tag {% if not data.formsEmail %}govuk-tag--grey{% elif data.formsEmail and ((data.confirmationCode === '000000') or not data.confirmationCode) %}govuk-tag--blue{% endif %} app-task-list__tag" id="processing-email-status">{% if data.formsEmail and ((data.confirmationCode === '000000') or not data.confirmationCode) %}In progress{% elif data.formsEmail and data.confirmationCode !== '000000' %}Completed{% else %}Not started{% endif %}</strong>
-              {% endif %}
-              {% if data.oldFormsEmail or data.formsEmail %}
-              <br>
-              <span class="app-task-list__hint govuk-hint">
-                Completed forms will be sent to: <br>
-                {{data.oldFormsEmail or data.formsEmail}}
-              </span>
-              {% endif %}
-            </li>
-            <li class="app-task-list__item">
-              <span class="app-task-list__task-name">
-                {% if data['formsEmail'] or data['status'] === 'Live' %}<a href="completed-forms-email/add-confirmation-code" aria-describedby="verified-email-status">{% endif %}
-                  Enter the email address confirmation code
-                {% if data['formsEmail'] or data['status'] === 'Live' %}</a>{% endif %}
-              </span>
-              {% if data['status'] === 'Draft' %}
-              <strong class="govuk-tag {% if (not data['formsEmail']) or (not data['confirmationCode']) %}govuk-tag--grey{% elif data['confirmationCode'] === '000000' %}govuk-tag--blue{% endif %} app-task-list__tag" id="verified-email-status">{% if not data['formsEmail'] %}Cannot start yet{% elif not data['confirmationCode'] %}Not started{% elif data['confirmationCode'] === '000000' %}In progress{% else %}Completed{% endif %}</strong>
-              {% endif %}
+            {# Show a different link and status based on email and confirmation code presence #}
+
+            {% if not (data['formsEmail']) %}
+              {% set emailLinkURL = 'completed-forms-email/set-completed-forms-email' %}
+            {% else %}
+              {% set emailLinkURL = 'completed-forms-email/completed-forms-email' %}
+            {% endif %}
+
+            <span class="app-task-list__task-name">
+              <a href="{{ emailLinkURL }}" aria-describedby="processing-email-status">
+                Set the email address completed forms will be sent to
+              </a>
+            </span>
+
+            {# Refactor this logic outside of class attribute #}
+
+            {% if not (data['formsEmail']) %}
+              {% set statusTag = 'govuk-tag--grey' %}
+              {% set statusText = 'Not started' %}
+            {% elif (data['formsEmail']) and not(data['confirmationCode']) or (data['confirmationCode'] === '000000') %}
+              {% set statusTag = 'govuk-tag--blue' %}
+              {% set statusText = 'In progress' %}
+            {% else %}
+              {% set statusText = 'Completed' %}
+            {% endif%}
+
+            {% if data['status'] === 'Draft' %}
+            <strong class="govuk-tag {{ statusTag }} app-task-list__tag" id="processing-email-status">{{ statusText }}</strong>
+            {% endif %}
+
             </li>
           </ul>
         </li>

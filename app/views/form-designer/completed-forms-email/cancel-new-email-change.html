@@ -1,0 +1,65 @@
+{% extends "layout-govuk-forms.html" %}
+
+{% set pageTitle = 'Cancel the pending email address change' %}
+{% set formTitle = data['formTitle'] or 'Apply for a juggling licence' %}
+
+{% block pageTitle %}
+  {{ "Error:" if containsErrors }}{{pageTitle}}: {{ data['formTitle'] }} - GOV.UK Forms
+{% endblock %}
+
+{% block beforeContent %}
+  <a class="govuk-back-link" href="{{data['referer']}}">Back</a>
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      {% if containsErrors %}
+        {{ govukErrorSummary({
+          titleText: "There is a problem",
+          errorList: errorList
+        }) }}
+      {% endif %}
+
+      <span class="govuk-caption-l">{{ data['formTitle'] }}</span>
+      <h1 class="govuk-heading-l">{{pageTitle|safe}}</h1>
+
+      <p class="govuk-body">
+        You will not be able to confirm {{ data['currentFormsEmail'] }}. Completed forms will continue to go to {{ data['oldFormsEmail']}}.
+      </p>
+
+      <form method="post">
+        {{ govukRadios({
+          idPrefix: "cancel-new-email",
+          classess: "govuk-radios--inline",
+          name: "cancelNewEmail",
+          fieldset: {
+            legend: {
+              text: "Are you sure you want to cancel?",
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          items: [
+            {
+              value: "yes",
+              text: "Yes",
+              checked: data['cancel-new-email'] == 'yes'
+            },
+            {
+              value: "no",
+              text: "No",
+              checked: data['cancel-new-email'] == 'no'
+            }
+          ],
+          errorMessage: { text: errors['cancelNewEmail'].text } if errors['cancelNewEmail'].text
+        }) }}
+
+        <button type="submit" class="govuk-button">Continue</button>
+
+      </form>
+    </div>
+  </div>
+
+
+{% endblock %}
