@@ -20,7 +20,11 @@
       }) }}
 
       <p class="govuk-body">
-        We've sent a confirmation code and your email address to {{data.formsEmail or 'email@address.com' | safe}}.
+        We've sent a confirmation code and your email address to:
+      </p>
+      
+      <p class="govuk-body">
+        {{data.formsEmail or 'email@address.com' | safe}}
       </p>
 
       <p class="govuk-body">
