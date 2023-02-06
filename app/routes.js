@@ -76,7 +76,7 @@ router.post('/form-designer/name-your-form', function (req, res) {
     res.render('form-designer/name-your-form', { errors, errorList, containsErrors })
   } else {
     // set a success message for saving
-    req.session.data.successMessage = 'Your new form name has been saved'
+    req.session.data.successMessage = 'Your form name has been saved'
     res.redirect('your-form')
   }
 })
@@ -132,8 +132,8 @@ router.post('/form-designer/your-questions', function (req, res) {
   const { isQuestionsComplete } = req.session.data
 
   // content to display in notification banners
-  var saved = 'Questions have been saved'
-  var savedAndComplete = 'Questions have been saved and marked as complete'
+  var saved = 'Your questions have been saved'
+  var savedAndComplete = 'Your questions have been saved and marked as complete'
 
   const errors = {}
   // if no option is selected, then error
@@ -600,7 +600,7 @@ router.get('/form-designer/pages/:pageId/reorder/:direction', function (req, re
   pages.splice(newArrayPosition, 0, pageToMove)
 
   // content to display in notification banners
-  var successMessage = '‘' + pageToMove['long-title'] + '’' + ' has been moved ' + direction + ' to number ' + (parseInt(newArrayPosition) + 1)
+  var successMessage = '‘' + pageToMove['long-title'] + '’' + ' has moved ' + direction + ' to number ' + (parseInt(newArrayPosition) + 1)
 
   req.session.data.pages = pages.map(setPageIndexToArrayPosition)
 
@@ -627,8 +627,8 @@ router.post('/form-designer/pages/check-answers/edit', function (req, res) {
   const declarationContent = req.session.data.checkAnswersDeclaration
 
   // content to display in notification banners
-  var saved = 'Declaration has been saved'
-  var savedAndComplete = 'Declaration has been saved and marked as complete'
+  var saved = 'Your declaration has been saved'
+  var savedAndComplete = 'Your declaration has been saved and marked as complete'
 
   // if no selection made, then throw an error
   if (!complete || !complete.length) {
@@ -687,7 +687,7 @@ router.post('/form-designer/pages/confirmation/edit', function (req, res) {
   const whatHappensNext = req.session.data.confirmationNext
 
   // content to display in notification banners
-  var saved = 'What happens next has been saved'
+  var saved = 'Your information about what happens next has been saved'
 
   // if no selection made, then throw an error
   if (!whatHappensNext || !whatHappensNext.length) {
@@ -945,7 +945,7 @@ router.post('/form-designer/provide-link-to-privacy-information', function (req,
     res.render('form-designer/provide-link-to-privacy-information', { errors, errorList, containsErrors })
   } else {
     // set a success message for saving
-    req.session.data.successMessage = 'Privacy information link has been saved'
+    req.session.data.successMessage = 'Your privacy information link has been saved'
     res.redirect('your-form')
   }
 })
@@ -999,7 +999,7 @@ router.post('/form-designer/provide-support-details', function (req, res) {
     res.render('form-designer/provide-support-details', { errors, errorList, containsErrors })
   } else {
     // set a success message for saving
-    req.session.data.successMessage = 'Support contact details have been saved'
+    req.session.data.successMessage = 'Your contact details for support have been saved'
     res.redirect('your-form')
   }
 })
