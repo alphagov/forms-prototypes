@@ -253,14 +253,73 @@ router.post('/form-designer/pages/:pageId(\\d+)/edit-answer-type', function (req
       // date route
       return res.redirect('edit-settings')
     } else if (type === 'select') {
-      // selection from a list route
-      return res.redirect('edit-settings')
+      // what's your question route
+      return res.redirect('edit-select-question')
     } else if (type === 'text') {
       // text route
       return res.redirect('edit-settings')
     } else {
       return res.redirect('edit')
     }
+  }
+})
+
+// Edit a user-created answer type settings
+router.get('/form-designer/pages/:pageId(\\d+)/edit-select-question', function (req, res) {
+  var pageId = parseInt(req.params.pageId, 10)
+  var pageIndex = pageId
+  var pageData = req.session.data.pages[pageIndex]
+  return res.render('form-designer/pages/edit-select-question', {
+    pageId: pageId,
+    pageIndex: pageIndex,
+    pageData: pageData
+  })
+})
+
+// Route to what is your question page for select from list answer type
+router.post('/form-designer/pages/:pageId(\\d+)/edit-select-question', function (req, res) {
+  var pageId = parseInt(req.params.pageId, 10)
+  var pageIndex = pageId
+  var pageData = req.session.data.pages[pageIndex]
+
+  const type = req.session.data.type
+  req.session.data.type = undefined
+
+  const complete = req.session.data.isDeclarationComplete
+
+  const errors = {};
+  const title = req.session.data['long-title']
+
+  // if no question text given, then throw an error
+  if (!title || !title.length) {
+    errors['long-title'] = {
+      text: 'Enter your question',
+      href: "#long-title"
+    }
+  // otherwise add question text to pageData
+  } else {
+    pageData['long-title'] = req.session.data['long-title']
+  }
+  req.session.data['long-title'] = undefined
+
+  // Convert the errors into a list, so we can use it in the template
+  const errorList = Object.values(errors)
+  // If there are no errors, redirect the user to the next page
+  // otherwise, show the page again with the errors set
+  const containsErrors = errorList.length > 0
+  // If there are errors on the page, redisplay it with the errors
+  if(containsErrors) {
+    return res.render('form-designer/pages/edit-select-question', {
+      pageId: pageId,
+      pageIndex: pageIndex,
+      pageData: pageData,
+      errors,
+      errorList,
+      containsErrors
+    })
+  } else {
+    const nextPageId = req.session.data.pages.length
+    res.redirect('edit-settings')
   }
 })
 
