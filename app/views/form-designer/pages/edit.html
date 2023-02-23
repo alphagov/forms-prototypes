@@ -7,7 +7,7 @@
   {% set questionHint = data.personNameQuestionHint %}
   {% set hintHint = data.personNameHintHint %}
   {% set answerType = 'Person’s name' %}
-  {% set inputTypeTitle = data.personNameInputType %}
+  {% set inputTypeTitle = data.personNameInputTypeTitle %}
   {% if pageData['input'] === 'single-field' %}
     {% set inputType = 'Full name in a single field' %}
   {% elif pageData['input'] === 'multi-field' %}
@@ -34,6 +34,7 @@
 {% elif pageData['type'] === 'address' %}
   {% set questionHint = data.addressQuestionHint %}
   {% set hintHint = data.addressHintHint %}
+  {% set inputTypeTitle = data.addressInputTypeTitle %}
   {% if ('uk-address' in pageData['input']) and ('international-address' in pageData['input']) %}
     {% set inputType = 'UK and international addresses' %}
   {% elif 'uk-address' in pageData['input'] %}
@@ -42,14 +43,15 @@
     {% set inputType = 'International addresses' %}
   {% endif %}
 {% elif pageData['type'] === 'date' %}
+  {% set inputTypeTitle = data.dateOfBirthInputTypeTitle %}
   {% if pageData['input'] === 'yes' %}
     {% set questionHint = data.dobQuestionHint %}
     {% set hintHint = data.dobHintHint %}
-    {% set inputType = 'Date of birth' %}
+    {% set inputType = 'Yes' %}
   {% else %}
     {% set questionHint = data.dateQuestionHint %}
     {% set hintHint = data.dateHintHint %}
-    {% set inputType = 'Other date' %}
+    {% set inputType = 'No' %}
   {% endif %}
 {% elif pageData['type'] === 'select' %}
   {% set answerType = 'Selection from a list' %}
@@ -64,6 +66,7 @@
   {% set questionHint = data.numberQuestionHint %}
   {% set hintHint = data.numberHintHint %}
 {% elif pageData['type'] === 'text' %}
+  {% set inputTypeTitle = data.textLengthInputTypeTitle %}
   {% if pageData['input'] === 'single-line-input' %}
     {% set questionHint = data.textSingleLineQuestionHint %}
     {% set hintHint = data.textSingleLineHintHint %}
@@ -76,6 +79,7 @@
 {% else %}
   {% set questionHint = 'Ask a question the way you would in person. For example ‘What is your address?’' %}
   {% set hintHint = "Use hint text to help people answer the question. For example, to explain the format the answer should be in, or where to find the information you’ve asked for." %}
+  {% set inputTypeTitle = 'Input type' %}
 {% endif %}
 
 {% block pageTitle %}
@@ -198,7 +202,7 @@
             {% if pageData['input'] %}
             <div class="govuk-summary-list__row">
               <dt class="govuk-summary-list__key">
-                {% if pageData['type'] === 'personName' %}{{inputTypeTitle or 'Input type'}}{% endif %}
+                {{inputTypeTitle}}
               </dt>
               <dd class="govuk-summary-list__value">
                 {{inputType}}

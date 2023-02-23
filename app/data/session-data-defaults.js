@@ -33,7 +33,7 @@ module.exports = {
 
   personNameQuestionHint: 'Ask the question the way you would in person. For example, ‘What’s your name?’',
   personNameHintHint: 'Use hint text to help people answer the question. For example, you might need to ask people to enter their name as it’s written on an official document such as a passport or driving licence.',
-  personNameInputType: 'Name fields',
+  personNameInputTypeTitle: 'Name fields',
 
   companyNameQuestionHint: 'Ask the question the way you would in person. For example, ‘What’s the name of the organisation?’',
   companyNameHintHint: 'Use hint text to help people answer the question. For example, you might need to ask people to enter the registered name of their company.',
@@ -49,11 +49,13 @@ module.exports = {
 
   addressQuestionHint: 'Ask the question the way you would in person. For example, ‘What’s your address?’',
   addressHintHint: 'You could use hint text to tell people how you will use their address. For example, ‘We’ll send your licence to this address.’',
+  addressInputTypeTitle: 'Address type',
 
   dobQuestionHint: 'Ask the question the way you would in person. For example, ‘What’s your date of birth?’',
   dobHintHint: 'Use hint text to help people answer the question. For a date of birth question you could use ‘For example, 27 3 1998’.',
   dateQuestionHint: 'Ask the question the way you would in person. For example, ‘What date was your passport issued?’',
   dateHintHint: 'Use hint text to help people answer the question. For a date question you could use ‘For example, 27 3 2007’.',
+  dateOfBirthInputTypeTitle: 'Date of birth',
 
   selectionOneOptionQuestionHint: 'Ask the question the way you would in person. For example, ‘What country do you live in?’',
   selectionOneOptionHintHint: 'Use hint text to help people answer the question. For a question where people can only select one answer you might want to use ‘Select one option’.',
@@ -67,5 +69,6 @@ module.exports = {
   textSingleLineHintHint: 'Use hint text to help people answer the question. For example, you could say what format the answer should be in or where to find it.',
 
   textMultipleLinesQuestionHint: 'Ask the question the way you would in person. For example, ‘Why do you want to apply for this role?’',
-  textMultipleLinesHintHint: 'Use hint text to help people answer the question. For example, you could give a bit more detail about the information you need.'
+  textMultipleLinesHintHint: 'Use hint text to help people answer the question. For example, you could give a bit more detail about the information you need.',
+  textLengthInputTypeTitle: 'Length'
 }
