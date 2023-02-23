@@ -7,6 +7,7 @@
   {% set questionHint = data.personNameQuestionHint %}
   {% set hintHint = data.personNameHintHint %}
   {% set answerType = 'Person’s name' %}
+  {% set inputTypeTitle = data.personNameInputType %}
   {% if pageData['input'] === 'single-field' %}
     {% set inputType = 'Full name in a single field' %}
   {% elif pageData['input'] === 'multi-field' %}
@@ -197,7 +198,7 @@
             {% if pageData['input'] %}
             <div class="govuk-summary-list__row">
               <dt class="govuk-summary-list__key">
-                Input type
+                {% if pageData['type'] === 'personName' %}{{inputTypeTitle or 'Input type'}}{% endif %}
               </dt>
               <dd class="govuk-summary-list__value">
                 {{inputType}}

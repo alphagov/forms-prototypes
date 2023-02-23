@@ -33,6 +33,7 @@ module.exports = {
 
   personNameQuestionHint: 'Ask the question the way you would in person. For example, ‘What’s your name?’',
   personNameHintHint: 'Use hint text to help people answer the question. For example, you might need to ask people to enter their name as it’s written on an official document such as a passport or driving licence.',
+  personNameInputType: 'Name fields',
 
   companyNameQuestionHint: 'Ask the question the way you would in person. For example, ‘What’s the name of the organisation?’',
   companyNameHintHint: 'Use hint text to help people answer the question. For example, you might need to ask people to enter the registered name of their company.',
