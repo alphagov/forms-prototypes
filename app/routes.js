@@ -1,7 +1,13 @@
-const express = require('express')
-const router = express.Router()
+//
+// For guidance on how to create routes see:
+// https://prototype-kit.service.gov.uk/docs/create-routes
+//
 
-// Add your routes here - above the module.exports line
+const govukPrototypeKit = require('govuk-prototype-kit')
+const router = govukPrototypeKit.requests.setupRouter()
+
+// Add your routes here
+
 
 const path = require('path')
 const sessionDataDefaults = require('./data/session-data-defaults.js')
@@ -1183,4 +1189,3 @@ router.get('/prototype-admin/show-data', (req, res, next) => {
   next()
 })
 
-module.exports = router
