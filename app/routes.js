@@ -4,10 +4,31 @@ const router = express.Router()
 // Add your routes here - above the module.exports line
 
 const path = require('path')
-const { setPageIndexToArrayPosition } = require('../lib/utils.js')
 const sessionDataDefaults = require('./data/session-data-defaults.js')
 const returningSessionDataDefaults = require('./data/returning-session-data-defaults')
 const returningSessionDataDefaultsA11y = require('./data/returning-session-data-defaults-a11y')
+
+// Markdown support
+const markdown = require('nunjucks-markdown')
+const marked = require('marked')
+
+// One time setup
+let setupDone = false
+router.use((req, res, next) => {
+  if (setupDone) return next()
+
+  console.log('routes.js: doing one time setup')
+  markdown.register(req.app.get('nunjucksEnv'), marked.parse)
+  setupDone = true
+  next()
+})
+
+// Used for setting the pageIndex in req.session.data.pages to match the order of the pages.
+// Should be used after any operation that reorders pages.
+setPageIndexToArrayPosition = (page, index) => {
+  page.pageIndex = index
+  return page
+}
 
 // ROUTES FOR EXAMPLE FORMS
 

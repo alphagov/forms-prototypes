@@ -326,15 +326,6 @@ app.use(function (err, req, res, next) {
   res.send(err.message)
 })
 
-// CUSTOM CODE HERE
-
-// Markdown support
-const markdown = require('nunjucks-markdown')
-const marked = require('marked')
-markdown.register(nunjucksAppEnv, marked.parse)
-
-// ================
-
 console.log('\nGOV.UK Prototype Kit v' + releaseVersion)
 console.log('\nNOTICE: the kit is for building prototypes, do not use it for production services.')
 
