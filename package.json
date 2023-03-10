@@ -12,6 +12,7 @@
     "jquery": "^3.6.4",
     "marked": "^4.2.12",
     "notifications-node-client": "^6.0.0",
+    "nunjucks": "file:node_modules/govuk-prototype-kit/node_modules/nunjucks",
     "nunjucks-markdown": "^2.0.1"
   }
 }
