@@ -50,15 +50,13 @@ if (useV6) {
 // Set up configuration variables
 var releaseVersion = packageJson.version
 var env = utils.getNodeEnv()
-var useAutoStoreData =
-  process.env.USE_AUTO_STORE_DATA || config.useAutoStoreData
-var useCookieSessionStore =
-  process.env.USE_COOKIE_SESSION_STORE || config.useCookieSessionStore
+var useAutoStoreData = process.env.USE_AUTO_STORE_DATA || config.useAutoStoreData
+var useCookieSessionStore = process.env.USE_COOKIE_SESSION_STORE || config.useCookieSessionStore
 var useHttps = process.env.USE_HTTPS || config.useHttps
 
 useHttps = useHttps.toLowerCase()
 
-var useDocumentation = config.useDocumentation === 'true'
+var useDocumentation = (config.useDocumentation === 'true')
 
 // Promo mode redirects the root to /docs - so our landing page is docs when published on heroku
 var promoMode = process.env.PROMO_MODE || 'false'
@@ -69,7 +67,7 @@ if (!useDocumentation) promoMode = 'false'
 
 // Force HTTPS on production. Do this before using basicAuth to avoid
 // asking for username/password twice (for `http`, then `https`).
-var isSecure = env === 'production' && useHttps === 'true'
+var isSecure = (env === 'production' && useHttps === 'true')
 if (isSecure) {
   app.use(utils.forceHttps)
   app.set('trust proxy', 1) // needed for secure cookies on heroku
@@ -77,8 +75,8 @@ if (isSecure) {
 
 // Add variables that are available in all views
 app.locals.asset_path = '/public/'
-app.locals.useAutoStoreData = useAutoStoreData === 'true'
-app.locals.useCookieSessionStore = useCookieSessionStore === 'true'
+app.locals.useAutoStoreData = (useAutoStoreData === 'true')
+app.locals.useCookieSessionStore = (useCookieSessionStore === 'true')
 app.locals.promoMode = promoMode
 app.locals.releaseVersion = 'v' + releaseVersion
 app.locals.serviceName = config.serviceName
@@ -89,10 +87,8 @@ app.locals.extensionConfig = extensions.getAppConfig()
 app.use(cookieParser())
 
 // Session uses service name to avoid clashes with other prototypes
-const sessionName =
-  'govuk-prototype-kit-' +
-  Buffer.from(config.serviceName, 'utf8').toString('hex')
-const sessionHours = promoMode === 'true' ? 20 : 4
+const sessionName = 'govuk-prototype-kit-' + (Buffer.from(config.serviceName, 'utf8')).toString('hex')
+const sessionHours = (promoMode === 'true') ? 20 : 4
 const sessionOptions = {
   secret: sessionName,
   cookie: {
@@ -103,25 +99,17 @@ const sessionOptions = {
 
 // Support session data in cookie or memory
 if (useCookieSessionStore === 'true') {
-  app.use(
-    sessionInCookie(
-      Object.assign(sessionOptions, {
-        cookieName: sessionName,
-        proxy: true,
-        requestKey: 'session'
-      })
-    )
-  )
+  app.use(sessionInCookie(Object.assign(sessionOptions, {
+    cookieName: sessionName,
+    proxy: true,
+    requestKey: 'session'
+  })))
 } else {
-  app.use(
-    sessionInMemory(
-      Object.assign(sessionOptions, {
-        name: sessionName,
-        resave: false,
-        saveUninitialized: false
-      })
-    )
-  )
+  app.use(sessionInMemory(Object.assign(sessionOptions, {
+    name: sessionName,
+    resave: false,
+    saveUninitialized: false
+  })))
 }
 
 // Authentication middleware must be loaded before other middleware such as
@@ -158,10 +146,7 @@ app.set('view engine', 'html')
 app.use('/public', express.static(path.join(__dirname, '/public')))
 
 // Serve govuk-frontend in from node_modules (so not to break pre-extensions prototype kits)
-app.use(
-  '/node_modules/govuk-frontend',
-  express.static(path.join(__dirname, '/node_modules/govuk-frontend'))
-)
+app.use('/node_modules/govuk-frontend', express.static(path.join(__dirname, '/node_modules/govuk-frontend')))
 
 // Set up documentation app
 if (useDocumentation) {
@@ -173,10 +158,7 @@ if (useDocumentation) {
   ]
 
   nunjucksConfig.express = documentationApp
-  var nunjucksDocumentationEnv = nunjucks.configure(
-    documentationViews,
-    nunjucksConfig
-  )
+  var nunjucksDocumentationEnv = nunjucks.configure(documentationViews, nunjucksConfig)
   // Nunjucks filters
   utils.addNunjucksFilters(nunjucksDocumentationEnv)
 
@@ -186,11 +168,9 @@ if (useDocumentation) {
 
 // Support for parsing data in POSTs
 app.use(bodyParser.json())
-app.use(
-  bodyParser.urlencoded({
-    extended: true
-  })
-)
+app.use(bodyParser.urlencoded({
+  extended: true
+}))
 
 // Set up v6 app for backwards compatibility
 if (useV6) {
@@ -209,25 +189,9 @@ if (useV6) {
   v6App.set('view engine', 'html')
 
   // Backward compatibility with GOV.UK Elements
-  app.use(
-    '/public/v6/',
-    express.static(
-      path.join(__dirname, '/node_modules/govuk_template_jinja/assets')
-    )
-  )
-  app.use(
-    '/public/v6/',
-    express.static(path.join(__dirname, '/node_modules/govuk_frontend_toolkit'))
-  )
-  app.use(
-    '/public/v6/javascripts/govuk/',
-    express.static(
-      path.join(
-        __dirname,
-        '/node_modules/govuk_frontend_toolkit/javascripts/govuk/'
-      )
-    )
-  )
+  app.use('/public/v6/', express.static(path.join(__dirname, '/node_modules/govuk_template_jinja/assets')))
+  app.use('/public/v6/', express.static(path.join(__dirname, '/node_modules/govuk_frontend_toolkit')))
+  app.use('/public/v6/javascripts/govuk/', express.static(path.join(__dirname, '/node_modules/govuk_frontend_toolkit/javascripts/govuk/')))
 }
 
 // Automatically store all data users enter
@@ -273,11 +237,9 @@ if (promoMode === 'true') {
 }
 
 // Load routes (found in app/routes.js)
-if (typeof routes !== 'function') {
+if (typeof (routes) !== 'function') {
   console.log(routes.bind)
-  console.log(
-    'Warning: the use of bind in routes is deprecated - please check the Prototype Kit documentation for writing routes.'
-  )
+  console.log('Warning: the use of bind in routes is deprecated - please check the Prototype Kit documentation for writing routes.')
   routes.bind(app)
 } else {
   app.use('/', routes)
@@ -343,11 +305,10 @@ if (useV6) {
 
 // Redirect all POSTs to GETs - this allows users to use POST for autoStoreData
 app.post(/^\/([^.]+)$/, function (req, res) {
-  res.redirect(
-    url.format({
-      pathname: '/' + req.params[0],
-      query: req.query
-    })
+  res.redirect(url.format({
+    pathname: '/' + req.params[0],
+    query: req.query
+  })
   )
 })
 
@@ -375,8 +336,6 @@ markdown.register(nunjucksAppEnv, marked.parse)
 // ================
 
 console.log('\nGOV.UK Prototype Kit v' + releaseVersion)
-console.log(
-  '\nNOTICE: the kit is for building prototypes, do not use it for production services.'
-)
+console.log('\nNOTICE: the kit is for building prototypes, do not use it for production services.')
 
 module.exports = app

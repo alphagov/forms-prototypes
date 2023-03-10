@@ -1,10 +1,13 @@
-const path = require('path')
 const express = require('express')
+const router = express.Router()
+
+// Add your routes here - above the module.exports line
+
+const path = require('path')
 const { setPageIndexToArrayPosition } = require('../lib/utils.js')
 const sessionDataDefaults = require('./data/session-data-defaults.js')
 const returningSessionDataDefaults = require('./data/returning-session-data-defaults')
 const returningSessionDataDefaultsA11y = require('./data/returning-session-data-defaults-a11y')
-const router = express.Router()
 
 // ROUTES FOR EXAMPLE FORMS
 
