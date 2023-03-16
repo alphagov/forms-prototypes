@@ -15,19 +15,11 @@ const returningSessionDataDefaults = require('./data/returning-session-data-defa
 const returningSessionDataDefaultsA11y = require('./data/returning-session-data-defaults-a11y')
 
 // Markdown support
-const markdown = require('nunjucks-markdown')
+const markdown = require('@lfdebrux/nunjucks-markdown')
 const marked = require('marked')
 
 // One time setup
-let setupDone = false
-router.use((req, res, next) => {
-  if (setupDone) return next()
-
-  console.log('routes.js: doing one time setup')
-  markdown.register(req.app.get('nunjucksEnv'), marked.parse)
-  setupDone = true
-  next()
-})
+router.use(markdown.setupPlugin(marked.parse))
 
 // Used for setting the pageIndex in req.session.data.pages to match the order of the pages.
 // Should be used after any operation that reorders pages.

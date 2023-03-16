@@ -7,12 +7,11 @@
   "name": "govuk-prototype-kit",
   "dependencies": {
     "@govuk-prototype-kit/step-by-step": "^2.1.0",
+    "@lfdebrux/nunjucks-markdown": "github:lfdebrux/govuk-prototype-kit-nunjucks-markdown-plugin#v0.0.1",
     "govuk-frontend": "^4.5.0",
     "govuk-prototype-kit": "^13.4.0",
     "jquery": "^3.6.4",
     "marked": "^4.2.12",
-    "notifications-node-client": "^6.0.0",
-    "nunjucks": "file:node_modules/govuk-prototype-kit/node_modules/nunjucks",
-    "nunjucks-markdown": "^2.0.1"
+    "notifications-node-client": "^6.0.0"
   }
 }
