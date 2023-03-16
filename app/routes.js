@@ -1,10 +1,32 @@
+//
+// For guidance on how to create routes see:
+// https://prototype-kit.service.gov.uk/docs/create-routes
+//
+
+const govukPrototypeKit = require('govuk-prototype-kit')
+const router = govukPrototypeKit.requests.setupRouter()
+
+// Add your routes here
+
+
 const path = require('path')
-const express = require('express')
-const { setPageIndexToArrayPosition } = require('../lib/utils.js')
 const sessionDataDefaults = require('./data/session-data-defaults.js')
 const returningSessionDataDefaults = require('./data/returning-session-data-defaults')
 const returningSessionDataDefaultsA11y = require('./data/returning-session-data-defaults-a11y')
-const router = express.Router()
+
+// Markdown support
+const markdown = require('@lfdebrux/nunjucks-markdown')
+const marked = require('marked')
+
+// One time setup
+router.use(markdown.setupPlugin(marked.parse))
+
+// Used for setting the pageIndex in req.session.data.pages to match the order of the pages.
+// Should be used after any operation that reorders pages.
+setPageIndexToArrayPosition = (page, index) => {
+  page.pageIndex = index
+  return page
+}
 
 // ROUTES FOR EXAMPLE FORMS
 
@@ -1159,4 +1181,3 @@ router.get('/prototype-admin/show-data', (req, res, next) => {
   next()
 })
 
-module.exports = router
