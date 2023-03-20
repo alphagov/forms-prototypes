@@ -1,6 +1,6 @@
 # Forms prototypes
 
-Prototypes from the GOV.UK Forms team in the Government Digital Service.
+Prototypes from the GOV.UK Forms team in the Government Digital Service (GDS).
 
 Built with the [GOV.UK Prototype Kit](https://govuk-prototype-kit.herokuapp.com/docs)
 
