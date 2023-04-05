@@ -9,11 +9,11 @@
   {% set answerType = 'Person’s name' %}
   {% set inputTypeTitle = data.personNameInputTypeTitle %}
   {% if pageData['input'] === 'single-field' %}
-    {% set inputType = 'Full name in a single field' %}
+    {% set inputType = 'Full name in a single box' %}
   {% elif pageData['input'] === 'multi-field' %}
-    {% set inputType = 'First and last names in separate fields' %}
+    {% set inputType = 'First and last names in separate boxes' %}
   {% elif pageData['input'] === 'multi-field-plus' %}
-    {% set inputType = 'First, middle and last names in separate fields' %}
+    {% set inputType = 'First, middle and last names in separate boxes' %}
   {% endif %}
 {% elif pageData['type'] === 'companyName' %}
   {% set questionHint = data.companyNameQuestionHint %}

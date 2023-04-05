@@ -63,17 +63,17 @@
           set radioItems = [
             {
               value: "single-field",
-              text: "Full name in a single field",
+              text: "Full name in a single box",
               checked: checked(namePrefix + "['input']", "single-field")
             },
             {
               value: "multi-field",
-              text: "First and last names in separate fields",
+              text: "First and last names in separate boxes",
               checked: checked(namePrefix + "['input']", "multi-field")
             },
             {
               value: "multi-field-plus",
-              text: "First, middle and last names in separate fields",
+              text: "First, middle and last names in separate boxes",
               hint: {
                 text: 'Middle name will not be mandatory'
               },
@@ -92,7 +92,7 @@
             }
           },
           hint: {
-            text: 'A single name field is easiest for people to complete - only ask for names separately if you need the individual parts of the name.'
+            text: 'A single box for the full name is easiest for people to complete - only ask for names separately if you need the individual parts of the name.'
           },
           items: radioItems,
           errorMessage: { text: errors['input'].text } if errors['input'].text
