@@ -39,7 +39,7 @@ module.exports = {
   companyNameHintHint: 'Use hint text to help people answer the question. For example, you might need to ask people to enter the registered name of their company.',
 
   emailQuestionHint: 'Ask the question the way you would in person. For example, ‘What’s your email address?’',
-  emailHintHint: 'You could use hint text to tell people how you will use their email address. For example, ‘We’ll only use your email address to contact you about your application.’',
+  emailHintHint: 'You could use hint text to tell people how you’ll use their email address. For example, ‘We’ll only use your email address to contact you about your application.’',
 
   phoneQuestionHint: 'Ask the question the way you would in person. For example, ‘What’s your phone number?’',
   phoneHintHint: 'Use hint text to help people answer the question. For example, ‘You can provide either a home or mobile phone number.’',
@@ -48,7 +48,7 @@ module.exports = {
   ninoHintHint: 'Use hint text to help people answer the question. For example, ‘It’s on your National Insurance card, benefit letter, payslip or P60. For example, QQ 12 34 56 C.’',
 
   addressQuestionHint: 'Ask the question the way you would in person. For example, ‘What’s your address?’',
-  addressHintHint: 'You could use hint text to tell people how you will use their address. For example, ‘We’ll send your licence to this address.’',
+  addressHintHint: 'You could use hint text to tell people how you’ll use their address. For example, ‘We’ll send your licence to this address.’',
   addressInputTypeTitle: 'Address type',
 
   dobQuestionHint: 'Ask the question the way you would in person. For example, ‘What’s your date of birth?’',
