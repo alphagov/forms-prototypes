@@ -1,13 +1,10 @@
+// This file is from https://github.com/alphagov/forms-product-page/blob/main/source/stylesheets/site.css.scss
 $govuk-new-link-styles: true;
 $govuk-global-styles: true;
 
 @import "../../../node_modules/govuk-frontend/govuk/all";
 @import "product/responsive-embed";
 @import "product/sub-navigation";
-// @import "patterns/moj-messages";
-// @import "product/modules/responsive-embed.css";
-// @import "patterns/govuk-publishing-document-list";
-// @import "./product/modules/sub-navigation";
 
 @import "product/borders";
 @import "./product/breadcrumbs";
