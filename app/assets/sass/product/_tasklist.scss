@@ -1,0 +1,50 @@
+// https://github.com/alphagov/pay-product-page/raw/master/source/stylesheets/modules/_task-list.scss
+// Task list pattern
+
+// Spacing to the left of the task list
+$task-list-indent: 35px;
+
+.task-list {
+  margin-top: govuk-spacing(6);
+  padding: 0;
+  @include govuk-media-query(tablet) {
+    margin-top: govuk-spacing(9);
+  }
+}
+
+.task-list__item {
+  list-style-type: none;
+}
+
+.task-list__heading {
+  display: table;
+
+  @include govuk-font($size: 24, $weight: bold);
+  padding-bottom: govuk-spacing(1);
+}
+
+.task-list-section-number {
+  display: table-cell;
+  padding-right: govuk-spacing(1);
+
+  @include govuk-media-query(tablet) {
+    min-width: $task-list-indent;
+    padding-right: 0;
+  }
+}
+
+.task-list__details {
+  margin-bottom: govuk-spacing(6);
+
+  @include govuk-media-query(tablet) {
+    margin-bottom: govuk-spacing(9);
+  }
+
+  @include govuk-media-query(tablet) {
+    padding-left: $task-list-indent;
+  }
+}
+
+.psp-list {
+  list-style-type: none;
+}
