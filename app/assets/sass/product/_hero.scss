@@ -1,0 +1,145 @@
+/**
+ * Hero Component
+ *
+ * Notes:
+ * - If using together with a breadcrumb in a masthead, add the --breaded
+ *   modifier to reduce top padding.
+ * - There are two images included – one is shown on mobile (hero__inline-image),
+ *   and the other on tablet and above. Both are optional.
+ *
+ * Example Usage:
+ *
+ *  <div class="hero hero--breaded">
+ *    <div class="hero__content">
+ *      <div class="hero__body">
+ *        <h1 class="hero__title">Duis aute irure dolor in reprehenderit</h1>
+ *        <div class="hero__inline-image">
+ *          <img src="//placehold.it/646x492/005ea5/ffffff?text=A+supporting+image" alt="" role="presentation">
+ *        </div>
+ *        <p class="hero__description">
+ *          Lorem ipsum dolor sit amet, consectetur adipisicing elit
+ *        </p>
+ *        <a href="#" role="button" class="hero-button">
+ *          Do this thing
+ *        </a>
+ *        <span class="hero-alternative-action">
+ *          or <a href="#">do another thing</a> because reasons
+ *        </span>
+ *        <p>Pellentesque commodo arcu in sollicitudin lacinia. Vivamus lacus nibh, maximus nec laoreet eget, condimentum vel mi.</p>
+ *      </div>
+ *      <div class="hero__aside-image">
+ *        <img src="//placehold.it/646x492/005ea5/ffffff?text=A+supporting+image" alt="" role="presentation">
+ *      </div>
+ *    </div>
+ *  </div>
+*/
+
+.hero {
+  @extend .govuk-width-container;
+  margin-top: -10px;
+  margin-bottom: 0;
+  color: govuk-colour("white");
+  padding: 0 0 govuk-spacing(2) 0;
+
+  &--breaded {
+    padding-top: 0;
+  }
+
+  .govuk-breadcrumbs__list-item::before {
+    border-color: govuk-colour("white");
+  }
+
+  .govuk-link:link,
+  .govuk-link:visited {
+    color: govuk-colour("white");
+  }
+
+  .govuk-link:hover,
+  .govuk-link:active {
+    color: govuk-colour("white");
+  }
+
+  .govuk-link:focus {
+    color: $govuk-text-colour;
+  }
+
+  &__title {
+    @include govuk-font($size: 48, $weight: bold);
+  }
+
+  &__description {
+    @include govuk-font($size: 24);
+    color: govuk-colour("white");
+  }
+
+  &__paragraph {
+    @include govuk-font($size: 19);
+    color: govuk-colour("white");
+  }
+
+  &__title,
+  &__description {
+    margin-top: govuk-spacing(3);
+    margin-bottom: govuk-spacing(3);
+
+    @include govuk-media-query(tablet) {
+      margin-bottom: govuk-spacing(6);
+    }
+  }
+
+  &__inline-image {
+    text-align: center;
+
+    @include govuk-media-query(tablet) {
+      display: none;
+      visibility: hidden;
+    }
+
+    img {
+      width: 100%;
+      max-width: 320px;
+    }
+  }
+
+  &__aside-image {
+    display: none;
+    visibility: hidden;
+
+    @include govuk-media-query(tablet) {
+      display: block;
+      visibility: visible;
+    }
+
+    img {
+      max-width: 100%;
+      margin-top: govuk-spacing(3);
+    }
+  }
+
+  &__content {
+    @extend .govuk-grid-row;
+  }
+
+  &__body,
+  &__aside-image {
+    float: left;
+    width: govuk-grid-width(full);
+    box-sizing: border-box;
+    padding: 0 govuk-spacing(3);
+
+    a:link,
+    a:visited {
+      font-weight: bold;
+    }
+  }
+
+  @include govuk-media-query($from: tablet) {
+    &__body {
+      width: govuk-grid-width(two-thirds);
+    }
+
+    &__aside-image {
+      width: govuk-grid-width(one-third);
+    }
+  }
+}

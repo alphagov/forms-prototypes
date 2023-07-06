@@ -1,0 +1,33 @@
+// Related Items Component
+//
+// Example Usage:
+//
+// <aside class="related-items">
+//   <h2 class="related-items__title">Related content</h2>
+//   <ul class="related-items__list">
+//     <li><a href="#">A link</a></li>
+//     <li><a href="#">Another link</a></li>
+//     <li><a href="#">A third link</a></li>
+//   </ul>
+// </aside>
+
+.related-items {
+  border-top: 10px solid $govuk-brand-colour;;
+  margin: govuk-spacing(4) 0;
+
+  &__title {
+    @include govuk-font($size: 24, $weight: bold);
+    margin-bottom: govuk-spacing(2);
+  }
+
+  &__list {
+    @include govuk-font($size: 16);
+    list-style: none;
+    padding-left: 0;
+    margin: 0 0 govuk-spacing(3);
+
+    li {
+      margin-bottom: govuk-spacing(2);
+    }
+  }
+}

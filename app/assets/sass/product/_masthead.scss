@@ -1,0 +1,17 @@
+/**
+ * Masthead Component
+ *
+ * Notes:
+ * - It's big and it's blue
+ *
+ * Example Usage:
+ *
+ * <div class="masthead">
+ *  [...]
+ * </div>
+ */
+
+.masthead {
+  background-color: $govuk-brand-colour;
+  margin-bottom: govuk-spacing(8);
+}

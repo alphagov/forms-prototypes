@@ -1,0 +1,28 @@
+// Hero 'Alternative Action' Component
+//
+// To be used after a hero-button where there is an alternative CTA – for
+// example 'or _sign in_ if you have an account already'.
+//
+// Will never wrap over two lines, it'll break onto a new line if the entire
+// CTA doesn't fit after the button.
+//
+// Example Usage:
+//
+// <a href="#" role="button" class="hero-button">
+//   Do this thing
+// </a>
+// <span class="hero-alternative-action">
+//   or <a href="#">do another thing</a> because reasons
+// </span>
+
+.hero-alternative-action {
+  @include govuk-font($size: 19);
+  margin-bottom: govuk-spacing(3);
+  position: relative;
+  display: inline-block;
+
+  @include govuk-media-query(tablet) {
+    white-space: nowrap;
+    top: govuk-spacing(2);
+  }
+}

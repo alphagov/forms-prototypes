@@ -1,0 +1,40 @@
+.sub-navigation {
+  margin-bottom: govuk-spacing(6);
+
+  ol,
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  &__item {
+    @include govuk-font($size: 19);
+
+    border-bottom: 1px $govuk-border-colour solid;
+    display: block;
+    padding: govuk-spacing(2) 0;
+
+    a:link {
+      text-decoration: none;
+    }
+
+    a:hover,
+    a:active {
+      text-decoration: underline;
+    }
+
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+
+  &__item--active {
+    @include govuk-font($size: 19, $weight: bold);
+
+    a:link,
+    a:visited {
+      color: $govuk-text-colour;
+    }
+  }
+}

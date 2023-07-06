@@ -1,0 +1,222 @@
+// This file is from https://github.com/alphagov/forms-product-page/blob/main/source/stylesheets/site.css.scss
+$govuk-new-link-styles: true;
+$govuk-global-styles: true;
+
+@import "../../../node_modules/govuk-frontend/govuk/all";
+@import "product/responsive-embed";
+@import "product/sub-navigation";
+
+@import "product/borders";
+@import "./product/breadcrumbs";
+@import "./product/header";
+@import "./product/hero";
+@import "./product/hero-alternative-action";
+@import "./product/image";
+@import "./product/inverted-button";
+@import "./product/masthead";
+@import "./product/navigation";
+@import "./product/related-items";
+@import "./product/responsive-embed";
+@import "./product/sub-navigation";
+
+.masthead {
+  background-color: #1d70b8;
+  margin-bottom: 50px; }
+
+@media (min-width: 415px) {
+  div.feature-row {
+    display: flex;
+    align-items: stretch;
+  }
+
+  div.feature-column {
+    display: flex;
+    align-items: stretch;
+  }
+}
+
+div.feature-panel {
+  text-align: left;
+  border: 3px solid #f3f2f1;
+  box-sizing: border-box;
+}
+
+@media (min-width: 769px) {
+  div.feature-panel {
+    min-height: 250px;
+  }
+}
+
+@media (max-width: 768px) {
+  div.feature-panel {
+  }
+  div.hero__aside-image {
+    display: none;
+  }
+}
+
+// scss-lint:disable IdSelector
+#main-content {
+  display: block;
+  margin-bottom: govuk-spacing(9);
+}
+// scss-lint:enable IdSelector
+.hero-alternative-action {
+  @include govuk-font($size: 19);
+  margin-bottom: govuk-spacing(3);
+  position: relative;
+}
+
+.hero-breadcrumb-banner {
+  background-color: $govuk-brand-colour;
+}
+
+@media (max-width: 732px) {
+  #index-hero-body {
+    .govuk-button {
+      margin-bottom: 12px;
+    }
+    .hero-alternative-action {
+      display: block;
+      margin-left: 0;
+      margin-bottom: 20px;
+      top: 0;
+    }
+  }
+}
+
+@include govuk-media-query($from: tablet) {
+  #index-hero-body {
+    .govuk-button {
+      margin-bottom: govuk-spacing(2);
+      margin-right: govuk-spacing(1);
+    }
+  }
+}
+
+// scss-lint:disable IdSelector
+#main-content {
+  display: block;
+  margin-bottom: govuk-spacing(9);
+}
+// scss-lint:enable IdSelector
+.hero-alternative-action {
+  @include govuk-font($size: 19);
+  margin-bottom: govuk-spacing(3);
+  position: relative;
+}
+
+.hero-breadcrumb-banner {
+  background-color: $govuk-brand-colour;
+}
+
+#main-content.govuk-main-wrapper-evaluate {
+  padding-top: 60px;
+  margin-bottom: 10px;
+
+  .sub-navigation__item {
+    font-size: 16px;
+    line-height: 1.25;
+    padding-bottom: 5px;
+  }
+
+  .sub-navigation__item:last-child {
+    border-bottom: 1px $govuk-border-colour solid;
+  }
+
+  .sub_navigation_list_1 .sub-navigation__item {
+    padding: 4px 0 7px 20px;
+  }
+
+  .sub_navigation_list_2 .sub-navigation__item {
+    padding: 4px 0 7px 0;
+  }
+
+  .govuk-grid-column-one-third {
+    padding: 0 15px;
+    width: 100%;
+  }
+
+  .govuk-list-decide {
+    padding-left: 32px;
+  }
+
+  .evaluate-contact-us-decide {
+    border-top: 1px $govuk-border-colour solid;
+    padding-top: 40px;
+  }
+
+  .evaluate-last-paragraph-decide {
+    padding-bottom: 30px;
+  }
+
+  .evaluate-border-bottom-paragraph-decide {
+    padding-bottom: 45px;
+    margin-bottom: 35px;
+    border-bottom: 1px $govuk-border-colour solid;
+  }
+}
+
+@media (min-width: 640px) {
+  #main-content.govuk-main-wrapper-evaluate .govuk-grid-column-one-third {
+    width: 25%;
+  }
+  #main-content.govuk-main-wrapper-evaluate.govuk-main-wrapper-documentation
+    .govuk-grid-column-one-third {
+    width: 32%;
+  }
+}
+
+.documentation-design-recommendations {
+  .documentation-contents-item {
+    &:before {
+      content: "—";
+      margin-left: -20px;
+      color: #505a5f;
+    }
+    margin-bottom: 5px;
+    a {
+      margin-left: 5px;
+    }
+  }
+  .documentation-contents {
+    list-style-type: none;
+  }
+}
+
+.app-back-to-top {
+  margin-top: govuk-spacing(4);
+  margin-bottom: govuk-spacing(6);
+  margin-left: 15px;
+}
+
+@include govuk-media-query($from: tablet) {
+  .app-back-to-top {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    margin-top: auto;
+    margin-bottom: govuk-spacing(8);
+  }
+
+  .js-enabled .app-back-to-top--fixed {
+    position: fixed;
+    top: calc(100% - #{govuk-spacing(8)});
+    bottom: auto;
+    left: auto;
+  }
+
+  .js-enabled .app-back-to-top--hidden .app-back-to-top__link {
+    @include govuk-visually-hidden-focusable;
+  }
+}
+
+.app-back-to-top__icon {
+  display: inline-block;
+  width: 0.8em;
+  height: 1em;
+  margin-top: -(govuk-spacing(1));
+  margin-right: govuk-spacing(2);
+  vertical-align: middle;
+}
+
