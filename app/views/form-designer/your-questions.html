@@ -67,8 +67,8 @@
           classes: "govuk-!-margin-bottom-7"
         }) }}
         {% if data.pages.length %}
-        <a class="govuk-link" href="/form-designer/preview/0" target="_blank" rel="noopener noreferrer">
-          Preview this form in a new tab
+        <a class="govuk-link" href="/form-designer/preview/0" rel="noopener noreferrer">
+          Preview this form
         </a>
         {% endif %}
       </div>
@@ -94,6 +94,7 @@
           {{loop.index}}
         </dt>
         <dd class="govuk-summary-list__value">
+          {% if page['page-name'] %}{{page['page-name']}}<br>{% endif %}
           <!--Q{{page["pageIndex"] | int + 1}}.-->
           {{questionTitle}}
         </dd>
@@ -116,7 +117,7 @@
               }) }}
               {% endif %}
               <div>
-                <a class="govuk-link govuk-link--no-visited-state" href="pages/{{ page.pageIndex | int }}/edit">
+                <a class="govuk-link govuk-link--no-visited-state" href="pages/{{ page.pageIndex | int }}/check-question">
                   Edit<span class="govuk-visually-hidden"> {{questionTitle}}</span>
                 </a>
               </div>

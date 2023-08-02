@@ -20,19 +20,15 @@
 {% endblock %}
 
 {% block beforeContent %}
-{% if data.referer and ('edit-answer-type' in data.referer) %}
-    <a class="govuk-back-link" href="edit-answer-type">
-      Back
-    </a>
-  {% elif data.referer and ('settings' in data.referer) %}
-    <a class="govuk-back-link" href="edit-settings">
+  {% if 'check-question' in previousPage %}
+    <a class="govuk-back-link" href="check-question" target="_parent">
       Back
     </a>
   {% else %}
-  <a class="govuk-back-link" href="edit-answer-type">
-    Back
-  </a>
-{% endif%}
+    <a class="govuk-back-link" href="javascript:window.history.back()">
+      Back
+    </a>
+  {% endif %}
 {% endblock %}
 
 {% block content %}

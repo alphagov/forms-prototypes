@@ -16,7 +16,14 @@ const returningSessionDataDefaultsA11y = require('./data/returning-session-data-
 
 // Markdown support
 const markdown = require('@lfdebrux/nunjucks-markdown')
-const marked = require('marked')
+
+// Used to add govuk classes to additional guidance markdown for end user view (Runner)
+const { marked } = require('marked');
+const GovukHTMLRenderer = require('govuk-markdown')
+
+marked.setOptions({
+  renderer: new GovukHTMLRenderer()
+})
 
 // One time setup
 router.use(markdown.setupPlugin(marked.parse))
@@ -209,6 +216,8 @@ router.get('/form-designer/pages/:pageId(\\d+)/edit-answer-type', function (req,
   var pageIndex = pageId
   var pageData = req.session.data.pages[pageIndex]
 
+  var previousPage = req.session.data.referer
+
   var successMessage = req.session.data.successMessage
   req.session.data.successMessage = undefined
 
@@ -216,7 +225,8 @@ router.get('/form-designer/pages/:pageId(\\d+)/edit-answer-type', function (req,
     pageId: pageId,
     pageIndex: pageIndex,
     pageData: pageData,
-    successMessage
+    successMessage,
+    previousPage: previousPage
   })
 })
 
@@ -291,10 +301,14 @@ router.get('/form-designer/pages/:pageId(\\d+)/edit-select-question', function (
   var pageId = parseInt(req.params.pageId, 10)
   var pageIndex = pageId
   var pageData = req.session.data.pages[pageIndex]
+
+  var previousPage = req.session.data.referer
+
   return res.render('form-designer/pages/edit-select-question', {
     pageId: pageId,
     pageIndex: pageIndex,
-    pageData: pageData
+    pageData: pageData,
+    previousPage: previousPage
   })
 })
 
@@ -350,10 +364,14 @@ router.get('/form-designer/pages/:pageId(\\d+)/edit-settings', function (req, re
   var pageId = parseInt(req.params.pageId, 10)
   var pageIndex = pageId
   var pageData = req.session.data.pages[pageIndex]
+
+  var previousPage = req.session.data.referer
+
   return res.render('form-designer/pages/edit-settings', {
     pageId: pageId,
     pageIndex: pageIndex,
-    pageData: pageData
+    pageData: pageData,
+    previousPage: previousPage
   })
 })
 
@@ -500,15 +518,13 @@ router.get('/form-designer/pages/:pageId(\\d+)/edit', function (req, res) {
   var pageIndex = pageId
   var pageData = req.session.data.pages[pageIndex]
 
-  var successMessage = req.session.data.successMessage
-  req.session.data.successMessage = undefined
+  var previousPage = req.session.data.referer
 
   return res.render('form-designer/pages/edit', {
     pageId: pageId,
     pageIndex: pageIndex,
     pageData: pageData,
-    successMessage,
-    editingExistingQuestion: req.session.data.pages[pageIndex]['long-title'] !== undefined
+    previousPage: previousPage
   })
 })
 
@@ -518,15 +534,11 @@ router.post('/form-designer/pages/:pageId(\\d+)/edit', function (req, res) {
   // clear the action so it doesn't change the next page load
   req.session.data.action = undefined
 
+  var additionalGuidance = req.session.data['additional-guidance']
+
   var pageId = parseInt(req.params.pageId, 10)
   var pageIndex = pageId
   var pageData = req.session.data.pages[pageIndex]
-
-  var editNextPageId = pageId + 1
-  // No need to validate if the user wants to delete this page anyway
-  if (action === 'deletePage') {
-    return res.redirect(`delete`)
-  }
 
   const errors = {};
   const title = req.session.data['long-title']
@@ -549,32 +561,17 @@ router.post('/form-designer/pages/:pageId(\\d+)/edit', function (req, res) {
   }
   req.session.data['hint-text'] = undefined
 
+  // add additional guidance answer, add it to pageData
+  if (req.session.data['additional-guidance']) {
+    pageData['additional-guidance'] = req.session.data['additional-guidance']
+  }
+  req.session.data['additional-guidance'] = undefined
+
   // if question is made optional, add it to pageData
   if (req.session.data['questionOptional']) {
     pageData['questionOptional'] = req.session.data['questionOptional']
   }
   req.session.data['questionOptional'] = undefined
-
-  // if pageData exists, clear out any unused selections to reduce errors
-  if (pageData) {
-    // if type is NOT person’s name, remove title from pageData
-    if (pageData['type'] !== 'personName') {
-      pageData['title'] = undefined
-    }
-    // if type is NOT select from a list, remove options list and single option selection from pageData
-    if (pageData['type'] !== 'select') {
-      pageData['item-list'] = undefined
-      pageData['listSettings'] = undefined
-    }
-    // if type does NOT have settings page, remove input from pageData
-    if ((pageData['type'] !== 'address') && (pageData['type'] !== 'personName') && (pageData['type'] !== 'date') && (pageData['type'] !== 'text')) {
-      pageData['input'] = undefined
-    }
-  }
-
-  // content to display in notification banners
-  var saved = 'Your changes have been saved'
-  var saveAndContinue = 'Question ' + (parseInt(pageId) + 1) + ' has been saved'
 
   // Convert the errors into a list, so we can use it in the template
   const errorList = Object.values(errors)
@@ -592,13 +589,154 @@ router.post('/form-designer/pages/:pageId(\\d+)/edit', function (req, res) {
       errorList,
       containsErrors
     })
+  } else if (additionalGuidance == 'Yes') {
+    return res.redirect(`additional-guidance`)
+  } else {
+    return res.redirect(`check-question`)
+  }
+})
+
+// Add additional guidance
+router.get('/form-designer/pages/:pageId(\\d+)/additional-guidance', function (req, res) {
+  var pageId = parseInt(req.params.pageId, 10)
+  var pageIndex = pageId
+  var pageData = req.session.data.pages[pageIndex]
+
+  var previousPage = req.session.data.referer
+
+  return res.render('form-designer/pages/additional-guidance', {
+    pageId: pageId,
+    pageIndex: pageIndex,
+    pageData: pageData,
+    previousPage: previousPage
+  })
+})
+
+// Add additional guidance text route
+router.post('/form-designer/pages/:pageId(\\d+)/additional-guidance', function (req, res) {
+  var pageId = parseInt(req.params.pageId, 10)
+  var pageIndex = pageId
+  var pageData = req.session.data.pages[pageIndex]
+
+  const errors = {};
+  const guidanceText = req.session.data['additional-guidance-text']
+
+  // if no guidance text given, then throw an error
+  if (!guidanceText || !guidanceText.length) {
+    errors['additional-guidance-text'] = {
+      text: 'Enter guidance text',
+      href: "#additional-guidance-text"
+    }
+  // otherwise add guidance text to pageData
+  } else {
+    pageData['additional-guidance-text'] = req.session.data['additional-guidance-text']
+  }
+  req.session.data['additional-guidance-text'] = undefined
+
+  // Convert the errors into a list, so we can use it in the template
+  const errorList = Object.values(errors)
+  // If there are no errors, redirect the user to the next page
+  // otherwise, show the page again with the errors set
+  const containsErrors = errorList.length > 0
+  // If there are errors on the page, redisplay it with the errors
+  if(containsErrors) {
+    return res.render('form-designer/pages/additional-guidance', {
+      pageId: pageId,
+      pageIndex: pageIndex,
+      pageData: pageData,
+      errors,
+      errorList,
+      containsErrors
+    })
+  } else {
+    res.redirect('check-question')
+  }
+})
+
+
+// Check your questions - CYA
+router.get('/form-designer/pages/:pageId(\\d+)/check-question', function (req, res) {
+  var pageId = parseInt(req.params.pageId, 10)
+  var pageIndex = pageId
+  var pageData = req.session.data.pages[pageIndex]
+
+  var previousPage = req.session.data.referer
+
+  var successMessage = req.session.data.successMessage
+  req.session.data.successMessage = undefined
+
+  return res.render('form-designer/pages/check-question', {
+    pageId: pageId,
+    pageIndex: pageIndex,
+    pageData: pageData,
+    previousPage: previousPage,
+    successMessage,
+    editingExistingQuestion: req.session.data.pages[pageIndex]['long-title'] !== undefined
+  })
+})
+
+// Route used to find correct next step - edit question page > answer type
+router.post('/form-designer/pages/:pageId(\\d+)/check-question', function (req, res) {
+  var action = req.session.data.action
+  // clear the action so it doesn't change the next page load
+  req.session.data.action = undefined
+
+  var pageId = parseInt(req.params.pageId, 10)
+  var pageIndex = pageId
+  var pageData = req.session.data.pages[pageIndex]
+
+  var previousPage = req.session.data.referer
+
+  var editNextPageId = pageId + 1
+  // No need to validate if the user wants to delete this page anyway
+  if (action === 'deletePage') {
+    return res.redirect(`delete`)
+  }
+
+  const errors = {};
+  const pageName = req.session.data['page-name']
+
+  // if no question text given, then throw an error
+  if (pageData['additional-guidance'] == 'Yes') {
+    if (!pageName || !pageName.length) {
+      errors['page-name'] = {
+        text: 'Enter a page heading',
+        href: "#page-name"
+      }
+    // otherwise add question text to pageData
+    } else {
+      pageData['page-name'] = req.session.data['page-name']
+    }
+    req.session.data['page-name'] = undefined
+  }
+
+  // content to display in notification banners
+  var saved = 'Your changes have been saved'
+  var saveAndContinue = 'Question ' + (parseInt(pageId) + 1) + ' has been saved'
+
+  // Convert the errors into a list, so we can use it in the template
+  const errorList = Object.values(errors)
+  // If there are no errors, redirect the user to the next page
+  // otherwise, show the page again with the errors set
+  const containsErrors = errorList.length > 0
+  // If there are errors on the page, redisplay it with the errors
+  if(containsErrors) {
+    return res.render('form-designer/pages/check-question', {
+      pageId: pageId,
+      pageIndex: pageIndex,
+      pageData: pageData,
+      previousPage: previousPage,
+      errors,
+      errorList,
+      containsErrors
+    })
   } else if (action == 'createNextPage') {
     req.session.data.highestPageId = parseInt(req.session.data.highestPageId) + 1
     req.session.data.successMessage = saveAndContinue
     return res.redirect(`/form-designer/pages/new`)
   } else if (action == 'editNextPage') {
     req.session.data.successMessage = saveAndContinue
-    return res.redirect(`/form-designer/pages/${editNextPageId}/edit`)
+    return res.redirect(`/form-designer/pages/${editNextPageId}/check-question`)
   } else {
     req.session.data.successMessage = saved
     return res.redirect(req.path)
@@ -854,11 +992,14 @@ router.get('/form-designer/preview/:pageId(\\d+)', function (req, res) {
   var pageData = req.session.data.pages[pageIndex]
   const isLastQuestionPage = pageIndex === (req.session.data.pages.length - 1)
 
+  var markdownContent = pageData['additional-guidance-text']
+
   res.render('form-designer/preview/page', {
     pageId: pageId,
     pageIndex: pageIndex,
     pageData: pageData,
-    isLastQuestionPage
+    isLastQuestionPage,
+    markdownContent: markdownContent
   })
 })
 

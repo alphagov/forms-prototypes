@@ -6,55 +6,30 @@
 {% if pageData['type'] === 'personName' %}
   {% set questionHint = data.personNameQuestionHint %}
   {% set hintHint = data.personNameHintHint %}
-  {% set answerType = 'Person’s name' %}
-  {% set inputTypeTitle = data.personNameInputTypeTitle %}
-  {% if pageData['input'] === 'single-field' %}
-    {% set inputType = 'Full name in a single box' %}
-  {% elif pageData['input'] === 'multi-field' %}
-    {% set inputType = 'First and last names in separate boxes' %}
-  {% elif pageData['input'] === 'multi-field-plus' %}
-    {% set inputType = 'First, middle and last names in separate boxes' %}
-  {% endif %}
 {% elif pageData['type'] === 'companyName' %}
   {% set questionHint = data.companyNameQuestionHint %}
   {% set hintHint = data.companyNameHintHint %}
-  {% set answerType = 'Company or organisation’s name' %}
 {% elif pageData['type'] === 'email' %}
   {% set questionHint = data.emailQuestionHint %}
   {% set hintHint = data.emailHintHint %}
-  {% set answerType = 'Email address' %}
 {% elif pageData['type'] === 'phone' %}
   {% set questionHint = data.phoneQuestionHint %}
   {% set hintHint = data.phoneHintHint %}
-  {% set answerType = 'Phone number' %}
 {% elif pageData['type'] === 'national-insurance-number' %}
   {% set questionHint = data.ninoQuestionHint %}
   {% set hintHint = data.ninoHintHint %}
-  {% set answerType = 'National Insurance number' %}
 {% elif pageData['type'] === 'address' %}
   {% set questionHint = data.addressQuestionHint %}
   {% set hintHint = data.addressHintHint %}
-  {% set inputTypeTitle = data.addressInputTypeTitle %}
-  {% if ('uk-address' in pageData['input']) and ('international-address' in pageData['input']) %}
-    {% set inputType = 'UK and international addresses' %}
-  {% elif 'uk-address' in pageData['input'] %}
-    {% set inputType = 'UK addresses' %}
-  {% elif 'international-address' in pageData['input'] %}
-    {% set inputType = 'International addresses' %}
-  {% endif %}
 {% elif pageData['type'] === 'date' %}
-  {% set inputTypeTitle = data.dateOfBirthInputTypeTitle %}
   {% if pageData['input'] === 'yes' %}
     {% set questionHint = data.dobQuestionHint %}
     {% set hintHint = data.dobHintHint %}
-    {% set inputType = 'Yes' %}
   {% else %}
     {% set questionHint = data.dateQuestionHint %}
     {% set hintHint = data.dateHintHint %}
-    {% set inputType = 'No' %}
   {% endif %}
 {% elif pageData['type'] === 'select' %}
-  {% set answerType = 'Selection from a list' %}
   {% if pageData['oneOption'] %}
     {% set questionHint = data.selectionOneOptionQuestionHint %}
     {% set hintHint = data.selectionOneOptionHintHint %}
@@ -66,20 +41,16 @@
   {% set questionHint = data.numberQuestionHint %}
   {% set hintHint = data.numberHintHint %}
 {% elif pageData['type'] === 'text' %}
-  {% set inputTypeTitle = data.textLengthInputTypeTitle %}
   {% if pageData['input'] === 'single-line-input' %}
     {% set questionHint = data.textSingleLineQuestionHint %}
     {% set hintHint = data.textSingleLineHintHint %}
-    {% set inputType = 'A single line of text' %}
   {% else %}
     {% set questionHint = data.textMultipleLinesQuestionHint %}
     {% set hintHint = data.textMultipleLinesHintHint %}
-    {% set inputType = 'More than a single line of text' %}
   {% endif %}
 {% else %}
   {% set questionHint = 'Ask a question the way you would in person. For example ‘What is your address?’' %}
   {% set hintHint = "Use hint text to help people answer the question. For example, to explain the format the answer should be in, or where to find the information you’ve asked for." %}
-  {% set inputTypeTitle = 'Input type' %}
 {% endif %}
 
 {% block pageTitle %}
@@ -87,39 +58,28 @@
 {% endblock %}
 
 {% block beforeContent %}
-  {% if data.referer and ('edit-answer-type' in data.referer) %}
-    <a class="govuk-back-link" href="edit-answer-type">
-      Back
-    </a>
-  {% elif data.referer and ('settings' in data.referer) %}
-    <a class="govuk-back-link" href="edit-settings">
+  {% if 'check-question' in previousPage %}
+    <a class="govuk-back-link" href="check-question" target="_parent">
       Back
     </a>
   {% else %}
-    <a class="govuk-back-link" href="../../clear-empty" target="_parent">
-      Back to your questions
+    <a class="govuk-back-link" href="javascript:window.history.back()">
+      Back
     </a>
   {% endif %}
 {% endblock %}
 
 {% block content %}
-    <div class="govuk-grid-row">
-      <div class="govuk-grid-column-two-thirds">
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
 
-        {% if successMessage %}
-        {{ govukNotificationBanner({
-          type: 'success',
-          text: successMessage
-        }) }}
-        {% endif %}
-
-        <form id="form" class="form" method="post" novalidate>
+      <form id="form" class="form" method="post" novalidate>
 
           {% if containsErrors %}
-          {{ govukErrorSummary({
-            titleText: "There is a problem",
-            errorList: errorList
-          }) }}
+            {{ govukErrorSummary({
+              titleText: "There is a problem",
+              errorList: errorList
+            }) }}
           {% endif %}
 
           <span class="govuk-caption-l">Question {{ pageId | int + 1 }}</span>
@@ -139,11 +99,11 @@
             id: "long-title",
             name: "long-title",
             value: pageData['long-title'],
-            errorMessage: { text: errors['long-title'].text } if errors['long-title'].text
+            errorMessage: { text: errors['long-title'].text } if errors['long-title'].text 
           }) }}
 
           <!-- Hint text input -->
-          {{ govukInput({
+          {{ govukTextarea({
             label: {
               text: "Hint text (optional)",
               classes: "govuk-label--m"
@@ -156,166 +116,69 @@
             value: pageData['hint-text']
           }) }}
 
-           {% if pageData['type'] != 'select' %}
-
-          <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
-
-          {{ govukCheckboxes({
-            idPrefix: "questionOptional",
-            name: "questionOptional",
+          <!-- Additional guidance -->
+          {{ govukRadios({
+            classes: "govuk-radios--inline",
+            name: "additional-guidance",
             fieldset: {
               legend: {
-                text: "Question settings",
+                text: "Do you need to add more detail to help users answer the question?",
                 classes: "govuk-fieldset__legend--m"
               }
             },
+            hint: {
+              text: "Only add guidance if you need to give a longer explanation of how to answer the question, or to format your content. For example, you can use paragraphs, links or lists."
+            },
             items: [
               {
-                value: "questionOptional",
-                text: "Make this question optional so people can skip it",
-                hint: {
-                  text: "‘(optional)’ will be added to the end of the question text"
-                },
-                checked: checked(namePrefix + "['questionOptional']", "questionOptional")
+                value: "Yes",
+                text: "Yes",
+                checked: checked(namePrefix + "['additional-guidance']", "Yes")
+              },
+              {
+                value: "No",
+                text: "No",
+                checked: checked(namePrefix + "['additional-guidance']", "No")
               }
-            ]
+            ],
+            errorMessage: { text: errors['additionalGuidance'].text } if errors['additionalGuidance'].text
           }) }}
 
-          <hr class="govuk-section-break govuk-section-break--s govuk-section-break--visible">
+          <!-- Question settings -->
+          {% if pageData['type'] != 'select' %}
+            <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 
-          {% endif %}
-
-          <dl class="govuk-summary-list">
-            <div class="govuk-summary-list__row">
-              <dt class="govuk-summary-list__key">
-                Answer type
-              </dt>
-              <dd class="govuk-summary-list__value">
-                {{answerType}}
-              </dd>
-              <dd class="govuk-summary-list__actions">
-                <a class="govuk-link govuk-link--no-visited-state" href="edit-answer-type">
-                  Change <span class="govuk-visually-hidden">answer type {{answerType}}<span>
-                </a>
-              </dd>
-            </div>
-            {% if pageData['input'] %}
-            <div class="govuk-summary-list__row">
-              <dt class="govuk-summary-list__key">
-                {{inputTypeTitle}}
-              </dt>
-              <dd class="govuk-summary-list__value">
-                {{inputType}}
-              </dd>
-              <dd class="govuk-summary-list__actions">
-                <a class="govuk-link govuk-link--no-visited-state" href="edit-settings#input">
-                  Change <span class="govuk-visually-hidden">input type {{inputType}}<span>
-                </a>
-              </dd>
-            </div>
-            {% endif %}
-            {% if pageData['title'] %}
-            <div class="govuk-summary-list__row">
-              <dt class="govuk-summary-list__key">
-                Title needed
-              </dt>
-              <dd class="govuk-summary-list__value">
-                {{pageData['title']|capitalize}}
-              </dd>
-              <dd class="govuk-summary-list__actions">
-                <a class="govuk-link govuk-link--no-visited-state" href="edit-settings#title">
-                  Change <span class="govuk-visually-hidden">title needed {{pageData['title']|capitalize}}<span>
-                </a>
-              </dd>
-            </div>
-            {% endif %}
-            {% if pageData['item-list'] %}
-            <div class="govuk-summary-list__row">
-              <dt class="govuk-summary-list__key">
-                Options
-              </dt>
-              <dd class="govuk-summary-list__value">
-                {% if (pageData['item-list']|length|int >= 1) %}
-                  {% for item in pageData['item-list'] %}{{item}}{% if not loop.last %}, {% endif %}{% endfor %}
-                {% else %}
-                  No options added
-                {% endif %}
-              </dd>
-              <dd class="govuk-summary-list__actions">
-                <a class="govuk-link govuk-link--no-visited-state" href="edit-settings#option-0">
-                  Change <span class="govuk-visually-hidden">options<span>
-                </a>
-              </dd>
-            </div>
-            <div class="govuk-summary-list__row">
-              <dt class="govuk-summary-list__key">
-                Only select one option
-              </dt>
-              <dd class="govuk-summary-list__value">
-                {{'Yes' if pageData['listSettings'] and pageData['listSettings'].includes('oneOption') else 'No'}}
-              </dd>
-              <dd class="govuk-summary-list__actions">
-                <a class="govuk-link govuk-link--no-visited-state" href="edit-settings#oneOption">
-                  Change <span class="govuk-visually-hidden">only select one option<span>
-                </a>
-              </dd>
-            </div>
-            <div class="govuk-summary-list__row">
-              <dt class="govuk-summary-list__key">
-                Include 'none of the above' option
-              </dt>
-              <dd class="govuk-summary-list__value">
-                {{'Yes' if pageData['listSettings'] and pageData['listSettings'].includes('noneOption') else 'No'}}
-              </dd>
-              <dd class="govuk-summary-list__actions">
-                <a class="govuk-link govuk-link--no-visited-state" href="edit-settings#noneOption">
-                  Change <span class="govuk-visually-hidden">include 'none of the above' option<span>
-                </a>
-              </dd>
-            </div>
-            {% endif %}
-          </dl>
-
-          <div class="govuk-button-group">
-            {% if pageId >= data['highestPageId'] %}
-
-              {{ govukButton({
-                text: "Save and add next question",
-                name: "action",
-                value: "createNextPage"
-              }) }}
-
-            {% else %}
-
-              {{ govukButton({
-                text: "Save and edit next question",
-                name: "action",
-                value: "editNextPage"
-              }) }}
-
-            {% endif %}
-
-            {{ govukButton({
-              text:  "Save question",
-              name: "action",
-              value: "update",
-              classes: "govuk-button--secondary"
+            {{ govukCheckboxes({
+              idPrefix: "questionOptional",
+              name: "questionOptional",
+              fieldset: {
+                legend: {
+                  text: "Question settings",
+                  classes: "govuk-fieldset__legend--m"
+                }
+              },
+              items: [
+                {
+                  value: "questionOptional",
+                  text: "Make this question optional so people can skip it",
+                  hint: {
+                    text: "‘(optional)’ will be added to the end of the question text"
+                  },
+                  checked: checked(namePrefix + "['questionOptional']", "questionOptional")
+                }
+              ]
             }) }}
-          </div>
+          {% endif %}
 
-          {% if editingExistingQuestion %}
           {{ govukButton({
-            text: "Delete question",
-            classes: "govuk-button--warning",
+            text: "Continue",
             name: "action",
-            value: "deletePage"
+            value: "editPage"
           }) }}
 
-          {# Move go to your questions link only if a question is saved #}
-          <p class="govuk-body">
+          {# <p class="govuk-body">
             <a class="govuk-link govuk-link--no-visited-state" href="../../clear-empty">Go to your questions</a>
-          </p>
-          {% endif %}
+          </p> #}
 
       </form>
     </div>
