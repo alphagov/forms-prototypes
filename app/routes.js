@@ -602,18 +602,26 @@ router.get('/form-designer/pages/:pageId(\\d+)/additional-guidance', function (r
   var pageIndex = pageId
   var pageData = req.session.data.pages[pageIndex]
 
+  var successMessage = req.session.data.successMessage
+  req.session.data.successMessage = undefined
+
   var previousPage = req.session.data.referer
 
   return res.render('form-designer/pages/additional-guidance', {
     pageId: pageId,
     pageIndex: pageIndex,
     pageData: pageData,
+    successMessage,
     previousPage: previousPage
   })
 })
 
 // Add additional guidance text route
 router.post('/form-designer/pages/:pageId(\\d+)/additional-guidance', function (req, res) {
+  var action = req.session.data.action
+  // clear the action so it doesn't change the next page load
+  req.session.data.action = undefined
+
   var pageId = parseInt(req.params.pageId, 10)
   var pageIndex = pageId
   var pageData = req.session.data.pages[pageIndex]
@@ -625,13 +633,16 @@ router.post('/form-designer/pages/:pageId(\\d+)/additional-guidance', function (
   if (!guidanceText || !guidanceText.length) {
     errors['additional-guidance-text'] = {
       text: 'Enter guidance text',
-      href: "#additional-guidance-text"
+      href: "#edit-guidance-text"
     }
   // otherwise add guidance text to pageData
   } else {
     pageData['additional-guidance-text'] = req.session.data['additional-guidance-text']
   }
   req.session.data['additional-guidance-text'] = undefined
+
+  // content to display in notification banners
+  var previewing = 'Preview your guidance text'
 
   // Convert the errors into a list, so we can use it in the template
   const errorList = Object.values(errors)
@@ -648,6 +659,9 @@ router.post('/form-designer/pages/:pageId(\\d+)/additional-guidance', function (
       errorList,
       containsErrors
     })
+  } else if(action == 'previewGuidance') {
+    req.session.data.successMessage = previewing
+    res.redirect('additional-guidance#preview-guidance-text')
   } else {
     res.redirect('check-question')
   }

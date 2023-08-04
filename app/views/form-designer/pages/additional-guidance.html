@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block beforeContent %}
-  {% if 'check-question' in previousPage %}
+  {% if previousPage and ('check-question' in previousPage) %}
     <a class="govuk-back-link" href="check-question" target="_parent">
       Back
     </a>
@@ -31,6 +31,20 @@
             }) }}
           {% endif %}
 
+          {% if successMessage %}
+            {% set successHTML %}
+              <a class="govuk-notification-banner__link" href="#preview-guidance-text">
+                <h3 class="govuk-notification-banner__heading">
+                  {{successMessage}}
+                </h3>
+              </a>
+              {% endset %}
+            {{ govukNotificationBanner({
+              type: 'success',
+              html: successHTML
+            }) }}
+          {% endif %}
+
           <span class="govuk-caption-l">Question {{ pageId | int + 1 }}</span>
           <h1 class="govuk-heading-l">{{pageTitle}}</h1>
 
@@ -45,6 +59,7 @@
 
           {% set namePrefix = "pages[" + pageIndex + "]" %}
 
+
           <!-- Add detailed guidance input -->
           {{ govukTextarea({
             label: {
@@ -54,10 +69,21 @@
             hint: {
               text: "Use Markdown if you need to format your guidance content. Formatting help can be found below."
             },
-            id: "additional-guidance-text",
+            rows: 10,
+            id: "edit-guidance-text",
             name: "additional-guidance-text",
             value: pageData['additional-guidance-text']
           }) }}
+
+
+          <!-- Preview guidance text secondary button -->
+          {{ govukButton({
+            text: "Preview guidance",
+            classes: "govuk-button--secondary",
+            name: "action",
+            value: "previewGuidance"
+          }) }}
+
 
           <!-- Formatting help -->
           <h2 class="govuk-heading-m">Formatting help</h2>
@@ -90,11 +116,12 @@
           <p class="govuk-body">
             To add bullet points, start each item with * (asterisk) or - (dash). Use one space after the asterisk or dash. For example:
           </p>
-          {{ govukInsetText({
-            html: " * First bullet point<br>
-                    * Second bullet point<br>
-                    * Third bullet point"|safe
-          }) }}
+          {% set bullets = ['First bullet point','Second bullet point','Third bullet point'] %}
+          <div class="govuk-inset-text">
+            {% for bullet in bullets %}
+              * {{ bullet }}<br>
+            {% endfor %}
+          </div>
 
           <h3 class="govuk-heading-s">Numbered lists</h3>
           <p class="govuk-body">
@@ -103,20 +130,42 @@
           <p class="govuk-body">
             You need one empty line space before the numbers start, and one at the end.
           </p>
-          {{ govukInsetText({
-            html: " 1. First item<br>
-                    2. Second item<br>
-                    3. Third item"|safe
-          }) }}
+          {% set numbered = ['First item','Second item','Third item'] %}
+          <div class="govuk-inset-text">
+            {% for number in numbered %}
+              {{ loop.index }}. {{ number }}<br>
+            {% endfor %}
+          </div>
 
+
+          <!-- Preview guidance text -->
+          {% if pageData['additional-guidance-text'] %}
+          <h2 class="govuk-heading-m" id="preview-guidance-text">
+            Preview your guidance text
+          </h2>
+          <p class="govuk-body">
+            Below is a preview of how your guidance content will be shown to the person completing your form.
+          </p>
+          <div class="govuk-!-margin-bottom-3" title="Preview area" style="position: relative; border: 2px solid #b1b4b6; padding: 30px;">
+            {% markdown %}{{ pageData['additional-guidance-text'] }}{% endmarkdown %}
+          </div>
+          <p class="govuk-body govuk-!-margin-bottom-9">
+            <a class="govuk-link" href="#edit-guidance-text">
+              Edit guidance text
+            </a>
+          </p>
+          {% endif %}
+
+
+          <!-- Continue or cancel button group -->
           <div class="govuk-button-group">
-          {{ govukButton({
-            text: "Continue",
-            name: "action",
-            value: "editPage"
-          }) }}
+            {{ govukButton({
+              text: "Continue",
+              name: "action",
+              value: "editPage"
+            }) }}
 
-          <a class="govuk-link govuk-link--no-visited-state" href="edit">Cancel</a>
+            <a class="govuk-link govuk-link--no-visited-state" href="edit">Cancel</a>
           </div>
 
       </form>
