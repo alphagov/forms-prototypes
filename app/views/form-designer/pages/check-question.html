@@ -100,11 +100,11 @@
           Question
         </dt>
         <dd class="govuk-summary-list__value">
-          {{pageData['long-title']}}
+          {{ pageData['long-title'] or 'Question text' }}
         </dd>
         <dd class="govuk-summary-list__actions">
           <a class="govuk-link govuk-link--no-visited-state" href="edit#long-title">
-            Change <span class="govuk-visually-hidden">question {{pageData['long-title']}}<span>
+            Change <span class="govuk-visually-hidden">question {{ pageData['long-title'] or 'Question text' }}<span>
           </a>
         </dd>
       </div>
