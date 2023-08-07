@@ -94,9 +94,10 @@
           {{loop.index}}
         </dt>
         <dd class="govuk-summary-list__value">
-          {% if page['page-name'] %}{{page['page-name']}}<br>{% endif %}
           <!--Q{{page["pageIndex"] | int + 1}}.-->
           {{questionTitle}}
+          {#{% if page['page-name'] %}<br>Guidance added{% endif %}#}
+          {#{% if page['page-name'] %}<br>Page heading: {{page['page-name']}}{% endif %}#}
         </dd>
         <dd class="govuk-summary-list__actions">
           <div class="govuk-button-group form-action-group govuk-!-margin-bottom-0">

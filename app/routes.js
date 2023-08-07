@@ -561,8 +561,14 @@ router.post('/form-designer/pages/:pageId(\\d+)/edit', function (req, res) {
   }
   req.session.data['hint-text'] = undefined
 
-  // add additional guidance answer, add it to pageData
-  if (req.session.data['additional-guidance']) {
+  // if no additional guidance answer, then throw an error
+  if (!additionalGuidance || !additionalGuidance.length) {
+    errors['additional-guidance'] = {
+      text: 'Select ‘Yes’ to add guidance',
+      href: "#additional-guidance"
+    }
+  // otherwise add question text to pageData
+  } else {
     pageData['additional-guidance'] = req.session.data['additional-guidance']
   }
   req.session.data['additional-guidance'] = undefined

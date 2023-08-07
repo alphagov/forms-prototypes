@@ -58,7 +58,7 @@
 {% endblock %}
 
 {% block beforeContent %}
-  {% if 'check-question' in previousPage %}
+  {% if previousPage and ('check-question' in previousPage) %}
     <a class="govuk-back-link" href="check-question" target="_parent">
       Back
     </a>
@@ -122,7 +122,7 @@
             name: "additional-guidance",
             fieldset: {
               legend: {
-                text: "Do you need to add more detail to help users answer the question?",
+                text: "Do you need to add guidance to help people answer the question?",
                 classes: "govuk-fieldset__legend--m"
               }
             },
@@ -141,7 +141,7 @@
                 checked: checked(namePrefix + "['additional-guidance']", "No")
               }
             ],
-            errorMessage: { text: errors['additionalGuidance'].text } if errors['additionalGuidance'].text
+            errorMessage: { text: errors['additional-guidance'].text } if errors['additional-guidance'].text
           }) }}
 
           <!-- Question settings -->

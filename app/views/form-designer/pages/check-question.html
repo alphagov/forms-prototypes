@@ -113,7 +113,7 @@
           Hint text (optional)
         </dt>
         <dd class="govuk-summary-list__value">
-          {{pageData['hint-text']}}
+          {{pageData['hint-text'] or 'None added' }}
         </dd>
         <dd class="govuk-summary-list__actions">
           <a class="govuk-link govuk-link--no-visited-state" href="edit#hint-text">
@@ -123,14 +123,14 @@
       </div>
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">
-          Add more detail
+          Add guidance
         </dt>
         <dd class="govuk-summary-list__value">
           {{pageData['additional-guidance'] or 'No'}}
         </dd>
         <dd class="govuk-summary-list__actions">
           <a class="govuk-link govuk-link--no-visited-state" href="edit#additional-guidance">
-            Change <span class="govuk-visually-hidden">add more detail {{pageData['additional-guidance']}}<span>
+            Change <span class="govuk-visually-hidden">add guidance {{pageData['additional-guidance']}}<span>
           </a>
         </dd>
       </div>

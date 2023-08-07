@@ -63,7 +63,7 @@
           <!-- Add detailed guidance input -->
           {{ govukTextarea({
             label: {
-              text: "Add detailed guidance",
+              text: "Add guidance text",
               classes: "govuk-label--m"
             },
             hint: {
@@ -72,7 +72,8 @@
             rows: 10,
             id: "edit-guidance-text",
             name: "additional-guidance-text",
-            value: pageData['additional-guidance-text']
+            value: pageData['additional-guidance-text'],
+            errorMessage: { text: errors['additional-guidance-text'].text } if errors['additional-guidance-text'].text 
           }) }}
 
 
@@ -114,7 +115,10 @@
 
           <h3 class="govuk-heading-s">Bulleted lists</h3>
           <p class="govuk-body">
-            To add bullet points, start each item with * (asterisk) or - (dash). Use one space after the asterisk or dash. For example:
+            To add bullet points, start each item with * (asterisk) or - (dash). Use one space after the asterisk or dash.
+          </p>
+          <p class="govuk-body">
+            You need one empty line space before the bullets start, and one at the end. For example:
           </p>
           {% set bullets = ['First bullet point','Second bullet point','Third bullet point'] %}
           <div class="govuk-inset-text">
@@ -128,7 +132,7 @@
             Use numbers for each list item, followed by a full stop. Make sure there is one space after the full stop.
           </p>
           <p class="govuk-body">
-            You need one empty line space before the numbers start, and one at the end.
+            You need one empty line space before the numbers start, and one at the end. For example:
           </p>
           {% set numbered = ['First item','Second item','Third item'] %}
           <div class="govuk-inset-text">
@@ -144,7 +148,7 @@
             Preview your guidance text
           </h2>
           <p class="govuk-body">
-            Below is a preview of how your guidance content will be shown to the person completing your form.
+            Below is a preview of how your guidance content will be shown to the person completing the question.
           </p>
           <div class="govuk-!-margin-bottom-3" title="Preview area" style="position: relative; border: 2px solid #b1b4b6; padding: 30px;">
             {% markdown %}{{ pageData['additional-guidance-text'] }}{% endmarkdown %}
