@@ -1,9 +1,0 @@
----
-applications:
-  - name: forms-prototypes
-    memory: 256M
-    buildpacks:
-      - nodejs_buildpack
-    env:
-      USERNAME: ((APP_USERNAME))
-      PASSWORD: ((APP_PASSWORD))
