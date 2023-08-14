@@ -20,9 +20,14 @@ const markdown = require('@lfdebrux/nunjucks-markdown')
 // Used to add govuk classes to additional guidance markdown for end user view (Runner)
 const { marked } = require('marked');
 const GovukHTMLRenderer = require('govuk-markdown')
+const renderer = new GovukHTMLRenderer()
+
+// Disable bold and italic formatting
+renderer.strong = text => text
+renderer.em = text => text
 
 marked.setOptions({
-  renderer: new GovukHTMLRenderer()
+  renderer
 })
 
 // One time setup
