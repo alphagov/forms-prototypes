@@ -54,11 +54,11 @@
 {% endblock %}
 
 {% block beforeContent %}
-  {% if 'your-questions' in previousPage %}
+  {% if previousPage and ('your-questions' in previousPage) %}
     <a class="govuk-back-link" href="../../clear-empty" target="_parent">
       Back to your questions
     </a>
-  {% elif ('edit-answer-type' in previousPage) and (previousPage.split('/')|last == pageIndex|int + 1) %}
+  {% elif previousPage and ('edit-answer-type' in previousPage) and (previousPage.split('/')|last == pageIndex|int + 1) %}
     <a class="govuk-back-link" href="../{{pageIndex|int + 1}}/edit-answer-type" target="_parent">
       Back
     </a>

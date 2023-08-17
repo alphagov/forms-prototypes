@@ -13,15 +13,15 @@
 {% endset %}
 
 {% block beforeContent %}
-  {% if 'your-questions' in previousPage %}
+  {% if previousPage and ('your-questions' in previousPage) %}
     <a class="govuk-back-link" href="../../clear-empty" target="_parent">
       Back to your questions
     </a>
-  {% elif (pageIndex-1) + '/check-question' in previousPage %}
+  {% elif previousPage and ((pageIndex-1) + '/check-question' in previousPage) %}
     <a class="govuk-back-link" href="../../clear-empty" target="_parent">
       Back to your questions
     </a>
-  {% elif pageIndex + '/check-question' in previousPage %}
+  {% elif previousPage and (pageIndex + '/check-question' in previousPage) %}
     <a class="govuk-back-link" href="check-question" target="_parent">
       Back
     </a>

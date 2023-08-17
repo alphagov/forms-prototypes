@@ -19,7 +19,7 @@
 {% endblock %}
 
 {% block beforeContent %}
-  {% if 'check-question' in previousPage %}
+  {% if previousPage and ('check-question' in previousPage) %}
     <a class="govuk-back-link" href="check-question" target="_parent">
       Back
     </a>
