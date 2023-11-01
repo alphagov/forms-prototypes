@@ -1,0 +1,248 @@
+{% extends "layout.html" %}
+
+{% block stylesheets %}
+  {% include "govuk-prototype-kit/includes/stylesheets.html" %}
+  <link href="/public/stylesheets/product-page.css" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block header %}
+<header class="govuk-header" role="banner" data-module="govuk-header" id="top">
+  <div class="govuk-header__container govuk-width-container">
+    <div class="govuk-header__logo">
+      <a href="/product-pages/signup/" class="govuk-header__link govuk-header__link--homepage">
+        <span class="govuk-header__logotype">
+          <svg
+            aria-hidden="true"
+            focusable="false"
+            class="govuk-header__logotype-crown"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 132 97"
+            height="30"
+            width="36"
+          >
+            <path
+              fill="currentColor"
+              fill-rule="evenodd"
+              d="M25 30.2c3.5 1.5 7.7-.2 9.1-3.7 1.5-3.6-.2-7.8-3.9-9.2-3.6-1.4-7.6.3-9.1 3.9-1.4 3.5.3 7.5 3.9 9zM9 39.5c3.6 1.5 7.8-.2 9.2-3.7 1.5-3.6-.2-7.8-3.9-9.1-3.6-1.5-7.6.2-9.1 3.8-1.4 3.5.3 7.5 3.8 9zM4.4 57.2c3.5 1.5 7.7-.2 9.1-3.8 1.5-3.6-.2-7.7-3.9-9.1-3.5-1.5-7.6.3-9.1 3.8-1.4 3.5.3 7.6 3.9 9.1zm38.3-21.4c3.5 1.5 7.7-.2 9.1-3.8 1.5-3.6-.2-7.7-3.9-9.1-3.6-1.5-7.6.3-9.1 3.8-1.3 3.6.4 7.7 3.9 9.1zm64.4-5.6c-3.6 1.5-7.8-.2-9.1-3.7-1.5-3.6.2-7.8 3.8-9.2 3.6-1.4 7.7.3 9.2 3.9 1.3 3.5-.4 7.5-3.9 9zm15.9 9.3c-3.6 1.5-7.7-.2-9.1-3.7-1.5-3.6.2-7.8 3.7-9.1 3.6-1.5 7.7.2 9.2 3.8 1.5 3.5-.3 7.5-3.8 9zm4.7 17.7c-3.6 1.5-7.8-.2-9.2-3.8-1.5-3.6.2-7.7 3.9-9.1 3.6-1.5 7.7.3 9.2 3.8 1.3 3.5-.4 7.6-3.9 9.1zM89.3 35.8c-3.6 1.5-7.8-.2-9.2-3.8-1.4-3.6.2-7.7 3.9-9.1 3.6-1.5 7.7.3 9.2 3.8 1.4 3.6-.3 7.7-3.9 9.1zM69.7 17.7l8.9 4.7V9.3l-8.9 2.8c-.2-.3-.5-.6-.9-.9L72.4 0H59.6l3.5 11.2c-.3.3-.6.5-.9.9l-8.8-2.8v13.1l8.8-4.7c.3.3.6.7.9.9l-5 15.4v.1c-.2.8-.4 1.6-.4 2.4 0 4.1 3.1 7.5 7 8.1h.2c.3 0 .7.1 1 .1.4 0 .7 0 1-.1h.2c4-.6 7.1-4.1 7.1-8.1 0-.8-.1-1.7-.4-2.4V34l-5.1-15.4c.4-.2.7-.6 1-.9zM66 92.8c16.9 0 32.8 1.1 47.1 3.2 4-16.9 8.9-26.7 14-33.5l-9.6-3.4c1 4.9 1.1 7.2 0 10.2-1.5-1.4-3-4.3-4.2-8.7L108.6 76c2.8-2 5-3.2 7.5-3.3-4.4 9.4-10 11.9-13.6 11.2-4.3-.8-6.3-4.6-5.6-7.9 1-4.7 5.7-5.9 8-.5 4.3-8.7-3-11.4-7.6-8.8 7.1-7.2 7.9-13.5 2.1-21.1-8 6.1-8.1 12.3-4.5 20.8-4.7-5.4-12.1-2.5-9.5 6.2 3.4-5.2 7.9-2 7.2 3.1-.6 4.3-6.4 7.8-13.5 7.2-10.3-.9-10.9-8-11.2-13.8 2.5-.5 7.1 1.8 11 7.3L80.2 60c-4.1 4.4-8 5.3-12.3 5.4 1.4-4.4 8-11.6 8-11.6H55.5s6.4 7.2 7.9 11.6c-4.2-.1-8-1-12.3-5.4l1.4 16.4c3.9-5.5 8.5-7.7 10.9-7.3-.3 5.8-.9 12.8-11.1 13.8-7.2.6-12.9-2.9-13.5-7.2-.7-5 3.8-8.3 7.1-3.1 2.7-8.7-4.6-11.6-9.4-6.2 3.7-8.5 3.6-14.7-4.6-20.8-5.8 7.6-5 13.9 2.2 21.1-4.7-2.6-11.9.1-7.7 8.8 2.3-5.5 7.1-4.2 8.1.5.7 3.3-1.3 7.1-5.7 7.9-3.5.7-9-1.8-13.5-11.2 2.5.1 4.7 1.3 7.5 3.3l-4.7-15.4c-1.2 4.4-2.7 7.2-4.3 8.7-1.1-3-.9-5.3 0-10.2l-9.5 3.4c5 6.9 9.9 16.7 14 33.5 14.8-2.1 30.8-3.2 47.7-3.2z"
+            ></path>
+          </svg>
+          <span class="govuk-header__logotype-text"> GOV.UK </span>
+        </span>
+        <span class="govuk-header__product-name">
+          Forms
+          <strong class="govuk-tag govuk-phase-banner__content__tag">
+            beta
+          </strong>
+        </span>
+      </a>
+    </div>
+    <div class="govuk-header__content">
+      <nav aria-label="Menu" class="govuk-header__navigation">
+        <button
+          type="button"
+          class="govuk-header__menu-button govuk-js-header-toggle"
+          aria-controls="navigation"
+          aria-label="Show or hide menu"
+          hidden=""
+        >
+          Menu
+        </button>
+
+        <ul id="navigation" class="govuk-header__navigation-list" hidden="">
+          <li class="govuk-header__navigation-item">
+            <a class="govuk-header__link" href="get-started"> Get started </a>
+          </li>
+          <li class="govuk-header__navigation-item" >
+            <a class="govuk-header__link" href="features"> Features </a>
+          </li>
+          <li class="govuk-header__navigation-item govuk-header__navigation-item--active">
+            <a class="govuk-header__link" href="support">  </a>
+          </li>
+          <li class="govuk-header__navigation-item" >
+            <a class="govuk-header__link" href="https://admin.research.forms.service.gov.uk/"> Sign in </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>
+{% endblock header %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <h1 class="govuk-heading-xl">GOV.UK Forms Memorandum of Understanding</h1>
+    <p>
+      Last updated: 21 June 2023
+    </p>
+
+    <p>
+      Content
+    </p>
+
+    <ul class="govuk-list">
+      <li>
+        <a class="govuk-link" href="#">What this document is</a>
+      </li>
+      <li>
+        <a class="govuk-link" href="#">Starting and ending this agreement</a>
+      </li>
+      <li>
+        <a class="govuk-link" href="#">Cyber security responsibilities</a>
+      </li>
+      <li>
+        <a class="govuk-link" href="#">Compliance with data protection legislation</a>
+      </li>
+      <li>
+        <a class="govuk-link" href="#">Protection of personal data </a>
+      </li>
+      <li>
+        <a class="govuk-link" href="#">How GOV.UK Forms deals with Freedom of Information requests</a>
+      </li>
+      <li>
+        <a class="govuk-link" href="#">Annex A - Definitions</a>
+      </li>
+      <li>
+        <a class="govuk-link" href="#">Annex B: GOV.UK Forms data sub-processors</a>
+      </li>
+      <li>
+        <a class="govuk-link" href="#">Annex C: GOV.UK Forms schedule of processing, personal data and data subjects</a>
+      </li>
+      <li>
+        <a class="govuk-link" href="#">Annex D: GOV.UK Forms schedule of processing, personal data and data subjects</a>
+      </li>
+      <li>
+        <a class="govuk-link" href="#">Annex E: How GOV.UK Forms protects your data</a>
+      </li>
+      <li>
+        <a class="govuk-link" href="#">Agree to the MOU</a>
+      </li>
+    </ul>
+
+  
+
+<p></p>
+
+<h2 class="govuk-heading-m">What this document is</h2>
+<ol class="govuk-list govuk-list--number">
+  <li>This is a memorandum of understanding (“MOU”) between the Government Digital Service (“GDS”) and your organisation (together the “Parties”). The single MOU covers all the forms an organisation publishes using GOV.UK Forms.</li>
+  <li>This MOU shall be interpreted in accordance with the Annexes..</li>
+  <li>This MOU is not intended to be legally binding and no legal obligations or legal rights shall arise between the Parties from the provisions of the MOU. For the avoidance of doubt, GDS shall not be liable for any Loss arising from, or in connection with a breach of this MOU. However, the Parties enter into the MOU intending to honour their obligations. Any dispute will be escalated to appropriately senior officers of GDS and your organisation for resolution..</li>
+  <li>Organisations who are temporarily having their forms created by GDS (from July to October 2023) will not immediately have accounts on GOV.UK Forms. For these organisations, any parts of the MOU that relate to accessing the product, or creating forms or accounts, will not apply until your organisation has accounts set up. From that point, all of the MOU will apply (as per paragraph 10)..</li>
+</ol>
+
+<h2 class="govuk-heading-m">About GOV.UK Forms</h2>
+<ol class="govuk-list govuk-list--number">
+  <li><a class="govuk-link" href="https://www.forms.service.gov.uk/">GOV.UK Forms</a> is a web-based platform owned and operated by GDS, which is used for creating more accessible online forms for GOV.UK without needing technical knowledge. As well as the forms being more accessible compared to document-based forms like PDFs, the forms are easier to use and quicker for government teams to process.</li>
+  <li>When your organisation creates online forms, at your request, GOV.UK Forms collects information from members of the public and businesses. As GOV.UK Forms processes the Personal Data from members of the public and businesses on behalf of your organisation, GDS is a Data Processor for your organisation..</li>
+  <li>When GOV.UK Forms processes completed forms, GDS sends the Personal Data of members of the public and businesses to your organisation. GDS uses GOV.UK Notify to deliver emails with the personal data submissions to your organisation's Form Processors. This MOU covers this transfer.</li>
+  <li>
+    The online forms are unauthenticated and could be completed by anyone. You are responsible for including identification and authentication mechanisms within your downstream processes if these are required.</li>
+</ol>
+
+<h2 class="govuk-heading-m">Starting and ending this agreement</h2>
+<ol class="govuk-list govuk-list--number">
+  <li>This agreement starts when your organisation has user accounts on the GOV.UK Forms platform. Either GDS or your organisation can end this agreement by giving three months’ notice by email.</li>
+  <li>Any updates to this agreement will be emailed to the person who agreed on behalf of your organisation (or the first account in your organisation that is still active). This will happen 30 calendar days before any change is due to be made, along with a summary of the changes. The changes will then take effect on the date specified in the notification email. No action is required by your organisation if you accept the changes.</li>
+  <li>If your organisation doesn’t wish to accept the change, you must notify GDS and this MOU will terminate with immediate effect..</li>
+  <li>Some organisations will not immediately have accounts on GOV.UK Forms as they’re temporarily having their forms created by GDS (from July to October 2023). For these organisations:.</li>
+  <ul class="govuk-list govuk-list--bullet">
+    <li>this agreement starts when your organisation agrees to the MOU, and forms will not be made by GDS before this point</li>
+    <li>if there are any issues with transferring these forms to an organisation, GDS reserves the right to delete the forms from the platform and have them removed from GOV.UK. This MOU will then terminate with immediate effect.</li>
+  </ul>
+</ol>
+
+<h2 class="govuk-heading-m">People involved in this agreement </h2>
+<ol class="govuk-list govuk-list--number">
+  <li>For this agreement, the main point of contact for GDS is: <a class="govuk-link" href="govuk-forms-support@govuk.zendesk.com.">govuk-forms-support@govuk.zendesk.com.</a></li>
+  <li>For your organisation, the main point of contact will be the person named when agreeing on behalf of your organisation..</li>
+  <li>The GOV.UK Forms team will both supervise and process personal data within GDS.</li>
+</ol>
+
+
+<h2 class="govuk-heading-m">GOV.UK Forms pricing</h2>
+<ol class="govuk-list govuk-list--number">
+  <li> There is currently no cost for using GOV.UK Forms or for the hosting of forms made on the platform. This is intended to help reduce the barriers to lower volume services using GOV.UK Forms that would otherwise require significant procurement effort. This will help drive greater digitisation of government services and promote channel shift, saving money and time for our users.</li>
+  <li>If this pricing structure should change in the future, GDS will inform your organisation at least six months before any price changes so that you can decide whether to continue using the product. .</li>
+</ol>
+
+<h2 class="govuk-heading-m">Cyber Security Responsibilities</h2>
+<ol class="govuk-list govuk-list--number">
+  <li>You are responsible for deciding whether or not GOV.UK Forms is suitable to handle the information you wish to collect using online forms. A description of the measures GDS has taken to protect data is described in Annex E.</li>
+  <li>You shall ensure that your users of GOV.UK Forms enable MFA (known as “2SV” or “2 step verification”) on their GOV.UK Signon user accounts.</li>
+  <li>You shall ensure that your users of GOV.UK Forms follow good cyber security practices when accessing the service, to include: </li>
+  <ul class="govuk-list govuk-list--bullet">
+    <li>using end-user devices that are being managed in accordance with the requirements of the <a class="govuk-link" href="https://www.forms.service.gov.uk/">Minimum Cyber Security Standard</a> (and its successor standards)</li>
+    <li> not connecting their end-user devices to untrusted WiFi networks, such as those found in public places like cafes and hotels</li>
+  </ul>
+  <li> If it is suspected that a user’s GOV.UK Signon account has been compromised you shall immediately notify the GOV.UK Forms team. </li>
+  <li> If it is suspected that a user’s GOV.UK Signon account has been compromised you shall immediately notify the GOV.UK Forms team. </li>
+  <li>You shall ensure that the GOV.UK Forms team is promptly notified when a user in your organisation no longer requires access to the Forms administration interface.
+  </li>
+  
+  <li> You are responsible for managing the security of the mail server you will use to receive form responses. Before using GOV.UK Forms you must ensure that this meets the <a class="govuk-link" href="https://www.forms.service.gov.uk/">government secure email policy</a> , including:
+  </li>
+  <ul class="govuk-list govuk-list--bullet">
+    <li> 
+      supporting<a class="govuk-link" href="https://www.forms.service.gov.uk/"> Transport Layer Security Version</a> 1.2 (TLS v1.2) or later</li>
+<li>implementing spam and malware filtering </li>
+<li>enforcing DMARC on inbound email</li>
+<p>Note: The NCSC’s Mail Check service can be used for assessing email  security compliance.</p>
+</ul>
+<li>You are responsible for managing the security of the designated mailbox(es) used to receive form response data. Anyone with access to the mailbox(es) will potentially be able to see the form response data. </li>
+<li>You may want to consider implementing rules on your mail server to restrict who / what can send emails to the mailbox. For example, you could only allow messages originating from the Notify service to be accepted.  </li>
+<li>You should also bear in mind that email addresses provided by users (in a submission) have not been validated, so may not be correct addresses. Notify emails from GOV.UK Forms can also not be replied to. </li>
+<li>Parties should report any messages received by this mailbox that are outside of the email output expected from the GOV.UK Forms service (e.g. incorrect content format, incorrect sender or bulk messages sent through the service), to the GOV.UK Forms team (see contact at item 23). </li>
+<li>You are responsible for checking that form response data received from GOV.UK Forms is safe before you consume it. </li>
+</ol>
+
+
+
+<h2 class="govuk-heading-m">Compliance with Data Protection Legislations</h2>
+<ol class="govuk-list govuk-list--number">
+  <li> The parties agree that for GOV.UK Forms User Personal Data and GOV.UK Forms Filler Technical Device Data processed under this MoU, GDS shall be a Data Controller. GDS shall ensure compliance with applicable Data Protection Legislation at all times during the Term of this MoU in relation to this data. </li>
+  <li>The Parties agree that for the purpose of GOV.UK Form Filler Personal Data processed under this MOU, GDS shall be a Data Processor and your organisation shall be a Data Controller. This MOU is intended to comply with GDPR Article 28 and/or DPA 2018 section 59, in accordance with section 209(3) of the DPA 2018.</li>
+  <li> Your organisation as a Data Controller is responsible for ensuring that:</li>
+  <ul class="govuk-list govuk-list--bullet">
+    <li> it is permitted by Law to transfer Personal Data to GDS as its data processor;</li>
+    <li> it has the Data Subject’s consent, where necessary, to use GDS to collect personal data and for GDS and its sub-processors to send messages to your organisation and users;</li>
+    <li> it complies with the Data Protection Legislation for each of the Data Subjects. This will include ensuring the Personal Data is kept up to date, and only retained for as long as required; and</li>
+    <li>The contact details of your organisation’s Form Processor remains accurate and up to date; and</li>
+    <li>that privacy notices for any of your services using GOV.UK Forms are accessible to those service’s Data Subjects.</li>
+  </ul>
+  
+</ol>
+
+
+<p class="govuk-body">
+  <a href="#" class="govuk-link">Back to top</a>.
+ </p>
+
+<div class="govuk-form-group">
+  <fieldset class="govuk-fieldset" aria-describedby="waste-hint">
+    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+      <h2 class="govuk-fieldset__heading">
+        Do you agree with MOU?
+      </h2>
+    </legend>
+    <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+      <div class="govuk-checkboxes__item">
+        <input class="govuk-checkboxes__input" id="waste" name="waste" type="checkbox" value="carcasses">
+        <label class="govuk-label govuk-checkboxes__label" for="waste">
+          I agree to the MOU on behalf of my organisation
+        </label>
+      </div>
+    
+      
+    </div>
+  </fieldset>
+</div>
+
+
+
+<a class="govuk-button" href="mounext.html" >Save and continue</a >
+
+
+
+{% endblock content %}
+
