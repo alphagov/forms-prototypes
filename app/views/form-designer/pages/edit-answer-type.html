@@ -6,14 +6,29 @@
   {{ "Error: " if containsErrors }}{{pageTitle}} - GOV.UK Forms
 {% endblock %}
 
+{% set pageNumberTemp %}
+  {% for ref in data.referer.split('/') %}
+    {% if loop.index == loop.length - 1 %}{{ref}}{% endif %}
+  {% endfor %}
+{% endset %}
+
 {% block beforeContent %}
-  {% set prevPageId = pageId | int - 1 %}
-  {% if ('edit-page' in data.referer) and (pageId === data.referer.split('/') | last) %}
-    <a class="govuk-back-link" href="../{{pageId}}/edit-page">Back</a>
-  {% elif ('edit-page' in data.referer) and (prevPageId > 0) %}
-    <a class="govuk-back-link" href="../{{prevPageId}}/edit-page">Back</a>
+  {% if previousPage and ('your-questions' in previousPage) %}
+    <a class="govuk-back-link" href="../../clear-empty" target="_parent">
+      Back to your questions
+    </a>
+  {% elif previousPage and ((pageIndex-1) + '/check-question' in previousPage) %}
+    <a class="govuk-back-link" href="../../clear-empty" target="_parent">
+      Back to your questions
+    </a>
+  {% elif previousPage and (pageIndex + '/check-question' in previousPage) %}
+    <a class="govuk-back-link" href="check-question" target="_parent">
+      Back
+    </a>
   {% else %}
-    <a class="govuk-back-link" href="../../clear-empty" target="_parent">Back to your questions</a>
+    <a class="govuk-back-link" href="javascript:window.history.back()">
+      Back
+    </a>
   {% endif %}
 {% endblock %}
 
@@ -117,14 +132,16 @@
         }) }}
 
         {{ govukButton({
-          text: "Save and continue",
+          text: "Continue",
           name: "action",
           value: "editPage"
         }) }}
 
-        {# <p class="govuk-body">
+        {% if ('your-questions' in previousPage) or ((pageIndex-1) + '/check-question' in previousPage) %}
+        <p class="govuk-body">
           <a class="govuk-link govuk-link--no-visited-state" href="../../clear-empty">Go to your questions</a>
-        </p> #}
+        </p>
+        {% endif %}
 
       </form>
     </div>

@@ -67,8 +67,8 @@
           classes: "govuk-!-margin-bottom-7"
         }) }}
         {% if data.pages.length %}
-        <a class="govuk-link" href="/form-designer/preview/0" target="_blank" rel="noopener noreferrer">
-          Preview this form in a new tab
+        <a class="govuk-link" href="/form-designer/preview/0" rel="noopener noreferrer">
+          Preview this form
         </a>
         {% endif %}
       </div>
@@ -96,6 +96,8 @@
         <dd class="govuk-summary-list__value">
           <!--Q{{page["pageIndex"] | int + 1}}.-->
           {{questionTitle}}
+          {#{% if page['page-name'] %}<br>Guidance added{% endif %}#}
+          {#{% if page['page-name'] %}<br>Page heading: {{page['page-name']}}{% endif %}#}
         </dd>
         <dd class="govuk-summary-list__actions">
           <div class="govuk-button-group form-action-group govuk-!-margin-bottom-0">
@@ -116,7 +118,7 @@
               }) }}
               {% endif %}
               <div>
-                <a class="govuk-link govuk-link--no-visited-state" href="pages/{{ page.pageIndex | int }}/edit">
+                <a class="govuk-link govuk-link--no-visited-state" href="pages/{{ page.pageIndex | int }}/check-question">
                   Edit<span class="govuk-visually-hidden"> {{questionTitle}}</span>
                 </a>
               </div>

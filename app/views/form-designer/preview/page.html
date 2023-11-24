@@ -1,10 +1,15 @@
 {% extends "layout-govuk-form-preview.html" %}
 {% set mainClasses = "main--draft govuk-main-wrapper--auto-spacing" %}
 
+{% if pageData['additional-guidance'] == 'Yes' %}
+  {% set pageHeading = pageData['page-name'] or 'Guidance text' %}
+{% endif %}
+
 {% set pageTitle = pageData['long-title'] or 'Question text' %}
 {% if pageData['questionOptional'] %}
-{% set pageTitle = pageTitle + ' (optional)' %}
+  {% set pageTitle = pageTitle + ' (optional)' %}
 {% endif %}
+
 
 {% block beforeContent %}
   {% set prevPageId = pageId | int - 1 %}
@@ -16,7 +21,7 @@
 {% endblock %}
 
 {% block pageTitle %}
-  {{ pageTitle }} - Preview - {{ data['formTitle'] }} - GOV.UK
+  {% if pageHeading %}{{ pageHeading }}{% else %}{{ pageTitle }}{% endif %} - Preview - {{ data['formTitle'] }} - GOV.UK
 {% endblock %}
 
 {% block content %}
@@ -27,6 +32,11 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <form class="form" method="post" novalidate>
+
+        {% if pageData['additional-guidance'] == 'Yes' %}
+        <h1 class="govuk-heading-l">{{ pageHeading }}</h1>
+        {% markdown %}{{ markdownContent }}{% endmarkdown %}
+        {% endif %}
 
         {#
 
@@ -39,8 +49,8 @@
         {# The heading doubles up as the label #}
         {% set label = {
           text: pageTitle,
-          classes: "govuk-label--l",
-          isPageHeading: true
+          classes: "govuk-label--l" if pageData['additional-guidance'] != 'Yes' else "govuk-label--m",
+          isPageHeading: true if pageData['additional-guidance'] != 'Yes'
         }%}
 
         {# Full name in a single field #}
@@ -50,8 +60,8 @@
             {% call govukFieldset({
               legend: {
                 text: pageTitle,
-                classes: "govuk-fieldset__legend--l",
-                isPageHeading: true
+                classes: "govuk-fieldset__legend--l" if pageData['additional-guidance'] != 'Yes' else "govuk-fieldset__legend--m",
+                isPageHeading: true if pageData['additional-guidance'] != 'Yes'
               }
             }) %}
 
@@ -114,8 +124,8 @@
             {% call govukFieldset({
               legend: {
                 text: pageTitle,
-                classes: "govuk-fieldset__legend--l",
-                isPageHeading: true
+                classes: "govuk-fieldset__legend--l" if pageData['additional-guidance'] != 'Yes' else "govuk-fieldset__legend--m",
+                isPageHeading: true if pageData['additional-guidance'] != 'Yes'
               }
             }) %}
 
@@ -218,8 +228,8 @@
           {% call govukFieldset({
             legend: {
               text: pageTitle,
-              classes: "govuk-fieldset__legend--l",
-              isPageHeading: true
+              classes: "govuk-fieldset__legend--l" if pageData['additional-guidance'] != 'Yes' else "govuk-fieldset__legend--m",
+              isPageHeading: true if pageData['additional-guidance'] != 'Yes'
             }
           }) %}
 

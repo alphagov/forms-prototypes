@@ -4,8 +4,15 @@
   {{ govukHeader({
     homepageUrl: "/",
     serviceName: data['formTitle'],
-    serviceUrl: "/",
-    containerClasses: "govuk-width-container"
+    serviceUrl: "../your-questions",
+    containerClasses: "govuk-width-container",
+    navigationClasses: "govuk-header__navigation--end govuk-!-display-block",
+    navigation: [
+      {
+        href: "../your-questions",
+        text: "Your questions"
+      }
+    ]
   }) }}
 {% endblock %}
 
