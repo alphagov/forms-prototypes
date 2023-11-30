@@ -51,9 +51,6 @@
     </div>
     {% endif %}
 
-    {% set nextPageId = data.dummy['highestPageId'] | int + 1 %}
-    {% set totalPageNum = data.dummy['highestPageId'] | int + 2 %}
-
     <form id="form" class="form" action="/form-designer/pages/new" method="post" novalidate>
       <div class="govuk-button-group">
         {{ govukButton({
