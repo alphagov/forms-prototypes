@@ -1,0 +1,120 @@
+{% set titleURL = (data.formTitle or '[formTitle]') | lower | replace(':', '') | replace('-', '') | replace(',', '') | replace(' ', '-') %}
+
+<h1 class="govuk-heading-xl govuk-!-margin-bottom-2">{{pageTitle}}</h1>
+
+<dl class="govuk-!-margin-bottom-7">
+    <dt class="govuk-visually-hidden">Status</dt>
+    <dd class="govuk-!-margin-0">
+        {{ govukTag({
+            text: data['status'],
+            classes: "govuk-tag--blue"
+        }) }}
+    </dd>
+</dl>
+
+<div class="app-metrics">
+    <h2 class="govuk-heading-l">Form metrics</h2>
+    <div class="govuk-inset-text">
+        <p class="govuk-body">
+            No metrics are available yet as no-one has started or submitted a form since it went live.
+        </p>
+        <p class="govuk-body">
+            Once they have, you'll be able to see the following metrics for the past 7 days:
+        </p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>Number of forms completed</li>
+            <li>Number of forms started but not completed</li>
+            <li>Completion rate</li>
+        </ul>
+    </div>
+</div>
+
+<h2 class="govuk-heading-l">Your form</h2>
+
+<p class="govuk-body">
+    <a class="govuk-link" href="/form-designer/preview/0" rel="noopener noreferrer">
+        Preview this form
+    </a>
+</p>
+
+<h3 class="govuk-heading-m">Form URL</h3>
+<p class="govuk-body" id="formURL" value="https://forms.service.gov.uk/form/58/{{ titleURL }}">
+    https://forms.service.gov.uk/form/58/{{ titleURL }}
+</p>
+<button class="govuk-button govuk-button--secondary" type="button" onclick="copyURL()">
+    Copy URL to clipboard
+</button>
+
+<h3 class="govuk-heading-m">Questions</h3>
+<p class="govuk-body">
+    <a class="govuk-link" href="your-questions">
+        View your form’s {{ data.highestPageId + 1 }} questions
+    </a>
+</p>
+
+{% if data.checkAnswersDeclaration %}
+<h3 class="govuk-heading-m">Declaration</h3>
+<p class="govuk-body">
+    {{ data.checkAnswersDeclaration | striptags(true) | escape | nl2br }}
+</p>
+{{ govukDetails({
+    summaryText: "What is a declaration?",
+    text: "Your form’s declaration is shown to people when they have answered all the questions, just before they submit the form."
+}) }}
+{% endif %}
+
+<h3 class="govuk-heading-m">What happens next information</h3>
+<p class="govuk-body">
+    {{ data.confirmationNext | striptags(true) | escape | nl2br }}
+</p>
+{{ govukDetails({
+    summaryText: "What is ‘what happens next information’?",
+    text: "Information about what happens next is shown to people when they have completed and submitted a form."
+}) }}
+
+<h3 class="govuk-heading-m">Submission email</h3>
+<p class="govuk-body">
+    {{ data.formsEmail }}
+</p>
+
+<h3 class="govuk-heading-m">Privacy policy link</h3>
+<p class="govuk-body">
+    <a class="govuk-link" href="{{ data.privacyInformation }}">
+        {{ data.privacyInformation }}
+    </a>
+</p>
+
+{% if data.supportDetails %}
+<h3 class="govuk-heading-m">Your form’s contact details for support</h3>
+{% if 'email' in data['supportDetails'] -%}
+<h4 class="govuk-heading-s">Email</h4>
+<p class="govuk-body">
+    <a class="govuk-link" href="mailto:{{data['emailSupport'] or 'support@department.gov.uk' | safe}}">
+        {{data['emailSupport'] or 'support@department.gov.uk' | safe}}
+    </a>
+</p>
+{%- endif %}
+{% if 'phone' in data['supportDetails'] -%}
+<h4 class="govuk-heading-s">Phone</h4>
+<p class="govuk-body">
+    {{data['phoneSupport'] | striptags(true) | escape | nl2br }}
+</p>
+<p class="govuk-body">
+    <a class="govuk-link" href="https://www.gov.uk/call-charges" target="_blank">
+        Find out about call charges
+    </a>
+</p>
+{%- endif %}
+{% if 'online' in data['supportDetails'] -%}
+<h4 class="govuk-heading-s">Online</h4>
+<p class="govuk-body">
+    <a class="govuk-link" href="{{data['onlineSupportLink']}}" target="_blank">
+        {{data['onlineSupportText'] | safe}} (opens in new tab)
+    </a>
+</p>
+{%- endif %}
+{% endif %}
+
+<a data-module="govuk-button" draggable="false" role="button" class="govuk-button" href="your-form?status=Draft">
+    Create a draft to edit
+</a>
