@@ -1,0 +1,187 @@
+{% for page in data.pages %}
+<div class="govuk-summary-card app-summary-card">
+  <div class="govuk-summary-card__title-wrapper">
+    <h2 class="govuk-summary-card__title">{{ page['long-title'] }}{{ ' (optional)' if page.questionOptional }}</h2>
+  </div>
+  <div class="govuk-summary-card__content">
+    <dl class="govuk-summary-list">
+
+      <!-- Playback detailed guidance -->
+      {% if page['additional-guidance'] === 'Yes' %}
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Page heading</dt>
+        <dd class="govuk-summary-list__value">{{ page['page-name'] }}</dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Guidance</dt>
+        <dd class="govuk-summary-list__value">
+          {{ page['additional-guidance-text'] | striptags(true) | escape | nl2br }}
+        </dd>
+      </div>
+      {% endif %}
+
+      <!-- Playback hint text -->
+      {% if page['hint-text'] %}
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Hint text</dt>
+        <dd class="govuk-summary-list__value">{{ page['hint-text'] }}</dd>
+      </div>
+      {% endif %}
+
+      <!-- Person’s name answer type -->
+      {% if page['type'] === 'personName' %}
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Answer type</dt>
+        <dd class="govuk-summary-list__value">
+
+          {# Set the input fields text #}
+          {% if page.input === 'single-field' %}
+            {% set inputText = 'Full name in a single box' %}
+          {% elif page.input === 'multi-field' %}
+            {% set inputText = 'First and last names in separate boxes' %}
+          {% else %}
+          {# 'multi-field-plus' #}
+            {% set inputText = 'First, middle and last names in separate boxes' %}
+          {% endif %}
+
+          {# Set the title text #}
+          {% if page.title === 'No' %}
+            {% set titleText = 'Title not needed' %}
+          {% else %}
+            {% set titleText = 'Title needed' %}
+          {% endif %}
+
+          <ul class="govuk-list">
+            <li>Person’s name</li>
+            <li>{{ inputText }}</li>
+            <li>{{ titleText }}</li>
+          </ul>
+        </dd>
+      </div>
+      {% endif %}
+
+      <!-- Company or organisation’s name answer type -->
+      {% if page['type'] === 'companyName' %}
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Answer type</dt>
+        <dd class="govuk-summary-list__value">Company or organisation’s name</dd>
+      </div>
+      {% endif %}
+
+      <!-- Email address answer type -->
+      {% if page['type'] === 'email' %}
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Answer type</dt>
+        <dd class="govuk-summary-list__value">Email address</dd>
+      </div>
+      {% endif %}
+
+      <!-- Phone number answer type -->
+      {% if page['type'] === 'phone' %}
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Answer type</dt>
+        <dd class="govuk-summary-list__value">Phone number</dd>
+      </div>
+      {% endif %}
+
+      <!-- National Insurance number answer type -->
+      {% if page['type'] === 'national-insurance-number' %}
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Answer type</dt>
+        <dd class="govuk-summary-list__value">National Insurance number</dd>
+      </div>
+      {% endif %}
+
+      <!-- Address answer type -->
+      {% if page['type'] === 'address' %}
+      <div class="govuk-summary-list__row">
+
+        {# Set the title text #}
+        {% if ('uk-address' in page.input) and ('international-address' in page.input) %}
+          {% set titleText = 'UK and international addresses' %}
+        {% elif 'uk-address' in page.input %}
+          {% set titleText = 'UK addresses' %}
+        {% elif 'international-address' in page.input %}
+          {% set titleText = 'International addresses' %}
+        {% endif %}
+
+        <dt class="govuk-summary-list__key">Answer type</dt>
+        <dd class="govuk-summary-list__value">{{ titleText }}</dd>
+      </div>
+      {% endif %}
+
+      <!-- Date answer type -->
+      {% if page['type'] === 'date' %}
+      <div class="govuk-summary-list__row">
+
+        {# Set the type text #}
+        {% if page.input === 'yes' %}
+          {% set typeText = 'Date of birth' %}
+        {% else %}
+          {% set typeText = 'Date' %}
+        {% endif %}
+
+        <dt class="govuk-summary-list__key">Answer type</dt>
+        <dd class="govuk-summary-list__value">{{ typeText }}</dd>
+      </div>
+      {% endif %}
+
+      <!-- Selection from a list answer type -->
+      {% if page['type'] === 'select' %}
+      <div class="govuk-summary-list__row">
+
+        {# Set the answer type text #}
+        {% set typeText = 'Selection from a list' %}
+        {% if ('oneOption' in page.listSettings) %}
+          {% set typeText = typeText + ', one option only' %}
+        {% endif %}
+
+        <dt class="govuk-summary-list__key">Answer type</dt>
+        <dd class="govuk-summary-list__value">{{ typeText }}</dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Options</dt>
+        <dd class="govuk-summary-list__value">
+          <ul class="govuk-list">
+            {% for option in page['item-list'] %}
+            <li>{{ option }}</li>
+            {% endfor %}
+            {% if ('noneOption' in page.listSettings) %}
+            <li>None of the above</li>
+            {% endif %}
+          </ul>
+        </dd>
+      </div>
+      {% endif %}
+
+      <!-- Number answer type -->
+      {% if page['type'] === 'number' %}
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Answer type</dt>
+        <dd class="govuk-summary-list__value">Number</dd>
+      </div>
+      {% endif %}
+
+      <!-- Text answer type -->
+      {% if page['type'] === 'text' %}
+      <div class="govuk-summary-list__row">
+
+        {# Set the title text #}
+        {% if page.input === 'single-line-input' %}
+          {% set titleText = 'A single line of text' %}
+        {% else %}
+          {% set titleText = 'More than a single line of text' %}
+        {% endif %}
+
+        <dt class="govuk-summary-list__key">Answer type</dt>
+        <dd class="govuk-summary-list__value">{{ titleText }}</dd>
+      </div>
+      {% endif %}
+    </dl>
+  </div>
+</div>
+{% endfor %}
+
+<p class="govuk-body">
+  <a class="govuk-link" href="your-form">Back to your form</a>
+</p>
