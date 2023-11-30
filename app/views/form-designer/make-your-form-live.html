@@ -1,9 +1,9 @@
 {% extends "layout-govuk-forms.html" %}
 
-{% set pageTitle = 'Make your form live' %}
+{% set pageTitle = 'Make your changes live' if data.status == 'Live' else 'Make your form live' %}
 
 {% block pageTitle %}
-  {{ "Error: " if containsErrors }}{{pageTitle}} - {{ data['formTitle'] }} - GOV.UK Forms
+  {{ "Error: " if containsErrors }}{{ pageTitle }}: {{ data.formTitle or '[formTitle]' }} - GOV.UK Forms
 {% endblock %}
 
 {% block beforeContent %}
@@ -24,9 +24,17 @@
         }) }}
         {% endif %}
 
-        <span class="govuk-caption-l">{{ data['formTitle'] }}</span>
+        <span class="govuk-caption-l">{{ data.formTitle or '[formTitle]' }}</span>
         <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
 
+        {% if data.status == 'Live' %}
+        <p class="govuk-body">
+          When you make your changes live, there may be an impact on people who are filling in the live form at the same time. They may lose any answers they have already provided and may need to start again.
+        <p>
+        <p class="govuk-body">
+          Links to the form will still work, even if you’ve changed the form’s name.
+        </p>
+        {% else %}
         <p class="govuk-body">
           When you make your form live you will get a URL for the form. The form will not be indexed by search engines, so people will not be able to find it easily. Contact your GOV.UK publishing team to publish a link to your form on GOV.UK so people can find it. 
         <p>
@@ -34,19 +42,7 @@
         <p class="govuk-body">
           After you have made your form live, completed forms will be sent to {{data['formsEmail'] or 'email@address.com' | safe}}.
         </p>
-
-        {% set html %}
-        <p class="govuk-notification-banner__heading">
-          Any changes you make to a live form will be updated in the form immediately.
-        </p>
-        <p class="govuk-body">
-          This could have an impact on people who are filling in the form at the same time. They may lose any answers they have already provided and may need to start again. 
-        </p>
-        {% endset %}
-
-        {{ govukNotificationBanner({
-          html: html
-        }) }}
+        {% endif %}
 
         {{ govukRadios({
           classes: "govuk-radios--inline",
