@@ -3,7 +3,7 @@
 {% set pageTitle = 'Add a declaration for people to agree to' %}
 
 {% block pageTitle %}
-  {{ "Error: " if containsErrors }}{{pageTitle}} - GOV.UK Forms
+  {{ "Error: " if containsErrors }}{{pageTitle}}: {{ data.formTitle or '[formTitle]' }} - GOV.UK Forms
 {% endblock %}
 
 {% block beforeContent %}
@@ -35,8 +35,8 @@
           }) }}
         {% endif %}
 
-        <span class="govuk-caption-l">{{ data['formTitle'] }}</span>
-        <h1 class="govuk-heading-l">{{pageTitle}}</h1>
+        <span class="govuk-caption-l">{{ data.formTitle or '[formTitle]' }}</span>
+        <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
 
         {#
         Every field id is prefixed with a unique page id.
@@ -87,7 +87,7 @@
             }
           },
           hint: {
-          text: "Selecting ‘Yes’ will mark this task as complete. You'll still be able to make more changes if you need to."
+          text: "Selecting ‘Yes’ will mark this task as complete. You’ll still be able to make changes if you need to."
           },
           items: [
             {
@@ -107,19 +107,11 @@
 
         <input type="hidden" id="currentPageId" name="currentPageId" value="{{pageId}}">
 
-        <div class="govuk-button-group">
-          {{ govukButton({
-            text: "Save and continue",
-            name: "action",
-            value: "continue"
-          }) }}
-          {{ govukButton({
-            text:  "Save",
-            name: "action",
-            value: "update",
-            classes: "govuk-button--secondary"
-          }) }}
-        </div>
+        {{ govukButton({
+          text: "Save and continue",
+          name: "action",
+          value: "continue"
+        }) }}
 
       </form>
     </div>
