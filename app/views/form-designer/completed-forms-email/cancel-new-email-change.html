@@ -1,10 +1,9 @@
 {% extends "layout-govuk-forms.html" %}
 
 {% set pageTitle = 'Cancel the pending email address change' %}
-{% set formTitle = data['formTitle'] or 'Apply for a juggling licence' %}
 
 {% block pageTitle %}
-  {{ "Error:" if containsErrors }}{{pageTitle}}: {{ data['formTitle'] }} - GOV.UK Forms
+  {{ "Error:" if containsErrors }}{{ pageTitle }}: {{ data.formTitle or '[formTitle]' }} - GOV.UK Forms
 {% endblock %}
 
 {% block beforeContent %}
@@ -22,8 +21,8 @@
         }) }}
       {% endif %}
 
-      <span class="govuk-caption-l">{{ data['formTitle'] }}</span>
-      <h1 class="govuk-heading-l">{{pageTitle|safe}}</h1>
+      <span class="govuk-caption-l">{{ data.formTitle or '[formTitle]' }}</span>
+      <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
 
       <p class="govuk-body">
         You will not be able to confirm {{ data['currentFormsEmail'] }}. Completed forms will continue to go to {{ data['oldFormsEmail']}}.

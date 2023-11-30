@@ -2,10 +2,8 @@
 
 {% set pageTitle = 'Confirmation code sent' %}
 
-{% set formTitle = data['formTitle'] or 'Apply for a juggling licence' %}
-
 {% block pageTitle %}
-  {{pageTitle}}: {{ data['formTitle'] }} - GOV.UK Forms
+  {{ pageTitle }}: {{ data.formTitle or '[formTitle]' }} - GOV.UK Forms
 {% endblock %}
 
 {% block beforeContent %}
@@ -16,14 +14,11 @@
     <div class="govuk-grid-column-two-thirds">
 
       {{ govukPanel({
-      titleText: pageTitle
+        titleText: pageTitle
       }) }}
 
       <p class="govuk-body">
-        We’ve sent a confirmation code and your email address to:
-      </p>
-      
-      <p class="govuk-body">
+        We’ve sent a confirmation code and your email address to 
         {{data.formsEmail or 'email@address.com' | safe}}
       </p>
       

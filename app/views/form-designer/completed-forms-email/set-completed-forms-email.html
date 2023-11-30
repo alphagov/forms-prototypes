@@ -1,10 +1,9 @@
 {% extends "layout-govuk-forms.html" %}
 
 {% set pageTitle = 'Set the email address for completed forms' %}
-{% set formTitle = data['formTitle'] or 'Apply for a juggling licence' %}
 
 {% block pageTitle %}
-  {{ "Error:" if containsErrors }}{{pageTitle|safe}} - GOV.UK Forms
+  {{ "Error:" if containsErrors }}{{ pageTitle }}: {{ data.formTitle or '[formTitle]' }} - GOV.UK Forms
 {% endblock %}
 
 {% block beforeContent %}
@@ -24,8 +23,8 @@
         }) }}
       {% endif %}
 
-      <span class="govuk-caption-l">{{ data['formTitle'] }}</span>
-      <h1 class="govuk-heading-l">{{pageTitle|safe}}</h1>
+      <span class="govuk-caption-l">{{ data.formTitle or '[formTitle]' }}</span>
+      <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
 
       <p class="govuk-body">
         You need to provide an email address for completed forms to be sent to for processing. It should be a shared government email inbox.
@@ -46,7 +45,6 @@
             text: "What email address should completed forms be sent to?",
             classes: "govuk-label--m"
           },
-          classes: "govuk-!-width-two-thirds",
           id: "forms-email",
           name: "formsEmail",
           value: data['formsEmail'],

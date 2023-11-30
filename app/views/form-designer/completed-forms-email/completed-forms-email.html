@@ -12,10 +12,8 @@
   {% set pageTitle = 'Confirm the new email address for completed forms' %}
 {% endif %}
 
-{% set formTitle = data['formTitle'] or 'Apply for a juggling licence' %}
-
 {% block pageTitle %}
-  {{ "Error:" if containsErrors }}{{pageTitle}}: {{ data['formTitle'] }} - GOV.UK Forms
+  {{ "Error:" if containsErrors }}{{ pageTitle }}: {{ data.formTitle or '[formTitle]' }} - GOV.UK Forms
 {% endblock %}
 
 {% block beforeContent %}
@@ -42,15 +40,13 @@
         }) }}
       {% endif %}
 
-      <span class="govuk-caption-l">{{ data['formTitle'] }}</span>
-      <h1 class="govuk-heading-l">{{pageTitle|safe}}</h1>
+      <span class="govuk-caption-l">{{ data.formTitle or '[formTitle]' }}</span>
+      <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
 
       {% if (data['confirmationCode']) and not (data['oldFormsEmail']) %}
-        <p class="govuk-body">
-          Completed forms will be sent to this email address.
-        </p>
-
-
+      <p class="govuk-body">
+        Completed forms will be sent to this email address.
+      </p>
       {% endif %}
 
       {% if (data['formsEmail']) and not (data['oldFormsEmail']) %}
@@ -127,7 +123,7 @@
      }}
 
     <p class="govuk-body">
-    A confirmation code has been sent to {{ data['currentFormsEmail']}}. Enter the code to confirm the new email address.
+      A confirmation code has been sent to {{ data['currentFormsEmail']}}. Enter the code to confirm the new email address.
     </p>
 
     {% endif %}

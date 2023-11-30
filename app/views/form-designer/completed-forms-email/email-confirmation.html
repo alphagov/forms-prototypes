@@ -2,10 +2,8 @@
 
 {% set pageTitle = 'Email address confirmed' %}
 
-{% set formTitle = data['formTitle'] or 'Apply for a juggling licence' %}
-
 {% block pageTitle %}
-  {{pageTitle}}: {{ data['formTitle'] }} - GOV.UK Forms
+  {{ pageTitle }}: {{ data.formTitle or '[formTitle]' }} - GOV.UK Forms
 {% endblock %}
 
 {% block beforeContent %}
@@ -15,12 +13,12 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-       {{ govukPanel({
-      titleText: pageTitle
+      {{ govukPanel({
+        titleText: pageTitle
       }) }}
 
       <p class="govuk-body">
-        Completed forms will be sent to {{data.formsEmail or 'email@address.com' | safe}}.
+        Completed forms will be sent to {{ data.formsEmail or 'email@address.com' | safe }}.
       </p>
 
       <p class="govuk-body">
