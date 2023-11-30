@@ -79,7 +79,7 @@
 
     <div class="app-prose-scope">
     {% markdown %}
-      {{ data['checkAnswersDeclaration'] }}
+      {{ data['checkAnswersDeclaration'] | striptags(true) | escape | nl2br }}
     {% endmarkdown %}
     </div>
 
