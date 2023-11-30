@@ -139,11 +139,6 @@
   @include govuk-responsive-margin(4, "top");
 }
 
-.form-action-group {
-  justify-content: flex-end;
-  align-items: stretch;
-}
-
 .comment {
   border-bottom: 1px solid $govuk-border-colour;
 
@@ -186,7 +181,12 @@
 
 // Summary list overwrites
 .app-summary-list__key {
-  width: 10%;
+  width: 20%;
+}
+
+.app-page-list__button-group {
+  justify-content: end;
+  align-items: normal;
 }
 
 
@@ -228,4 +228,75 @@
 .tooltip:hover .tooltiptext {
   visibility: visible;
   opacity: 1;
+}
+
+/* ========
+Summary card 
+========= */
+.app-summary-card .govuk-summary-list {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: GDS Transport,arial,sans-serif;
+  font-size: 14px;
+  font-size: .875rem;
+  font-weight: 400;
+  line-height: 1.1428571429;
+  margin-bottom: -10px
+}
+
+@media print {
+  .app-summary-card .govuk-summary-list {
+      font-family: sans-serif
+  }
+}
+
+@media (min-width: 40.0625em) {
+  .app-summary-card .govuk-summary-list {
+      font-size:16px;
+      font-size: 1rem;
+      line-height: 1.25
+  }
+}
+
+@media print {
+  .app-summary-card .govuk-summary-list {
+      font-size: 14pt;
+      line-height: 1.2
+  }
+}
+
+.app-summary-card .govuk-summary-list .govuk-list {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: GDS Transport,arial,sans-serif;
+  font-size: 14px;
+  font-size: .875rem;
+  font-weight: 400;
+  line-height: 1.1428571429;
+  margin-bottom: -10px
+}
+
+@media print {
+  .app-summary-card .govuk-summary-list .govuk-list {
+      font-family: sans-serif
+  }
+}
+
+@media (min-width: 40.0625em) {
+  .app-summary-card .govuk-summary-list .govuk-list {
+      font-size:16px;
+      font-size: 1rem;
+      line-height: 1.25
+  }
+}
+
+@media print {
+  .app-summary-card .govuk-summary-list .govuk-list {
+      font-size: 14pt;
+      line-height: 1.2
+  }
+}
+
+.app-summary-card .govuk-summary-list__row:last-child,.app-summary-card .govuk-summary-list__row:last-child>* {
+  border-bottom: 0
 }
