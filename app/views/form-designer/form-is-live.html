@@ -2,11 +2,10 @@
 
 {% set pageTitle = 'Your form is live' %}
 
-{% set formTitle = data['formTitle'] or 'Apply for a juggling licence' %}
-{% set titleURL = formTitle | lower | replace(':', '') | replace('-', '') | replace(',', '') | replace(' ', '-') %}
+{% set titleURL = (data.formTitle or '[formTitle]') | lower | replace(':', '') | replace('-', '') | replace(',', '') | replace(' ', '-') %}
 
 {% block pageTitle %}
-  {{pageTitle}}: {{ data['formTitle'] }} - GOV.UK Forms
+  {{pageTitle}}: {{ data.formTitle or '[formTitle]' }} - GOV.UK Forms
 {% endblock %}
 
 {% block content %}
@@ -18,7 +17,7 @@
     }) }}
 
     <h2 class="govuk-heading-m">Form name</h2>
-    <p class="govuk-bogy">{{ formTitle }}</p>
+    <p class="govuk-bogy">{{ data.formTitle or '[formTitle]' }}</p>
 
     <h2 class="govuk-heading-m">Form URL</h2>
     <p class="govuk-body">
