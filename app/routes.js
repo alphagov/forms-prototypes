@@ -119,11 +119,58 @@ router.post('/form-designer/name-your-form', function (req, res) {
 // could we also add timer to the notification banner here?
 // .govuk-notification-banner__header
 router.get('/form-designer/your-form', function (req, res) {
+
   var successMessage = req.session.data.successMessage
   req.session.data.successMessage = undefined
+
+  // Check which tasks are complete
+  // Do some checks to see how many sections are "Completed" 
+  var sections = 0
+  // if form has a title completed = sections =+ 1 
+  if (req.session.data['formTitle']) {
+    sections = sections + 1 
+  }
+  // if questions are marked as completed = sections =+ 1 
+  if (req.session.data['isQuestionsComplete'] === 'yes') {
+    sections = sections + 1 
+  }
+  // if declaration marked complete = sections =+ 1 
+  if (req.session.data['isDeclarationComplete'] === 'yes') {
+    sections = sections + 1 
+  }
+  // if what happens next completed = sections =+ 1 
+  if (req.session.data['confirmationNext']) {
+    sections = sections + 1
+  }
+
+  // if completed forms email adress is set = sections =+ 1 
+  if (req.session.data['formsEmail']) {
+    sections = sections + 1 
+  }
+
+  // if privacy information link added = sections =+ 1 
+  if (req.session.data['privacyInformation']) {
+    sections = sections + 1 
+  }
+  // if support contact details added = sections =+ 1 
+  if (req.session.data['supportDetails']) {
+    sections = sections + 1 
+  }
+
   return res.render('form-designer/your-form', {
-    successMessage: successMessage
+    successMessage: successMessage,
+    sections: sections
   })
+})
+
+// something about deleting a draft form
+// Delete draft form - button journeys
+router.get('/form-designer/delete-draft', function (req, res) {
+  var action = req.session.data.action
+
+  if (action === 'deleteDraft') {
+    res.redirect(`/form-designer/delete-draft-form`)
+  }
 })
 
 
@@ -198,11 +245,13 @@ router.post('/form-designer/your-questions', function (req, res) {
 })
 
 
-// Create a new page
+// Create a new page or question route - button journeys
 router.get('/form-designer/pages/new', function (req, res) {
   var pageId = parseInt(req.params.pageId, 10)
   var pageIndex = pageId
   var pageData = req.session.data.pages[pageIndex]
+
+  var action = req.session.data.action
 
   const nextPageId = req.session.data.pages.length
 
@@ -212,7 +261,13 @@ router.get('/form-designer/pages/new', function (req, res) {
     })
   }
 
-  res.redirect(`/form-designer/pages/${nextPageId}/edit-answer-type`)
+  if (action === 'addQuestion') {
+    // add a new question
+    res.redirect(`/form-designer/pages/${nextPageId}/edit-answer-type`)
+  } else if (action === 'addRoute') {
+    // add a new question route
+    res.redirect(`/form-designer/question-routes/new-condition`)
+  }
 })
 
 // Edit a user-created answer type
@@ -641,7 +696,20 @@ router.post('/form-designer/pages/:pageId(\\d+)/additional-guidance', function (
   var pageData = req.session.data.pages[pageIndex]
 
   const errors = {};
+  const pageHeading = req.session.data['page-name']
   const guidanceText = req.session.data['additional-guidance-text']
+
+  // if no page heading given, then throw an error
+  if (!pageHeading || !pageHeading.length) {
+    errors['page-name'] = {
+      text: 'Enter a page heading',
+      href: "#page-name"
+    }
+  // otherwise add page heading to pageData
+  } else {
+    pageData['page-name'] = req.session.data['page-name']
+  }
+  req.session.data['page-name'] = undefined
 
   // if no guidance text given, then throw an error
   if (!guidanceText || !guidanceText.length) {
@@ -721,44 +789,11 @@ router.post('/form-designer/pages/:pageId(\\d+)/check-question', function (req, 
     return res.redirect(`delete`)
   }
 
-  const errors = {};
-  const pageName = req.session.data['page-name']
-
-  // if no question text given, then throw an error
-  if (pageData['additional-guidance'] == 'Yes') {
-    if (!pageName || !pageName.length) {
-      errors['page-name'] = {
-        text: 'Enter a page heading',
-        href: "#page-name"
-      }
-    // otherwise add question text to pageData
-    } else {
-      pageData['page-name'] = req.session.data['page-name']
-    }
-    req.session.data['page-name'] = undefined
-  }
-
   // content to display in notification banners
   var saved = 'Your changes have been saved'
   var saveAndContinue = 'Question ' + (parseInt(pageId) + 1) + ' has been saved'
 
-  // Convert the errors into a list, so we can use it in the template
-  const errorList = Object.values(errors)
-  // If there are no errors, redirect the user to the next page
-  // otherwise, show the page again with the errors set
-  const containsErrors = errorList.length > 0
-  // If there are errors on the page, redisplay it with the errors
-  if(containsErrors) {
-    return res.render('form-designer/pages/check-question', {
-      pageId: pageId,
-      pageIndex: pageIndex,
-      pageData: pageData,
-      previousPage: previousPage,
-      errors,
-      errorList,
-      containsErrors
-    })
-  } else if (action == 'createNextPage') {
+  if (action == 'createNextPage') {
     req.session.data.highestPageId = parseInt(req.session.data.highestPageId) + 1
     req.session.data.successMessage = saveAndContinue
     return res.redirect(`/form-designer/pages/new`)
