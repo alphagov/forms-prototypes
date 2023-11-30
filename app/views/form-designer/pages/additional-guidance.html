@@ -59,6 +59,20 @@
 
           {% set namePrefix = "pages[" + pageIndex + "]" %}
 
+          <!-- Give your page a heading -->
+          {{ govukInput({
+            label: {
+              text: "Give your page a heading",
+              classes: "govuk-label--m"
+            },
+            hint: {
+              text: "Use a heading that’s a statement rather than a question - for example, ‘Interview needs’. This will be your main page heading."
+            },
+            id: "page-name",
+            name: "page-name",
+            value: pageData['page-name'],
+            errorMessage: { text: errors['page-name'].text } if errors['page-name'].text 
+          }) }}
 
           <!-- Add detailed guidance input -->
           {{ govukTextarea({
