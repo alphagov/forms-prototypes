@@ -20,7 +20,7 @@
 {% endif %}
 
 <p class="govuk-body govuk-!-margin-bottom-7">
-    You have completed {{sections}} of 8 tasks.
+    You have completed {{sections}} of 9 tasks.
 </p>
 
 <ol class="app-task-list">
@@ -128,21 +128,23 @@
                 {# Show a different link and status based on email and confirmation code presence #}
                 {% if not(data['formsEmail']) %}
                     {% set emailLinkURL = 'completed-forms-email/set-completed-forms-email' %}
+                    {% set emailLinkText = 'Set the email address completed forms will be sent to' %}
                 {% else %}
                     {% set emailLinkURL = 'completed-forms-email/completed-forms-email' %}
+                    {% set emailLinkText = 'Edit the email address completed forms will be sent to' %}
                 {% endif %}
 
                 <span class="app-task-list__task-name">
                     <a href="{{ emailLinkURL }}" aria-describedby="processing-email-status">
-                        Set the email address completed forms will be sent to
+                        {{ emailLinkText }}
                     </a>
                 </span>
 
                 {# Refactor this logic outside of class attribute #}
-                {% if not(data['formsEmail']) %}
+                {% if not (data.formsEmail) %}
                     {% set statusTag = 'govuk-tag--grey' %}
                     {% set statusText = 'Not started' %}
-                {% elif(data['formsEmail'])and not(data['confirmationCode'])or(data['confirmationCode'] === '000000') %}
+                {% elif data.formsEmail and (not data.confirmationCode) %}
                     {% set statusTag = 'govuk-tag--blue' %}
                     {% set statusText = 'In progress' %}
                 {% else %}
@@ -154,99 +156,138 @@
                     {{ statusText }}
                 </strong>
 
-                </li>
-            </ul>
-        </li>
+                {% if data.currentFormsEmail or (data.formsEmail and data.confirmationCode) %}
+                <br>
+                <span class="app-task-list__hint govuk-hint">
+                    Completed forms will be sent to: 
+                    <br>
+                    {{ data.currentFormsEmail or data.formsEmail }}
+                </span>
+                {% endif %}
+                
+            </li>
+            <li class="app-task-list__item">
+                {# Show a different link and status based on email and confirmation code presence #}
+                {% if data.formsEmail and not data.confirmationCode %}
+                <span class="app-task-list__task-name">
+                    <a href="completed-forms-email/enter-email-confirmation-code" aria-describedby="email-confirmation-status">
+                        Enter the email address confirmation code
+                    </a>
+                </span>
+                {% else %}
+                <span class="app-task-list__task-name">
+                    Enter the email address confirmation code
+                </span>
+                {% endif %}
 
-        <li>
-            <h2 class="app-task-list__section">
-                <span class="app-task-list__section-number">3.</span> Provide privacy and contact details
-            </h2>
-            <ul class="app-task-list__items">
-                <li class="app-task-list__item">
-                    <span class="app-task-list__task-name">
-                        <a href="provide-link-to-privacy-information" aria-describedby="privacy-information-link-status">
-                            Provide a link to privacy information for this form
-                        </a>
-                    </span>
+                {# Refactor this logic outside of class attribute #}
+                {% if not data.formsEmail %}
+                    {% set statusTag = 'govuk-tag--grey' %}
+                    {% set statusText = 'Cannot start yet' %}
+                {% elif data.formsEmail and not data.confirmationCode %}
+                    {% set statusTag = 'govuk-tag--grey' %}
+                    {% set statusText = 'Not started' %}
+                {% else %}
+                    {% set statusTag = '' %}
+                    {% set statusText = 'Completed' %}
+                {% endif%}
+                
+                <strong class="govuk-tag {{ statusTag }} app-task-list__tag" id="email-confirmation-status">
+                    {{ statusText }}
+                </strong>
+            </li>
+        </ul>
+    </li>
 
-                    {# Refactor this logic outside of class attribute #}
-                    {% if data.privacyInformation %}
-                        {% set statusTag = '' %}
-                        {% set statusText = 'Completed' %}
-                    {% else %}
-                        {% set statusTag = 'govuk-tag--grey' %}
-                        {% set statusText = 'Not started' %}
-                    {% endif%}
-                    
-                    <strong class="govuk-tag {{ statusTag }} app-task-list__tag" id="privacy-information-link-status">
-                        {{ statusText }}
-                    </strong>
-                </li>
-                <li class="app-task-list__item">
-                    <span class="app-task-list__task-name">
-                        <a href="provide-support-details" aria-describedby="provide-support-details-link-status">
-                            Provide contact details for support
-                        </a>
-                    </span>
+    <li>
+        <h2 class="app-task-list__section">
+            <span class="app-task-list__section-number">3.</span> Provide privacy and contact details
+        </h2>
+        <ul class="app-task-list__items">
+            <li class="app-task-list__item">
+                <span class="app-task-list__task-name">
+                    <a href="provide-link-to-privacy-information" aria-describedby="privacy-information-link-status">
+                        Provide a link to privacy information for this form
+                    </a>
+                </span>
 
-                    {# Refactor this logic outside of class attribute #}
-                    {% if data.supportDetails %}
-                        {% set statusTag = '' %}
-                        {% set statusText = 'Completed' %}
-                    {% else %}
-                        {% set statusTag = 'govuk-tag--grey' %}
-                        {% set statusText = 'Not started' %}
-                    {% endif%}
-                    
-                    <strong class="govuk-tag {{ statusTag }} app-task-list__tag" id="provide-support-details-link-status">
-                        {{ statusText }}
-                    </strong>
-                </li>
-            </ul>
-        </li>
+                {# Refactor this logic outside of class attribute #}
+                {% if data.privacyInformation %}
+                    {% set statusTag = '' %}
+                    {% set statusText = 'Completed' %}
+                {% else %}
+                    {% set statusTag = 'govuk-tag--grey' %}
+                    {% set statusText = 'Not started' %}
+                {% endif%}
+                
+                <strong class="govuk-tag {{ statusTag }} app-task-list__tag" id="privacy-information-link-status">
+                    {{ statusText }}
+                </strong>
+            </li>
+            <li class="app-task-list__item">
+                <span class="app-task-list__task-name">
+                    <a href="provide-support-details" aria-describedby="provide-support-details-link-status">
+                        Provide contact details for support
+                    </a>
+                </span>
 
-        <li>
-            <h2 class="app-task-list__section">
-                <span class="app-task-list__section-number">4.</span> Make your form live
-            </h2>
-            <ul class="app-task-list__items">
-                <li class="app-task-list__item">
-                    <span class="app-task-list__task-name">
-                        {% if sections >= 6 -%}
-                        <a href="make-your-form-live" aria-describedby="form-live-status">
-                        {%- endif %}
-                        Make your form live
-                        {% if sections >= 6 -%}
-                        </a>
-                        {%- endif %}
-                    </span>
+                {# Refactor this logic outside of class attribute #}
+                {% if data.supportDetails %}
+                    {% set statusTag = '' %}
+                    {% set statusText = 'Completed' %}
+                {% else %}
+                    {% set statusTag = 'govuk-tag--grey' %}
+                    {% set statusText = 'Not started' %}
+                {% endif%}
+                
+                <strong class="govuk-tag {{ statusTag }} app-task-list__tag" id="provide-support-details-link-status">
+                    {{ statusText }}
+                </strong>
+            </li>
+        </ul>
+    </li>
 
-                    {# Refactor this logic outside of class attribute #}
-                    {% if data.status == 'Live' %}
-                        {% set statusTag = '' %}
-                        {% set statusText = 'Completed' %}
-                    {% elif sections >= 6 %}
-                        {% set statusTag = 'govuk-tag--grey' %}
-                        {% set statusText = 'Not started' %}
-                    {% else %}
-                        {% set statusTag = 'govuk-tag--grey' %}
-                        {% set statusText = 'Cannot start yet' %}
-                    {% endif%}
-                    
-                    <strong class="govuk-tag {{ statusTag }} app-task-list__tag" id="form-live-status">
-                        {{ statusText }}
-                    </strong>
-                </li>
-            </ul>
-        </li>
-    </ol>
+    <li>
+        <h2 class="app-task-list__section">
+            <span class="app-task-list__section-number">4.</span> Make your form live
+        </h2>
+        <ul class="app-task-list__items">
+            <li class="app-task-list__item">
+                <span class="app-task-list__task-name">
+                    {% if sections >= 6 -%}
+                    <a href="make-your-form-live" aria-describedby="form-live-status">
+                    {%- endif %}
+                    Make your form live
+                    {% if sections >= 6 -%}
+                    </a>
+                    {%- endif %}
+                </span>
 
-    <form id="form" class="form" action="/form-designer/delete-draft" method="post" novalidate>
-        {{ govukButton({
-            text: "Delete draft form",
-            classes: "govuk-button--warning",
-            name: "action",
-            value: "deleteDraft"
-        }) }}
-    </form>
+                {# Refactor this logic outside of class attribute #}
+                {% if data.status == 'Live' %}
+                    {% set statusTag = '' %}
+                    {% set statusText = 'Completed' %}
+                {% elif sections >= 6 %}
+                    {% set statusTag = 'govuk-tag--grey' %}
+                    {% set statusText = 'Not started' %}
+                {% else %}
+                    {% set statusTag = 'govuk-tag--grey' %}
+                    {% set statusText = 'Cannot start yet' %}
+                {% endif%}
+                
+                <strong class="govuk-tag {{ statusTag }} app-task-list__tag" id="form-live-status">
+                    {{ statusText }}
+                </strong>
+            </li>
+        </ul>
+    </li>
+</ol>
+
+<form id="form" class="form" action="/form-designer/delete-draft" method="post" novalidate>
+    {{ govukButton({
+        text: "Delete draft form",
+        classes: "govuk-button--warning",
+        name: "action",
+        value: "deleteDraft"
+    }) }}
+</form>
