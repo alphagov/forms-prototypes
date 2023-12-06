@@ -119,11 +119,62 @@ router.post('/form-designer/name-your-form', function (req, res) {
 // could we also add timer to the notification banner here?
 // .govuk-notification-banner__header
 router.get('/form-designer/your-form', function (req, res) {
+
   var successMessage = req.session.data.successMessage
   req.session.data.successMessage = undefined
+
+  // Check which tasks are complete
+  // Do some checks to see how many sections are "Completed" 
+  var sections = 0
+  // if form has a title completed = sections =+ 1 
+  if (req.session.data['formTitle']) {
+    sections = sections + 1 
+  }
+  // if questions are marked as completed = sections =+ 1 
+  if (req.session.data['isQuestionsComplete'] === 'yes') {
+    sections = sections + 1 
+  }
+  // if declaration marked complete = sections =+ 1 
+  if (req.session.data['isDeclarationComplete'] === 'yes') {
+    sections = sections + 1 
+  }
+  // if what happens next completed = sections =+ 1 
+  if (req.session.data['confirmationNext']) {
+    sections = sections + 1
+  }
+
+  // if completed forms email address is set = sections =+ 1 
+  if (req.session.data['formsEmail'] && req.session.data['confirmationCode']) {
+    sections = sections + 1 
+  }
+  // if completed forms email has been confirmed = sections =+ 1 
+  if (req.session.data['confirmationCode']) {
+    sections = sections + 1 
+  }
+  
+  // if privacy information link added = sections =+ 1 
+  if (req.session.data['privacyInformation']) {
+    sections = sections + 1 
+  }
+  // if support contact details added = sections =+ 1 
+  if (req.session.data['supportDetails']) {
+    sections = sections + 1 
+  }
+
   return res.render('form-designer/your-form', {
-    successMessage: successMessage
+    successMessage: successMessage,
+    sections: sections
   })
+})
+
+// something about deleting a draft form
+// Delete draft form - button journeys
+router.get('/form-designer/delete-draft', function (req, res) {
+  var action = req.session.data.action
+
+  if (action === 'deleteDraft') {
+    res.redirect(`/form-designer/delete-draft-form`)
+  }
 })
 
 
@@ -198,21 +249,29 @@ router.post('/form-designer/your-questions', function (req, res) {
 })
 
 
-// Create a new page
+// Create a new page or question route - button journeys
 router.get('/form-designer/pages/new', function (req, res) {
   var pageId = parseInt(req.params.pageId, 10)
   var pageIndex = pageId
   var pageData = req.session.data.pages[pageIndex]
 
-  const nextPageId = req.session.data.pages.length
+  var action = req.session.data.action
 
-  if (!pageData) {
-    req.session.data.pages.push({
-      'pageIndex': nextPageId
-    })
+  if (action === 'addRoute') {
+    // add a new question route
+    res.redirect(`/form-designer/question-routes/new-condition`)
+  } else {
+
+    var nextPageId = req.session.data.pages.length
+  
+    if (!pageData) {
+      req.session.data.pages.push({
+        'pageIndex': nextPageId
+      })
+    }
+    // add a new question
+    res.redirect(`/form-designer/pages/${nextPageId}/edit-answer-type`)
   }
-
-  res.redirect(`/form-designer/pages/${nextPageId}/edit-answer-type`)
 })
 
 // Edit a user-created answer type
@@ -641,7 +700,20 @@ router.post('/form-designer/pages/:pageId(\\d+)/additional-guidance', function (
   var pageData = req.session.data.pages[pageIndex]
 
   const errors = {};
+  const pageHeading = req.session.data['page-name']
   const guidanceText = req.session.data['additional-guidance-text']
+
+  // if no page heading given, then throw an error
+  if (!pageHeading || !pageHeading.length) {
+    errors['page-name'] = {
+      text: 'Enter a page heading',
+      href: "#page-name"
+    }
+  // otherwise add page heading to pageData
+  } else {
+    pageData['page-name'] = req.session.data['page-name']
+  }
+  req.session.data['page-name'] = undefined
 
   // if no guidance text given, then throw an error
   if (!guidanceText || !guidanceText.length) {
@@ -721,44 +793,11 @@ router.post('/form-designer/pages/:pageId(\\d+)/check-question', function (req, 
     return res.redirect(`delete`)
   }
 
-  const errors = {};
-  const pageName = req.session.data['page-name']
-
-  // if no question text given, then throw an error
-  if (pageData['additional-guidance'] == 'Yes') {
-    if (!pageName || !pageName.length) {
-      errors['page-name'] = {
-        text: 'Enter a page heading',
-        href: "#page-name"
-      }
-    // otherwise add question text to pageData
-    } else {
-      pageData['page-name'] = req.session.data['page-name']
-    }
-    req.session.data['page-name'] = undefined
-  }
-
   // content to display in notification banners
   var saved = 'Your changes have been saved'
   var saveAndContinue = 'Question ' + (parseInt(pageId) + 1) + ' has been saved'
 
-  // Convert the errors into a list, so we can use it in the template
-  const errorList = Object.values(errors)
-  // If there are no errors, redirect the user to the next page
-  // otherwise, show the page again with the errors set
-  const containsErrors = errorList.length > 0
-  // If there are errors on the page, redisplay it with the errors
-  if(containsErrors) {
-    return res.render('form-designer/pages/check-question', {
-      pageId: pageId,
-      pageIndex: pageIndex,
-      pageData: pageData,
-      previousPage: previousPage,
-      errors,
-      errorList,
-      containsErrors
-    })
-  } else if (action == 'createNextPage') {
+  if (action == 'createNextPage') {
     req.session.data.highestPageId = parseInt(req.session.data.highestPageId) + 1
     req.session.data.successMessage = saveAndContinue
     return res.redirect(`/form-designer/pages/new`)
@@ -1039,7 +1078,7 @@ Routing for setting an email steps
 // Renders the page which asks for form submissions email address, handling validation errors
 router.post('/form-designer/completed-forms-email/set-completed-forms-email', function (req, res) {
   const errors = {};
-  const { formsEmail} = req.session.data
+  const { formsEmail } = req.session.data
 
   // If the formsEmail is blank, create an error to be displayed to the user
   if (!formsEmail?.length) {
@@ -1062,22 +1101,53 @@ router.post('/form-designer/completed-forms-email/set-completed-forms-email', fu
   }
 })
 
+// Renders the page to ask for an email confirmation code, handling validation errors
+router.post('/form-designer/completed-forms-email/enter-email-confirmation-code', function (req, res) {
+  const errors = {};
+  const { confirmationCode } = req.session.data
+
+  // If the confirmation code is blank, create an error to be displayed to the user
+  if (!confirmationCode?.length) {
+    errors.confirmationCode = {
+      text: 'Enter the confirmation code',
+      href: "#confirmation-code"
+    }
+  }
+
+  // Convert the errors into a list, so we can use it in the template
+  const errorList = Object.values(errors)
+  // If there are no errors, redirect the user to the next page
+  // otherwise, show the page again with the errors set
+  const containsErrors = errorList.length > 0
+  if(containsErrors) {
+    res.render('form-designer/completed-forms-email/enter-email-confirmation-code', { errors, errorList, containsErrors })
+  } else {
+    req.session.data.currentFormsEmail = undefined
+    res.redirect('email-confirmation')
+  }
+})
+
 // Renders the page which asks to confirm wanting to change submission email address, handling validation errors
 router.post('/form-designer/completed-forms-email/change-email-address', function (req, res) {
   const errors = {};
-  const { formsEmail, currentFormsEmail } = req.session.data
+  const { formsEmail, newFormsEmail } = req.session.data
 
-  if (formsEmail.includes(formsEmail)) {
-    req.session.data.oldFormsEmail = req.session.data.currentFormsEmail
-    req.session.data.currentFormsEmail = formsEmail
-  }
-
-   // If the formsEmail is blank, create an error to be displayed to the user
-   if (!formsEmail?.length) {
-    errors.formsEmail = {
+   // If the newFormsEmail is blank, create an error to be displayed to the user
+   if (!newFormsEmail?.length) {
+    errors.newFormsEmail = {
       text: 'Enter an email address',
       href: "#forms-email"
     }
+  } else {
+
+    if (newFormsEmail === formsEmail) {
+      req.session.data.newFormsEmail = undefined
+    } else {
+      req.session.data.currentFormsEmail = formsEmail
+      req.session.data.formsEmail = newFormsEmail
+      req.session.data.newFormsEmail = undefined
+    }
+
   }
 
   // Convert the errors into a list, so we can use it in the template
@@ -1088,15 +1158,10 @@ router.post('/form-designer/completed-forms-email/change-email-address', functio
   if(containsErrors) {
     res.render('form-designer/completed-forms-email/change-email-address', { errors, errorList, containsErrors })
   } else {
-    if (currentFormsEmail && (currentFormsEmail != formsEmail)){
-      req.session.data.confirmationCode = undefined
+    if (newFormsEmail && (newFormsEmail != formsEmail)) {
       res.redirect('confirmation-code-sent')
     } else {
-      req.session.data.formsEmail = req.session.data.oldFormsEmail
-      req.session.data.currentFormsEmail = req.session.data.formsEmail
-      req.session.data.oldFormsEmail = undefined
       res.redirect('completed-forms-email')
-      
     }
   }
 })
@@ -1136,7 +1201,7 @@ router.post('/form-designer/completed-forms-email/completed-forms-email', functi
 // Renders the page which asks to cancel new email change, handling validation errors
 router.post('/form-designer/completed-forms-email/cancel-new-email-change', function (req, res) {
   const errors = {};
-  const { cancelNewEmail, confirmationCode } = req.session.data
+  const { cancelNewEmail } = req.session.data
 
   // If no selection, create an error to be displayed to the user
   if (!cancelNewEmail || !cancelNewEmail.length) {
@@ -1154,16 +1219,15 @@ router.post('/form-designer/completed-forms-email/cancel-new-email-change', func
   if(containsErrors) {
     res.render('form-designer/completed-forms-email/cancel-new-email-change', { errors, errorList, containsErrors })
   } else {
+    req.session.data.cancelNewEmail = undefined
     if(cancelNewEmail === 'yes') {
       // set success message
       req.session.data.successMessage = 'Change of email address has been cancelled'
-      req.session.data.confirmationCode = '1234'
-      req.session.data.formsEmail = req.session.data.oldFormsEmail
-      req.session.data.currentFormsEmail = req.session.data.formsEmail
-      req.session.data.oldFormsEmail = undefined
+      req.session.data.formsEmail = req.session.data.currentFormsEmail
+      req.session.data.currentFormsEmail = undefined
+      req.session.data.newFormsEmail = undefined
       res.redirect('completed-forms-email')
     } else {
-      req.session.data.cancelNewEmail = undefined
       res.redirect('completed-forms-email')
     }
   }

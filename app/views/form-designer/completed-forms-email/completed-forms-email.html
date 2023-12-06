@@ -1,21 +1,9 @@
 {% extends "layout-govuk-forms.html" %}
 
-{% if data['formsEmail'] and not (data['confirmationCode']) %}
-  {% set pageTitle = 'Confirm the email address for completed forms' %}
-{% endif %}
-
-{% if data['formsEmail'] and data['confirmationCode']%}
-  {% set pageTitle = 'Email address for completed forms' %}
-{% endif %}
-
-{% if data['currentFormsEmail'] and not (data['confirmationCode']) %}
-  {% set pageTitle = 'Confirm the new email address for completed forms' %}
-{% endif %}
-
-{% set formTitle = data['formTitle'] or 'Apply for a juggling licence' %}
+{% set pageTitle = 'Email address for completed forms' %}
 
 {% block pageTitle %}
-  {{ "Error:" if containsErrors }}{{pageTitle}}: {{ data['formTitle'] }} - GOV.UK Forms
+  {{ "Error:" if containsErrors }}{{ pageTitle }}: {{ data.formTitle or '[formTitle]' }} - GOV.UK Forms
 {% endblock %}
 
 {% block beforeContent %}
@@ -42,19 +30,16 @@
         }) }}
       {% endif %}
 
-      <span class="govuk-caption-l">{{ data['formTitle'] }}</span>
-      <h1 class="govuk-heading-l">{{pageTitle|safe}}</h1>
+      <span class="govuk-caption-l">{{ data.formTitle or '[formTitle]' }}</span>
+      <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
 
-      {% if (data['confirmationCode']) and not (data['oldFormsEmail']) %}
-        <p class="govuk-body">
-          Completed forms will be sent to this email address.
-        </p>
-
-
+      {% if not data.currentFormsEmail %}
+      <p class="govuk-body">
+        Completed forms will be sent to this email address.
+      </p>
       {% endif %}
 
-      {% if (data['formsEmail']) and not (data['oldFormsEmail']) %}
-
+      {% if data.formsEmail and not data.currentFormsEmail %}
       {{govukSummaryList({
         rows: [
         {
@@ -75,11 +60,9 @@
         }]
       })
       }}
-
     {% endif %}
 
-    {% if (data['oldFormsEmail']) and not (data['confirmationCode']) %}
-    
+    {% if data.currentFormsEmail %}
     <h2 class="govuk-heading-m">Completed forms currently go to this email address</h2>
 
     {{govukSummaryList({
@@ -89,7 +72,7 @@
             text:"Current email address" 
           },
           value: {
-            text: data['oldFormsEmail'] or 'email@address.com' | safe
+            text: data.currentFormsEmail or 'email@address.com' | safe
           },
           actions: {
             items: [
@@ -112,7 +95,7 @@
             text:"Pending email address" 
           },
           value: {
-            text: data['currentFormsEmail'] or 'email@address.com' | safe
+            text: data.formsEmail or 'email@address.com' | safe
           },
           actions: {
             items: [
@@ -127,22 +110,18 @@
      }}
 
     <p class="govuk-body">
-    A confirmation code has been sent to {{ data['currentFormsEmail']}}. Enter the code to confirm the new email address.
+      A confirmation code has been sent to {{ data.formsEmail }}.
+    </p>
+
+    <p class="govuk-body">
+      <a href="enter-email-confirmation-code" class="govuk-link">Enter the code to confirm the new email address</a>
     </p>
 
     {% endif %}
 
-    {# If email not confirmed show confirmation code part #}
-
-      {% if not (data['confirmationCode']) %}
-        {% include './partials/add-confirmation-code.html' %}
-      {% else %}
-      <p class="govuk-body">
-        <a href="../your-form" class="govuk-link">Back to create a form</a>
-      </p>
-      {% endif %}
-    </div>
+    <p class="govuk-body">
+      <a href="../your-form" class="govuk-link">Back to create a form</a>
+    </p>
   </div>
-
-
+</div>
 {% endblock %}

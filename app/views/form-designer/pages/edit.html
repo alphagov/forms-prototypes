@@ -54,7 +54,7 @@
 {% endif %}
 
 {% block pageTitle %}
-  {{ "Error: " if containsErrors }}{{pageTitle}} - GOV.UK Forms
+  {{ "Error: " if containsErrors }}{{ pageTitle }} - GOV.UK Forms
 {% endblock %}
 
 {% block beforeContent %}
@@ -102,6 +102,8 @@
             errorMessage: { text: errors['long-title'].text } if errors['long-title'].text 
           }) }}
 
+          <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+
           <!-- Hint text input -->
           {{ govukTextarea({
             label: {
@@ -115,6 +117,8 @@
             name: "hint-text",
             value: pageData['hint-text']
           }) }}
+
+          <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 
           <!-- Additional guidance -->
           {{ govukRadios({

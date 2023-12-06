@@ -17,7 +17,7 @@
       <h2 class="govuk-heading-m">What happens next</h2>
       <div class="app-prose-scope">
       {% markdown %}
-        {{ data['confirmationNext'] }}
+        {{ data['confirmationNext'] | striptags(true) | escape | nl2br }}
       {% endmarkdown %}
       </div>
     {% endif %}

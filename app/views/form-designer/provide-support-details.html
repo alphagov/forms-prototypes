@@ -4,7 +4,7 @@
 {% set pageQuestion = 'How can people get help with filling in this form?' %}
 
 {% block pageTitle %}
-  {{ "Error: " if containsErrors }}{{pageTitle}} - GOV.UK Forms
+  {{ "Error: " if containsErrors }}{{ pageTitle }}: {{ data.formTitle or '[formTitle]' }} - GOV.UK Forms
 {% endblock %}
 
 {% block beforeContent %}
@@ -25,14 +25,27 @@
         }) }}
         {% endif %}
 
+        <span class="govuk-caption-l">{{ data.formTitle or '[formTitle]' }}</span>
         <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
 
         <p class="govuk-body">
-          You need to provide at least one way for people to get help if they get stuck while filling in this form.
+          You need to provide at least one way for people to get help if they get stuck.
         </p>
 
         <p class="govuk-body">
-          The contact information will be displayed at the bottom of every page of the form.
+          Contact information will be shown:
+        </p>
+        <ul class="govuk-list govuk-list--bullet">
+          <li>
+            at the bottom of every page of the form
+          </li>
+          <li>
+            in an email confirming the date and time a form was submitted - if someone chooses to receive this
+          </li>
+        </ul>
+
+        <p class="govuk-body">
+          The optional email confirmation will also include the 'what happens next' information you provide. It will not contain a copy of their answers.
         </p>
 
         {% set emailHtml %}

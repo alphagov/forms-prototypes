@@ -92,83 +92,6 @@
     <span class="govuk-caption-l">Question {{ pageId | int + 1 }}</span>
     <h1 class="govuk-panel__title">{{pageTitle}}</h1>
 
-    <!-- Your question -->
-    <h2 class="govuk-heading-m">Your question</h2>
-    <dl class="govuk-summary-list">
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-          Question
-        </dt>
-        <dd class="govuk-summary-list__value">
-          {{ pageData['long-title'] or 'Question text' }}
-        </dd>
-        <dd class="govuk-summary-list__actions">
-          <a class="govuk-link govuk-link--no-visited-state" href="edit#long-title">
-            Change <span class="govuk-visually-hidden">question {{ pageData['long-title'] or 'Question text' }}<span>
-          </a>
-        </dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-          Hint text (optional)
-        </dt>
-        <dd class="govuk-summary-list__value">
-          {{pageData['hint-text'] or 'None added' }}
-        </dd>
-        <dd class="govuk-summary-list__actions">
-          <a class="govuk-link govuk-link--no-visited-state" href="edit#hint-text">
-            Change <span class="govuk-visually-hidden">hint text {{pageData['hint-text']}}<span>
-          </a>
-        </dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-          Add guidance
-        </dt>
-        <dd class="govuk-summary-list__value">
-          {{pageData['additional-guidance'] or 'No'}}
-        </dd>
-        <dd class="govuk-summary-list__actions">
-          <a class="govuk-link govuk-link--no-visited-state" href="edit#additional-guidance">
-            Change <span class="govuk-visually-hidden">add guidance {{pageData['additional-guidance']}}<span>
-          </a>
-        </dd>
-      </div>
-      {% if pageData['additional-guidance'] == 'Yes' %}
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-          Guidance text
-        </dt>
-        <dd class="govuk-summary-list__value">
-          {{pageData['additional-guidance-text']}}
-        </dd>
-        <dd class="govuk-summary-list__actions">
-          <a class="govuk-link govuk-link--no-visited-state" href="additional-guidance">
-            Change <span class="govuk-visually-hidden">guidance text {{pageData['additional-guidance-text']}}<span>
-          </a>
-        </dd>
-      </div>
-      {% endif %}
-    </dl>
-
-
-    <!-- Question settings -->
-    <h2 class="govuk-heading-m">Question settings</h2>
-    <dl class="govuk-summary-list">
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-          Make this question optional
-        </dt>
-        <dd class="govuk-summary-list__value">
-          {{ 'Yes' if data['questionOptional'] else 'No' }}
-        </dd>
-        <dd class="govuk-summary-list__actions">
-          <a class="govuk-link govuk-link--no-visited-state" href="edit">
-            Change <span class="govuk-visually-hidden">if question optional<span>
-          </a>
-        </dd>
-      </div>
-    </dl>
 
     <!-- Answer settings -->
     <h2 class="govuk-heading-m">Answer settings</h2>
@@ -196,7 +119,7 @@
         </dd>
         <dd class="govuk-summary-list__actions">
           <a class="govuk-link govuk-link--no-visited-state" href="edit-settings#input">
-            Change <span class="govuk-visually-hidden">input type {{inputType}}<span>
+            Change <span class="govuk-visually-hidden">{{inputTypeTitle}} {{inputType}}<span>
           </a>
         </dd>
       </div>
@@ -263,21 +186,94 @@
       {% endif %}
     </dl>
 
-    {% if (pageData['additional-guidance'] == 'Yes') and (pageData['additional-guidance-text']) %}
-    <!-- Give your page a heading -->
-    {{ govukInput({
-      label: {
-        text: "Give your page a heading",
-        classes: "govuk-label--m"
-      },
-      hint: {
-        text: "Use a heading that’s a statement rather than a question - for example, ‘Interview needs’. This will be your main page heading."
-      },
-      id: "page-name",
-      name: "page-name",
-      value: pageData['page-name'],
-      errorMessage: { text: errors['page-name'].text } if errors['page-name'].text 
-    }) }}
+    <!-- Your question -->
+    <h2 class="govuk-heading-m">Your question</h2>
+    <dl class="govuk-summary-list">
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+          Question
+        </dt>
+        <dd class="govuk-summary-list__value">
+          {{ pageData['long-title'] or 'Question text' }}
+        </dd>
+        <dd class="govuk-summary-list__actions">
+          <a class="govuk-link govuk-link--no-visited-state" href="edit#long-title">
+            Change <span class="govuk-visually-hidden">Question {{ pageData['long-title'] or 'Question text' }}<span>
+          </a>
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+          Hint text (optional)
+        </dt>
+        <dd class="govuk-summary-list__value">
+          {{pageData['hint-text'] or 'None added' }}
+        </dd>
+        <dd class="govuk-summary-list__actions">
+          <a class="govuk-link govuk-link--no-visited-state" href="edit#hint-text">
+            Change <span class="govuk-visually-hidden">Hint text {{pageData['hint-text']}}<span>
+          </a>
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+          Add guidance
+        </dt>
+        <dd class="govuk-summary-list__value">
+          {{pageData['additional-guidance'] or 'No'}}
+        </dd>
+        <dd class="govuk-summary-list__actions">
+          <a class="govuk-link govuk-link--no-visited-state" href="edit#additional-guidance">
+            Change <span class="govuk-visually-hidden">Add guidance {{pageData['additional-guidance']}}<span>
+          </a>
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+          Make this question optional
+        </dt>
+        <dd class="govuk-summary-list__value">
+          {{ 'Yes' if data['questionOptional'] else 'No' }}
+        </dd>
+        <dd class="govuk-summary-list__actions">
+          <a class="govuk-link govuk-link--no-visited-state" href="edit">
+            Change <span class="govuk-visually-hidden">if question optional<span>
+          </a>
+        </dd>
+      </div>
+    </dl>
+
+    {% if pageData['additional-guidance'] == 'Yes' %}
+    <!-- Guidance -->
+    <h2 class="govuk-heading-m">Guidance</h2>
+    <dl class="govuk-summary-list">
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+          Page heading
+        </dt>
+        <dd class="govuk-summary-list__value">
+          {{pageData['page-name']}}
+        </dd>
+        <dd class="govuk-summary-list__actions">
+          <a class="govuk-link govuk-link--no-visited-state" href="additional-guidance">
+            Change <span class="govuk-visually-hidden">Page heading {{pageData['page-name']}}<span>
+          </a>
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+          Guidance text
+        </dt>
+        <dd class="govuk-summary-list__value">
+          {{ pageData['additional-guidance-text'] | striptags(true) | escape | nl2br }}
+        </dd>
+        <dd class="govuk-summary-list__actions">
+          <a class="govuk-link govuk-link--no-visited-state" href="additional-guidance">
+            Change <span class="govuk-visually-hidden">Guidance text {{pageData['additional-guidance-text']}}<span>
+          </a>
+        </dd>
+      </div>
+    </dl>
     {% endif %}
 
     <div class="govuk-button-group">

@@ -21,7 +21,7 @@
 {% endblock %}
 
 {% block pageTitle %}
-  {% if pageHeading %}{{ pageHeading }}{% else %}{{ pageTitle }}{% endif %} - Preview - {{ data['formTitle'] }} - GOV.UK
+  {% if pageHeading %}{{ pageHeading }}{% else %}{{ pageTitle }}{% endif %} - Preview - {{ data.formTitle or '[formTitle]' }} - GOV.UK
 {% endblock %}
 
 {% block content %}

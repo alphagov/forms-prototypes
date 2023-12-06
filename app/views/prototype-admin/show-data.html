@@ -1,4 +1,3 @@
-
 {% extends "layout.html" %}
 
 {% block pageTitle %}
@@ -14,81 +13,105 @@
 {% endblock %}
 
 {% block content %}
-
-<form id="form" class="form" action="show-data" method="post">
   <div class="govuk-grid-row">
-    <div class="govuk-grid-full-width">
-      <h1 class="govuk-heading-xl">
-        Show session data
-      </h1>
-
-      <dl class="govuk-summary-list govuk-!-margin-bottom-9">
-        {% for key, obj in data %}
-          {% if 'pages' not in key %}
-          <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">
-              {{key}}
-            </dt>
-            <dd class="govuk-summary-list__value">
-              {{obj|safe}}
-            </dd>
-            <dd class="govuk-summary-list__actions">
-              {{ govukButton({
-                html: 'Remove<span class="govuk-visually-hidden"> ' + key + '</span>',
-                name: "action",
-                value: key,
-                classes: "govuk-button--warning govuk-!-margin-0"
-              }) }}
-            </dd>
-          </div>
-          {% endif %}
-        {% endfor %}
-      </dl>
-    </div>
-
     <div class="govuk-grid-column-full">
-      <h2 class="govuk-heading-m">
-        Questions
-      </h2>
-      <table class="govuk-table">
-        <caption class="govuk-table__caption govuk-table__caption--s">Pages created</caption>
-        <thead class="govuk-table__head">
-          <tr class="govuk-table__row">
-            <th scope="col" class="govuk-table__header">Page number</th>
-            <th scope="col" class="govuk-table__header">Long version</th>
-            <th scope="col" class="govuk-table__header">Short version</th>
-            <th scope="col" class="govuk-table__header">Answer type</th>
-          </tr>
-        </thead>
-        <tbody class="govuk-table__body">
-          {% for page in data.pages %}
-          <tr class="govuk-table__row">
-            <th scope="row" class="govuk-table__header">
-              {{"Page " + page["pageIndex"]}}
-            </th>
-            <td class="govuk-table__cell">
-              {{page["long-title"]}}
-            </td>
-            <td class="govuk-table__cell">
-              {{page["short-title"]}}
-            </td>
-            <td class="govuk-table__cell">
-              <strong>{{page["type"]}}</strong>
-            </td>
-          </tr>
+      <form id="form" class="form" action="show-data" method="post">
+        
+        <h1 class="govuk-heading-xl">
+          Show session data
+        </h1>
+        <dl class="govuk-summary-list govuk-!-margin-bottom-3">
+          <!-- Don’t include added pages or preset session data in the list -->
+          {% for key, obj in data %}
+            {% if ('pages' not in key) and ('Hint' not in key) and ('Title' not in key) %}
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                  {{key}}
+                </dt>
+                <dd class="govuk-summary-list__value">
+                  {{obj|safe}}
+                </dd>
+                <dd class="govuk-summary-list__actions">
+                  {{ govukButton({
+                    html: 'Remove<span class="govuk-visually-hidden"> ' + key + '</span>',
+                    name: "action",
+                    value: key,
+                    classes: "govuk-button--warning govuk-!-margin-0"
+                  }) }}
+                </dd>
+              </div>
+            {% endif %}
           {% endfor %}
-        </tbody>
-      </table>
-    </div>
+        </dl>
 
-    <div class="govuk-grid-column-full">
-      <h2 class="govuk-heading-m">
-        Data in JSON format
-      </h2>
-      <pre>{{ data | dump(2) | safe }}</pre>
-    </div>
+        <!-- This is the set content for titles and hint text for pages and answer types -->
+        <details class="govuk-details" data-module="govuk-details">
+          <summary class="govuk-details__summary">
+            <span class="govuk-details__summary-text">
+              <h2 class="govuk-!-font-size-19">
+                See preset session data content
+              </h2>
+            </span>
+          </summary>
+          <div class="govuk-details__text">
+            <dl class="govuk-summary-list">
+              {% for key, obj in data %}
+                {% if ('Hint' in key) or ('Title' in key) %}
+                  <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                      {{key}}
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                      {{obj|safe}}
+                    </dd>
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </dl>
+          </div>
+        </details>
 
+        <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+
+        <h2 class="govuk-heading-m">
+          Questions
+        </h2>
+        <table class="govuk-table govuk-!-margin-bottom-9">
+          <caption class="govuk-table__caption govuk-table__caption--s">Pages created</caption>
+          <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+              <th scope="col" class="govuk-table__header">Page number</th>
+              <th scope="col" class="govuk-table__header">Long version</th>
+              <th scope="col" class="govuk-table__header">Short version</th>
+              <th scope="col" class="govuk-table__header">Answer type</th>
+            </tr>
+          </thead>
+          <tbody class="govuk-table__body">
+            {% for page in data.pages %}
+              <tr class="govuk-table__row">
+                <th scope="row" class="govuk-table__header">
+                  {{"Page " + page["pageIndex"]}}
+                </th>
+                <td class="govuk-table__cell">
+                  {{page["long-title"]}}
+                </td>
+                <td class="govuk-table__cell">
+                  {{page["short-title"]}}
+                </td>
+                <td class="govuk-table__cell">
+                  <strong>{{page["type"]}}</strong>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <h2 class="govuk-heading-m">
+          Data in JSON format
+        </h2>
+        <pre style="text-wrap: balance;">{{ data | dump(2) | safe }}</pre>
+
+      </form>
+    </div>
   </div>
-</form>
-
 {% endblock %}
