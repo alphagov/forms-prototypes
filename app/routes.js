@@ -257,18 +257,18 @@ router.get('/form-designer/pages/new', function (req, res) {
 
   var action = req.session.data.action
 
-  const nextPageId = req.session.data.pages.length
-
-  if (!pageData) {
-    req.session.data.pages.push({
-      'pageIndex': nextPageId
-    })
-  }
-
   if (action === 'addRoute') {
     // add a new question route
     res.redirect(`/form-designer/question-routes/new-condition`)
   } else {
+
+    var nextPageId = req.session.data.pages.length
+  
+    if (!pageData) {
+      req.session.data.pages.push({
+        'pageIndex': nextPageId
+      })
+    }
     // add a new question
     res.redirect(`/form-designer/pages/${nextPageId}/edit-answer-type`)
   }
