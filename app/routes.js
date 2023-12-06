@@ -265,12 +265,12 @@ router.get('/form-designer/pages/new', function (req, res) {
     })
   }
 
-  if (action === 'addQuestion') {
-    // add a new question
-    res.redirect(`/form-designer/pages/${nextPageId}/edit-answer-type`)
-  } else if (action === 'addRoute') {
+  if (action === 'addRoute') {
     // add a new question route
     res.redirect(`/form-designer/question-routes/new-condition`)
+  } else {
+    // add a new question
+    res.redirect(`/form-designer/pages/${nextPageId}/edit-answer-type`)
   }
 })
 
