@@ -7,7 +7,7 @@
   "name": "govuk-prototype-kit",
   "dependencies": {
     "@govuk-prototype-kit/step-by-step": "^2.1.0",
-    "@lfdebrux/nunjucks-markdown": "github:lfdebrux/govuk-prototype-kit-nunjucks-markdown-plugin#v0.0.1",
+    "@lfdebrux/nunjucks-markdown": "github:lfdebrux/govuk-prototype-kit-nunjucks-markdown-plugin#v0.0.3",
     "govuk-frontend": "^4.7.0",
     "govuk-markdown": "^0.4.0",
     "govuk-prototype-kit": "^13.4.0",
