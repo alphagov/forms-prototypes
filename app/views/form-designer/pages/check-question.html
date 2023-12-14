@@ -53,258 +53,253 @@
   {{pageTitle}} - Preview - GOV.UK
 {% endblock %}
 
+{# Overwrite back link if last action was to save #}
+{% if successMessage %}
+{% set previousPageText = 'Back to your questions' %}
+{% set previousPageLink = '../../clear-empty' %}
+{% endif %}
+
 {% block beforeContent %}
-  {% if previousPage and ('your-questions' in previousPage) %}
-    <a class="govuk-back-link" href="../../clear-empty" target="_parent">
-      Back to your questions
-    </a>
-  {% elif previousPage and ('edit-answer-type' in previousPage) and (previousPage.split('/')|last == pageIndex|int + 1) %}
-    <a class="govuk-back-link" href="../{{pageIndex|int + 1}}/edit-answer-type" target="_parent">
-      Back
-    </a>
-  {% else %}
-    <a class="govuk-back-link" href="javascript:window.history.back()">
-      Back
-    </a>
-  {% endif %}
+  {# Back links are handled in routes.js #}
+  <a class="govuk-back-link" href="{{ previousPageLink }}" target="_parent">
+    {{ previousPageText }}
+  </a>
 {% endblock %}
 
 {% block content %}
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
+    <form id="form" class="form" method="post" novalidate>
 
-  <form id="form" class="form" method="post" novalidate>
-
-    {% if containsErrors %}
-      {{ govukErrorSummary({
-        titleText: "There is a problem",
-        errorList: errorList
-      }) }}
-    {% endif %}
-
-    {% if successMessage %}
-      {{ govukNotificationBanner({
-        type: 'success',
-        text: successMessage
-      }) }}
-    {% endif %}
-
-    <span class="govuk-caption-l">Question {{ pageId | int + 1 }}</span>
-    <h1 class="govuk-panel__title">{{pageTitle}}</h1>
-
-
-    <!-- Answer settings -->
-    <h2 class="govuk-heading-m">Answer settings</h2>
-    <dl class="govuk-summary-list">
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-          Answer type
-        </dt>
-        <dd class="govuk-summary-list__value">
-          {{answerType}}
-        </dd>
-        <dd class="govuk-summary-list__actions">
-          <a class="govuk-link govuk-link--no-visited-state" href="edit-answer-type">
-            Change <span class="govuk-visually-hidden">answer type {{answerType}}<span>
-          </a>
-        </dd>
-      </div>
-      {% if pageData['input'] %}
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-          {{inputTypeTitle}}
-        </dt>
-        <dd class="govuk-summary-list__value">
-          {{inputType}}
-        </dd>
-        <dd class="govuk-summary-list__actions">
-          <a class="govuk-link govuk-link--no-visited-state" href="edit-settings#input">
-            Change <span class="govuk-visually-hidden">{{inputTypeTitle}} {{inputType}}<span>
-          </a>
-        </dd>
-      </div>
+      {% if containsErrors %}
+        {{ govukErrorSummary({
+          titleText: "There is a problem",
+          errorList: errorList
+        }) }}
       {% endif %}
-      {% if pageData['title'] %}
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-          Title needed
-        </dt>
-        <dd class="govuk-summary-list__value">
-          {{pageData['title']|capitalize}}
-        </dd>
-        <dd class="govuk-summary-list__actions">
-          <a class="govuk-link govuk-link--no-visited-state" href="edit-settings#title">
-            Change <span class="govuk-visually-hidden">title needed {{pageData['title']|capitalize}}<span>
-          </a>
-        </dd>
-      </div>
+      
+      {% set html %}
+        <h3 class="govuk-notification-banner__heading">
+          {{ successMessage }}
+        </h3>
+        <ul class="govuk-list">
+          <li>
+            <a {% if 'new' in nextActionURL %}role="button" draggable="false" class="govuk-button govuk-!-margin-bottom-3" data-module="govuk-button"{% else %}class="govuk-link govuk-link--no-visited-state"{% endif %} href="{{ nextActionURL }}">
+              {{ nextActionText }}
+            </a>
+          </li>
+          <li>
+            <a class="govuk-link" href="{{ previousPageLink }}" target="_parent">
+              {{ previousPageText }}
+            </a>
+          </li>
+        </ul>
+      {% endset %}
+
+      {% if successMessage %}
+        {{ govukNotificationBanner({
+          type: 'success',
+          html: html
+        }) }}
       {% endif %}
-      {% if pageData['item-list'] %}
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-          Options
-        </dt>
-        <dd class="govuk-summary-list__value">
-          {% if (pageData['item-list']|length|int >= 1) %}
-            {% for item in pageData['item-list'] %}{{item}}{% if not loop.last %}, {% endif %}{% endfor %}
-          {% else %}
-            No options added
-          {% endif %}
-        </dd>
-        <dd class="govuk-summary-list__actions">
-          <a class="govuk-link govuk-link--no-visited-state" href="edit-settings#option-0">
-            Change <span class="govuk-visually-hidden">options<span>
-          </a>
-        </dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-          Only select one option
-        </dt>
-        <dd class="govuk-summary-list__value">
-          {{'Yes' if pageData['listSettings'] and pageData['listSettings'].includes('oneOption') else 'No'}}
-        </dd>
-        <dd class="govuk-summary-list__actions">
-          <a class="govuk-link govuk-link--no-visited-state" href="edit-settings#oneOption">
-            Change <span class="govuk-visually-hidden">only select one option<span>
-          </a>
-        </dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-          Include 'none of the above' option
-        </dt>
-        <dd class="govuk-summary-list__value">
-          {{'Yes' if pageData['listSettings'] and pageData['listSettings'].includes('noneOption') else 'No'}}
-        </dd>
-        <dd class="govuk-summary-list__actions">
-          <a class="govuk-link govuk-link--no-visited-state" href="edit-settings#noneOption">
-            Change <span class="govuk-visually-hidden">include 'none of the above' option<span>
-          </a>
-        </dd>
-      </div>
+
+      <span class="govuk-caption-l">Question {{ pageId | int + 1 }}</span>
+      <h1 class="govuk-panel__title">{{pageTitle}}</h1>
+
+      <!-- Answer settings -->
+      <h2 class="govuk-heading-m">Answer settings</h2>
+      <dl class="govuk-summary-list">
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+            Answer type
+          </dt>
+          <dd class="govuk-summary-list__value">
+            {{answerType}}
+          </dd>
+          <dd class="govuk-summary-list__actions">
+            <a class="govuk-link govuk-link--no-visited-state" href="edit-answer-type">
+              Change <span class="govuk-visually-hidden">answer type {{answerType}}<span>
+            </a>
+          </dd>
+        </div>
+        {% if pageData['input'] and (pageData['input'] !== '') %}
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+            {{inputTypeTitle}}
+          </dt>
+          <dd class="govuk-summary-list__value">
+            {{inputType}}
+          </dd>
+          <dd class="govuk-summary-list__actions">
+            <a class="govuk-link govuk-link--no-visited-state" href="edit-settings#input">
+              Change <span class="govuk-visually-hidden">{{inputTypeTitle}} {{inputType}}<span>
+            </a>
+          </dd>
+        </div>
+        {% endif %}
+        {% if pageData['title'] and (pageData['type'] === 'personName') %}
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+            Title needed
+          </dt>
+          <dd class="govuk-summary-list__value">
+            {{pageData['title']|capitalize}}
+          </dd>
+          <dd class="govuk-summary-list__actions">
+            <a class="govuk-link govuk-link--no-visited-state" href="edit-settings#title">
+              Change <span class="govuk-visually-hidden">title needed {{pageData['title']|capitalize}}<span>
+            </a>
+          </dd>
+        </div>
+        {% endif %}
+        {% if pageData['item-list'] %}
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+            Options
+          </dt>
+          <dd class="govuk-summary-list__value">
+            {% if (pageData['item-list']|length|int >= 1) %}
+              {% for item in pageData['item-list'] %}{{item}}{% if not loop.last %}, {% endif %}{% endfor %}
+            {% else %}
+              No options added
+            {% endif %}
+          </dd>
+          <dd class="govuk-summary-list__actions">
+            <a class="govuk-link govuk-link--no-visited-state" href="edit-settings#option-0">
+              Change <span class="govuk-visually-hidden">options<span>
+            </a>
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+            Only select one option
+          </dt>
+          <dd class="govuk-summary-list__value">
+            {{'Yes' if pageData['listSettings'] and pageData['listSettings'].includes('oneOption') else 'No'}}
+          </dd>
+          <dd class="govuk-summary-list__actions">
+            <a class="govuk-link govuk-link--no-visited-state" href="edit-settings#oneOption">
+              Change <span class="govuk-visually-hidden">only select one option<span>
+            </a>
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+            Include 'none of the above' option
+          </dt>
+          <dd class="govuk-summary-list__value">
+            {{'Yes' if pageData['listSettings'] and pageData['listSettings'].includes('noneOption') else 'No'}}
+          </dd>
+          <dd class="govuk-summary-list__actions">
+            <a class="govuk-link govuk-link--no-visited-state" href="edit-settings#noneOption">
+              Change <span class="govuk-visually-hidden">include 'none of the above' option<span>
+            </a>
+          </dd>
+        </div>
+        {% endif %}
+      </dl>
+
+      <!-- Your question -->
+      <h2 class="govuk-heading-m">Your question</h2>
+      <dl class="govuk-summary-list">
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+            Question
+          </dt>
+          <dd class="govuk-summary-list__value">
+            {{ pageData['long-title'] or 'Question text' }}
+          </dd>
+          <dd class="govuk-summary-list__actions">
+            <a class="govuk-link govuk-link--no-visited-state" href="edit#long-title">
+              Change <span class="govuk-visually-hidden">Question {{ pageData['long-title'] or 'Question text' }}<span>
+            </a>
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+            Hint text (optional)
+          </dt>
+          <dd class="govuk-summary-list__value">
+            {{pageData['hint-text'] or 'None added' }}
+          </dd>
+          <dd class="govuk-summary-list__actions">
+            <a class="govuk-link govuk-link--no-visited-state" href="edit#hint-text">
+              Change <span class="govuk-visually-hidden">Hint text {{pageData['hint-text']}}<span>
+            </a>
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+            Add guidance
+          </dt>
+          <dd class="govuk-summary-list__value">
+            {{pageData['additional-guidance'] or 'No'}}
+          </dd>
+          <dd class="govuk-summary-list__actions">
+            <a class="govuk-link govuk-link--no-visited-state" href="edit#additional-guidance">
+              Change <span class="govuk-visually-hidden">Add guidance {{pageData['additional-guidance']}}<span>
+            </a>
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+            Make this question optional
+          </dt>
+          <dd class="govuk-summary-list__value">
+            {{ 'Yes' if data['questionOptional'] else 'No' }}
+          </dd>
+          <dd class="govuk-summary-list__actions">
+            <a class="govuk-link govuk-link--no-visited-state" href="edit">
+              Change <span class="govuk-visually-hidden">if question optional<span>
+            </a>
+          </dd>
+        </div>
+      </dl>
+
+      {% if pageData['additional-guidance'] == 'Yes' %}
+      <!-- Guidance -->
+      <h2 class="govuk-heading-m">Guidance</h2>
+      <dl class="govuk-summary-list">
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+            Page heading
+          </dt>
+          <dd class="govuk-summary-list__value">
+            {{pageData['page-name']}}
+          </dd>
+          <dd class="govuk-summary-list__actions">
+            <a class="govuk-link govuk-link--no-visited-state" href="additional-guidance">
+              Change <span class="govuk-visually-hidden">Page heading {{pageData['page-name']}}<span>
+            </a>
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+            Guidance text
+          </dt>
+          <dd class="govuk-summary-list__value">
+            {{ pageData['additional-guidance-text'] | striptags(true) | escape | nl2br }}
+          </dd>
+          <dd class="govuk-summary-list__actions">
+            <a class="govuk-link govuk-link--no-visited-state" href="additional-guidance">
+              Change <span class="govuk-visually-hidden">Guidance text {{pageData['additional-guidance-text']}}<span>
+            </a>
+          </dd>
+        </div>
+      </dl>
       {% endif %}
-    </dl>
 
-    <!-- Your question -->
-    <h2 class="govuk-heading-m">Your question</h2>
-    <dl class="govuk-summary-list">
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-          Question
-        </dt>
-        <dd class="govuk-summary-list__value">
-          {{ pageData['long-title'] or 'Question text' }}
-        </dd>
-        <dd class="govuk-summary-list__actions">
-          <a class="govuk-link govuk-link--no-visited-state" href="edit#long-title">
-            Change <span class="govuk-visually-hidden">Question {{ pageData['long-title'] or 'Question text' }}<span>
-          </a>
-        </dd>
+      <input type="hidden" id="questionSaved" name="questionSaved" value="Yes" />
+
+      <div class="govuk-button-group">
+        {{ govukButton({
+          text:  "Save question",
+          name: "action",
+          value: "update"
+        }) }}
       </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-          Hint text (optional)
-        </dt>
-        <dd class="govuk-summary-list__value">
-          {{pageData['hint-text'] or 'None added' }}
-        </dd>
-        <dd class="govuk-summary-list__actions">
-          <a class="govuk-link govuk-link--no-visited-state" href="edit#hint-text">
-            Change <span class="govuk-visually-hidden">Hint text {{pageData['hint-text']}}<span>
-          </a>
-        </dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-          Add guidance
-        </dt>
-        <dd class="govuk-summary-list__value">
-          {{pageData['additional-guidance'] or 'No'}}
-        </dd>
-        <dd class="govuk-summary-list__actions">
-          <a class="govuk-link govuk-link--no-visited-state" href="edit#additional-guidance">
-            Change <span class="govuk-visually-hidden">Add guidance {{pageData['additional-guidance']}}<span>
-          </a>
-        </dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-          Make this question optional
-        </dt>
-        <dd class="govuk-summary-list__value">
-          {{ 'Yes' if data['questionOptional'] else 'No' }}
-        </dd>
-        <dd class="govuk-summary-list__actions">
-          <a class="govuk-link govuk-link--no-visited-state" href="edit">
-            Change <span class="govuk-visually-hidden">if question optional<span>
-          </a>
-        </dd>
-      </div>
-    </dl>
 
-    {% if pageData['additional-guidance'] == 'Yes' %}
-    <!-- Guidance -->
-    <h2 class="govuk-heading-m">Guidance</h2>
-    <dl class="govuk-summary-list">
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-          Page heading
-        </dt>
-        <dd class="govuk-summary-list__value">
-          {{pageData['page-name']}}
-        </dd>
-        <dd class="govuk-summary-list__actions">
-          <a class="govuk-link govuk-link--no-visited-state" href="additional-guidance">
-            Change <span class="govuk-visually-hidden">Page heading {{pageData['page-name']}}<span>
-          </a>
-        </dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-          Guidance text
-        </dt>
-        <dd class="govuk-summary-list__value">
-          {{ pageData['additional-guidance-text'] | striptags(true) | escape | nl2br }}
-        </dd>
-        <dd class="govuk-summary-list__actions">
-          <a class="govuk-link govuk-link--no-visited-state" href="additional-guidance">
-            Change <span class="govuk-visually-hidden">Guidance text {{pageData['additional-guidance-text']}}<span>
-          </a>
-        </dd>
-      </div>
-    </dl>
-    {% endif %}
-
-    <div class="govuk-button-group">
-    {% if pageId >= data['highestPageId'] %}
-
-      {{ govukButton({
-        text: "Save and add next question",
-        name: "action",
-        value: "createNextPage"
-      }) }}
-
-    {% else %}
-
-      {{ govukButton({
-        text: "Save and edit next question",
-        name: "action",
-        value: "editNextPage"
-      }) }}
-
-    {% endif %}
-
-    {{ govukButton({
-      text:  "Save question",
-      name: "action",
-      value: "update",
-      classes: "govuk-button--secondary"
-    }) }}
-
-    </div>
-
-    {% if editingExistingQuestion %}
+      {% if editingExistingQuestion === 'Yes' %}
       {{ govukButton({
         text: "Delete question",
         classes: "govuk-button--warning",
@@ -312,11 +307,20 @@
         value: "deletePage"
       }) }}
 
-      {# Move go to your questions link only if a question is saved #}
       <p class="govuk-body">
-        <a class="govuk-link govuk-link--no-visited-state" href="../../clear-empty">Go to your questions</a>
+        <a class="govuk-link govuk-link--no-visited-state" href="{{ nextActionURL }}">{{ nextActionText }}</a>
       </p>
-    {% endif %}
+      {% endif %}
+
+      {# If we are not sure what the back link is going to don’t show the bottom link #}
+      {% if previousPageText !== 'Back' %}
+      <p class="govuk-body">
+        <a class="govuk-link" href="{{ previousPageLink }}" target="_parent">
+          {{ previousPageText }}
+        </a>
+      </p>
+      {% endif %}
+
     </form>
   </div>
 </div>
