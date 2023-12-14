@@ -20,15 +20,10 @@
 {% endblock %}
 
 {% block beforeContent %}
-  {% if previousPage and ('check-question' in previousPage) %}
-    <a class="govuk-back-link" href="check-question" target="_parent">
-      Back
-    </a>
-  {% else %}
-    <a class="govuk-back-link" href="javascript:window.history.back()">
-      Back
-    </a>
-  {% endif %}
+  {# Back links are handled in routes.js #}
+  <a class="govuk-back-link" href="{{ previousPageLink }}" target="_parent">
+    {{ previousPageText }}
+  </a>
 {% endblock %}
 
 {% block content %}
@@ -63,11 +58,18 @@
             errorMessage: { text: errors['long-title'].text } if errors['long-title'].text
           }) }}
 
-          <div class="govuk-button-group">
-              {{ govukButton({
-                text: "Continue"
-              }) }}
-          </div>
+          {{ govukButton({
+            text: "Continue"
+          }) }}
+        
+          {# If we are not sure what the back link is going to don’t show the bottom link #}
+          {% if previousPageText !== 'Back' %}
+          <p class="govuk-body">
+            <a class="govuk-link" href="{{ previousPageLink }}" target="_parent">
+              {{ previousPageText }}
+            </a>
+          </p>
+          {% endif %}
 
       </form>
     </div>
