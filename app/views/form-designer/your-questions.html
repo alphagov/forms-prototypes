@@ -96,6 +96,7 @@
           </dd>
           <dd class="govuk-summary-list__actions govuk-!-padding-bottom-6">
             <div class="govuk-button-group form-action-group app-page-list__button-group">
+              {% if data.pages.length > 1 %}
               <div class="form-actions-reordering">
                 {% if page.pageIndex > 0 %}
                 {{ govukButton({
@@ -113,6 +114,7 @@
                 }) }}
                 {% endif %}
               </div>
+              {% endif %}
             </div>
             <a class="govuk-link govuk-link--no-visited-state" href="pages/{{ page.pageIndex | int }}/check-question">
               Edit<span class="govuk-visually-hidden"> Question {{loop.index}}. {{questionTitle}}</span>

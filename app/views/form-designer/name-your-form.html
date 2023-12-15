@@ -7,7 +7,10 @@
 {% endblock %}
 
 {% block beforeContent %}
-  <a class="govuk-back-link" href="your-form">Back</a>
+  {# Back links are handled in routes.js #}
+  <a class="govuk-back-link" href="{{ previousPageLink }}" target="_parent">
+    {{ previousPageText }}
+  </a>
 {% endblock %}
 
 {% block content %}

@@ -1,0 +1,111 @@
+{% extends "layout-govuk-forms.html" %}
+
+{% set answerType = pageData['type']|capitalize %}
+{% if pageData['type'] === 'personName' %}
+  {% set answerType = 'Person’s name' %}
+  {% set inputTypeTitle = data.personNameInputTypeTitle %}
+  {% if pageData['input'] === 'single-field' %}
+    {% set inputType = 'Full name in a single box' %}
+  {% elif pageData['input'] === 'multi-field' %}
+    {% set inputType = 'First and last names in separate boxes' %}
+  {% elif pageData['input'] === 'multi-field-plus' %}
+    {% set inputType = 'First, middle and last names in separate boxes' %}
+  {% endif %}
+{% elif pageData['type'] === 'companyName' %}
+  {% set answerType = 'Company or organisation’s name' %}
+{% elif pageData['type'] === 'email' %}
+  {% set answerType = 'Email address' %}
+{% elif pageData['type'] === 'phone' %}
+  {% set answerType = 'Phone number' %}
+{% elif pageData['type'] === 'national-insurance-number' %}
+  {% set answerType = 'National Insurance number' %}
+{% elif pageData['type'] === 'address' %}
+  {% set inputTypeTitle = data.addressInputTypeTitle %}
+  {% if ('uk-address' in pageData['input']) and ('international-address' in pageData['input']) %}
+    {% set inputType = 'UK and international addresses' %}
+  {% elif 'uk-address' in pageData['input'] %}
+    {% set inputType = 'UK addresses' %}
+  {% elif 'international-address' in pageData['input'] %}
+    {% set inputType = 'International addresses' %}
+  {% endif %}
+{% elif pageData['type'] === 'date' %}
+  {% set inputTypeTitle = data.dateOfBirthInputTypeTitle %}
+  {% if pageData['input'] === 'yes' %}
+    {% set inputType = 'Yes' %}
+  {% else %}
+    {% set inputType = 'No' %}
+  {% endif %}
+{% elif pageData['type'] === 'select' %}
+  {% set answerType = 'Selection from a list' %}
+{% elif pageData['type'] === 'number' %}
+{% elif pageData['type'] === 'text' %}
+  {% set inputTypeTitle = data.textLengthInputTypeTitle %}
+  {% if pageData['input'] === 'single-line-input' %}
+    {% set inputType = 'A single line of text' %}
+  {% else %}
+    {% set inputType = 'More than a single line of text' %}
+  {% endif %}
+{% endif %}
+
+{% set pageTitle = 'Preview question' %}
+
+{% block pageTitle %}
+  {{ pageTitle }} {{ pageId | int + 1 }} - GOV.UK Forms
+{% endblock %}
+
+{% block beforeContent %}
+  <a class="govuk-back-link" href="check-question" target="_parent">
+    Back to check your question
+  </a>
+{% endblock %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+
+    {% if successMessage %}
+      {{ govukNotificationBanner({
+        type: 'success',
+        text: successMessage
+      }) }}
+    {% endif %}
+
+    <span class="govuk-caption-l">Question {{ pageId | int + 1 }}</span>
+    <h1 class="govuk-panel__title">{{pageTitle}}</h1>
+
+    <p class="govuk-body">
+      This is how your question will look.
+    </p>
+
+    <p class="govuk-body">
+      Answer type: {{ answerType }}
+    </p>
+    {% if inputType %}
+    <p class="govuk-body">
+      Settings: {{ inputType }}
+    </p>
+    {% endif %}
+
+  </div>
+
+  <div class="govuk-grid-column-full">
+    <!-- PREVIEW WINDOW -->
+    <div class="app-preview-pane-wrapper govuk-!-margin-bottom-7">
+      {% include './preview.html' %}
+    </div>
+  </div>
+
+  <div class="govuk-grid-column-two-thirds">
+    <p class="govuk-body">
+      <a role="button" draggable="false" class="govuk-button govuk-!-margin-bottom-3" data-module="govuk-button" href="{{ nextActionURL }}">
+        {{ nextActionText }}
+      </a>
+    </p>
+    <p class="govuk-body">
+      <a class="govuk-link" href="check-question" target="_parent">
+        Back to check your question
+      </a>
+    </p>
+  </div>
+</div>
+{% endblock %}
