@@ -50,7 +50,7 @@
 {% endif %}
 
 {% block pageTitle %}
-  {{pageTitle}} - Preview - GOV.UK
+  {{ pageTitle }} - GOV.UK Forms
 {% endblock %}
 
 {# Overwrite back link if last action was to save #}
@@ -292,10 +292,18 @@
       <input type="hidden" id="questionSaved" name="questionSaved" value="Yes" />
 
       <div class="govuk-button-group">
+        {# Green CTA - Save question #}
         {{ govukButton({
           text:  "Save question",
           name: "action",
           value: "update"
+        }) }}
+        {# Grey CTA - Save and preview question #}
+        {{ govukButton({
+          classes: "govuk-button--secondary",
+          text:  "Save and preview",
+          name: "action",
+          value: "savePreview"
         }) }}
       </div>
 
@@ -308,7 +316,9 @@
       }) }}
 
       <p class="govuk-body">
-        <a class="govuk-link govuk-link--no-visited-state" href="{{ nextActionURL }}">{{ nextActionText }}</a>
+        <a class="govuk-link govuk-link--no-visited-state" href="{{ nextActionURL }}">
+          {{ nextActionText }}
+        </a>
       </p>
       {% endif %}
 
