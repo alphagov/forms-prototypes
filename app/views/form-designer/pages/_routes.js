@@ -47,7 +47,7 @@ router.get('/form-designer/pages/new', function (req, res) {
 /* ANSWER TYPE
 ============== */
 
-// Edit a user-created answer type
+// Edit answer type - display
 router.get('/form-designer/pages/:pageId(\\d+)/edit-answer-type', function (req, res) {
   var pageId = parseInt(req.params.pageId, 10)
   var pageIndex = pageId
@@ -66,7 +66,6 @@ router.get('/form-designer/pages/:pageId(\\d+)/edit-answer-type', function (req,
     previousPageText: tempArray[0].previousPageText
   })
 })
-
 // Route used to find correct next step - answer type > settings page || edit question page
 router.post('/form-designer/pages/:pageId(\\d+)/edit-answer-type', function (req, res) {
   var pageId = parseInt(req.params.pageId, 10)
@@ -134,7 +133,7 @@ router.post('/form-designer/pages/:pageId(\\d+)/edit-answer-type', function (req
 
 
 /* START selection from a list of options */
-// Edit a user-created answer type settings
+// Edit answer type settings - display
 router.get('/form-designer/pages/:pageId(\\d+)/edit-select-question', function (req, res) {
   var pageId = parseInt(req.params.pageId, 10)
   var pageIndex = pageId
@@ -153,8 +152,7 @@ router.get('/form-designer/pages/:pageId(\\d+)/edit-select-question', function (
     previousPageLink: tempArray[0].previousPageLink
   })
 })
-
-// Route to what is your question page for select from list answer type
+// Edit answer type settings - route to what is your question page for select from list answer type
 router.post('/form-designer/pages/:pageId(\\d+)/edit-select-question', function (req, res) {
   var pageId = parseInt(req.params.pageId, 10)
   var pageIndex = pageId
@@ -203,7 +201,8 @@ router.post('/form-designer/pages/:pageId(\\d+)/edit-select-question', function 
 /* END of selection from a list of options */
 
 
-// Edit a user-created answer type settings
+/* START secondary answer type settings */
+// Edit answer type settings - display
 router.get('/form-designer/pages/:pageId(\\d+)/edit-settings', function (req, res) {
   var pageId = parseInt(req.params.pageId, 10)
   var pageIndex = pageId
@@ -214,11 +213,12 @@ router.get('/form-designer/pages/:pageId(\\d+)/edit-settings', function (req, re
   // now we can set the back link data (text and url)
   var tempArray = backLink(previousPage, pageIndex, pageData)
 
-  // Overwrite back link IF we are just adding/removing options from ‘selection from a list’
+  // overwrite back link IF we are just adding/removing options from ‘selection from a list’
   if (req.session.data.tempSelectStatus === 'No') {
     tempArray[0].previousPageLink = `edit-select-question`
     tempArray[0].previousPageText = 'Back to what’s your question'
   }
+  // clear the tempSelectStatus to avoid issues
   req.session.data.tempSelectStatus = undefined
 
   return res.render('form-designer/pages/edit-settings', {
@@ -229,8 +229,7 @@ router.get('/form-designer/pages/:pageId(\\d+)/edit-settings', function (req, re
     previousPageLink: tempArray[0].previousPageLink
   })
 })
-
-// Route used to find correct next step - settings page > edit question page
+// Edit answer type settings - route used to find correct next step - settings page > edit question page
 router.post('/form-designer/pages/:pageId(\\d+)/edit-settings', function (req, res) {
   var action = req.session.data.action
   // clear the action so it doesn't change the next page load
@@ -251,7 +250,6 @@ router.post('/form-designer/pages/:pageId(\\d+)/edit-settings', function (req, r
   req.session.data['listSettings'] = undefined
 
   if (pageData['type'] === 'select') {
-    const lastItem = itemList.length - 1
     // check for empty values
     const tempList = itemList.filter(element => {
       if (Object.keys(element).length !== 0) {
@@ -259,6 +257,7 @@ router.post('/form-designer/pages/:pageId(\\d+)/edit-settings', function (req, r
       }
       return false
     })
+
     itemList = tempList
     if (!itemList.length) {
       errors['item-list'] = {
@@ -271,10 +270,12 @@ router.post('/form-designer/pages/:pageId(\\d+)/edit-settings', function (req, r
         href: "#option-0"
       }
     }
+
     pageData['item-list'] = itemList
     pageData['listSettings'] = listSettings
+
   } else if (!req.session.data.input || !req.session.data.input.length) {
-  // if no input is selected throw error, else add input to pageData
+    // if no input is selected throw error, else add input to pageData
     if (pageData['type'] === 'personName') {
       errors['input'] = {
         text: 'Select how you need to collect the name',
@@ -304,6 +305,7 @@ router.post('/form-designer/pages/:pageId(\\d+)/edit-settings', function (req, r
   } else {
     pageData['input'] = req.session.data.input
   }
+  // clear the input to prevent any unwanted issues
   req.session.data.input = undefined
 
   // if asking for person’s name and title answer not selected throw error, else add input to pageData
@@ -335,13 +337,18 @@ router.post('/form-designer/pages/:pageId(\\d+)/edit-settings', function (req, r
       containsErrors
     })
   } else if (action === 'addAnother') {
+
     const lastItem = itemList.length - 1
     if (itemList[lastItem]) {
       itemList.push("")
     }
+
+    // use tempSelectStatus to check if we have moved forward - this helps for the back link functionality
     req.session.data.tempSelectStatus = 'No'
     return res.redirect('edit-settings')
+
   } else if (action.includes('removeOption')) {
+
     // get item position to remove via remove button value
     var remove = action.split("-")
     var itemToRemove = remove.pop()
@@ -354,13 +361,24 @@ router.post('/form-designer/pages/:pageId(\\d+)/edit-settings', function (req, r
       // 2nd parameter means remove one item only
       itemList.splice(itemToRemove, 1)
     }
+
+    // use tempSelectStatus to check if we have moved forward - this helps for the back link functionality
     req.session.data.tempSelectStatus = 'No'
     return res.redirect('edit-settings')
+
   } else {
+
+    // use tempSelectStatus to confirm we’ve moved forward - this helps for the back link functionality
     req.session.data.tempSelectStatus = 'Yes'
     return res.redirect('edit')
+
   }
 })
+/* END secondary answer type settings */
+
+
+/* QUESTION
+=========== */
 
 /* START editing question text and hint text */
 // Edit a user-created question
@@ -382,7 +400,6 @@ router.get('/form-designer/pages/:pageId(\\d+)/edit', function (req, res) {
     previousPageLink: tempArray[0].previousPageLink
   })
 })
-
 // Route used to find correct next step - edit question page > answer type
 router.post('/form-designer/pages/:pageId(\\d+)/edit', function (req, res) {
   var action = req.session.data.action
@@ -461,6 +478,7 @@ router.post('/form-designer/pages/:pageId(\\d+)/edit', function (req, res) {
 /* END editing question text and hint text */
 
 
+/* START adding additional guidance */
 // Add additional guidance
 router.get('/form-designer/pages/:pageId(\\d+)/additional-guidance', function (req, res) {
   var pageId = parseInt(req.params.pageId, 10)
@@ -484,7 +502,6 @@ router.get('/form-designer/pages/:pageId(\\d+)/additional-guidance', function (r
     previousPageLink: tempArray[0].previousPageLink
   })
 })
-
 // Add additional guidance text route
 router.post('/form-designer/pages/:pageId(\\d+)/additional-guidance', function (req, res) {
   var action = req.session.data.action
@@ -548,11 +565,13 @@ router.post('/form-designer/pages/:pageId(\\d+)/additional-guidance', function (
     res.redirect('check-question')
   }
 })
+/* END adding additional guidance */
 
 
-/* Saving a question 
-==================== */
+/* REVIEW AND SAVE QUESTION 
+=========================== */
 
+// Check your question - middleware
 router.use('/form-designer/pages/:pageId(\\d+)/check-question', function (req, res, next) {
 
   // remove empty pageData if there is only one object (pageIndex) in array
@@ -571,7 +590,7 @@ router.use('/form-designer/pages/:pageId(\\d+)/check-question', function (req, r
   next();
 })
 
-// Check your questions - CYA
+// Check your question - display the page
 router.get('/form-designer/pages/:pageId(\\d+)/check-question', function (req, res) {
   var pageId = parseInt(req.params.pageId, 10)
   var pageIndex = pageId
@@ -614,7 +633,7 @@ router.get('/form-designer/pages/:pageId(\\d+)/check-question', function (req, r
   })
 })
 
-// Route used to find correct next step - edit question page > answer type
+// Check your question - route used to find correct next step - edit question page > answer type
 router.post('/form-designer/pages/:pageId(\\d+)/check-question', function (req, res) {
   var action = req.session.data.action
   // clear the action so it doesn't change the next page load
@@ -646,13 +665,58 @@ router.post('/form-designer/pages/:pageId(\\d+)/check-question', function (req, 
       req.session.data.questionSaved = undefined
     }
   }
-  return res.redirect(req.path)
+
+  if (action === 'savePreview') {
+    return res.redirect(`preview-question`)
+  } else {
+    return res.redirect(req.path)
+  }
 })
 
 
+/* PREVIEW QUESTION
+=================== */
 
-/* Function to get a page back link
-=================================== */
+// Preview question - display
+router.get('/form-designer/pages/:pageId(\\d+)/preview-question', function (req, res) {
+  var pageId = parseInt(req.params.pageId, 10)
+  var pageIndex = pageId
+  var pageData = req.session.data.pages[pageIndex]
+
+  var successMessage = req.session.data.successMessage
+  req.session.data.successMessage = undefined
+
+  var nextActionText = 'Add a new question'
+  var nextActionURL = `../new`
+
+  var editNextPageId = pageId + 1
+  if (pageId < req.session.data.pages.length - 1) {
+    nextActionText = 'Edit next question'
+    nextActionURL = `../` + editNextPageId + `/check-question` 
+  }
+
+  // get the previous page URL
+  var previousPage = req.session.data.referer
+  // now we can set the back link data (text and url)
+  var tempArray = backLink(previousPage, pageIndex, pageData)
+
+  return res.render('form-designer/pages/preview-question', {
+    pageId: pageId,
+    pageIndex: pageIndex,
+    pageData: pageData,
+    successMessage,
+    nextActionText,
+    nextActionURL,
+    previousPageText: tempArray[0].previousPageText,
+    previousPageLink: tempArray[0].previousPageLink
+  })
+})
+
+
+/* SUPPORTING FUNCTIONS
+======================= */
+
+// Function to get a page back links
 function backLink(previousPage, pageIndex, pageData) {
   const array = []
 
@@ -682,6 +746,22 @@ function backLink(previousPage, pageIndex, pageData) {
       // This will take users back to their questions - avoid a circular journey
       previousPageLink = `../../clear-empty`
       previousPageText = 'Back to your questions'
+
+    } else if (previousPage.includes('/preview-question')) {
+
+      if (pageIndex > 0) {
+        
+        // This will take users back to the previous question summary page
+        previousPageLink = `../` + (pageIndex - 1) + `/check-question`
+        previousPageText = 'Back to check question ' + pageIndex
+
+      } else {
+
+        // This will take users back to their questions - avoid a circular journey
+        previousPageLink = `../../clear-empty`
+        previousPageText = 'Back to your questions'
+
+      }
 
     } else if (previousPage.includes(pageIndex + '/edit-answer-type')) {
 
