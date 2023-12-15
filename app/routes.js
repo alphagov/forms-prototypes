@@ -552,7 +552,9 @@ router.get('/form-designer/preview/:pageId(\\d+)', function (req, res) {
   var pageData = req.session.data.pages[pageIndex]
   const isLastQuestionPage = pageIndex === (req.session.data.pages.length - 1)
 
-  var markdownContent = pageData['additional-guidance-text']
+  if (pageData) {
+    var markdownContent = pageData['additional-guidance-text']
+  }
 
   res.render('form-designer/preview/page', {
     pageId: pageId,
