@@ -9,64 +9,51 @@
 @import "patterns/moj-messages";
 @import "patterns/govuk-publishing-document-list";
 
-/*  Remove sticky pane
-    Allow content to be left aligned
-.preview-pane-wrapper {
-  position: sticky;
-  top: 110px;
-  text-align: center;
-}
-*/
 
-.preview-pane {
+/* PREVIEW QUESTION - EDIT JOURNEY
+================================== */
+.app-preview-pane-wrapper {
   overflow: hidden;
-  height: 570px;
   width: calc(100% - 4px);
   border: 2px solid black;
   border-top: none;
   margin-bottom: govuk-spacing(2);
 }
 
-.update-button,
-.update-button:hover {
-  color: $govuk-link-colour;
-  text-decoration: underline;
-  @extend %govuk-link;
-  background: none;
-  box-shadow: none;
+.app-preview-pane {
+  padding: 30px 15px;
+}
+@media (min-width: 40.0625em) {
+  .app-preview-pane {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+}
+@media (max-width: 640px) {
+  .app-preview-pane {
+    padding-left: 0;
+    padding-right: 0;
+  }
 }
 
-.update-button:hover {
-  text-decoration-thickness: 2px;
-  color: $govuk-link-hover-colour;
+.app-preview-header-container {
+  padding-left: 15px;
+  padding-right: 15px;
 }
-
-// Header of the preview pane
-.preview-header {
-  height: 35px;
-  background-color: govuk-colour("black");
-
-  background-image: url(/public/images/mini-logo.png);
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position-x: -15px;
-  border: 2px solid black;
-  border-bottom: 5px solid $govuk-brand-colour;
-
-  p {
-    color: govuk-colour("white");
-    padding: 6px govuk-spacing(3);
-    margin-bottom: 0;
-    float: right;
-    a {
-      color: govuk-colour("white");
-      font-size: 14px;
-    }
+@media (min-width: 40.0625em) {
+  .app-preview-header-container {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+}
+@media (max-width: 640px) {
+  .app-preview-header-container {
+    padding-left: 0;
+    padding-right: 0;
   }
 }
 
 // Prose scope (stolen from the kit docs)
-
 .app-prose-scope {
   h1 {
     @extend %govuk-heading-l;
@@ -122,6 +109,7 @@
     background-color: govuk-colour("light-grey", $legacy: "grey-4");
     padding: 0 govuk-spacing(1);
   }
+
 
   // TODO: Blockquotes are likely the most semantic element to be using, update to use the inset component directly.
   blockquote {
