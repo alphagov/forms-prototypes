@@ -56,7 +56,7 @@
 {# Overwrite back link if last action was to save #}
 {% if successMessage %}
 {% set previousPageText = 'Back to your questions' %}
-{% set previousPageLink = '../../clear-empty' %}
+{% set previousPageLink = '/form-designer/clear-empty' %}
 {% endif %}
 
 {% block beforeContent %}
@@ -104,7 +104,7 @@
       {% endif %}
 
       <span class="govuk-caption-l">Question {{ pageId | int + 1 }}</span>
-      <h1 class="govuk-panel__title">{{pageTitle}}</h1>
+      <h1 class="govuk-heading-l">{{pageTitle}}</h1>
 
       <!-- Answer settings -->
       <h2 class="govuk-heading-m">Answer settings</h2>
