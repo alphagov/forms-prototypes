@@ -34,12 +34,12 @@
     <h1 class="govuk-heading-l govuk-!-margin-bottom-2">{{ pageTitle }}</h1>
     <dl class="govuk-!-margin-bottom-7">
       <dt class="govuk-visually-hidden">Status</dt>
-      <dd class="govuk-!-margin-0">
-        {{ govukTag({
-          text: data['status'],
-          classes: "govuk-tag--purple" if data['status'] === 'Draft' else "govuk-tag--blue"
-        }) }}
-      </dd>
+        <dd class="govuk-!-margin-0">
+            {{ govukTag({
+                text: data['status'],
+                classes: "govuk-tag--yellow" if data.status === 'Draft' else "govuk-tag--turquoise"
+            }) }}
+        </dd>
     </dl>
 
     {% if data.status === 'Live' %}
