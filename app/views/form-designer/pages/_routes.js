@@ -613,8 +613,6 @@ router.get('/form-designer/pages/:pageId(\\d+)/check-question', function (req, r
   var successMessage = req.session.data.successMessage
   req.session.data.successMessage = undefined
 
-  console.log(successMessage)
-
   // get the previous page URL
   var previousPage = req.session.data.referer
   // now we can set the back link data (text and url)
@@ -726,13 +724,13 @@ function backLink(previousPage, pageIndex, pageData) {
   if (previousPage) {
     if (previousPage.includes('your-questions')) {
 
-      previousPageLink = `../../clear-empty`
+      previousPageLink = `/form-designer/clear-empty`
       previousPageText = 'Back to your questions'
 
     } else if (previousPage.includes(pageIndex + '/check-question')) {
 
       // This will take users back to check their question - from a change link journey
-      previousPageLink = `../../clear-empty`
+      previousPageLink = `/form-designer/clear-empty`
       previousPageText = 'Back to your questions'
 
     } else if (previousPage.includes((pageIndex - 1) + '/check-question')) {
@@ -744,7 +742,7 @@ function backLink(previousPage, pageIndex, pageData) {
     } else if (previousPage.includes((pageIndex + 1) + '/check-question')) {
 
       // This will take users back to their questions - avoid a circular journey
-      previousPageLink = `../../clear-empty`
+      previousPageLink = `/form-designer/clear-empty`
       previousPageText = 'Back to your questions'
 
     } else if (previousPage.includes('/preview-question')) {
@@ -758,7 +756,7 @@ function backLink(previousPage, pageIndex, pageData) {
       } else {
 
         // This will take users back to their questions - avoid a circular journey
-        previousPageLink = `../../clear-empty`
+        previousPageLink = `/form-designer/clear-empty`
         previousPageText = 'Back to your questions'
 
       }
@@ -770,7 +768,7 @@ function backLink(previousPage, pageIndex, pageData) {
 
     } else if (previousPage.includes((pageIndex + 1) + '/edit-answer-type')) {
 
-      previousPageLink = `../../clear-empty`
+      previousPageLink = `/form-designer/clear-empty`
       previousPageText = 'Back to your questions'
 
     } else if (previousPage.includes(pageIndex + '/edit-settings')) {
@@ -814,8 +812,6 @@ function backLink(previousPage, pageIndex, pageData) {
     'previousPageLink': previousPageLink,
     'previousPageText': previousPageText
   })
-
-  console.log(array)
 
   return array
 }
