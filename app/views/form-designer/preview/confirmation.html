@@ -2,16 +2,20 @@
 {% set mainClasses = "main--draft govuk-main-wrapper--auto-spacing" %}
 
 {% block pageTitle %}
-  {{data['confirmationTitle']}} - Preview - GOV.UK
+  {{ data['confirmationTitle'] }} - Preview - GOV.UK
 {% endblock %}
 
 {% block content %}
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
 
-    <div class="govuk-panel govuk-panel--confirmation">
-      <h1 class="govuk-panel__title">{{ data['confirmationTitle'] }} <span class="govuk-visually-hidden">preview</span></h1>
-    </div>
+    {% set panelHTML %}
+      {{ data['confirmationTitle'] }} <span class="govuk-visually-hidden">preview</span>
+    {% endset %}
+
+    {{ govukPanel({
+      titleHtml: panelHTML
+    }) }}
 
     {% if data['confirmationNext'] %}
       <h2 class="govuk-heading-m">What happens next</h2>
