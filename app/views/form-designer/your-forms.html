@@ -28,14 +28,14 @@
         </thead>
         <tbody class="govuk-table__body">
           <tr class="govuk-table__row">
-            <th scope="row" class="govuk-table__header">
-              <a class="govuk-link" href="your-form">{{data['formTitle']}}</a>
+            <th scope="row" class="govuk-table__cell">
+              <a class="govuk-link govuk-!-font-weight-regular" href="your-form">{{data['formTitle']}}</a>
             </th>
             <td class="govuk-table__cell govuk-table__cell--numeric">
             {% if data['status'] %}
               {{govukTag({
                 text: data['status'],
-                classes: "govuk-!-margin-bottom-0 govuk-tag--purple" if data['status'] === 'Draft' else "govuk-!-margin-bottom-0 govuk-tag--turquoise"
+                classes: "govuk-!-margin-bottom-0 govuk-tag--yellow" if data['status'] === 'Draft' else "govuk-!-margin-bottom-0 govuk-tag--turquoise"
               })}}
               {% endif %}
             </td>

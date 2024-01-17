@@ -6,7 +6,7 @@
     <dd class="govuk-!-margin-0">
         {{ govukTag({
             text: data['status'],
-            classes: "govuk-tag--purple"
+            classes: "govuk-tag--yellow"
         }) }}
     </dd>
 </dl>
@@ -23,265 +23,326 @@
     You have completed {{sections}} of 9 tasks.
 </p>
 
-<ol class="app-task-list">
-    <li>
-        <h2 class="app-task-list__section">
-            <span class="app-task-list__section-number">1.</span> Create your form
-        </h2>
+<h2 class="app-task-list__section">
+    Create your form
+</h2>
 
-        <ul class="app-task-list__items">
-            <li class="app-task-list__item">
-                <span class="app-task-list__task-name">
-                    <a href="name-your-form" aria-describedby="name-of-form-status">
-                        Edit the name of your form
-                    </a>
-                </span>
+{# SET STATUS OF THE FORM TITLE #}
+{% if data['formTitle'] %}
+    {% set formNameStatusText = 'Completed' %}
+{% else %}
+    {% set formNameStatusTag = 'govuk-tag--blue' %}
+    {% set formNameStatusText = 'Not yet started' %}
+{% endif %}
+{% set htmlFormTitle %}
+    {% if data['formTitle'] %}
+        {{ formNameStatusText }}
+    {% else %}
+        <strong class="govuk-tag {{ formNameStatusTag }}">
+            {{ formNameStatusText }}
+        </strong>
+    {% endif %}
+{% endset %}
 
-                {# Refactor this logic outside of class attribute #}
-                {% if data['formTitle'] %}
-                    {% set statusTag = '' %}
-                    {% set statusText = 'Completed' %}
-                {% else %}
-                    {% set statusTag = 'govuk-tag--grey' %}
-                    {% set statusText = 'Not started' %}
-                {% endif%}
-                
-                <strong class="govuk-tag {{ statusTag }} app-task-list__tag" id="name-of-form-status">
-                    {{ statusText }}
-                </strong>
-            </li>
-            <li class="app-task-list__item">
-                <span class="app-task-list__task-name">
-                    <a href="clear-empty" aria-describedby="add-questions-status">
-                        Add and edit your questions
-                    </a>
-                </span>
+{# SET STATUS OF ADDED QUESTIONS #}
+{% if data.isQuestionsComplete === 'yes' %}
+    {% set questionStatusText = 'Completed' %}
+{% elif data.pages.length %}
+    {% set questionStatusTag = 'govuk-tag--light-blue' %}
+    {% set questionStatusText = 'In progress' %}
+{% else %}
+    {% set questionStatusTag = 'govuk-tag--blue' %}
+    {% set questionStatusText = 'Not yet started' %}
+{% endif %}
+{% set htmlAddedQuestions %}
+    {% if data.isQuestionsComplete === 'yes' %}
+        {{ questionStatusText }}
+    {% else %}
+        <strong class="govuk-tag {{ questionStatusTag }}">
+            {{ questionStatusText }}
+        </strong>
+    {% endif %}
+{% endset %}
 
-                {# Refactor this logic outside of class attribute #}
-                {% if data.isQuestionsComplete === 'yes' %}
-                    {% set statusTag = '' %}
-                    {% set statusText = 'Completed' %}
-                {% elif data.pages.length %}
-                    {% set statusTag = 'govuk-tag--blue' %}
-                    {% set statusText = 'In progress' %}
-                {% else %}
-                    {% set statusTag = 'govuk-tag--grey' %}
-                    {% set statusText = 'Not started' %}
-                {% endif%}
-                
-                <strong class="govuk-tag {{ statusTag }} app-task-list__tag" id="add-questions-status">
-                    {{ statusText }}
-                </strong>
-            </li>
-            <li class="app-task-list__item">
-                <span class="app-task-list__task-name">
-                    <a href="pages/check-answers/edit" aria-describedby="add-declaration-status">
-                        Add a declaration for people to agree to
-                    </a>
-                </span>
+{# SET STATUS OF DECLARATION #}
+{% if data.isDeclarationComplete === 'yes' %}
+    {% set declarationStatusText = 'Completed' %}
+{% elif data.isDeclarationComplete === 'no' and data.checkAnswersDeclaration != '' %}
+    {% set declarationStatusTag = 'govuk-tag--light-blue' %}
+    {% set declarationStatusText = 'In progress' %}
+{% else %}
+    {% set declarationStatusTag = 'govuk-tag--blue' %}
+    {% set declarationStatusText = 'Not yet started' %}
+{% endif%}
+{% set htmlDeclaration %}
+    {% if data.isDeclarationComplete === 'yes' %}
+        {{ declarationStatusText }}
+    {% else %}
+        <strong class="govuk-tag {{ declarationStatusTag }}">
+            {{ declarationStatusText }}
+        </strong>
+    {% endif %}
+{% endset %}
 
-                {# Refactor this logic outside of class attribute #}
-                {% if data.isDeclarationComplete === 'yes' %}
-                    {% set statusTag = '' %}
-                    {% set statusText = 'Completed' %}
-                {% elif data.isDeclarationComplete === 'no' and data.checkAnswersDeclaration != '' %}
-                    {% set statusTag = 'govuk-tag--blue' %}
-                    {% set statusText = 'In progress' %}
-                {% else %}
-                    {% set statusTag = 'govuk-tag--grey' %}
-                    {% set statusText = 'Not started' %}
-                {% endif%}
-                
-                <strong class="govuk-tag {{ statusTag }} app-task-list__tag" id="add-declaration-status">
-                    {{ statusText }}
-                </strong>
-            </li>
-            <li class="app-task-list__item">
-                <span class="app-task-list__task-name">
-                    <a href="pages/confirmation/edit" aria-describedby="add-what-happens-next-status">
-                        Add information about what happens next
-                    </a>
-                </span>
+{# SET STATUS OF WHAT HAPPENS NEXT #}
+{% if data.confirmationNext %}
+    {% set whatHappensNextStatusText = 'Completed' %}
+{% else %}
+    {% set whatHappensNextStatusTag = 'govuk-tag--blue' %}
+    {% set whatHappensNextStatusText = 'Not yet started' %}
+{% endif%}
+{% set htmlWhatHappensNext %}
+    {% if data.confirmationNext %}
+        {{ whatHappensNextStatusText }}
+    {% else %}
+        <strong class="govuk-tag {{ whatHappensNextStatusTag }}">
+            {{ whatHappensNextStatusText }}
+        </strong>
+    {% endif %}
+{% endset %}
 
-                {# Refactor this logic outside of class attribute #}
-                {% if data.confirmationNext %}
-                    {% set statusTag = '' %}
-                    {% set statusText = 'Completed' %}
-                {% else %}
-                    {% set statusTag = 'govuk-tag--grey' %}
-                    {% set statusText = 'Not started' %}
-                {% endif%}
-                
-                <strong class="govuk-tag {{ statusTag }} app-task-list__tag" id="add-what-happens-next-status">
-                    {{ statusText }}
-                </strong>
-            </li>
-        </ul>
-    </li>
+{{ govukTaskList({
+    idPrefix: "create-your-form",
+    items: [
+        {
+            title: {
+                text: "Edit the name of your form"
+            },
+            href: "name-your-form",
+            status: {
+                html: htmlFormTitle
+            }
+        },
+        {
+            title: {
+                text: "Add and edit your questions"
+            },
+            href: "/form-designer/clear-empty",
+            status: {
+                html: htmlAddedQuestions
+            }
+        },
+        {
+            title: {
+                text: "Add a declaration for people to agree to"
+            },
+            href: "pages/check-answers/edit",
+            status: {
+                html: htmlDeclaration
+            }
+        },
+        {
+            title: {
+                text: "Add information about what happens next"
+            },
+            href: "pages/confirmation/edit",
+            status: {
+                html: htmlWhatHappensNext
+            }
+        }
+    ]
+}) }}
 
-    <li>
-        <h2 class="app-task-list__section">
-            <span class="app-task-list__section-number">2.</span> Set email address for completed forms
-        </h2>
-        <ul class="app-task-list__items">
-            <li class="app-task-list__item">
-                {# Show a different link and status based on email and confirmation code presence #}
-                {% if not(data['formsEmail']) %}
-                    {% set emailLinkURL = 'completed-forms-email/set-completed-forms-email' %}
-                    {% set emailLinkText = 'Set the email address completed forms will be sent to' %}
-                {% else %}
-                    {% set emailLinkURL = 'completed-forms-email/completed-forms-email' %}
-                    {% set emailLinkText = 'Edit the email address completed forms will be sent to' %}
-                {% endif %}
 
-                <span class="app-task-list__task-name">
-                    <a href="{{ emailLinkURL }}" aria-describedby="processing-email-status">
-                        {{ emailLinkText }}
-                    </a>
-                </span>
+{# SET STATUS OF SUBMISSION EMAIL #}
+{# Show a different link and status based on email and confirmation code presence #}
+{% if not ( data['formsEmail'] ) %}
+    {% set emailLinkURL = 'completed-forms-email/set-completed-forms-email' %}
+    {% set emailLinkText = 'Set the email address completed forms will be sent to' %}
+{% else %}
+    {% set emailLinkURL = 'completed-forms-email/completed-forms-email' %}
+    {% set emailLinkText = 'Edit the email address completed forms will be sent to' %}
+{% endif %}
+{% if not (data.formsEmail) %}
+    {% set submissionEmailStatusTag = 'govuk-tag--blue' %}
+    {% set submissionEmailStatusText = 'Not yet started' %}
+{% elif (data.formsEmail and (not data.confirmationCode)) or data.currentFormsEmail %}
+    {% set submissionEmailStatusTag = 'govuk-tag--light-blue' %}
+    {% set submissionEmailStatusText = 'In progress' %}
+{% else %}
+    {% set submissionEmailStatusText = 'Completed' %}
+{% endif%}
+{% if data.currentFormsEmail or (data.formsEmail and data.confirmationCode) %}
+    {% set submissionEmailStatusHint %}
+        Completed forms will be sent to: <br>
+        {{ data.currentFormsEmail or data.formsEmail }}
+    {% endset %}
+{% endif %}
 
-                {# Refactor this logic outside of class attribute #}
-                {% if not (data.formsEmail) %}
-                    {% set statusTag = 'govuk-tag--grey' %}
-                    {% set statusText = 'Not started' %}
-                {% elif data.formsEmail and (not data.confirmationCode) %}
-                    {% set statusTag = 'govuk-tag--blue' %}
-                    {% set statusText = 'In progress' %}
-                {% else %}
-                    {% set statusTag = '' %}
-                    {% set statusText = 'Completed' %}
-                {% endif%}
-                
-                <strong class="govuk-tag {{ statusTag }} app-task-list__tag" id="processing-email-status">
-                    {{ statusText }}
-                </strong>
+{% set htmlSubmissionEmail %}
+    {% if data.formsEmail and data.confirmationCode and (not data.currentFormsEmail) %}
+        {{ submissionEmailStatusText }}
+    {% else %}
+        <strong class="govuk-tag {{ submissionEmailStatusTag }}">
+            {{ submissionEmailStatusText }}
+        </strong>
+    {% endif %}
+{% endset %}
 
-                {% if data.currentFormsEmail or (data.formsEmail and data.confirmationCode) %}
-                <br>
-                <span class="app-task-list__hint govuk-hint">
-                    Completed forms will be sent to: 
-                    <br>
-                    {{ data.currentFormsEmail or data.formsEmail }}
-                </span>
-                {% endif %}
-                
-            </li>
-            <li class="app-task-list__item">
-                {# Show a different link and status based on email and confirmation code presence #}
-                {% if data.formsEmail and not data.confirmationCode %}
-                <span class="app-task-list__task-name">
-                    <a href="completed-forms-email/enter-email-confirmation-code" aria-describedby="email-confirmation-status">
-                        Enter the email address confirmation code
-                    </a>
-                </span>
-                {% else %}
-                <span class="app-task-list__task-name">
-                    Enter the email address confirmation code
-                </span>
-                {% endif %}
 
-                {# Refactor this logic outside of class attribute #}
-                {% if not data.formsEmail %}
-                    {% set statusTag = 'govuk-tag--grey' %}
-                    {% set statusText = 'Cannot start yet' %}
-                {% elif data.formsEmail and not data.confirmationCode %}
-                    {% set statusTag = 'govuk-tag--grey' %}
-                    {% set statusText = 'Not started' %}
-                {% else %}
-                    {% set statusTag = '' %}
-                    {% set statusText = 'Completed' %}
-                {% endif%}
-                
-                <strong class="govuk-tag {{ statusTag }} app-task-list__tag" id="email-confirmation-status">
-                    {{ statusText }}
-                </strong>
-            </li>
-        </ul>
-    </li>
+{# SET STATUS OF SUBMISSION CONFIRMATION CODE #}
+{# Refactor this logic outside of class attribute #}
+{% if not data.formsEmail %}
+    {% set confirmationCodeStatusTag = 'govuk-task-list__status--cannot-start-yet' %}
+    {% set confirmationCodeStatusText = 'Cannot start yet' %}
+    {% set confirmationCodeStatusHint = '' %}
+{% elif data.formsEmail and not data.confirmationCode %}
+    {% set confirmationCodeStatusTag = 'govuk-tag--blue' %}
+    {% set confirmationCodeStatusText = 'Not yet started' %}
+{% else %}
+    {% set confirmationCodeStatusText = 'Completed' %}
+{% endif%}
+{% set htmlSubmissionConfirmation %}
+    {% if (data.formsEmail and data.confirmationCode) or (not (data.formsEmail)) %}
+        {{ confirmationCodeStatusText }}
+    {% else %}
+        <strong class="govuk-tag {{ confirmationCodeStatusTag }}">
+            {{ confirmationCodeStatusText }}
+        </strong>
+    {% endif %}
+{% endset %}
 
-    <li>
-        <h2 class="app-task-list__section">
-            <span class="app-task-list__section-number">3.</span> Provide privacy and contact details
-        </h2>
-        <ul class="app-task-list__items">
-            <li class="app-task-list__item">
-                <span class="app-task-list__task-name">
-                    <a href="provide-link-to-privacy-information" aria-describedby="privacy-information-link-status">
-                        Provide a link to privacy information for this form
-                    </a>
-                </span>
+<h2 class="app-task-list__section">
+    Set email address for completed forms
+</h2>
+{{ govukTaskList({
+    idPrefix: "processing-email",
+    items: [
+        {
+            title: {
+                text: emailLinkText
+            },
+            hint: {
+                html: submissionEmailStatusHint
+            } if submissionEmailStatusHint,
+            href: emailLinkURL,
+            status: {
+                html: htmlSubmissionEmail
+            }
+        },
+        {
+            title: {
+                text: "Enter the email address confirmation code"
+            },
+            hint: {
+                text: confirmationCodeStatusHint
+            } if confirmationCodeStatusHint and confirmationCodeStatusHint != '',
+            href: "completed-forms-email/enter-email-confirmation-code" if data.formsEmail and not data.confirmationCode,
+            status: {
+                html: htmlSubmissionConfirmation
+            }
+        }
+    ]
+}) }}
 
-                {# Refactor this logic outside of class attribute #}
-                {% if data.privacyInformation %}
-                    {% set statusTag = '' %}
-                    {% set statusText = 'Completed' %}
-                {% else %}
-                    {% set statusTag = 'govuk-tag--grey' %}
-                    {% set statusText = 'Not started' %}
-                {% endif%}
-                
-                <strong class="govuk-tag {{ statusTag }} app-task-list__tag" id="privacy-information-link-status">
-                    {{ statusText }}
-                </strong>
-            </li>
-            <li class="app-task-list__item">
-                <span class="app-task-list__task-name">
-                    <a href="provide-support-details" aria-describedby="provide-support-details-link-status">
-                        Provide contact details for support
-                    </a>
-                </span>
 
-                {# Refactor this logic outside of class attribute #}
-                {% if data.supportDetails %}
-                    {% set statusTag = '' %}
-                    {% set statusText = 'Completed' %}
-                {% else %}
-                    {% set statusTag = 'govuk-tag--grey' %}
-                    {% set statusText = 'Not started' %}
-                {% endif%}
-                
-                <strong class="govuk-tag {{ statusTag }} app-task-list__tag" id="provide-support-details-link-status">
-                    {{ statusText }}
-                </strong>
-            </li>
-        </ul>
-    </li>
+{# SET STATUS OF PRIVACY INFORMATION #}
+{# Refactor this logic outside of class attribute #}
+{% if data.privacyInformation %}
+    {% set privacyInformationStatusText = 'Completed' %}
+{% else %}
+    {% set privacyInformationStatusTag = 'govuk-tag--blue' %}
+    {% set privacyInformationStatusText = 'Not yet started' %}
+{% endif%}
+{% set htmlPrivacyInformation %}
+    {% if data.privacyInformation %}
+        {{ privacyInformationStatusText }}
+    {% else %}
+        <strong class="govuk-tag {{ privacyInformationStatusTag }}">
+            {{ privacyInformationStatusText }}
+        </strong>
+    {% endif %}
+{% endset %}
 
-    <li>
-        <h2 class="app-task-list__section">
-            <span class="app-task-list__section-number">4.</span> Make your form live
-        </h2>
-        <ul class="app-task-list__items">
-            <li class="app-task-list__item">
-                <span class="app-task-list__task-name">
-                    {% if sections >= 6 -%}
-                    <a href="make-your-form-live" aria-describedby="form-live-status">
-                    {%- endif %}
-                    Make your form live
-                    {% if sections >= 6 -%}
-                    </a>
-                    {%- endif %}
-                </span>
+{# SET STATUS OF SUPPORT DETAILS #}
+{# Refactor this logic outside of class attribute #}
+{% if data.supportDetails %}
+    {% set supportDetailsStatusText = 'Completed' %}
+{% else %}
+    {% set supportDetailsStatusTag = 'govuk-tag--blue' %}
+    {% set supportDetailsStatusText = 'Not yet started' %}
+{% endif%}
+{% set htmlSupportDetails %}
+    {% if data.supportDetails %}
+        {{ supportDetailsStatusText }}
+    {% else %}
+        <strong class="govuk-tag {{ supportDetailsStatusTag }}">
+            {{ supportDetailsStatusText }}
+        </strong>
+    {% endif %}
+{% endset %}
 
-                {# Refactor this logic outside of class attribute #}
-                {% if data.status == 'Live' %}
-                    {% set statusTag = '' %}
-                    {% set statusText = 'Completed' %}
-                {% elif sections >= 6 %}
-                    {% set statusTag = 'govuk-tag--grey' %}
-                    {% set statusText = 'Not started' %}
-                {% else %}
-                    {% set statusTag = 'govuk-tag--grey' %}
-                    {% set statusText = 'Cannot start yet' %}
-                {% endif%}
-                
-                <strong class="govuk-tag {{ statusTag }} app-task-list__tag" id="form-live-status">
-                    {{ statusText }}
-                </strong>
-            </li>
-        </ul>
-    </li>
-</ol>
+<h2 class="app-task-list__section">
+    Provide privacy and contact details
+</h2>
+{{ govukTaskList({
+    idPrefix: "processing-email",
+    items: [
+        {
+            title: {
+                text: "Provide a link to privacy information for this form"
+            },
+            href: "provide-link-to-privacy-information",
+            status: {
+                html: htmlPrivacyInformation
+            }
+        },
+        {
+            title: {
+                text: "Provide contact details for support"
+            },
+            href: "provide-support-details",
+            status: {
+                html: htmlSupportDetails
+            }
+        }
+    ]
+}) }}
+
+
+{# SET STATUS OF LIVE FORM #}
+{# Refactor this logic outside of class attribute #}
+{% if data.status == 'Live' %}
+    {% set formVersionStatusText = 'Completed' %}
+{% elif sections >= 6 %}
+    {% set formVersionStatusTag = 'govuk-tag--blue' %}
+    {% set formVersionStatusText = 'Not yet started' %}
+{% else %}
+    {% set formVersionStatusTag = 'govuk-task-list__status--cannot-start-yet' %}
+    {% set formVersionStatusText = 'Cannot start yet' %}
+    {% set formVersionStatusHint = '' %}
+{% endif%}
+{% set htmlFormVersion %}
+    {% if (data.status == 'Live') or (sections < 6) %}
+        {{ formVersionStatusText }}
+    {% else %}
+        <strong class="govuk-tag {{ formVersionStatusTag }}">
+            {{ formVersionStatusText }}
+        </strong>
+    {% endif %}
+{% endset %}
+
+<h2 class="app-task-list__section">
+    Make your form live
+</h2>
+{{ govukTaskList({
+    idPrefix: "processing-email",
+    items: [
+        {
+            title: {
+                text: "Make your form live"
+            },
+            hint: {
+                text: formVersionStatusHint
+            } if sections < 6,
+            href: "make-your-form-live" if sections >= 6,
+            status: {
+                html: htmlFormVersion
+            }
+        }
+    ]
+}) }}
+
 
 <form id="form" class="form" action="/form-designer/delete-draft" method="post" novalidate>
     {{ govukButton({

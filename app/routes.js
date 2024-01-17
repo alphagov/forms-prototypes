@@ -208,13 +208,70 @@ router.get('/form-designer/your-form', function (req, res) {
 })
 
 // something about deleting a draft form
-// Delete draft form - button journeys
+// Delete draft form - display
 router.get('/form-designer/delete-draft', function (req, res) {
   var action = req.session.data.action
 
   if (action === 'deleteDraft') {
     res.redirect(`/form-designer/delete-draft-form`)
   }
+})
+
+// Delete draft form - button journeys
+router.post('/form-designer/delete-draft-form', function (req, res) {
+  var deleteDraftForm = req.session.data.deleteDraftForm
+  req.session.data.deleteDraftForm = undefined
+
+  const errors = {}
+  // if no option is selected, then error
+  if (!deleteDraftForm?.length) {
+    errors.deleteDraftForm = {
+      text: 'Select yes if you want to delete this form',
+      href: "#deleteDraftForm"
+    }
+  }
+
+  // Convert the errors into a list, so we can use it in the template
+  const errorList = Object.values(errors)
+  // If there are no errors, redirect the user to the next page
+  // otherwise, show the page again with the errors set
+  const containsErrors = errorList.length > 0
+
+  if(containsErrors) {
+    return res.render('form-designer/delete-draft-form', {
+      errors,
+      errorList,
+      containsErrors
+    })
+  } else if (deleteDraftForm === 'yes') {
+    // delete all the things
+    req.session.data.status = undefined
+
+    req.session.data.formTitle = undefined
+    req.session.data.pages = undefined
+    req.session.data.isDeclarationComplete = undefined
+    req.session.data.checkAnswersDeclaration = undefined
+    req.session.data.confirmationNext = undefined
+
+    req.session.data.formsEmail = undefined
+    req.session.data.confirmationCode = undefined
+
+    req.session.data.privacyInformation = undefined
+    req.session.data.supportDetails = undefined
+    req.session.data.emailSupport = undefined
+    req.session.data.phoneSupport = undefined
+    req.session.data.onlineSupportLink = undefined
+    req.session.data.onlineSupportText = undefined
+
+    req.session.data.makeFormLive = undefined
+
+    req.session.data.action = undefined
+
+    res.redirect(`/form-designer/your-forms`)
+  } else {
+    res.redirect(`/form-designer/your-form`)
+  }
+
 })
 
 
@@ -874,7 +931,7 @@ router.post('/form-designer/are-you-sure-you-want-to-edit-live-questions', funct
     res.render('form-designer/are-you-sure-you-want-to-edit-live-questions', { errors, errorList, containsErrors })
   } else {
     if(editLiveQuestions === 'yes') {
-      res.redirect('clear-empty')
+      res.redirect('/form-designer/clear-empty')
     } else {
       res.redirect('your-form')
     }
