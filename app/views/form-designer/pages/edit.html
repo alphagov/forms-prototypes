@@ -50,7 +50,7 @@
   {% endif %}
 {% else %}
   {% set questionHint = 'Ask a question the way you would in person. For example ‘What is your address?’' %}
-  {% set hintHint = "Use hint text to help people answer the question. For example, to explain the format the answer should be in, or where to find the information you’ve asked for." %}
+  {% set hintHint = "You can add a short hint to help people answer the question. For example, to explain the format the answer should be in, or where to find the information you’ve asked for." %}
 {% endif %}
 
 {% block pageTitle %}
@@ -126,7 +126,7 @@
               }
             },
             hint: {
-              text: "Only add guidance if you need to give a longer explanation of how to answer the question, or to format your content. For example, you can use paragraphs, links or lists."
+              text: "Only add guidance if you need to give a longer explanation of how to answer the question, or to format your content with paragraphs, headings, lists or links."
             },
             items: [
               {
@@ -152,14 +152,14 @@
               name: "questionOptional",
               fieldset: {
                 legend: {
-                  text: "Question settings",
+                  text: "Make this question optional",
                   classes: "govuk-fieldset__legend--m"
                 }
               },
               items: [
                 {
                   value: "questionOptional",
-                  text: "Make this question optional so people can skip it",
+                  text: "Make this question optional",
                   hint: {
                     text: "‘(optional)’ will be added to the end of the question text"
                   },
