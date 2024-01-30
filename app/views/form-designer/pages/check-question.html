@@ -246,7 +246,7 @@
             Make this question optional
           </dt>
           <dd class="govuk-summary-list__value">
-            {{ 'Yes' if data['questionOptional'] else 'No' }}
+            {{ 'Yes' if (pageData['questionOptional'] and 'questionOptional' in pageData['questionOptional']) else 'No' }}
           </dd>
           <dd class="govuk-summary-list__actions">
             <a class="govuk-link govuk-link--no-visited-state" href="edit">

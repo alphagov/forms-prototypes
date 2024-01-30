@@ -449,6 +449,8 @@ router.post('/form-designer/pages/:pageId(\\d+)/edit', function (req, res) {
   req.session.data['additional-guidance'] = undefined
 
   // if question is made optional, add it to pageData
+  //reset if question is optional each time the form creator comes back to edit a question, to make sure if they unselect the checkbox it’ll update correctly
+  pageData['questionOptional'] = undefined
   if (req.session.data['questionOptional']) {
     pageData['questionOptional'] = req.session.data['questionOptional']
   }
