@@ -367,8 +367,7 @@
         #}
 
       {# RADIOS #}
-      {% if (pageData['type'] === 'select' and pageData['listSettings'].includes('oneOption')) 
-        or(pageData['type'] === 'yesorno') %}
+      {% if (pageData['type'] === 'select' and pageData['listSettings'] and pageData['listSettings'].includes('oneOption')) or (pageData['type'] === 'yesorno') %}
 
         {% if pageData['type'] === 'yesorno' %}
           {% set itemsArray = ['Yes', 'No'] %}
@@ -416,7 +415,7 @@
         {% endif %}
 
         {# CHECKBOXES #}
-        {% if pageData['type'] == 'select' and not pageData['listSettings'].includes('oneOption') %}
+        {% if pageData['type'] == 'select' and not pageData['listSettings'] %}
 
           {% set itemsArray = pageData['item-list'] %}
 
@@ -442,7 +441,7 @@
                     </label>
                   </div>
                   {% endfor %}
-                  {% if pageData['listSettings'].includes('noneOption') %}
+                  {% if pageData['listSettings'] and pageData['listSettings'].includes('noneOption') %}
                   <div class="govuk-checkboxes__divider">or</div>
                   <div class="govuk-checkboxes__item">
                     <input class="govuk-checkboxes__input" id="question-{{pageId}}-none" name="{{ pageId }}" type="checkbox" value="none" data-behaviour="exclusive">
