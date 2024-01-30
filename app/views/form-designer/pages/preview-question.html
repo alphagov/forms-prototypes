@@ -1,49 +1,65 @@
 {% extends "layout-govuk-forms.html" %}
 
-{% set answerType = pageData['type']|capitalize %}
 {% if pageData['type'] === 'personName' %}
-  {% set answerType = 'Person’s name' %}
-  {% set inputTypeTitle = data.personNameInputTypeTitle %}
-  {% if pageData['input'] === 'single-field' %}
-    {% set inputType = 'Full name in a single box' %}
-  {% elif pageData['input'] === 'multi-field' %}
-    {% set inputType = 'First and last names in separate boxes' %}
-  {% elif pageData['input'] === 'multi-field-plus' %}
-    {% set inputType = 'First, middle and last names in separate boxes' %}
+  {% if pageData['input'] === 'multi-field-plus' %}
+    {% if pageData['title'] === 'yes' %}
+      {# IF ‘FIRST, MIDDLE AND LAST NAME’ AND ‘TITLE’ ARE SELECTED AND Q IS NOT OPTIONAL THEN: #}
+      {% set answerTypeInformation = 'People will be able to use any characters in their answers - including special characters. They can leave ‘title’ and ‘middle names’ empty if they need to.' %}
+    {% else %}
+      {# IF ‘FIRST, MIDDLE AND LAST NAME’ IS SELECTED BUT NOT ‘TITLE’ AND Q IS NOT OPTIONAL THEN: #}
+      {% set answerTypeInformation = 'People will be able to use any characters in their answers - including special characters. They can leave ‘middle names’ empty if they need to. ' %}
+    {% endif %}
+  {% elif pageData['title'] === 'yes' %}
+    {# IF ‘TITLE’ IS SELECTED BUT NOT ‘FIRST, MIDDLE AND LAST NAME’ AND Q IS NOT OPTIONAL THEN: #}
+    {% set answerTypeInformation = 'People will be able to use any characters in their answers - including special characters. They can leave ‘title’ empty if they need to.' %}
+  {% elif pageData['input'] === 'single-field' %}
+    {# IF ‘FULL NAME IN A SINGLE BOX’ IS SELECTED BUT NOT ‘TITLE’ THEN: #}
+    {% set answerTypeInformation = 'People will be able to use any characters in their answer - including special characters.' %}
+  {% else %}
+    {# OTHERWISE: #}
+    {% set answerTypeInformation = 'People will be able to use any characters in their answers - including special characters.' %}
   {% endif %}
 {% elif pageData['type'] === 'companyName' %}
-  {% set answerType = 'Company or organisation’s name' %}
+  {% set answerTypeInformation = 'People will be able to use any characters in their answer - including special characters.' %}
 {% elif pageData['type'] === 'email' %}
-  {% set answerType = 'Email address' %}
+  {% set answerTypeInformation = 'People will only be able to enter an answer that’s in the format of an email address, like name@example.com.' %}
 {% elif pageData['type'] === 'phone' %}
-  {% set answerType = 'Phone number' %}
+  {% set answerTypeInformation = 'People will be able to enter between 8 and 15 characters. They can use numbers, spaces, ‘ext’, ‘-’, ‘+’, ‘(’ and ‘)’.' %}
 {% elif pageData['type'] === 'national-insurance-number' %}
-  {% set answerType = 'National Insurance number' %}
+  {% set answerTypeInformation = 'People will only be able to enter an answer that’s in the format of a National Insurance number - 2 letters, 6 numbers, then A, B, C or D.' %}
 {% elif pageData['type'] === 'address' %}
-  {% set inputTypeTitle = data.addressInputTypeTitle %}
-  {% if ('uk-address' in pageData['input']) and ('international-address' in pageData['input']) %}
-    {% set inputType = 'UK and international addresses' %}
-  {% elif 'uk-address' in pageData['input'] %}
-    {% set inputType = 'UK addresses' %}
-  {% elif 'international-address' in pageData['input'] %}
-    {% set inputType = 'International addresses' %}
+  {% if ('uk-address' in pageData['input']) and not ('international-address' in pageData['input']) %}
+    {# IF UK SELECTED: #}
+    {% set answerTypeInformation = 'People will only be able to enter a postcode that’s in the format of a UK postcode.' %}
+  {% else %}
+    {# IF INTERNATIONAL SELECTED: #}
+    {% set answerTypeInformation = 'People will be able to answer using the appropriate format for the address. This is useful if you expect any international addresses. ' %}
   {% endif %}
 {% elif pageData['type'] === 'date' %}
-  {% set inputTypeTitle = data.dateOfBirthInputTypeTitle %}
   {% if pageData['input'] === 'yes' %}
-    {% set inputType = 'Yes' %}
+    {# IF DATE OF BIRTH: #}
+    {% set answerTypeInformation = 'People will only be able to enter a date that is in the past.' %}
   {% else %}
-    {% set inputType = 'No' %}
+    {# IF NOT DATE OF BIRTH: #}
+    {% set answerTypeInformation = 'People will only be able to enter a real date.' %}
   {% endif %}
 {% elif pageData['type'] === 'select' %}
-  {% set answerType = 'Selection from a list' %}
-{% elif pageData['type'] === 'number' %}
-{% elif pageData['type'] === 'text' %}
-  {% set inputTypeTitle = data.textLengthInputTypeTitle %}
-  {% if pageData['input'] === 'single-line-input' %}
-    {% set inputType = 'A single line of text' %}
+  {% if pageData['listSettings'] and ('oneOption' in pageData['listSettings']) %}
+    {# IF RADIOS #}
+    {% set answerTypeInformation = 'People will only be able to select one option.' %}
   {% else %}
-    {% set inputType = 'More than a single line of text' %}
+    {# IF CHECKBOXES #}
+    {% set answerTypeInformation = 'People will need to select at least one option.' %}
+  {% endif %}
+{% elif pageData['type'] === 'number' %}
+  {% set answerTypeInformation = 'People will only be able to enter whole or decimal numbers.' %}
+{% elif pageData['type'] === 'text' %}
+  {% if pageData['input'] === 'single-line-input' %}
+    {# IF ‘SINGLE LINE’ SELECTED: #}
+    {% set answerTypeInformation = 'People will be able to enter up to 499 characters.' %}
+  {% else %}
+    {# IF ‘MULTIPLE LINES’ SELECTED: #}
+    {% set answerTypeInformation = 'People will be able to enter up to 4999 characters.' %}
   {% endif %}
 {% endif %}
 
@@ -74,15 +90,12 @@
     <h1 class="govuk-heading-l">{{pageTitle}}</h1>
 
     <p class="govuk-body">
-      This is how your question will look.
+      The preview below shows how this question will look.
     </p>
 
+    {% if answerTypeInformation %}
     <p class="govuk-body">
-      Answer type: {{ answerType }}
-    </p>
-    {% if inputType %}
-    <p class="govuk-body">
-      Settings: {{ inputType }}
+      {{ answerTypeInformation }}
     </p>
     {% endif %}
 
