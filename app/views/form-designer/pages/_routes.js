@@ -83,8 +83,6 @@ router.post('/form-designer/pages/:pageId(\\d+)/edit-answer-type', function (req
       text: 'Select the type of answer you need',
       href: "#type"
     }
-  } else {
-    pageData['type'] = type
   }
 
   // Convert the errors into a list, so we can use it in the template
@@ -109,6 +107,8 @@ router.post('/form-designer/pages/:pageId(\\d+)/edit-answer-type', function (req
       req.session.data.pages.push({
         'pageIndex': nextPageId
       })
+    } else {
+      pageData['type'] = type
     }
     if (type === 'personName') {
       // person's name route
