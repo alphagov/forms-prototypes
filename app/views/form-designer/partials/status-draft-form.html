@@ -150,15 +150,6 @@
     {% set paymentLinkStatusTag = 'govuk-task-list__status--cannot-start-yet' %}
     {% set paymentLinkStatusText = 'Optional' %}
 {% endif%}
-{% set htmlPaymentLink %}
-    {% if data.paymentLink %}
-        <strong class="govuk-tag {{ paymentLinkStatusTag }}">
-            {{ paymentLinkStatusText }}
-        </strong>
-    {% else %}
-        {{ paymentLinkStatusText }}
-    {% endif %}
-{% endset %}
 
 <h3 class="govuk-heading-s">Optional tasks</h3>
 {{ govukTaskList({
@@ -170,7 +161,7 @@
             },
             href: "payment/add-payment-link",
             status: {
-                html: htmlPaymentLink,
+                text: paymentLinkStatusText,
                 classes: paymentLinkStatusTag if not data.paymentLink
             }
         }
