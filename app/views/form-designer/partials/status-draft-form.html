@@ -143,6 +143,40 @@
     ]
 }) }}
 
+{# SET STATUS OF PAYMENT LINK #}
+{% if data.paymentLink %}
+    {% set paymentLinkStatusText = 'Completed' %}
+{% else %}
+    {% set paymentLinkStatusTag = 'govuk-task-list__status--cannot-start-yet' %}
+    {% set paymentLinkStatusText = 'Optional' %}
+{% endif%}
+{% set htmlPaymentLink %}
+    {% if data.paymentLink %}
+        <strong class="govuk-tag {{ paymentLinkStatusTag }}">
+            {{ paymentLinkStatusText }}
+        </strong>
+    {% else %}
+        {{ paymentLinkStatusText }}
+    {% endif %}
+{% endset %}
+
+<h3 class="govuk-heading-s">Optional tasks</h3>
+{{ govukTaskList({
+    idPrefix: "payment-link",
+    items: [
+        {
+            title: {
+                text: "Add a link to a payment page on GOV.UK Pay"
+            },
+            href: "payment/add-payment-link",
+            status: {
+                html: htmlPaymentLink,
+                classes: paymentLinkStatusTag if not data.paymentLink
+            }
+        }
+    ]
+}) }}
+
 
 {# SET STATUS OF SUBMISSION EMAIL #}
 {# Show a different link and status based on email and confirmation code presence #}
@@ -229,7 +263,8 @@
             } if confirmationCodeStatusHint and confirmationCodeStatusHint != '',
             href: "completed-forms-email/enter-email-confirmation-code" if data.formsEmail and not data.confirmationCode,
             status: {
-                html: htmlSubmissionConfirmation
+                html: htmlSubmissionConfirmation,
+                classes: confirmationCodeStatusTag if (data.formsEmail and data.confirmationCode) or (not (data.formsEmail))
             }
         }
     ]
@@ -337,7 +372,8 @@
             } if sections < 6,
             href: "make-your-form-live" if sections >= 6,
             status: {
-                html: htmlFormVersion
+                html: htmlFormVersion,
+                classes: formVersionStatusTag if (data.status == 'Live') or (sections < 6)
             }
         }
     ]
