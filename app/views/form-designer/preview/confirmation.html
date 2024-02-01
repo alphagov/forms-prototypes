@@ -9,12 +9,26 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
 
-    {% set panelHTML %}
-      {{ data['confirmationTitle'] }} <span class="govuk-visually-hidden">preview</span>
+    {% set titleHTML %}
+      {% if data.paymentLink %}
+      You still need to pay
+      {% else %}
+      {{ data['confirmationTitle'] }}
+      {% endif %}
+      <span class="govuk-visually-hidden"> preview</span>
+    {% endset %}
+
+    {% set referenceNumber = 'HDJ2123F' %}
+
+    {% set referenceHTML %}
+      Your reference number is<br>
+      <strong>{{ referenceNumber }}</strong>
     {% endset %}
 
     {{ govukPanel({
-      titleHtml: panelHTML
+      titleHtml: titleHTML,
+      html: referenceHTML,
+      classes: 'app-panel-blue' if data.paymentLink
     }) }}
 
     {% if data['confirmationNext'] %}
@@ -24,6 +38,16 @@
         {{ data['confirmationNext'] | striptags(true) | escape | nl2br }}
       {% endmarkdown %}
       </div>
+    {% endif %}
+
+    {% if data.paymentLink %}
+      {{ govukButton({
+        text: "Continue to pay",
+        href: '../payment/payment-link-example?reference=' + referenceNumber,
+        attributes: {
+          target: "_parent"
+        }
+      }) }}
     {% endif %}
 
   </div>

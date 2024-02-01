@@ -1,0 +1,65 @@
+{% extends "layout-govuk-form-preview.html" %}
+{% set mainClasses = "main--draft govuk-main-wrapper--auto-spacing" %}
+
+{% set pageTitle = 'Pay for ' + (data.formTitle|lower or '[paymentLinkTitle]') %}
+{% set serviceName = pageTitle %}
+
+{% block header %}
+  {{ govukHeader({
+    homepageUrl: "/",
+    serviceName: pageTitle,
+    serviceUrl: "../your-questions"
+  }) }}
+{% endblock %}
+
+{% block pageTitle %}
+  {{ "Error: " if containsErrors }}{{ pageTitle }} - Example preview - GOV.UK Forms
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form method="post" novalidate>
+
+        {% if containsErrors %}
+        {{ govukErrorSummary({
+          titleText: "There is a problem",
+          errorList: errorList
+        }) }}
+        {% endif %}
+
+        <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
+
+        <h2 class="govuk-heading-m">
+          Check your details
+        </h2>
+
+        {{ govukSummaryList({
+          rows: [
+            {
+              key: {
+                text: "Reference number"
+              },
+              value: {
+                text: reference
+              }
+            },
+            {
+              key: {
+                text: "Total to pay"
+              },
+              value: {
+                text: "£40.00"
+              }
+            }
+          ]
+        }) }}
+
+        {{ govukButton({
+          text: "Continue to payment"
+        }) }}
+
+      </form>
+    </div>
+  </div>
+{% endblock %}

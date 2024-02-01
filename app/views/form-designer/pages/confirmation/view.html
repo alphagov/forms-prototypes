@@ -12,17 +12,19 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
 
-    <div class="govuk-panel govuk-panel--confirmation">
-      <h1 class="govuk-panel__title">{{ data['confirmationTitle'] }}</h1>
-    </div>
+    {% set panelHTML %}
+      {{ data['confirmationTitle'] }}
+    {% endset %}
+    
+    {{ govukPanel({
+      titleHtml: panelHTML
+    }) }}
 
-
+    {% if data['confirmationNext'] %}
       <h2 class="govuk-heading-m">What happens next</h2>
-
-      {% if data['confirmationNext'] %}
       <div class="app-prose-scope">
       {% markdown %}
-        {{ data['confirmationNext'] }}
+        {{ data['confirmationNext'] | striptags(true) | escape | nl2br }}
       {% endmarkdown %}
       </div>
     {% endif %}
