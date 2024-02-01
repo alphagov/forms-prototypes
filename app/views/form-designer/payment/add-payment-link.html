@@ -85,6 +85,8 @@
 
         {% endif %}
 
+        <input type="hidden" id="tempPaymentLink" name="tempPaymentLink" value="{{ data.paymentLink }}" />
+
         {{ govukInput({
           label: {
             text: "Enter the URL of your GOV.UK Pay payment link ",
