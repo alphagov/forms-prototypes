@@ -7,10 +7,11 @@
 {% endblock %}
 
 {% block content %}
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <form class="form" method="post" action="grouplanding" novalidate>
 
-      <h1 class="govuk-heading-xl">Create a new group for forms</h1>
+      <h1 class="govuk-heading-l">Create a new group for forms</h1>
 
       <p class="govuk-body">
         Each form needs to be created in a ‘group’. Once you have a group, you can add other people to create and edit forms in it.
@@ -31,18 +32,20 @@
       <p class="govuk-body">You can change the name later if you need to.</p>
 
       <div class="govuk-form-group">
-        <h1 class="govuk-label-wrapper">
+        <h2 class="govuk-label-wrapper">
           <label class="govuk-label govuk-label--m" for="event-name">
             Enter a name for your new group
           </label>
-        </h1>
-        <input class="govuk-input" id="event-name" name="eventName" type="text">
+        </h2>
+        <input class="govuk-input" id="group-name" name="groupName" type="text">
       </div>
 
-      <a href="grouplanding.html" button="button" type="submit" class="govuk-button" data-module="govuk-button">
+      <button class="govuk-button" data-module="govuk-button">
         Save and continue
       </button>
-    </a>
+
+    </form>
 
   </div>
+</div>
 {% endblock content %}
