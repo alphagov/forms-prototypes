@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+
+    <a href="group.html" class="govuk-back-link">Back to your groups</a>
+
+    <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title"
+      data-module="govuk-notification-banner">
+      <div class="govuk-notification-banner__header">
+        <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+          Important
+        </h2>
+      </div>
+      <div class="govuk-notification-banner__content">
+        <p class="govuk-notification-banner__heading">This is a ‘trial’ group</p>
+        <p class="govuk-body">Find out how to upgrade this group so you can make forms live 
+        </p>
+
+        <p class="govuk-body"> <a href="#" class="govuk-link" rel="noreferrer noopener" target="_blank">You can create
+            forms in this group and test them, but you cannot make them live.</a>
+        </p>
+      </div>
+    </div>
+
+    <span class="govuk-caption-xl">Trial group</span>
+    <h1 class="govuk-heading-xl">{{ data['groupName'] }}</h1>
+
+    <p class="govuk-body">
+      <a href="grouplanding.html" class="govuk-link">Change the name of this group</a>.
+    </p>
+    <p class="govuk-body">
+      <a href="editmembers" class="govuk-link">Edit members of this group</a>.
+    </p>
+
+    <a href="grouplanding.html" role="button" draggable="false" class="govuk-button govuk-button--start" data-module="govuk-button">
+      Create a form
+      <svg class="govuk-button__start-icon" xmlns="http://www.w3.org/2000/svg" width="17.5" height="19"
+        viewBox="0 0 33 40" aria-hidden="true" focusable="false">
+        <path fill="currentColor" d="M0 0h13l20 20-20 20H0l20-20z" />
+      </svg>
+    </a>
+
+    <h2 class="govuk-heading-m">Forms in ‘Your test forms’</h2>
+
+       
+        </div>
+        <table class="govuk-table govuk-table--small-text-until-tablet">
+          <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+              <th scope="col" class="govuk-table__header">Form name</th>
+              <th scope="col" class="govuk-table__header">Created by</th>
+              <th scope="col" class="govuk-table__header">Status</th>
+             
+            </tr>
+          </thead>
+          <tbody class="govuk-table__body">
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell">hazal.arpalikli@digital.cabinet-office.gov.uk</td>
+              <td class="govuk-table__cell">Hazal Arpalikli </td>
+              <td class="govuk-table__cell"></td>
+              
+           
+           
+        
+          
+          </tbody>
+        </table>
+
+  </div>
+</div>
+
+{% endblock content %}

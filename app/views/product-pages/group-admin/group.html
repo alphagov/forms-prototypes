@@ -1,0 +1,66 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+
+    <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title"
+      data-module="govuk-notification-banner">
+      <div class="govuk-notification-banner__header">
+        <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+          Important
+        </h2>
+      </div>
+      <div class="govuk-notification-banner__content">
+        <p class="govuk-notification-banner__heading"> You cannot make any forms live yet</p>
+        <p class="govuk-body">
+          Someone from your organisation needs to agree to a ‘Memorandum of Understanding’ with GOV.UK Forms before your
+          organisation can make any forms live.
+        </p>
+
+        <p class="govuk-body"> Speak to your organisation’s GOV.UK publishing team or
+          <a href="#" class="govuk-link" rel="noreferrer noopener" target="_blank">contact the GOV.UK Forms team</a> to
+          start this process.
+        </p>
+        <p class="govuk-body"> In the meantime, you can try out making forms in a ‘trial’ group. </p>
+      </div>
+    </div>
+
+    <h1 class="govuk-heading-xl">Your groups</h1>
+
+    <h2 class="govuk-heading-m">Active groups</h2>
+    <p class="govuk-body"> You’re not in any active groups.</p>
+
+    <h2 class="govuk-heading-m">Trial groups</h2>
+    <p class="govuk-body"> You’re not in any trial groups.</p>
+
+    <a href="creategroup.html" button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button">
+      Create a group
+    </a>
+
+    <details class="govuk-details">
+      <summary class="govuk-details__summary">
+        <span class="govuk-details__summary-text">
+          What is a group?
+        </span>
+      </summary>
+      <div class="govuk-details__text">
+        Each form is created inside a group. People can be added to a group to create and edit forms in it.
+      </div>
+
+      <div class="govuk-details__text">
+        If you need access to an existing form or group, ask someone who has access to that group to add you.
+      </div>
+
+      <div class="govuk-details__text">
+        When a group is first created it will be a ‘trial’ group. That means you cannot make any forms in the group
+        live. You can request for a group to be upgraded to an ‘active’ group if you need to make forms live.
+      </div>
+
+      <div class="govuk-details__text">
+        If you’re not sure if you should make a new group, speak with your organisation’s GOV.UK publishing team.
+      </div>
+    </details>
+
+  </div>
+  {% endblock content %}
