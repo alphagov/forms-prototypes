@@ -72,7 +72,7 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
     <a href="#" class="govuk-back-link">Back to Your test forms</a> 
-    <span class="govuk-caption-xl">Your test forms</span>
+    <span class="govuk-caption-xl">Licensing forms</span>
     <h1 class="govuk-heading-xl">Members of this group</h1>
    
     </div>
@@ -90,13 +90,20 @@
           <td class="govuk-table__cell">Hazal Arpalikli</td>
           <td class="govuk-table__cell">hazal.arpalikli@digital.cabinet-office.gov.uk </td>
           <td class="govuk-table__cell">Group admin</td>
-          <td class="govuk-table__cell"></td>
+          <td class="govuk-table__cell"><button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button">
+            Remove
+          </button> 
+        </td>
         </tr>
         <tr class="govuk-table__row">
           <td class="govuk-table__cell">Hannah Cooper </td>
           <td class="govuk-table__cell">hannah.cooper@digital.cabinet-office.gov.uk </td>
-          <td class="govuk-table__cell">Group admin</td>
-          <td class="govuk-table__cell"></td>
+          <td class="govuk-table__cell">Editor</td>
+          <td class="govuk-table__cell"><button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button">
+            Remove
+          </button> <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button">
+            Make group admin
+          </button></td>
         </tr>
         <tr class="govuk-table__row">
           <td class="govuk-table__cell">Tom Illes</td>
@@ -104,6 +111,8 @@
           <td class="govuk-table__cell">Editor</td>
           <td class="govuk-table__cell"><button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button">
             Remove
+          </button> <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button">
+            Make group admin
           </button></td>
         </tr>
         <tr class="govuk-table__row">
@@ -112,6 +121,8 @@
           <td class="govuk-table__cell">Editor</td>
           <td class="govuk-table__cell"><button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button">
             Remove
+          </button> <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button">
+            Make group admin
           </button></td>
         </tr>
         <tr class="govuk-table__row">
@@ -120,7 +131,10 @@
           <td class="govuk-table__cell">Editor</td>
           <td class="govuk-table__cell"><button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button">
             Remove
+          </button> <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button">
+            Make group admin
           </button></td>
+          
         </tr>
     
       
@@ -129,9 +143,9 @@
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
 
-    <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button">
-      Add an editor
-    </button>
+        <button type="submit" class="govuk-button" data-module="govuk-button">
+         Add an editor or group admin
+        </button>
 
     <details class="govuk-details">
       <summary class="govuk-details__summary">
@@ -143,10 +157,11 @@
         An editor can edit forms in a group but cannot make forms live. 
       </div>
       <div class="govuk-details__text">
-        An editor can edit forms in a group but cannot make forms live. 
+        A group admin can edit forms, make forms live and add editors to a group.
       </div>
       <div class="govuk-details__text">
-        A group admin can edit forms, make forms live and add editors to a group.
+        
+Only an organisation admin can add a group admin to a group.
       </div>
     </details>
 {% endblock content %}
