@@ -69,124 +69,54 @@
 {% endblock header %}
 
 {% block content %}
+
+<a href="grouplanding.html" class="govuk-back-link">Back to your forms</a>
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
    
+    <div class="govuk-form-group">
+      <fieldset class="govuk-fieldset" aria-describedby="changedName-hint">
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+          <h1 class="govuk-fieldset__heading">
+            Do you want to upgrade this group?
+          </h1>
+        </legend>
+        <div id="changedName-hint" class="govuk-hint">
+          Select the option below
+        </div>
+        <div class="govuk-radios govuk-radios--inline" data-module="govuk-radios">
+          <div class="govuk-radios__item">
+            <input class="govuk-radios__input" id="changedName" name="changedName" type="radio" value="yes">
+            <label class="govuk-label govuk-radios__label" for="changedName">
+              Yes
+            </label>
+          </div>
+          <div class="govuk-radios__item">
+            <input class="govuk-radios__input" id="changedName-2" name="changedName" type="radio" value="no">
+            <label class="govuk-label govuk-radios__label" for="changedName-2">
+              No
+            </label>
+          </div>
+        </div>
+      </fieldset>
+    </div>
 
-    <div class="govuk-notification-banner" role="region"
-  aria-labelledby="govuk-notification-banner-title"
-  data-module="govuk-notification-banner">
-  <div class="govuk-notification-banner__header">
-    <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
-      Important
-    </h2>
-  </div>
-  <div class="govuk-notification-banner__content">
-    <p class="govuk-notification-banner__heading"> You have one request to upgrade a trial group.</p>
-  </div> 
-</div>
+    <a href="grouplanding2.html" button type="submit" class="govuk-button" data-module="govuk-button">
+      Save and continue
+    </button>
+    </a>
 
-<h1 class="govuk-heading-xl">Your groups</h1>
-
-</div>
-
-<div class="govuk-grid-column-full">
-<h2 class="govuk-heading-m">Upgrade requests</h2>
-<table class="govuk-table">
-  <thead class="govuk-table__head">
-    <tr class="govuk-table__row">
-      <th scope="col" class="govuk-table__header">Group name</th>
-      <th scope="col" class="govuk-table__header">Created by</th>
-    </tr>
-  </thead>
-  <tbody class="govuk-table__body">
-    <tr class="govuk-table__row">
-      <td class="govuk-table__cell"><a href="#" class="govuk-link">Licensing forms</a> </td>
-      <td class="govuk-table__cell">Hazal Arpalikli</td>
-    </tr>
-   </tbody>
-  </thead>
-
-</table>
-  <h2 class="govuk-heading-m">Active groups</h2>
-<table class="govuk-table">
-    <tr class="govuk-table__row">
-      <th scope="col" class="govuk-table__header">Group name</th>
-      <th scope="col" class="govuk-table__header">Created by</th>
-    </tr>
-  </thead>
-  <tbody class="govuk-table__body">
-    <tr class="govuk-table__row">
-      <td class="govuk-table__cell"><a href="#" class="govuk-link">Content team</a> </td>
-      <td class="govuk-table__cell">Tom Illes</td>
-    </tr>
-
-  </thead>
-  <tbody class="govuk-table__body">
-    <tr class="govuk-table__row">
-      <td class="govuk-table__cell"><a href="#" class="govuk-link">Consultations</a> </td>
-      <td class="govuk-table__cell">Betty Mwewa</td>
-    </tr>
-  </thead>
-
-</table>
-
-<h2 class="govuk-heading-m">Trial groups</h2>
-<table class="govuk-table">
-  <tr class="govuk-table__row">
-    <th scope="col" class="govuk-table__header">Group name</th>
-    <th scope="col" class="govuk-table__header">Created by</th>
-  </tr>
-</thead>
-<tbody class="govuk-table__body">
-  <tr class="govuk-table__row">
-    <td class="govuk-table__cell"><a href="grouplanding.html" class="govuk-link">Your test forms</a> </td>
-    <td class="govuk-table__cell">Tom Illes</td>
-  </tr>
-
-    </tbody>
-  </thead>
-</table>
-
-
-
-
-
-  <a href="creategroup.html" button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button">
-    Create a group
-  </button>
-</a>
 
 
 </div>
-<div class="govuk-grid-column-two-thirds">
 
-  <details class="govuk-details">
-    <summary class="govuk-details__summary">
-      <span class="govuk-details__summary-text">
-        What is a 'group'?
-      </span>
-    </summary>
-    <div class="govuk-details__text">
-      Each form is created inside a group. Anyone with a GOV.UK Forms account can make a group. They can add people from their organisation to that group to view, create and edit forms in it.
-    </div>
-    <div class="govuk-details__text">
-      Because you’re an organisation admin, you can access all the groups in your organisation. 
-    </div>
-    <div class="govuk-details__text">
-      When a group is first created it will be a ‘trial’ group. That means forms in the group cannot be made live.
-    </div>
-    <div class="govuk-details__text">
-      As an organisation admin, you can upgrade a trial group to an ‘active’ group so forms in that group can be made live. People will be able to send a request to you to ask for their trial group to be upgraded.  
-    </div>
-  </details>
 
 
 
   
 
 
-</div>
+
 {% endblock content %}
 
   
