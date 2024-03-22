@@ -299,7 +299,6 @@
     ]
 }) }}
 
-
 {# SET STATUS OF LIVE FORM #}
 {# Refactor this logic outside of class attribute #}
 {% if data.status == 'Live' %}
@@ -325,6 +324,16 @@
 <h2 class="app-task-list__section">
     Make your form live
 </h2>
+{% if data['journey'] and data['journey'] == 'groupAdminTasks' %}
+
+<p class="govuk-body">
+    You cannot make this form live because it’s in a ‘trial’ group. 
+</p>
+<p class="govuk-body">
+    <a href="">Find out how to upgrade the group</a> so you can make forms live.
+</p>
+
+{% else %}
 {{ govukTaskList({
     idPrefix: "processing-email",
     items: [
@@ -342,6 +351,7 @@
         }
     ]
 }) }}
+{% endif %}
 
 
 <form id="form" class="form" action="/form-designer/delete-draft" method="post" novalidate>
