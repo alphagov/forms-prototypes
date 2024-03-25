@@ -8,26 +8,16 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
 
-    <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title"
-      data-module="govuk-notification-banner">
-      <div class="govuk-notification-banner__header">
-        <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
-          Important
-        </h2>
-      </div>
-      <div class="govuk-notification-banner__content">
-        <p class="govuk-notification-banner__heading">This is a ‘trial’ group</p>
-        <p class="govuk-body">
-          You can create forms in this group and test them, but you cannot make them live.
-        </p>
+    {% set html %}
+    <h3 class="govuk-notification-banner__heading">
+      This group is now active
+    </h3>
+    {% endset %}
 
-        <p class="govuk-body">
-          <a href="request-to-upgrade.html" class="govuk-link">
-            Find out how to upgrade this group so you can make forms live
-          </a>
-        </p>
-      </div>
-    </div>
+    {{ govukNotificationBanner({
+      html: html,
+      type: "success"
+    }) }}
 
     <span class="govuk-caption-l">Trial group</span>
     <h1 class="govuk-heading-l">{{ data['groupName'] or 'Your test forms' }}</h1>
@@ -39,7 +29,7 @@
       <a href="editmembers" class="govuk-link">Edit members of this group</a>
     </p>
 
-    <a href="../../form-designer/name-your-form" role="button" draggable="false" class="govuk-button govuk-button--start"
+    <a href="grouplanding.html" role="button" draggable="false" class="govuk-button govuk-button--start"
       data-module="govuk-button">
       Create a form
       <svg class="govuk-button__start-icon" xmlns="http://www.w3.org/2000/svg" width="17.5" height="19"
