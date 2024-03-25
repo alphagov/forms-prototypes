@@ -4,10 +4,23 @@
 <a class="govuk-back-link" href="grouplanding">Back to your group</a>
 {% endblock %}
 
+
 {% block content %}
 <div class="govuk-grid-row">
   <form class="form" method="post" novalidate>
     <div class="govuk-grid-column-two-thirds">
+
+      {% set html %}
+      <h3 class="govuk-notification-banner__heading">
+        {{ data['addPerson'] or 'Hazal Arpalikli' }} is now a {{ data['userRoleToAdd']|lower or 'group admin' }}
+      </h3>
+      {% endset %}
+      
+      {{ govukNotificationBanner({
+        html: html,
+        type: "success"
+      }) }}
+
       <span class="govuk-caption-xl">{{ data['groupName'] or 'Your test forms' }}</span>
       <h1 class="govuk-heading-xl">Members of this group</h1>
     </div>
@@ -35,24 +48,43 @@
               <br>
               <button formaction="editmembers2" type="submit" class="govuk-button govuk-button--secondary"
                 data-module="govuk-button">
-                Make group admin
+                Make editor
               </button>
             </td>
           </tr>
           <tr class="govuk-table__row">
             <td class="govuk-table__cell">Hannah Cooper </td>
             <td class="govuk-table__cell">hannah.cooper@digital.cabinet-office.gov.uk </td>
-            <td class="govuk-table__cell">Editor</td>
+            <td class="govuk-table__cell">Group admin</td>
             <td class="govuk-table__cell"> <button formaction="editmembers2" type="submit" class="govuk-button govuk-button--secondary"
               data-module="govuk-button">
               Remove
             </button>
             <br>
-            <button formaction="editmembers3" type="submit" class="govuk-button govuk-button--secondary"
+            <button formaction="editmembers2" type="submit" class="govuk-button govuk-button--secondary"
               data-module="govuk-button">
-              Make editor
+              Make group admin
             </button></td>
           </tr>
+
+          {% if data['emailToAdd'] %}
+          <tr class="govuk-table__row">
+            <td class="govuk-table__cell">Oliver</td>
+            <td class="govuk-table__cell">oliver@digital.cabinet-office.gov.uk </td>
+            <td class="govuk-table__cell">{{ data['userRoleToAdd'] or 'Group admin' }}</td>
+            <td class="govuk-table__cell">
+              <button formaction="editmembers2" type="submit"
+                class="govuk-button govuk-button--secondary" data-module="govuk-button">
+                Remove
+              </button>
+              <br>
+              <button formaction="editmembers2" type="submit" class="govuk-button govuk-button--secondary"
+                data-module="govuk-button">
+                Make group admin
+              </button>
+            </td>
+          </tr>
+          {% endif %}
           
         </tbody>
       </table>
@@ -60,7 +92,7 @@
 
     <div class="govuk-grid-column-two-thirds">
 
-      <button formaction="add-groupadmin-and-editor.html" type="submit" class="govuk-button" data-module="govuk-button">
+      <button formaction="add-groupadmin-and-editor" type="submit" class="govuk-button" data-module="govuk-button">
         Add an editor or group admin
       </button>
 
