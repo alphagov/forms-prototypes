@@ -6,12 +6,6 @@
   {{ "Error: " if containsErrors }}{{ pageTitle }} - GOV.UK Forms
 {% endblock %}
 
-{% set pageNumberTemp %}
-  {% for ref in data.referer.split('/') %}
-    {% if loop.index == loop.length - 1 %}{{ref}}{% endif %}
-  {% endfor %}
-{% endset %}
-
 {% block beforeContent %}
   {# Back links are handled in routes.js #}
   <a class="govuk-back-link" href="{{ previousPageLink }}" target="_parent">

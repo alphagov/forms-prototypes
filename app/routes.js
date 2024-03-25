@@ -183,6 +183,8 @@ router.get('/form-designer/your-form', function (req, res) {
     sections = sections + 1
   }
 
+  // we won’t count optional tasks as part of the number of compelted tasks
+
   // if completed forms email address is set = sections =+ 1 
   if (req.session.data['formsEmail'] && req.session.data['confirmationCode']) {
     sections = sections + 1 
@@ -442,6 +444,57 @@ router.get('/form-designer/pages/:pageId/reorder/:direction', function (req, re
 
   req.session.data.successMessage = successMessage
   res.redirect('/form-designer/clear-empty')
+})
+
+
+/* =====
+Optional tasks
+===== */
+
+// Route used to check payment link is added, handling validation errors
+router.post('/form-designer/payment/add-payment-link', function (req, res) {
+  const errors = {};
+  const { paymentLink,tempPaymentLink } = req.session.data
+  var temp = tempPaymentLink
+
+  function isValidUrl(string) {
+    try {
+      new URL(string);
+      return true;
+    } catch (err) {
+      return false;
+    }
+  }
+
+  if (!paymentLink?.length) {
+    if (temp.length) {
+      // set a success message for removing a link
+      req.session.data.successMessage = 'Your payment link has been removed'
+      req.session.data.tempPaymentLink = undefined
+    }
+    // If the user hasn’t entered a payment URL at all, don’t error - check incase we need to remove it
+    req.session.data.paymentLink = undefined
+  } else if (isValidUrl(paymentLink) === false) {
+    // If payment link input given and does not look like a URL throwback error
+    errors['paymentLink'] = {
+      text: 'Enter a GOV.UK Pay payment link',
+      href: "#payment-link"
+    }
+  } else {
+    // set a success message for saving
+    req.session.data.successMessage = 'Your payment link has been saved'
+  }
+
+  // Convert the errors into a list, so we can use it in the template
+  const errorList = Object.values(errors)
+  // If there are no errors, redirect the user to the next page
+  // otherwise, show the page again with the errors set
+  const containsErrors = errorList.length > 0
+  if(containsErrors) {
+    res.render('form-designer/payment/add-payment-link', { errors, errorList, containsErrors })
+  } else {
+    res.redirect('../your-form')
+  }
 })
 
 
