@@ -1022,4 +1022,7 @@ router.get('/prototype-admin/show-data', (req, res, next) => {
 /* Use the routes file in pages for adding and editing questions */
 router.use('/pages', require('./views/form-designer/pages/\_routes'))
 
+/* Use the routes file in product-pages for groups and members routes */
+router.use('/product-pages', require('./views/product-pages/\_routes'))
+
 module.exports = router

@@ -1,5 +1,11 @@
 {% extends "layout-govuk-forms.html" %}
 
+{% set pageTitle = 'Add an editor to this group' %}
+
+{% block pageTitle %}
+{{ "Error: " if containsErrors }}{{pageTitle}} - GOV.UK Forms
+{% endblock %}
+
 {% block beforeContent %}
 <a class="govuk-back-link" href="editmembers">Back to members of this group</a>
 {% endblock %}
@@ -8,10 +14,18 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
 
+    {% if containsErrors %}
+    {{ govukErrorSummary({
+      titleText: "There is a problem",
+      errorList: errorList
+    }) }}
+    {% endif %}
 
-    <span class="govuk-caption-l">{{ data['groupName'] or 'Your test forms' }}</span>
+    <span class="govuk-caption-l">
+      {{ data['groupName'] or 'Licencing forms' }}
+    </span>
     <h1 class="govuk-heading-l">
-      Add an editor to this group
+      {{ pageTitle }}
     </h1>
 
     <p class="govuk-body">
@@ -26,16 +40,18 @@
       You must use their government email address.
     </p>
 
-    <form class="form" method="post" action="editmembers3" novalidate>
-      <div class="govuk-form-group">
-        <h2 class="govuk-label-wrapper">
-          <label class="govuk-label govuk-label--m" for="addEmail">
-            Enter the email address of the person you want to add
-          </label>
-        </h2>
-        <input class="govuk-input" id="addEmail" name="emailToAdd" type="text">
-      </div>
-
+    <form class="form" method="post" novalidate>
+    
+      {{ govukInput({
+        label: {
+          text: 'Enter the email address of the person you want to add',
+          classes: "govuk-label--m"
+        },
+        id: "add-email",
+        name: "emailToAdd",
+        value: data['emailToAdd'],
+        errorMessage: { text: errors['emailToAdd'].text } if errors['emailToAdd'].text
+      }) }}
       <button class="govuk-button" data-module="govuk-button">
         Add this person
       </button>

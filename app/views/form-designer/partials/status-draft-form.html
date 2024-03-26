@@ -356,7 +356,16 @@
     You cannot make this form live because it’s in a ‘trial’ group. 
 </p>
 <p class="govuk-body">
-    <a href="">Find out how to upgrade the group</a> so you can make forms live.
+    <a href="../../product-pages/group-admin/request-to-upgrade">Find out how to upgrade the group</a> so you can make forms live.
+</p>
+
+{% elif data['journey'] and data['journey'] == 'orgAdminTasks' %}
+
+<p class="govuk-body">
+    You cannot make this form live because it’s in a ‘trial’ group.
+</p>
+<p class="govuk-body">
+    <a href="../../product-pages/org-admin/upgrade">Find out how to upgrade the group</a> so you can make forms live.
 </p>
 
 {% else %}
@@ -384,7 +393,7 @@
 <form id="form" class="form" action="/form-designer/delete-draft" method="post" novalidate>
     {{ govukButton({
         text: "Delete draft form",
-        classes: "govuk-button--warning",
+        classes: "govuk-button--warning govuk-!-margin-top-5",
         name: "action",
         value: "deleteDraft"
     }) }}

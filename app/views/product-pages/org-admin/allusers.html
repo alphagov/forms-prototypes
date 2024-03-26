@@ -1,15 +1,14 @@
 {% extends "layout-govuk-forms.html" %}
 
 {% block beforeContent %}
-<a class="govuk-back-link" href="grouplanding">Back to your group</a>
+<a class="govuk-back-link" href="group">Back to your groups</a>
 {% endblock %}
 
 {% block content %}
 <div class="govuk-grid-row">
   <form class="form" method="post" novalidate>
     <div class="govuk-grid-column-two-thirds">
-      <span class="govuk-caption-xl">{{ data['groupName'] or 'Your test forms' }}</span>
-      <h1 class="govuk-heading-xl">Members of this group</h1>
+      <h1 class="govuk-heading-l">Users in your organisation</h1>
     </div>
 
     <div class="govuk-grid-column-full">
@@ -33,8 +32,7 @@
                 Remove
               </button>
               <br>
-              <button formaction="editmembers2" type="submit" class="govuk-button govuk-button--secondary"
-                data-module="govuk-button">
+              <button formaction="editmembers2" type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button">
                 Make group admin
               </button>
             </td>
@@ -43,27 +41,27 @@
             <td class="govuk-table__cell">Hannah Cooper </td>
             <td class="govuk-table__cell">hannah.cooper@digital.cabinet-office.gov.uk </td>
             <td class="govuk-table__cell">Editor</td>
-            <td class="govuk-table__cell"> <button formaction="editmembers2" type="submit" class="govuk-button govuk-button--secondary"
+            <td class="govuk-table__cell">
+              <button formaction="editmembers2" type="submit" class="govuk-button govuk-button--secondary"
               data-module="govuk-button">
-              Remove
-            </button>
-            <br>
-            <button formaction="editmembers3" type="submit" class="govuk-button govuk-button--secondary"
-              data-module="govuk-button">
-              Make editor
-            </button></td>
+                Remove
+              </button>
+              <br>
+              <button formaction="editmembers3" type="submit" class="govuk-button govuk-button--secondary"
+                data-module="govuk-button">
+                Make editor
+              </button>
+            </td>
           </tr>
-          
         </tbody>
       </table>
     </div>
 
     <div class="govuk-grid-column-two-thirds">
 
-      {{ govukButton({
-        text: "Add an editor or group admin",
-        href: "add-groupadmin-and-editor"
-      }) }}
+      <button formaction="add-groupadmin-and-editor" type="submit" class="govuk-button" data-module="govuk-button">
+        Add an editor or group admin
+      </button>
 
       <details class="govuk-details">
         <summary class="govuk-details__summary">

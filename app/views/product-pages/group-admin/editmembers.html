@@ -1,12 +1,13 @@
 {% extends "layout-govuk-forms.html" %}
 
 {% block beforeContent %}
-<a class="govuk-back-link" href="grouplanding">Back to your test forms</a>
+<a class="govuk-back-link" href="grouplanding">Back to your groups</a>
 {% endblock %}
 
 {% block content %}
 <div class="govuk-grid-row">
   <form class="form" method="post" novalidate>
+
     <div class="govuk-grid-column-two-thirds">
       <span class="govuk-caption-xl">Your test forms</span>
       <h1 class="govuk-heading-xl">Members of this group</h1>
@@ -40,8 +41,7 @@
             <td class="govuk-table__cell">tom.illes@digital.cabinet-office.gov.uk </td>
             <td class="govuk-table__cell">Editor</td>
             <td class="govuk-table__cell">
-              <button formaction="editmembers2" type="submit" class="govuk-button govuk-button--secondary"
-                data-module="govuk-button">
+              <button formaction="editmembers2" type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button">
                 Remove
               </button>
             </td>
@@ -52,26 +52,27 @@
 
     <div class="govuk-grid-column-two-thirds">
 
-      <button formaction="addaneditor" type="submit" class="govuk-button" data-module="govuk-button">
-        Add an editor
-      </button>
+      {{ govukButton({
+        text: "Add an editor",
+        href: "addauser"
+      }) }}
 
-      <details class="govuk-details">
-        <summary class="govuk-details__summary">
-          <span class="govuk-details__summary-text">
-            What can ‘editors’ and ‘group admins’ do?
-          </span>
-        </summary>
-        <div class="govuk-details__text">
-          An editor can edit forms in a group but cannot make forms live.
-        </div>
-        <div class="govuk-details__text">
-          An editor can edit forms in a group but cannot make forms live.
-        </div>
-        <div class="govuk-details__text">
-          A group admin can edit forms, make forms live and add editors to a group.
-        </div>
-      </details>
+      {% set detailsHTML %}
+      <p class="govuk-body">
+        An editor can edit forms in a group but cannot make forms live.
+      </p>
+      <p class="govuk-body">
+        An editor can edit forms in a group but cannot make forms live.
+      </p>
+      <p class="govuk-body">
+        A group admin can edit forms, make forms live and add editors to a group.
+      </p>
+      {% endset %}
+
+      {{ govukDetails({
+        summaryText: "What can ‘editors’ and ‘group admins’ do?",
+        html: detailsHTML
+      }) }}
     </div>
 
   </form>

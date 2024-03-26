@@ -7,7 +7,13 @@
 {% endblock %}
 
 {% block beforeContent %}
-  <a class="govuk-back-link" href="your-forms">Back to your forms</a>
+  {% if data['journey'] and data['journey'] == 'groupAdminTasks' %}
+    <a class="govuk-back-link" href="../product-pages/group-admin/grouplanding">Back to your group</a>
+  {% elif data['journey'] and data['journey'] == 'orgAdminTasks' %}
+    <a class="govuk-back-link" href="../product-pages/org-admin/grouplanding">Back to your group</a>
+  {% else %}
+    <a class="govuk-back-link" href="your-forms">Back to your forms</a>
+  {% endif %}
 {% endblock %}
 
 {% block content %}

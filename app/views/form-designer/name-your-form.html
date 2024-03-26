@@ -7,10 +7,16 @@
 {% endblock %}
 
 {% block beforeContent %}
-  {# Back links are handled in routes.js #}
-  <a class="govuk-back-link" href="{{ previousPageLink }}" target="_parent">
-    {{ previousPageText }}
-  </a>
+  {% if data['journey'] and data['journey'] == 'groupAdminTasks' %}
+    <a class="govuk-back-link" href="../product-pages/group-admin/grouplanding">Back to your group</a>
+  {% elif data['journey'] and data['journey'] == 'orgAdminTasks' %}
+    <a class="govuk-back-link" href="../product-pages/org-admin/grouplanding">Back to your group</a>
+  {% else %}
+    {# Back links are handled in routes.js #}
+    <a class="govuk-back-link" href="{{ previousPageLink }}" target="_parent">
+      {{ previousPageText }}
+    </a>
+  {% endif %}
 {% endblock %}
 
 {% block content %}

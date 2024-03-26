@@ -1,25 +1,25 @@
 {% extends "layout-govuk-forms.html" %}
 
 {% block beforeContent %}
-  <a class="govuk-back-link" href="grouplanding">Back to your test forms</a>
+  <a class="govuk-back-link" href="grouplanding">Back to your group</a>
 {% endblock %}
 
 {% block content %}
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
 
-  {% set html %}
-    <h3 class="govuk-notification-banner__heading">
-      {{ data['userToRemove'] or 'Tom Iles' }} has been removed from this group 
-    </h3>
-  {% endset %}
+    {% set html %}
+      <h3 class="govuk-notification-banner__heading">
+        {{ data['userToRemove'] or 'Tom Iles' }} has been removed from this group 
+      </h3>
+    {% endset %}
 
-  {{ govukNotificationBanner({
-    html: html,
-    type: "success"
-  }) }}
+    {{ govukNotificationBanner({
+      html: html,
+      type: "success"
+    }) }}
 
-    <span class="govuk-caption-xl">Your test forms</span>
+    <span class="govuk-caption-xl">{{ data['groupName'] or 'Your test forms' }}</span>
     <h1 class="govuk-heading-xl">Members of this group</h1>
   </div>
 
@@ -47,36 +47,16 @@
           <td class="govuk-table__cell">Group admin</td>
           <td class="govuk-table__cell"></td>
         </tr>
-       
-        <tr class="govuk-table__row">
-          <td class="govuk-table__cell">Adam Robertson</td>
-          <td class="govuk-table__cell">adam.robertson@digital.cabinet-office.gov.uk </td>
-          <td class="govuk-table__cell">Editor</td>
-          <td class="govuk-table__cell"><button type="submit" class="govuk-button govuk-button--secondary"
-              data-module="govuk-button">
-              Remove
-            </button></td>
-        </tr>
-        <tr class="govuk-table__row">
-          <td class="govuk-table__cell">Harry Styles </td>
-          <td class="govuk-table__cell">harry.styles@digital.cabinet-office.gov.uk </td>
-          <td class="govuk-table__cell">Editor</td>
-          <td class="govuk-table__cell"><button type="submit" class="govuk-button govuk-button--secondary"
-              data-module="govuk-button">
-              Remove
-            </button></td>
-        </tr>
-
-
       </tbody>
     </table>
   </div>
 
   <div class="govuk-grid-column-two-thirds">
 
-    <button formaction="addaneditor" type="submit" class="govuk-button" data-module="govuk-button">
-      Add an editor
-    </button>
+    {{ govukButton({
+      text: "Add an editor",
+      href: "addauser"
+    }) }}
 
     <details class="govuk-details">
       <summary class="govuk-details__summary">
