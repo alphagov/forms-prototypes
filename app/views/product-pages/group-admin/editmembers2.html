@@ -53,9 +53,10 @@
 
   <div class="govuk-grid-column-two-thirds">
 
-    <button formaction="addauser" type="submit" class="govuk-button" data-module="govuk-button">
-      Add an editor
-    </button>
+    {{ govukButton({
+      text: "Add an editor",
+      href: "addauser"
+    }) }}
 
     <details class="govuk-details">
       <summary class="govuk-details__summary">

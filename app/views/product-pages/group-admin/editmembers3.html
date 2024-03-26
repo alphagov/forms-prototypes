@@ -52,7 +52,7 @@
           <td class="govuk-table__cell">tom.illes@digital.cabinet-office.gov.uk </td>
           <td class="govuk-table__cell">Editor</td>
           <td class="govuk-table__cell">
-            <button formaction="editmembers2.html" type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button">
+            <button formaction="editmembers2" type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button">
               Remove
             </button>
           </td>
@@ -73,9 +73,10 @@
 
   <div class="govuk-grid-column-two-thirds">
 
-    <button formaction="addauser" type="submit" class="govuk-button" data-module="govuk-button">
-      Add an editor
-    </button>
+    {{ govukButton({
+      text: "Add an editor",
+      href: "addauser"
+    }) }}
 
     <details class="govuk-details">
       <summary class="govuk-details__summary">

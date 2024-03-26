@@ -56,7 +56,7 @@
             <td class="govuk-table__cell">Hannah Cooper </td>
             <td class="govuk-table__cell">hannah.cooper@digital.cabinet-office.gov.uk </td>
             <td class="govuk-table__cell">Group admin</td>
-            <td class="govuk-table__cell"> <button formaction="editmembers3.html" type="submit" class="govuk-button govuk-button--secondary"
+            <td class="govuk-table__cell"> <button formaction="editmembers3" type="submit" class="govuk-button govuk-button--secondary"
               data-module="govuk-button">
               Remove
             </button>
@@ -73,9 +73,10 @@
 
     <div class="govuk-grid-column-two-thirds">
 
-      <button formaction="add-groupadmin-and-editor" type="submit" class="govuk-button" data-module="govuk-button">
-        Add an editor or group admin
-      </button>
+      {{ govukButton({
+        text: "Add an editor or group admin",
+        href: "add-groupadmin-and-editor"
+      }) }}
 
       <details class="govuk-details">
         <summary class="govuk-details__summary">

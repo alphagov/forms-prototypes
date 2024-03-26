@@ -92,9 +92,10 @@
 
     <div class="govuk-grid-column-two-thirds">
 
-      <button formaction="add-groupadmin-and-editor" type="submit" class="govuk-button" data-module="govuk-button">
-        Add an editor or group admin
-      </button>
+      {{ govukButton({
+        text: "Add an editor or group admin",
+        href: "add-groupadmin-and-editor"
+      }) }}
 
       <details class="govuk-details">
         <summary class="govuk-details__summary">

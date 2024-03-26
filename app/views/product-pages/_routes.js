@@ -101,11 +101,7 @@ router.post('/product-pages/group-admin/creategroup', function (req, res) {
 })
 
 // Add an editor to this group
-router.get('/product-pages/group-admin/addaneditor', function (req, res) {
-  return res.render('form-designer/pages/edit', {})
-})
-
-router.post('/product-pages/group-admin/addaneditor', function (req, res) {
+router.post('/product-pages/group-admin/addauser', function (req, res) {
   const errors = {};
   const { emailToAdd } = req.session.data
 
@@ -141,7 +137,7 @@ router.post('/product-pages/group-admin/addaneditor', function (req, res) {
   // otherwise, show the page again with the errors set
   const containsErrors = errorList.length > 0
   if (containsErrors) {
-    res.render('product-pages/group-admin/addaneditor', { errors, errorList, containsErrors })
+    res.render('product-pages/group-admin/addauser', { errors, errorList, containsErrors })
   } else {
     res.redirect('editmembers3')
   }
