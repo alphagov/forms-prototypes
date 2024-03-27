@@ -10,7 +10,7 @@
 
     {% set html %}
       <h3 class="govuk-notification-banner__heading">
-        {{ data['emailToAdd'] or 'tom.read@digital.cabinet-office.gov.uk' }} has been added to this group and we’ve sent them an email to let them know
+        {{ data['emailToAdd'] or 'oliver@cabinet-office.gov.uk' }} has been added to this group and we’ve sent them an email to let them know
       </h3>
     {% endset %}
 
@@ -48,20 +48,8 @@
           <td class="govuk-table__cell"></td>
         </tr>
         <tr class="govuk-table__row">
-          <td class="govuk-table__cell">Tom Illes</td>
-          <td class="govuk-table__cell">tom.illes@digital.cabinet-office.gov.uk </td>
-          <td class="govuk-table__cell">Editor</td>
-          <td class="govuk-table__cell">
-            {{ govukButton({
-              text: "Remove",
-              classes: "govuk-button--secondary" ,
-              href: "editmembers2"
-            }) }}
-          </td>
-        </tr>
-        <tr class="govuk-table__row">
           <td class="govuk-table__cell"> Oliver</td>
-          <td class="govuk-table__cell"> {{ data['emailToAdd'] or 'tom.read@digital.cabinet-office.gov.uk' }} </td>
+          <td class="govuk-table__cell"> {{ data['emailToAdd'] or 'oliver@cabinet-office.gov.uk' }} </td>
           <td class="govuk-table__cell">Editor</td>
           <td class="govuk-table__cell">
             {{ govukButton({

@@ -1,7 +1,7 @@
 {% extends "layout-govuk-forms.html" %}
 
 {% block beforeContent %}
-<a class="govuk-back-link" href="grouplanding">Back to {{ data['groupName'] or 'your test forms' }}</a>
+<a class="govuk-back-link" href="grouplanding">Back to your group</a>
 {% endblock %}
 
 {% block content %}
@@ -28,30 +28,27 @@
             <td class="govuk-table__cell">hazal.arpalikli@digital.cabinet-office.gov.uk </td>
             <td class="govuk-table__cell">Group admin</td>
             <td class="govuk-table__cell">
-              <button formaction="editmembers2.html" type="submit" class="govuk-button govuk-button--secondary"
+              <button formaction="#" type="submit" class="govuk-button govuk-button--secondary"
                 data-module="govuk-button">
                 Remove
               </button>
-              <br>
-              <button formaction="editmembers4" type="submit" class="govuk-button govuk-button--secondary"
-                data-module="govuk-button">
-                Make group admin
-              </button>
+             
             </td>
           </tr>
           <tr class="govuk-table__row">
             <td class="govuk-table__cell">Hannah Cooper </td>
             <td class="govuk-table__cell">hannah.cooper@digital.cabinet-office.gov.uk </td>
             <td class="govuk-table__cell">Editor</td>
-            <td class="govuk-table__cell"> <button formaction="editmembers2" type="submit" class="govuk-button govuk-button--secondary"
+            <td class="govuk-table__cell">   <button formaction="editmembers3" type="submit" class="govuk-button govuk-button--secondary"
+              data-module="govuk-button">
+              Make group admin
+            </button>
+            <br>
+            <button formaction="editmembers2" type="submit" class="govuk-button govuk-button--secondary"
               data-module="govuk-button">
               Remove
             </button>
-            <br>
-            <button formaction="editmembers3" type="submit" class="govuk-button govuk-button--secondary"
-              data-module="govuk-button">
-              Make editor
-            </button></td>
+          </td>
           </tr>
           
         </tbody>
