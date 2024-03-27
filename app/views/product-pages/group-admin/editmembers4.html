@@ -1,7 +1,7 @@
 {% extends "layout-govuk-forms.html" %}
 
 {% block beforeContent %}
-  <a class="govuk-back-link" href="grouplanding">Back to {{ data['groupName'] or 'your test forms' }}</a>
+  <a class="govuk-back-link" href="grouplanding"> Back to {{ data['groupName'] or 'your test forms' }}</a>
 {% endblock %}
 
 {% block content %}
@@ -10,7 +10,7 @@
 
     {% set html %}
       <h3 class="govuk-notification-banner__heading">
-        {{ data['userToRemove'] or 'Tom Iles' }} has been removed from this group 
+        oliver@cabinet-office.gov.uk has been removed from this group
       </h3>
     {% endset %}
 
@@ -47,6 +47,19 @@
           <td class="govuk-table__cell">Group admin</td>
           <td class="govuk-table__cell"></td>
         </tr>
+        <tr class="govuk-table__row">
+          <td class="govuk-table__cell">Tom Illes</td>
+          <td class="govuk-table__cell">tom.illes@digital.cabinet-office.gov.uk </td>
+          <td class="govuk-table__cell">Editor</td>
+          <td class="govuk-table__cell">
+            {{ govukButton({
+              text: "Remove",
+              classes: "govuk-button--secondary" ,
+              href: "editmembers2"
+            }) }}
+          </td>
+        </tr>
+        
       </tbody>
     </table>
   </div>
@@ -74,6 +87,7 @@
         Only an organisation admin can add a group admin to a group.
       </div>
     </details>
+
   </div>
 </div>
 {% endblock content %}

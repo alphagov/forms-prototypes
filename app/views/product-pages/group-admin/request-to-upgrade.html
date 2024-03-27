@@ -1,7 +1,7 @@
 {% extends "layout-govuk-forms.html" %}
 
 {% block beforeContent %}
-<a class="govuk-back-link" href="grouplanding">Back to your group</a>
+<a class="govuk-back-link" href="grouplanding">Back to {{ data['groupName'] or 'your test forms' }}</a>
 {% endblock %}
 
 {% block content %}
