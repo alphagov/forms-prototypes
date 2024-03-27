@@ -42,6 +42,11 @@
             <td class="govuk-table__cell">Group admin</td>
             <td class="govuk-table__cell">
               <button formaction="editmembers2" type="submit" class="govuk-button govuk-button--secondary"
+              data-module="govuk-button">
+              Make editor
+            </button>
+            <br>
+              <button formaction="editmembers2" type="submit" class="govuk-button govuk-button--secondary"
                 data-module="govuk-button">
                 Remove
               </button>
@@ -54,14 +59,14 @@
             <td class="govuk-table__cell">oliver@digital.cabinet-office.gov.uk </td>
             <td class="govuk-table__cell">{{ data['userRoleToAdd'] or 'Group admin' }}</td>
             <td class="govuk-table__cell">
+              <button formaction="editmembers2" type="submit" class="govuk-button govuk-button--secondary"
+              data-module="govuk-button">
+              Make group admin
+            </button>
+              <br>
               <button formaction="editmembers2" type="submit"
                 class="govuk-button govuk-button--secondary" data-module="govuk-button">
                 Remove
-              </button>
-              <br>
-              <button formaction="editmembers2" type="submit" class="govuk-button govuk-button--secondary"
-                data-module="govuk-button">
-                Make group admin
               </button>
             </td>
           </tr>
@@ -88,10 +93,10 @@
           An editor can edit forms in a group but cannot make forms live.
         </div>
         <div class="govuk-details__text">
-          An editor can edit forms in a group but cannot make forms live.
+          A group admin can edit forms, make forms live and add editors to a group.
         </div>
         <div class="govuk-details__text">
-          A group admin can edit forms, make forms live and add editors to a group.
+          Only an organisation admin can add a group admin to a group.
         </div>
       </details>
     </div>
