@@ -42,6 +42,11 @@
             <td class="govuk-table__cell">Group admin</td>
             <td class="govuk-table__cell">
               <button formaction="editmembers2" type="submit" class="govuk-button govuk-button--secondary"
+              data-module="govuk-button">
+              Make editor
+            </button>
+            <br>
+              <button formaction="editmembers2" type="submit" class="govuk-button govuk-button--secondary"
                 data-module="govuk-button">
                 Remove
               </button>
@@ -54,14 +59,14 @@
             <td class="govuk-table__cell">oliver@digital.cabinet-office.gov.uk </td>
             <td class="govuk-table__cell">{{ data['userRoleToAdd'] or 'Group admin' }}</td>
             <td class="govuk-table__cell">
+              <button formaction="editmembers2" type="submit" class="govuk-button govuk-button--secondary"
+              data-module="govuk-button">
+              Make group admin
+            </button>
+              <br>
               <button formaction="editmembers2" type="submit"
                 class="govuk-button govuk-button--secondary" data-module="govuk-button">
                 Remove
-              </button>
-              <br>
-              <button formaction="editmembers2" type="submit" class="govuk-button govuk-button--secondary"
-                data-module="govuk-button">
-                Make group admin
               </button>
             </td>
           </tr>
