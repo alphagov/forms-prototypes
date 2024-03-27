@@ -12,7 +12,7 @@
 
       {% set html %}
       <h3 class="govuk-notification-banner__heading">
-        {{ data['addPerson'] or 'Hazal Arpalikli' }} is now has been added to this group and we’ve sent them an email to let them know
+        {{ data['addPerson'] or 'Hannah Cooper' }} has been removed from this group 
       </h3>
       {% endset %}
       
@@ -36,53 +36,20 @@
           </tr>
         </thead>
         <tbody class="govuk-table__body">
+          
           <tr class="govuk-table__row">
             <td class="govuk-table__cell">Hazal Arpalikli</td>
             <td class="govuk-table__cell">hazal.arpalikli@digital.cabinet-office.gov.uk </td>
             <td class="govuk-table__cell">Group admin</td>
             <td class="govuk-table__cell">
-              <button formaction="editmembers2" type="submit" class="govuk-button govuk-button--secondary"
+              <button formaction="#" type="submit" class="govuk-button govuk-button--secondary"
                 data-module="govuk-button">
                 Remove
               </button>
-              <br>
-              <button formaction="editmembers2" type="submit" class="govuk-button govuk-button--secondary"
-                data-module="govuk-button">
-                Make editor
-              </button>
-            </td>
-          </tr>
-          <tr class="govuk-table__row">
-            <td class="govuk-table__cell">Hannah Cooper </td>
-            <td class="govuk-table__cell">hannah.cooper@digital.cabinet-office.gov.uk </td>
-            <td class="govuk-table__cell">Group admin</td>
-            <td class="govuk-table__cell"> <button formaction="editmembers2" type="submit" class="govuk-button govuk-button--secondary"
-              data-module="govuk-button">
-              Remove
-            </button>
-            <br>
-            <button formaction="editmembers2" type="submit" class="govuk-button govuk-button--secondary"
-              data-module="govuk-button">
-              Make group admin
-            </button></td>
-          </tr>
 
           {% if data['emailToAdd'] %}
           <tr class="govuk-table__row">
-            <td class="govuk-table__cell">Oliver</td>
-            <td class="govuk-table__cell">oliver@digital.cabinet-office.gov.uk </td>
-            <td class="govuk-table__cell">{{ data['userRoleToAdd'] or 'Group admin' }}</td>
-            <td class="govuk-table__cell">
-              <button formaction="editmembers2" type="submit"
-                class="govuk-button govuk-button--secondary" data-module="govuk-button">
-                Remove
-              </button>
-              <br>
-              <button formaction="editmembers2" type="submit" class="govuk-button govuk-button--secondary"
-                data-module="govuk-button">
-                Make group admin
-              </button>
-            </td>
+            
           </tr>
           {% endif %}
           
