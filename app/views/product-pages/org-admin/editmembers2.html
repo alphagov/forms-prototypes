@@ -49,20 +49,7 @@
 
           {% if data['emailToAdd'] %}
           <tr class="govuk-table__row">
-            <td class="govuk-table__cell">Oliver</td>
-            <td class="govuk-table__cell">oliver@digital.cabinet-office.gov.uk </td>
-            <td class="govuk-table__cell">{{ data['userRoleToAdd'] or 'Group admin' }}</td>
-            <td class="govuk-table__cell">
-              <button formaction="editmembers2" type="submit"
-                class="govuk-button govuk-button--secondary" data-module="govuk-button">
-                Remove
-              </button>
-              <br>
-              <button formaction="editmembers2" type="submit" class="govuk-button govuk-button--secondary"
-                data-module="govuk-button">
-                Make group admin
-              </button>
-            </td>
+            
           </tr>
           {% endif %}
           
