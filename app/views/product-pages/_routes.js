@@ -4,6 +4,7 @@ const router = govukPrototypeKit.requests.setupRouter()
 /* ORGANISATION ADMIN VIEWS
 =========================== */
 
+
 // Name your group
 router.post('/product-pages/org-admin/creategroup', function (req, res) {
   const errors = {};
@@ -12,7 +13,7 @@ router.post('/product-pages/org-admin/creategroup', function (req, res) {
   // If the user hasn’t entered a name for their group
   if (!groupName || !groupName.length) {
     errors['groupName'] = {
-      text: 'Give your group a name',
+      text: 'Enter a name for the group',
       href: "#group-name"
     }
   }
@@ -73,6 +74,9 @@ router.post('/product-pages/org-admin/add-groupadmin-and-editor', function (req,
 })
 
 
+
+
+
 /* GROUP ADMIN VIEWS
 ==================== */
 
@@ -84,10 +88,12 @@ router.post('/product-pages/group-admin/creategroup', function (req, res) {
   // If the user hasn’t entered a name for their group
   if (!groupName || !groupName.length) {
     errors['groupName'] = {
-      text: 'Give your group a name',
+      text: 'Enter a name for the group',
       href: "#group-name"
     }
   }
+
+  
   // Convert the errors into a list, so we can use it in the template
   const errorList = Object.values(errors)
   // If there are no errors, redirect the user to the next page
