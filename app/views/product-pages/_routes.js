@@ -47,14 +47,14 @@ router.post('/product-pages/org-admin/add-groupadmin-and-editor', function (req,
       text: 'Enter an email address in the correct format, like name@example.gov.uk',
       href: "#group-name"
     }
-  } else if (!emailToAdd.includes('@cabinet-office.gov.uk')) {
-    // if the email isn’t a cabinet-office.gov.uk email
+  } else if (!emailToAdd.includes('@digital.cabinet-office.gov.uk')) {
+    // if the email isn’t a digital.cabinet-office.gov.uk email
     errors['emailToAdd'] = {
       text: 'Enter an email address from your organisation',
       href: "#group-name"
     }
-  } else if (!emailToAdd.includes('oliver@cabinet-office.gov.uk')) {
-    // if the email doesn’t have a Forms account, this example specifically looks for “oliver@cabinet-office.gov.uk”
+  } else if (!emailToAdd.includes('oliver@digital.cabinet-office.gov.uk')) {
+    // if the email doesn’t have a Forms account, this example specifically looks for “oliver@digital.cabinet-office.gov.uk”
     errors['emailToAdd'] = {
       text: 'This person does not have a GOV.UK Forms account',
       href: "#group-name"
