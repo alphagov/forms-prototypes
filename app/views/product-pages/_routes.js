@@ -69,7 +69,7 @@ router.post('/product-pages/org-admin/add-groupadmin-and-editor', function (req,
     res.render('product-pages/org-admin/add-groupadmin-and-editor', { errors, errorList, containsErrors })
   } else {
     req.session.data.addPerson = 'Oliver'
-    res.redirect('editmembers2')
+    res.redirect('editmembers4')
   }
 })
 
