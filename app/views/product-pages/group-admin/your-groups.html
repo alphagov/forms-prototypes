@@ -38,12 +38,42 @@
       <p class="govuk-body">
         You’re not in any active groups.
       </p>
+    </div>
 
+    {% if data.groupName %}
+    <div class="govuk-grid-column-full">
+      <h2 class="govuk-heading-m">Trial groups</h2>
+      <table class="govuk-table">
+        <thead class="govuk-table__head">
+          <tr class="govuk-table__row">
+            <th scope="col" class="govuk-table__header govuk-!-width-one-half">Group name</th>
+            <th scope="col" class="govuk-table__header govuk-table__header--numeric">Created by</th>
+          </tr>
+        </thead>
+        <tbody class="govuk-table__body">
+          <tr class="govuk-table__row">
+            <td class="govuk-table__cell">
+              <a href="{{ data.groupName | replace(' ','-') }}/your-forms" class="govuk-link">
+                {{ data.groupName }}
+              </a>
+            </td>
+            <td class="govuk-table__cell govuk-table__cell--numeric">
+              {{ data.createdBy or 'Firstname Lastname' }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div class="govuk-grid-column-two-thirds">
       <h2 class="govuk-heading-m">Trial groups</h2>
       <p class="govuk-body">
         You’re not in any trial groups.
       </p>
+    </div>
+    {% endif %}
 
+    <div class="govuk-grid-column-two-thirds">
       {{ govukButton({
         text: "Create a group",
         href: "create-new-group",
