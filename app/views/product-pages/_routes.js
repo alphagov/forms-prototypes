@@ -138,8 +138,8 @@ router.post('/product-pages/org-admin/:groupForms/add-new-member', function (req
       text: 'Enter an email address in the correct format, like name@example.gov.uk',
       href: "#add-email"
     }
-  } else if (!emailToAdd.includes('@cabinet-office.gov.uk')) {
-    // if the email isn’t a cabinet-office.gov.uk email
+  } else if (!emailToAdd.includes('@digital.cabinet-office.gov.uk')) {
+    // if the email isn’t a digital.cabinet-office.gov.uk email
     errors['emailToAdd'] = {
       text: 'Enter an email address from your organisation',
       href: "#add-email"
@@ -273,6 +273,8 @@ router.post('/product-pages/group-admin/create-new-group', function (req, res) {
       href: "#group-name"
     }
   }
+
+  
   // Convert the errors into a list, so we can use it in the template
   const errorList = Object.values(errors)
   // If there are no errors, redirect the user to the next page
