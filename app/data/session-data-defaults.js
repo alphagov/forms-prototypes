@@ -22,11 +22,15 @@ module.exports = {
   // Insert values here
 
   highestPageId: 0,
+  pages: [],
+
+  highestGroupId: 0,
+  groups: [],
+
   action: '',
   publish: 'GOV.UK',
   authentication: 'email',
   payments: 'no',
-  pages: [],
   status: 'Draft',
   confirmationTitle: 'Your form has been submitted',
   checkAnswersTitle: 'Check your answers before submitting your form',
