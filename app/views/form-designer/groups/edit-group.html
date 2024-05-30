@@ -1,0 +1,110 @@
+{% extends "layout-govuk-forms.html" %}
+
+{% set pageName = 'Edit group of questions' %}
+
+{% block pageTitle %}
+  {{ "Error: " if containsErrors }}{{ pageName }} - {{ data.formTitle  or '[formTitle]' }} - GOV.UK Forms
+{% endblock %}
+
+{% block beforeContent %}
+  {# Back links are handled in routes.js #}
+  <a class="govuk-back-link" href="javascript:history.go(-1)" target="_parent">
+    Back
+  </a>
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form id="form" class="form" method="post" novalidate>
+
+        {% if containsErrors %}
+        {{ govukErrorSummary({
+          titleText: "There is a problem",
+          errorList: errorList
+        }) }}
+        {% endif %}
+
+        <span class="govuk-caption-l">{{ data.formTitle or '[formTitle]' }}</span>
+        <h1 class="govuk-heading-l">{{ pageName }}</h1>
+
+        <p class="govuk-body-l">
+          Your group can be used to get multiple pieces of information from someone filling in your form. It reduces the need to duplicate questions manually, while giving people more control over how many times they supply the information.
+        </p>
+
+        {{ govukInput({
+          label: {
+            text: "Name your group",
+            classes: "govuk-label--m"
+          },
+          hint: {
+            text: "Use a descriptive name for example, ‘Applicant information’"
+          },
+          id: "group-name",
+          name: "groupName",
+          value: groupData['groupName'],
+          errorMessage: { text: errors['groupName'].text } if errors['groupName'].text 
+        }) }}
+
+        {% call govukFieldset({
+          legend: {
+            text: "How many times should this question group be answered? (optional)",
+            classes: "govuk-fieldset__legend--m"
+          }
+        }) %}
+
+          <p class="govuk-body">
+            These will default to a minimum of one and maximum of 99.
+          </p>
+
+          {{ govukInput({
+            formGroup: {
+              classes: "govuk-!-display-inline-block govuk-!-margin-right-4"
+            },
+            label: {
+              text: "Min"
+            },
+            classes: "govuk-input--width-2",
+            id: "minimum-loop",
+            name: "minLoop",
+            value: groupData['minLoop'],
+            errorMessage: { text: errors['minLoop'].text } if errors['minLoop'].text 
+          }) }}
+
+          {{ govukInput({
+            formGroup: {
+              classes: "govuk-!-display-inline-block"
+            },
+            label: {
+              text: "Max"
+            },
+            classes: "govuk-input--width-3",
+            id: "maximum-loop",
+            name: "maxLoop",
+            value: groupData['maxLoop'],
+            errorMessage: { text: errors['maxLoop'].text } if errors['maxLoop'].text 
+          }) }}
+
+        {% endcall %}
+
+        <div class="govuk-form-group">
+          <label class="govuk-label govuk-label--m" for="group-order">
+            Where do you want to add this group?
+          </label>
+          <select class="govuk-select govuk-!-width-three-quarters" id="group-order" name="groupOrder">
+            <option value="choose"{% if groupData['groupOrder'] == 'choose' %} selected{% endif %}>Choose where to add your group</option>
+            <option value="start"{% if groupData['groupOrder'] == 'start' %} selected{% endif %}>Add to the start of my form</option>
+            {% for page in data.pages -%}
+            <option value="{{ page.pageIndex }}"{% if groupData['groupOrder'] == 'page.pageIndex ' %} selected{% endif %}>{{ page.pageIndex|int + 1 }}. {{ page['long-title'] }}</option>
+            {%- endfor %}
+            <option value="end"{% if groupData['groupOrder'] == 'end' %} selected{% endif %}>Add to the end of my form</option>
+          </select>
+        </div>
+
+        {{ govukButton({
+          text: "Save and add questions"
+        }) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}
