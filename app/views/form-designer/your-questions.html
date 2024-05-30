@@ -1,9 +1,9 @@
 {% extends "layout-govuk-forms.html" %}
 
-{% set pageTitle = 'Add and edit your questions' %}
+{% set pageName = 'Add and edit your questions' %}
 
 {% block pageTitle %}
-  {{ "Error: " if containsErrors }}{{ pageTitle }}: {{ data.formTitle or '[formTitle]' }} - GOV.UK Forms
+  {{ "Error: " if containsErrors }}{{ pageName }}: {{ data.formTitle or '[formTitle]' }} - GOV.UK Forms
 {% endblock %}
 
 {% block beforeContent %}
@@ -31,152 +31,170 @@
     {% endif %}
 
     <span class="govuk-caption-l">{{ data.formTitle or '[formTitle]' }}</span>
-    <h1 class="govuk-heading-l govuk-!-margin-bottom-2">{{ pageTitle }}</h1>
+    <h1 class="govuk-heading-l govuk-!-margin-bottom-2">{{ pageName }}</h1>
     <dl class="govuk-!-margin-bottom-7">
       <dt class="govuk-visually-hidden">Status</dt>
-        <dd class="govuk-!-margin-0">
-            {{ govukTag({
-                text: data['status'],
-                classes: "govuk-tag--yellow" if data.status === 'Draft' else "govuk-tag--turquoise"
-            }) }}
-        </dd>
+      <dd class="govuk-!-margin-0">
+          {{ govukTag({
+              text: data['status'],
+              classes: "govuk-tag--yellow" if data.status === 'Draft' else "govuk-tag--turquoise"
+          }) }}
+      </dd>
     </dl>
 
     {% if data.status === 'Live' %}
       {% include "./partials/your-questions-live-form.html" %}
     {% else %}
-
-    <form id="form" class="form" action="/form-designer/pages/new" method="post" novalidate>
-      <div class="govuk-button-group">
-        {{ govukButton({
-          text: "Add a question",
-          classes: "govuk-button govuk-!-margin-bottom-3 govuk-!-margin-top-3",
-          name: "action",
-          value: "addQuestion"
-        }) }}
-        {{ govukButton({
-          text: "Add a question route",
-          classes: "govuk-button govuk-button--secondary govuk-!-margin-bottom-3 govuk-!-margin-top-3",
-          name: "action",
-          value: "addRoute"
-        }) }}
-        {% if data.pages.length %}
-        <a class="govuk-link" href="/form-designer/preview/0" rel="noopener noreferrer">
-          Preview this form
-        </a>
-        {% endif %}
-      </div>
-    </form>
-
-    {% if data.pages.length %}
-
-      <h2 class="govuk-heading-m govuk-!-margin-top-7 govuk-!-margin-bottom-0" id="question-list">
-        Your questions
-      </h2>
-      <dl class="govuk-summary-list govuk-!-margin-bottom-9" aria-describedby="question-list">
-
-        {% for page in data.pages -%}
-
-        {% set questionTitle =  page["long-title"] or "Question " + (page["pageIndex"]|int + 1) %}
-        {% if page['questionOptional'] %}
-        {% set questionTitle = questionTitle + ' (optional)' %}
-        {% endif %}
-
-        {% if questionTitle %}
-
-        <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key app-summary-list__key">
-            {{loop.index}}
-          </dt>
-          <dd class="govuk-summary-list__value">
-            <!--Q{{page["pageIndex"] | int + 1}}.-->
-            {{questionTitle}}
-            {#{% if page['page-name'] %}<br>Guidance added{% endif %}#}
-            {#{% if page['page-name'] %}<br>Page heading: {{page['page-name']}}{% endif %}#}
-          </dd>
-          <dd class="govuk-summary-list__actions govuk-!-padding-bottom-6">
-            <div class="govuk-button-group form-action-group app-page-list__button-group">
-              {% if data.pages.length > 1 %}
-              <div class="form-actions-reordering">
-                {% if page.pageIndex > 0 %}
-                {{ govukButton({
-                  html: "Move up <span class='govuk-visually-hidden'> Question " + loop.index + ". " + questionTitle + "</span>",
-                  classes: "govuk-button--secondary",
-                  href: "pages/" + (page.pageIndex | int + 1) + "/reorder/up"
-                }) }}
-                {% endif %}
-
-                {% if page.pageIndex < data.pages | length - 1 %}
-                {{ govukButton({
-                  html: "Move down <span class='govuk-visually-hidden'> Question " + loop.index + ". " + questionTitle + "</span>",
-                  classes: "govuk-button--secondary",
-                  href: "pages/" + (page.pageIndex | int + 1) + "/reorder/down"
-                }) }}
-                {% endif %}
-              </div>
-              {% endif %}
-            </div>
-            <a class="govuk-link govuk-link--no-visited-state" href="pages/{{ page.pageIndex | int }}/check-question">
-              Edit<span class="govuk-visually-hidden"> Question {{loop.index}}. {{questionTitle}}</span>
-            </a>
-          </dd>
+      <!-- If Form is in ‘Draft’ then show the following -->
+      <form id="form" class="form" method="post" novalidate>
+        <div class="govuk-button-group">
+          {{ govukButton({
+            text: "Add a question",
+            classes: "govuk-button govuk-!-margin-bottom-3 govuk-!-margin-top-3",
+            name: "action",
+            value: "addQuestion"
+          }) }}
+          {{ govukButton({
+            text: "Add a question route",
+            classes: "govuk-button govuk-button--secondary govuk-!-margin-bottom-3 govuk-!-margin-top-3",
+            name: "action",
+            value: "addRoute"
+          }) }}
+          {% if data.pages.length %}
+          <a class="govuk-link" href="/form-designer/preview/0" rel="noopener noreferrer">
+            Preview this form
+          </a>
+          {% endif %}
         </div>
+
+        {% if data.pages.length %}
+
+          <h2 class="govuk-heading-m govuk-!-margin-top-7 govuk-!-margin-bottom-0" id="question-list">
+            Your questions
+          </h2>
+          <dl class="govuk-summary-list govuk-!-margin-bottom-9" aria-describedby="question-list">
+
+            {% for group in data.groups -%}
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key app-summary-list__key">
+                  Question set {{ loop.index }}
+                </dt>
+                <dd class="govuk-summary-list__value">
+                  {{ group.groupName }}
+                </dd>
+                <dd class="govuk-summary-list__actions govuk-!-padding-bottom-6">
+                  <div class="govuk-button-group form-action-group app-page-list__button-group">
+                    <div class="form-actions-reordering">
+                      {{ govukButton({
+                        html: "Move up <span class='govuk-visually-hidden'> Group " + loop.index + ". " + group.groupName + "</span>",
+                        classes: "govuk-button--secondary",
+                        href: "groups/" + (group.groupIndex | int + 1) + "/reorder/up"
+                      }) }}
+                      {{ govukButton({
+                        html: "Move down <span class='govuk-visually-hidden'> Group " + loop.index + ". " + group.groupName + "</span>",
+                        classes: "govuk-button--secondary",
+                        href: "groups/" + (group.groupIndex | int + 1) + "/reorder/down"
+                      }) }}
+                    </div>
+                  </div>
+                  <a class="govuk-link govuk-link--no-visited-state" href="groups/{{ group.groupIndex | int }}/edit-group">
+                    Edit<span class="govuk-visually-hidden"> question set {{loop.index}}</span>
+                  </a>
+                </dd>
+              </div>
+            {%- endfor %}
+
+            {% for page in data.pages -%}
+
+              {% set questionTitle =  page["long-title"] or "Question " + (page["pageIndex"]|int + 1) %}
+              {% if page['questionOptional'] %}
+              {% set questionTitle = questionTitle + ' (optional)' %}
+              {% endif %}
+
+              {% if questionTitle %}
+
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key app-summary-list__key">
+                    {{loop.index}}
+                  </dt>
+                  <dd class="govuk-summary-list__value">
+                    <!--Q{{page["pageIndex"] | int + 1}}.-->
+                    {{questionTitle}}
+                    {#{% if page['page-name'] %}<br>Guidance added{% endif %}#}
+                    {#{% if page['page-name'] %}<br>Page heading: {{page['page-name']}}{% endif %}#}
+                  </dd>
+                  <dd class="govuk-summary-list__actions govuk-!-padding-bottom-6">
+                    <div class="govuk-button-group form-action-group app-page-list__button-group">
+                      {% if data.pages.length > 1 %}
+                        <div class="form-actions-reordering">
+                          {% if page.pageIndex > 0 %}
+                            {{ govukButton({
+                              html: "Move up <span class='govuk-visually-hidden'> Question " + loop.index + ". " + questionTitle + "</span>",
+                              classes: "govuk-button--secondary",
+                              href: "pages/" + (page.pageIndex | int + 1) + "/reorder/up"
+                            }) }}
+                          {% endif %}
+
+                          {% if page.pageIndex < data.pages | length - 1 %}
+                            {{ govukButton({
+                              html: "Move down <span class='govuk-visually-hidden'> Question " + loop.index + ". " + questionTitle + "</span>",
+                              classes: "govuk-button--secondary",
+                              href: "pages/" + (page.pageIndex | int + 1) + "/reorder/down"
+                            }) }}
+                          {% endif %}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <a class="govuk-link govuk-link--no-visited-state" href="pages/{{ page.pageIndex | int }}/check-question">
+                      Edit<span class="govuk-visually-hidden"> Question {{loop.index}}. {{questionTitle}}</span>
+                    </a>
+                  </dd>
+                </div>
+              {% endif %}
+
+            {%- endfor %}
+          </dl>
+
+          {% if data.status === 'Draft' %}
+            {{ govukRadios({
+              classes: "govuk-radios",
+              idPrefix: "isQuestionsComplete",
+              name: "isQuestionsComplete",
+              fieldset: {
+                legend: {
+                  text: "Have you finished editing your questions?",
+                  isPageHeading: false,
+                  classes: "govuk-fieldset__legend--m"
+                }
+              },
+              hint: {
+                text: "Selecting ‘Yes’ will mark this task as complete. You’ll still be able to make changes if you need to."
+              },
+              items: [
+                {
+                  value: "yes",
+                  text: "Yes"
+                },
+                {
+                  value: "no",
+                  text: "No, I’ll come back later"
+                }
+              ],
+              errorMessage: { text: errors['isQuestionsComplete'].text } if errors['isQuestionsComplete'].text
+            }) }}
+            {{ govukButton({
+              text: "Save and continue",
+              name: "action",
+              value: "continue"
+            }) }}
+          {% endif %}
+
         {% endif %}
 
-        {%- endfor %}
-      </dl>
-
-      {% if data.status === 'Draft' %}
-      <form id="form" class="form" action="your-questions" method="post">
-        {{ govukRadios({
-          classes: "govuk-radios",
-          idPrefix: "isQuestionsComplete",
-          name: "isQuestionsComplete",
-          fieldset: {
-            legend: {
-              text: "Have you finished editing your questions?",
-              isPageHeading: false,
-              classes: "govuk-fieldset__legend--m"
-            }
-          },
-          hint: {
-            text: "Selecting ‘Yes’ will mark this task as complete. You’ll still be able to make changes if you need to."
-          },
-          items: [
-            {
-              value: "yes",
-              text: "Yes"
-            },
-            {
-              value: "no",
-              text: "No, I’ll come back later"
-            }
-          ],
-          errorMessage: { text: errors['isQuestionsComplete'].text } if errors['isQuestionsComplete'].text
-        }) }}
-        {{ govukButton({
-          text: "Save and continue",
-          name: "action",
-          value: "continue"
-        }) }}
       </form>
-      {% else %}
-      <form id="form" class="form" action="your-form" method="post">
-      {{ govukButton({
-        text: "Save and continue",
-        name: "action",
-        value: "continue"
-      }) }}
-      </form>
-      {% endif %}
-
-    {% endif %}
-
     {% endif %}
   </div>
-
 </div>
-
 {% endblock %}
 
 {% block pageScripts %}
