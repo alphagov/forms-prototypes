@@ -10,9 +10,6 @@ router.get('/form-designer/pages/new', function (req, res) {
   var pageIndex = pageId
   var pageData = req.session.data.pages[pageIndex]
 
-  var action = req.session.data.action
-  req.session.data.action = undefined
-
   // remove empty pageData if there is only one object (pageIndex) in array
   const pages = req.session.data.pages.filter(element => {
     if (Object.keys(element).length > 1) {
@@ -26,21 +23,15 @@ router.get('/form-designer/pages/new', function (req, res) {
   // reset highestPageId to number of pages
   req.session.data.highestPageId = parseInt(pages.length - 1)
 
-  if (action === 'addRoute') {
-    // add a new question route
-    res.redirect(`/form-designer/question-routes/new-condition`)
-  } else {
+  var nextPageId = req.session.data.pages.length
 
-    var nextPageId = req.session.data.pages.length
-  
-    if (!pageData) {
-      req.session.data.pages.push({
-        'pageIndex': nextPageId
-      })
-    }
-    // add a new question
-    res.redirect(`/form-designer/pages/${nextPageId}/edit-answer-type`)
+  if (!pageData) {
+    req.session.data.pages.push({
+      'pageIndex': nextPageId
+    })
   }
+  // add a new question
+  res.redirect(`/form-designer/pages/${nextPageId}/edit-answer-type`)
 })
 
 
