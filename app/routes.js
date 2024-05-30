@@ -304,6 +304,9 @@ router.get('/form-designer/clear-empty', function (req, res) {
 // could we also add timer to the notification banner here?
 // .govuk-notification-banner__header
 router.get('/form-designer/your-questions', function (req, res) {
+  var groupId = parseInt(req.params.groupId, 10)
+  var groupIndex = groupId
+  var groupData = req.session.data.groups[groupIndex]
 
   // remove empty pageData if there is only one object (pageIndex) in array
   const pages = req.session.data.pages.filter(element => {
@@ -317,6 +320,45 @@ router.get('/form-designer/your-questions', function (req, res) {
 
   // reset highestPageId to number of pages
   req.session.data.highestPageId = parseInt(pages.length - 1)
+
+  /*
+  // create new tempArray - to be combined group and page lists
+  const tempArray = []
+
+  // check groups for “start” index
+  if (groupIndex == 'start') {
+    add to tempArray 
+    // check through pages to see if page should be in this group
+    for (page in pages) {
+      if (page.inGroup) {
+        add to tempArray[currentGroup]
+      }
+    }
+  }
+
+  // check pages for index
+  for (page in pages) {
+    add to tempArray
+  }
+
+  // check groups to see if it should appear next
+  for (group in groups) {
+    if (groupIndex == currentPageIndex) {
+      add to tempArray
+    }
+  }
+  
+  check groups for “end” index
+  if (groupIndex == 'end') {
+    add to tempArray 
+    // check through pages to see if page should be in this group
+    for (page in pages) {
+      if (page.inGroup) {
+        add to tempArray[currentGroup]
+      }
+    }
+  }
+  */
   
   var successMessage = req.session.data.successMessage
   req.session.data.successMessage = undefined
@@ -327,18 +369,27 @@ router.get('/form-designer/your-questions', function (req, res) {
 
 // Route for user marking questions as complete
 router.post('/form-designer/your-questions', function (req, res) {
-  const { isQuestionsComplete } = req.session.data
+  const { isQuestionsComplete, pages } = req.session.data
 
   // content to display in notification banners
   var saved = 'Your questions have been saved'
   var savedAndComplete = 'Your questions have been saved and marked as complete'
 
+  // check what the user wants to do
+  // add question, route, save and continue (mark complete or not)
+  var action = req.session.data.action
+  req.session.data.action = undefined
+
   const errors = {}
-  // if no option is selected, then error
-  if (!isQuestionsComplete?.length) {
-    errors.isQuestionsComplete = {
-      text: 'Select yes if you have finished adding and editing your questions',
-      href: "#isQuestionsComplete"
+
+  // are there questions, if so check to see if we have answered the mark as complete question
+  if ((pages.length > 0) && (action == 'continue')) {
+    // if no option is selected, then error
+    if (!isQuestionsComplete?.length) {
+      errors.isQuestionsComplete = {
+        text: 'Select yes if you have finished adding and editing your questions',
+        href: "#isQuestionsComplete"
+      }
     }
   }
 
@@ -350,14 +401,30 @@ router.post('/form-designer/your-questions', function (req, res) {
   if(containsErrors) {
     res.render('form-designer/your-questions', { errors, errorList, containsErrors })
   } else {
-    if(isQuestionsComplete === 'yes') {
-      // set a success message for saving and marking as complete
-      req.session.data.successMessage = savedAndComplete
-    } else {
-      // set a success message for saving
-      req.session.data.successMessage = saved
+    // what action has been selected 
+    if (action == 'addQuestion') {
+      if (req.session.data.addJourney == 'addAnother1') {
+        // add another answer journey - pre question version (Option 2 on Mural board)
+        res.redirect(`/form-designer/groups/group-or-question`)
+      } else {
+        // add a new question
+        res.redirect(`/form-designer/pages/new`)
+      }
+    } else if (action == 'addRoute'){
+      // add a new question route
+      res.redirect(`/form-designer/question-routes/new-condition`)
+    } else if (action =='continue') {
+      // save and continue
+      if(isQuestionsComplete === 'yes') {
+        // set a success message for saving and marking as complete
+        req.session.data.successMessage = savedAndComplete
+      } else {
+        // set a success message for saving
+        req.session.data.successMessage = saved
+      }
+      // back to your form task list
+      res.redirect('/form-designer/your-form')
     }
-    res.redirect('/form-designer/your-form')
   }
 })
 
@@ -1021,6 +1088,9 @@ router.get('/prototype-admin/show-data', (req, res, next) => {
 
 /* Use the routes file in pages for adding and editing questions */
 router.use('/pages', require('./views/form-designer/pages/\_routes'))
+
+/* Use the routes file in groups for adding and editing groups */
+router.use('/groups', require('./views/form-designer/groups/\_routes'))
 
 /* Use the routes file in product-pages for groups and members routes */
 router.use('/product-pages', require('./views/product-pages/\_routes'))
