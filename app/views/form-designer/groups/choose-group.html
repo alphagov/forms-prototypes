@@ -1,0 +1,63 @@
+{% extends "layout-govuk-forms.html" %}
+
+{% set pageName = 'Choose question group' %}
+
+{% block pageTitle %}
+  {{ "Error: " if containsErrors }}{{ pageName }} - {{ data.formTitle or '[formTitle]' }} - GOV.UK Forms
+{% endblock %}
+
+{% block beforeContent %}
+  {# Back links are handled in routes.js #}
+  <a class="govuk-back-link" href="javascript:history.go(-1)" target="_parent">
+    Back
+  </a>
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form id="form" class="form" method="post" novalidate>
+
+        {% if containsErrors %}
+        {{ govukErrorSummary({
+          titleText: "There is a problem",
+          errorList: errorList
+        }) }}
+        {% endif %}
+        
+        <span class="govuk-caption-l">[questionNumber]</span>
+        {{ govukRadios({
+          name: "addToGroup",
+          fieldset: {
+            legend: {
+              text: pageName,
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--l"
+            }
+          },
+          items: [
+            {
+              value: "group1",
+              text: "Group 1"
+            },
+            {
+              value: "group2",
+              text: "Group 2"
+            }
+          ]
+        }) }}
+
+        <div>
+        {{ govukButton({
+          text: "Create new group",
+          classes: "govuk-button--secondary"
+        }) }}
+        </div>
+
+        {{ govukButton({
+          text: "Save and continue"
+        }) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}
