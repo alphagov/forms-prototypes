@@ -1,0 +1,129 @@
+{% extends "layout-govuk-forms.html" %}
+
+{% set pageName = 'Edit your group of questions' %}
+
+{% block pageTitle %}
+  {{ "Error: " if containsErrors }}{{ pageName }} - {{ data.groupName or '[groupName]' }} - GOV.UK Forms
+{% endblock %}
+
+{% block beforeContent %}
+  {# Back links are handled in routes.js #}
+  <a class="govuk-back-link" href="javascript:history.go(-1)" target="_parent">
+    Back
+  </a>
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form id="form" class="form" method="post" novalidate>
+
+        {% if containsErrors %}
+        {{ govukErrorSummary({
+          titleText: "There is a problem",
+          errorList: errorList
+        }) }}
+        {% endif %}
+        
+        <span class="govuk-caption-l">{{ data.groupName or '[groupName]' }}</span>
+        <h1 class="govuk-heading-l">{{ pageName }}</h1>
+
+        <h2 class="govuk-heading-m">Group settings</h2>
+
+        {{ govukSummaryList({
+          classes: "govuk-!-margin-bottom-9",
+          rows: [
+            {
+              key: {
+                text: "Group name"
+              },
+              value: {
+                text: data.groupName or '[groupName]'
+              },
+              actions: {
+                items: [
+                  {
+                    href: "edit-group#group-name",
+                    text: "Change",
+                    visuallyHiddenText: " group name"
+                  }
+                ]
+              }
+            },
+            {
+              key: {
+                text: "Number of times this group can be answered"
+              },
+              value: {
+                html: "Min: " + (data.minLoop or '0') + "<br>Max: " + (data.maxLoop or '5')
+              },
+              actions: {
+                items: [
+                  {
+                    href: "edit-group#minimum-loop",
+                    text: "Change",
+                    visuallyHiddenText: " number of times this group can be answered"
+                  }
+                ]
+              }
+            },
+            {
+              key: {
+                text: "Group position"
+              },
+              value: {
+                text: "After question “" + (data.groupOrder or '3. What is your email?') + "”"
+              },
+              actions: {
+                items: [
+                  {
+                    href: "edit-group#group-order",
+                    text: "Change",
+                    visuallyHiddenText: " group position"
+                  }
+                ]
+              }
+            }
+          ]
+        }) }}
+
+        <h2 class="govuk-heading-m">Questions in this group</h2>
+
+        <dl class="govuk-summary-list govuk-!-margin-bottom-9" aria-describedby="question-list">
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key app-summary-list__key">
+              1
+            </dt>
+            <dd class="govuk-summary-list__value">
+              What is their name?
+            </dd>
+            <dd class="govuk-summary-list__actions govuk-!-padding-bottom-6">
+              <div class="govuk-button-group form-action-group app-page-list__button-group">
+                <div class="form-actions-reordering">
+                  {{ govukButton({
+                    html: "Move up <span class='govuk-visually-hidden'> Question " + loop.index + ". " + questionTitle + "</span>",
+                    classes: "govuk-button--secondary",
+                    href: "pages/" + (page.pageIndex | int + 1) + "/reorder/up"
+                  }) }} 
+
+                  {{ govukButton({
+                    html: "Move down <span class='govuk-visually-hidden'> Question " + loop.index + ". " + questionTitle + "</span>",
+                    classes: "govuk-button--secondary",
+                    href: "pages/" + (page.pageIndex | int + 1) + "/reorder/down"
+                  }) }}
+                </div>
+              </div>
+              <a class="govuk-link govuk-link--no-visited-state" href="pages/{{ page.pageIndex | int }}/check-question">
+                Edit<span class="govuk-visually-hidden"> Question {{loop.index}}. {{questionTitle}}</span>
+              </a>
+            </dd>
+          </div>
+        </dl>
+
+        {{ govukButton({
+          text: "Save and continue"
+        }) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}
