@@ -7,17 +7,18 @@ const govukPrototypeKit = require('govuk-prototype-kit')
 const router = govukPrototypeKit.requests.setupRouter()
 
 // Add your routes here
-
-
 const path = require('path')
 const sessionDataDefaults = require('./data/session-data-defaults.js')
 const returningSessionDataDefaults = require('./data/returning-session-data-defaults')
 const returningSessionDataDefaultsA11y = require('./data/returning-session-data-defaults-a11y')
 
+/* MARKDOWN
+=========== */
+
 // Markdown support
 const markdown = require('@lfdebrux/nunjucks-markdown')
 
-// Used to add govuk classes to additional guidance markdown for end user view (Runner)
+// Used to add govuk classes to “additional guidance” markdown for end user view (Runner)
 const { marked } = require('marked');
 const GovukHTMLRenderer = require('govuk-markdown')
 const renderer = new GovukHTMLRenderer()
@@ -40,7 +41,8 @@ setPageIndexToArrayPosition = (page, index) => {
   return page
 }
 
-// ROUTES FOR EXAMPLE FORMS
+/* ROUTES FOR EXAMPLE FORMS
+=========================== */
 
 // Run this code when a form is submitted to '/example-2/eligibility-check-answer'
 router.post('/example-2/eligibility-check-answer', function (req, res) {
@@ -56,7 +58,6 @@ router.post('/example-2/eligibility-check-answer', function (req, res) {
     res.redirect('/example-2/question-1')
   }
 })
-
 // Run this code when a form is submitted to '/example-2/save-progress-check'
 router.post('/example-2/save-progress-check', function (req, res) {
   // Make a variable and give it the value from 'save-progress'
@@ -301,88 +302,67 @@ router.get('/form-designer/clear-empty', function (req, res) {
 })
 
 // Your form task list page - used to load and clear out success pageData
+router.use('/form-designer/your-questions', function (req, res, next) {
+  var { groups, pages } = req.session.data
+
+  // create new tempArray - to be combined group and page lists
+  const pagesOrder = []
+  // try a loop over the pages
+  let i = 0;
+  while (i < pages.length) {
+    // if “addToGroup” is not null
+    if (pages[i].addToGroup != null) {
+      // set group to be the group found associated to the page
+      var group = groups.find(function(element) { return element.groupIndex == pages[i].addToGroup })
+      // set temporary array of pages to associated with this group
+      var groupPages = []
+      // using this group, check if the next questions are also in the same group
+      // this will start the loop where we are and should only go to the end of the pages added 
+      while (i < pages.length && pages[i].addToGroup == group.groupIndex) { 
+        // add page to group, if “addToGroup” is the same as the “groupIndex”
+        groupPages.push(pages[i]);
+        // increment loop count
+        i++;
+      }
+      // push group into “pagesOrder” array with associated pages within it
+      pagesOrder.push({ 'group': group, 'pages': groupPages })
+    } else {
+      // push page into “pagesOrder” array
+      pagesOrder.push({ 'page': pages[i] })
+      // increment loop count
+      i++;
+    }
+  }
+
+  // set new “pagesOrder” array in session data so we can use it elsewhere
+  req.session.data.pagesOrder = pagesOrder
+
+  next();
+})
 // could we also add timer to the notification banner here?
 // .govuk-notification-banner__header
 router.get('/form-designer/your-questions', function (req, res) {
-  var groupId = parseInt(req.params.groupId, 10)
-  var groupIndex = groupId
-  var groupData = req.session.data.groups[groupIndex]
-
-  // remove empty pageData if there is only one object (pageIndex) in array
-  const pages = req.session.data.pages.filter(element => {
-    if (Object.keys(element).length > 1) {
-      return true
-    }
-    return false
-  })
-  // Save the pages
-  req.session.data.pages = pages
-
-  // reset highestPageId to number of pages
-  req.session.data.highestPageId = parseInt(pages.length - 1)
-
-  /*
-  // create new tempArray - to be combined group and page lists
-  const tempArray = []
-
-  // check groups for “start” index
-  if (groupIndex == 'start') {
-    add to tempArray 
-    // check through pages to see if page should be in this group
-    for (page in pages) {
-      if (page.inGroup) {
-        add to tempArray[currentGroup]
-      }
-    }
-  }
-
-  // check pages for index
-  for (page in pages) {
-    add to tempArray
-  }
-
-  // check groups to see if it should appear next
-  for (group in groups) {
-    if (groupIndex == currentPageIndex) {
-      add to tempArray
-    }
-  }
-  
-  check groups for “end” index
-  if (groupIndex == 'end') {
-    add to tempArray 
-    // check through pages to see if page should be in this group
-    for (page in pages) {
-      if (page.inGroup) {
-        add to tempArray[currentGroup]
-      }
-    }
-  }
-  */
-  
-  var successMessage = req.session.data.successMessage
+  var { pagesOrder, successMessage } = req.session.data
   req.session.data.successMessage = undefined
+
   return res.render('form-designer/your-questions', {
+    pagesOrder: pagesOrder,
     successMessage: successMessage
   })
 })
-
 // Route for user marking questions as complete
 router.post('/form-designer/your-questions', function (req, res) {
-  const { isQuestionsComplete, pages } = req.session.data
+  const { isQuestionsComplete, pages, action } = req.session.data
+
+  // clear the action
+  req.session.data.action = undefined
 
   // content to display in notification banners
   var saved = 'Your questions have been saved'
   var savedAndComplete = 'Your questions have been saved and marked as complete'
 
-  // check what the user wants to do
-  // add question, route, save and continue (mark complete or not)
-  var action = req.session.data.action
-  req.session.data.action = undefined
-
   const errors = {}
-
-  // are there questions, if so check to see if we have answered the mark as complete question
+  // are there questions added to the form, if so check to see if we have answered the mark as complete question
   if ((pages.length > 0) && (action == 'continue')) {
     // if no option is selected, then error
     if (!isQuestionsComplete?.length) {
@@ -410,7 +390,7 @@ router.post('/form-designer/your-questions', function (req, res) {
         // add a new question
         res.redirect(`/form-designer/pages/new`)
       }
-    } else if (action == 'addRoute'){
+    } else if (action == 'addRoute') {
       // add a new question route
       res.redirect(`/form-designer/question-routes/new-condition`)
     } else if (action =='continue') {
@@ -422,7 +402,7 @@ router.post('/form-designer/your-questions', function (req, res) {
         // set a success message for saving
         req.session.data.successMessage = saved
       }
-      // back to your form task list
+      // back to “create your form” task list
       res.redirect('/form-designer/your-form')
     }
   }
@@ -435,9 +415,11 @@ Managing questions in a form
 
 // Route used to delete question
 router.post('/form-designer/pages/:pageId/delete', function (req, res) {
-  const { action } = req.session.data
-  const pageIndex = parseInt(req.params.pageId, 10)
+  const action = req.session.data
   const shouldDelete = req.session.data.delete
+  const pageIndex = parseInt(req.params.pageId, 10)
+
+  // clear actions
   req.session.data.action = undefined
   req.session.data.delete = undefined
 
@@ -496,12 +478,14 @@ router.get('/form-designer/pages/:pageId/delete', function (req, res) {
 })
 
 // Route used by the reordering buttons in your-questions.html
-router.get('/form-designer/pages/:pageId/reorder/:direction', function (req, res) {
-  const { pageId, direction } = req.params
+reorder = function (req, res) {
+  const { pageId, groupId, direction } = req.params
   const newArrayPosition = direction === 'down' ? pageId : pageId - 2
   const { pages } = req.session.data
 
-  const pageToMove = pages.splice(pageId - 1, 1)[0]
+  if (groupId) { pageId = groupId }
+
+  var pageToMove = pages.splice(pageId - 1, 1)[0]
   pages.splice(newArrayPosition, 0, pageToMove)
 
   // content to display in notification banners
@@ -511,7 +495,8 @@ router.get('/form-designer/pages/:pageId/reorder/:direction', function (req, re
 
   req.session.data.successMessage = successMessage
   res.redirect('/form-designer/clear-empty')
-})
+}
+router.get('/form-designer/pages/:pageId/reorder/:direction', reorder)
 
 
 /* =====
@@ -701,7 +686,7 @@ router.get('/form-designer/pages/:pageId/preview', function (req, res) {
   })
 })
 
-// This is just for convience to to the new-tab preview for this page
+// This is just for convience to the new-tab preview for this page
 router.get('/form-designer/pages/:pageId/view', function (req, res) {
   return res.redirect(`/form-designer/view/${req.params.pageId}`)
 })
@@ -712,10 +697,16 @@ router.post('/form-designer/preview/:pageId(\\d+)', function (req, res) {
   req.session.data.cya = undefined
   var pageId = req.params.pageId
   var pageIndex = parseInt(pageId)
+  var pageData = req.session.data.pages[pageIndex]
   const isLastQuestionPage = pageIndex === (req.session.data.pages.length - 1)
 
-  // if last question in form OR user clicked on change link from CYA, then go to CYA
-  if(isLastQuestionPage || cya === 'true') {
+  var repeatQuestion = pageData.repeatQuestion ? pageData.repeatQuestion : null
+
+  if(repeatQuestion === 'Yes') {
+    // if this is a single repeating question go to summary of answers listed
+    return res.redirect(`${pageIndex}` + '/page-repeat-summary')
+  } else if(isLastQuestionPage || cya === 'true') {
+    // if last question in form OR user clicked on change link from CYA, then go to CYA
     return res.redirect('check-answers')
   } else {
     return res.redirect(`${pageIndex + 1}`)
@@ -729,6 +720,8 @@ router.get('/form-designer/preview/:pageId(\\d+)', function (req, res) {
   var pageData = req.session.data.pages[pageIndex]
   const isLastQuestionPage = pageIndex === (req.session.data.pages.length - 1)
 
+  var repeatQuestion = pageData.repeatQuestion ? pageData.repeatQuestion : null
+
   if (pageData) {
     var markdownContent = pageData['additional-guidance-text']
   }
@@ -737,9 +730,58 @@ router.get('/form-designer/preview/:pageId(\\d+)', function (req, res) {
     pageId: pageId,
     pageIndex: pageIndex,
     pageData: pageData,
+    pageRepeats: repeatQuestion,
     isLastQuestionPage,
     markdownContent: markdownContent
   })
+})
+
+// Renders the new-tab page preview, set to a specific page
+router.get('/form-designer/preview/:pageId(\\d+)/page-repeat-summary', function (req, res) {
+  var pageId = req.params.pageId
+  var pageIndex = parseInt(pageId)
+  var pageData = req.session.data.pages[pageIndex]
+  const isLastQuestionPage = pageIndex === (req.session.data.pages.length - 1)
+
+  var repeatQuestion = pageData.repeatQuestion ? pageData.repeatQuestion : null
+
+  console.log(repeatQuestion)
+
+  if (pageData) {
+    var markdownContent = pageData['additional-guidance-text']
+  }
+
+  res.render('form-designer/preview/page-repeat-summary', {
+    pageId: pageId,
+    pageIndex: pageIndex,
+    pageData: pageData,
+    pageRepeats: repeatQuestion,
+    isLastQuestionPage,
+    markdownContent: markdownContent
+  })
+})
+
+// Routing for new-tab page previews, set to a specific page
+router.post('/form-designer/preview/:pageId(\\d+)/page-repeat-summary', function (req, res) {
+  var addAnother = req.session.data.addAnother
+  var cya = req.session.data.cya
+  req.session.data.cya = undefined
+  var pageId = req.params.pageId
+  var pageIndex = parseInt(pageId)
+  var pageData = req.session.data.pages[pageIndex]
+  const isLastQuestionPage = pageIndex === (req.session.data.pages.length - 1)
+
+  var minLoop = pageData.minLoop ? pageData.minLoop : null
+  var maxLoop = pageData.maxLoop ? pageData.maxLoop : null
+
+  if(addAnother === 'yes') {
+    return res.redirect(`../${pageIndex}`)
+  } else if(isLastQuestionPage || cya === 'true') {
+    // if last question in form OR user clicked on change link from CYA, then go to CYA
+    return res.redirect('../check-answers')
+  } else {
+    return res.redirect(`../${pageIndex + 1}`)
+  }
 })
 
 
