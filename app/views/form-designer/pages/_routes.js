@@ -10,20 +10,7 @@ newPage = function (req, res) {
   var pageIndex = pageId
   var pageData = req.session.data.pages[pageIndex]
 
-  var groupId = req.params.groupId ? parseInt(req.params.groupId, 10) : null 
-
-  // remove empty pageData if there is only one object (pageIndex) in array
-  const pages = req.session.data.pages.filter(element => {
-    if (Object.keys(element).length > 1) {
-      return true
-    }
-    return false
-  })
-  // Save the pages
-  req.session.data.pages = pages
-
-  // reset highestPageId to number of pages
-  req.session.data.highestPageId = parseInt(pages.length - 1)
+  var groupId = req.params.groupId ? parseInt(req.params.groupId, 10) : null
 
   var nextPageId = req.session.data.pages.length
 
