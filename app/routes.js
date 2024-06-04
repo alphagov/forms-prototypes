@@ -287,7 +287,7 @@ Adding pages to a form
 router.get('/form-designer/clear-empty', function (req, res) {
   // remove empty pageData if there is only one object (pageIndex) in array
   const pages = req.session.data.pages.filter(element => {
-    if (Object.keys(element).length > 1) {
+    if (Object.keys(element).length > 2) {
       return true
     }
     return false
@@ -297,6 +297,19 @@ router.get('/form-designer/clear-empty', function (req, res) {
 
   // reset highestPageId to number of pages
   req.session.data.highestPageId = parseInt(pages.length - 1)
+
+  // remove empty groupData if there is only one object (groupIndex) in array
+  const groups = req.session.data.groups.filter(element => {
+    if (Object.keys(element).length > 2) {
+      return true
+    }
+    return false
+  })
+  // Save the groups
+  req.session.data.groups = groups
+
+  // reset highestPageId to number of groups
+  req.session.data.highestGroupId = parseInt(groups.length - 1)
 
   return res.redirect(`/form-designer/your-questions`)
 })
