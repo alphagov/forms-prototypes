@@ -27,6 +27,8 @@ module.exports = {
   highestGroupId: 0,
   groups: [],
 
+  pagesOrder: [],
+
   action: '',
   publish: 'GOV.UK',
   authentication: 'email',
