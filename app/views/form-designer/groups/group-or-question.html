@@ -8,7 +8,7 @@
 
 {% block beforeContent %}
   {# Back links are handled in routes.js #}
-  <a class="govuk-back-link" href="../your-questions" target="_parent">
+  <a class="govuk-back-link" href="../../clear-empty" target="_parent">
     Back to your questions
   </a>
 {% endblock %}
@@ -38,11 +38,15 @@
           items: [
             {
               value: "newQuestion",
-              text: "Single question"
+              text: "Single question only"
+            },
+            {
+              value: "newQuestionRepeats",
+              text: "Single question that can be answered multiple times"
             },
             {
               value: "newGroup",
-              text: "Group of questions"
+              text: "Set of questions that can be answered multiple times"
             }
           ]
         }) }}
@@ -52,7 +56,7 @@
         }) }}
 
         <p class="govuk-body">
-          <a class="govuk-link" href="../your-questions" target="_parent">
+          <a class="govuk-link" href="../../clear-empty" target="_parent">
             Back to your questions
           </a>
         </p>

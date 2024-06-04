@@ -1,6 +1,6 @@
 {% extends "layout-govuk-forms.html" %}
 
-{% set pageName = 'Edit group of questions' %}
+{% set pageName = 'Create new question set' %}
 
 {% block pageTitle %}
   {{ "Error: " if containsErrors }}{{ pageName }} - {{ data.formTitle  or '[formTitle]' }} - GOV.UK Forms
@@ -29,16 +29,19 @@
         <h1 class="govuk-heading-l">{{ pageName }}</h1>
 
         <p class="govuk-body-l">
-          Your group can be used to get multiple pieces of information from someone filling in your form. It reduces the need to duplicate questions manually, while giving people more control over how many times they supply the information.
+          Your question set can be used to get multiple pieces of information from someone filling in your form.
+        </p>
+        <p class="govuk-body-l">
+          It reduces the need to duplicate questions manually, while giving people more control over how many times they need to supply the information.
         </p>
 
         {{ govukInput({
           label: {
-            text: "Name your group",
+            text: "Give this question set a name",
             classes: "govuk-label--m"
           },
           hint: {
-            text: "Use a descriptive name for example, ‘Applicant information’"
+            text: "Use a descriptive name - for example, ‘Applicant information’"
           },
           id: "group-name",
           name: "groupName",
@@ -48,14 +51,10 @@
 
         {% call govukFieldset({
           legend: {
-            text: "How many times should this question group be answered? (optional)",
+            text: "How many times can people answer this question set?",
             classes: "govuk-fieldset__legend--m"
           }
         }) %}
-
-          <p class="govuk-body">
-            These will default to a minimum of one and maximum of 99.
-          </p>
 
           {{ govukInput({
             formGroup: {
@@ -87,23 +86,19 @@
 
         {% endcall %}
 
-        <div class="govuk-form-group">
-          <label class="govuk-label govuk-label--m" for="group-order">
-            Where do you want to add this group?
-          </label>
-          <select class="govuk-select govuk-!-width-three-quarters" id="group-order" name="groupOrder">
-            <option value="choose"{% if groupData['groupOrder'] == 'choose' %} selected{% endif %}>Choose where to add your group</option>
-            <option value="start"{% if groupData['groupOrder'] == 'start' %} selected{% endif %}>Add to the start of my form</option>
-            {% for page in data.pages -%}
-            <option value="{{ page.pageIndex }}"{% if groupData['groupOrder'] == 'page.pageIndex ' %} selected{% endif %}>{{ page.pageIndex|int + 1 }}. {{ page['long-title'] }}</option>
-            {%- endfor %}
-            <option value="end"{% if groupData['groupOrder'] == 'end' %} selected{% endif %}>Add to the end of my form</option>
-          </select>
-        </div>
-
-        {{ govukButton({
-          text: "Save and add questions"
-        }) }}
+        {% if data.changelink == 'change' %}
+          {{ govukButton({
+            text: "Save and continue",
+            name: "action",
+            value: "saveChanges"
+          }) }}
+        {% else %}
+          {{ govukButton({
+            text: "Save and add questions",
+            name: "action",
+            value: "saveAndAddQuestion"
+          }) }}
+        {% endif %}
       </form>
     </div>
   </div>
