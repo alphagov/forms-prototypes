@@ -172,6 +172,45 @@
             }) }}
           {% endif %}
 
+          {% if data.groupQuestions == 'newQuestionRepeats' %}
+            {% call govukFieldset({
+              legend: {
+                text: "How many times can people answer this question?",
+                classes: "govuk-fieldset__legend--m"
+              }
+            }) %}
+
+              {{ govukInput({
+                formGroup: {
+                  classes: "govuk-!-display-inline-block govuk-!-margin-right-4"
+                },
+                label: {
+                  text: "Min"
+                },
+                classes: "govuk-input--width-2",
+                id: "minimum-loop",
+                name: "minLoop",
+                value: pageData['minLoop'],
+                errorMessage: { text: errors['minLoop'].text } if errors['minLoop'].text 
+              }) }}
+
+              {{ govukInput({
+                formGroup: {
+                  classes: "govuk-!-display-inline-block"
+                },
+                label: {
+                  text: "Max"
+                },
+                classes: "govuk-input--width-3",
+                id: "maximum-loop",
+                name: "maxLoop",
+                value: pageData['maxLoop'],
+                errorMessage: { text: errors['maxLoop'].text } if errors['maxLoop'].text 
+              }) }}
+
+            {% endcall %}
+          {% endif %}
+
           {{ govukButton({
             text: "Continue",
             name: "action",
