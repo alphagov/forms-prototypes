@@ -91,7 +91,7 @@
       {% endif %}
 
       <span class="govuk-caption-l">Question {{ pageId | int + 1 }}</span>
-      <h1 class="govuk-heading-l">{{pageTitle}}</h1>
+      <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
 
       <!-- Answer settings -->
       <h2 class="govuk-heading-m">Answer settings</h2>
@@ -308,6 +308,17 @@
           name: "action",
           value: "savePreview"
         }) }}
+
+        {% if editingExistingQuestion === 'Yes' -%}
+          {% if pageData.addToGroup != null -%}
+            {{ govukButton({
+              classes: "govuk-button--secondary",
+              text:  "Finish question set",
+              name: "action",
+              value: "completeSet"
+            }) }}
+          {%- endif %}
+        {%- endif %}
       </div>
 
       {% if editingExistingQuestion === 'Yes' %}

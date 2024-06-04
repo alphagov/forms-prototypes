@@ -126,9 +126,41 @@ router.post('/form-designer/groups/:groupId(\\d+)/edit-group', function (req, re
 
 // Check question set (group) - display
 router.get('/form-designer/groups/:groupId(\\d+)/check-group', function (req, res) {
-  var pagesOrder = req.session.data.pagesOrder
+  var { groups, pages } = req.session.data
   var groupId = parseInt(req.params.groupId, 10)
   var groupData = req.session.data.groups[groupId]
+
+  // create new tempArray - to be combined group and page lists
+  const pagesOrder = []
+  // try a loop over the pages
+  let i = 0;
+  while (i < pages.length) {
+    // if “addToGroup” is not null
+    if (pages[i].addToGroup != null) {
+      // set group to be the group found associated to the page
+      var group = groups.find(function(element) { return element.groupIndex == pages[i].addToGroup })
+      // set temporary array of pages to associated with this group
+      var groupPages = []
+      // using this group, check if the next questions are also in the same group
+      // this will start the loop where we are and should only go to the end of the pages added 
+      while (i < pages.length && pages[i].addToGroup == group.groupIndex) { 
+        // add page to group, if “addToGroup” is the same as the “groupIndex”
+        groupPages.push(pages[i]);
+        // increment loop count
+        i++;
+      }
+      // push group into “pagesOrder” array with associated pages within it
+      pagesOrder.push({ 'group': group, 'pages': groupPages })
+    } else {
+      // push page into “pagesOrder” array
+      pagesOrder.push({ 'page': pages[i] })
+      // increment loop count
+      i++;
+    }
+  }
+
+  // set new “pagesOrder” array in session data so we can use it elsewhere
+  req.session.data.pagesOrder = pagesOrder
 
   return res.render('form-designer/groups/check-group', {
     pagesOrder: pagesOrder,

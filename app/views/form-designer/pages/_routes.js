@@ -687,6 +687,8 @@ checkQuestion = function (req, res) {
   var pageIndex = pageId
   var pageData = req.session.data.pages[pageIndex]
 
+  var groupId = req.params.groupId ? parseInt(req.params.groupId, 10) : null
+
   if (pageData['questionSaved']) {
     var existingQuestion = true
   }
@@ -710,7 +712,9 @@ checkQuestion = function (req, res) {
     }
   }
 
-  if (action === 'savePreview') {
+  if (action === 'completeSet') {
+    return res.redirect(`/form-designer/groups/${groupId}/check-group`)
+  } else if (action === 'savePreview') {
     return res.redirect(`preview-question`)
   } else {
     return res.redirect(req.path)
