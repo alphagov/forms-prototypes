@@ -5,10 +5,12 @@ const router = govukPrototypeKit.requests.setupRouter()
 ========================== */
 
 // Create a new page or question route - button journeys
-router.get('/form-designer/pages/new', function (req, res) {
+newPage = function (req, res) {
   var pageId = parseInt(req.params.pageId, 10)
   var pageIndex = pageId
   var pageData = req.session.data.pages[pageIndex]
+
+  var groupId = req.params.groupId ? parseInt(req.params.groupId, 10) : null 
 
   // remove empty pageData if there is only one object (pageIndex) in array
   const pages = req.session.data.pages.filter(element => {
@@ -27,19 +29,28 @@ router.get('/form-designer/pages/new', function (req, res) {
 
   if (!pageData) {
     req.session.data.pages.push({
-      'pageIndex': nextPageId
+      'pageIndex': nextPageId,
+      'addToGroup': groupId
     })
   }
-  // add a new question
-  res.redirect(`/form-designer/pages/${nextPageId}/edit-answer-type`)
-})
+
+  if (groupId != null) {
+    // add a new question to this group
+    res.redirect(`/form-designer/groups/${groupId}/pages/${nextPageId}/edit-answer-type`)
+  } else {
+    // add a new question
+    res.redirect(`/form-designer/pages/${nextPageId}/edit-answer-type`)
+  }
+}
+router.get('/form-designer/pages/new', newPage)
+router.get('/form-designer/groups/:groupId(\\d+)/pages/new', newPage)
 
 
 /* ANSWER TYPE
 ============== */
 
-// Edit answer type - display
-router.get('/form-designer/pages/:pageId(\\d+)/edit-answer-type', function (req, res) {
+// Edit answer type - display 
+editAnswerTypeGet = function (req, res) {
   var pageId = parseInt(req.params.pageId, 10)
   var pageIndex = pageId
   var pageData = req.session.data.pages[pageIndex]
@@ -56,12 +67,17 @@ router.get('/form-designer/pages/:pageId(\\d+)/edit-answer-type', function (req,
     previousPageLink: tempArray[0].previousPageLink,
     previousPageText: tempArray[0].previousPageText
   })
-})
+}
+router.get('/form-designer/pages/:pageId(\\d+)/edit-answer-type', editAnswerTypeGet)
+router.get('/form-designer/groups/:groupId(\\d+)/pages/:pageId(\\d+)/edit-answer-type', editAnswerTypeGet)
+
 // Route used to find correct next step - answer type > settings page || edit question page
-router.post('/form-designer/pages/:pageId(\\d+)/edit-answer-type', function (req, res) {
+editAnswerType = function (req, res) {
   var pageId = parseInt(req.params.pageId, 10)
   var pageIndex = pageId
   var pageData = req.session.data.pages[pageIndex]
+
+  var groupId = req.params.groupId ? parseInt(req.params.groupId, 10) : null 
 
   var type = req.session.data.type
   req.session.data.type = undefined
@@ -96,7 +112,8 @@ router.post('/form-designer/pages/:pageId(\\d+)/edit-answer-type', function (req
 
     if (!pageData) {
       req.session.data.pages.push({
-        'pageIndex': nextPageId
+        'pageIndex': nextPageId,
+        'addToGroup': groupId
       })
     } else {
       pageData['type'] = type
@@ -120,12 +137,14 @@ router.post('/form-designer/pages/:pageId(\\d+)/edit-answer-type', function (req
       return res.redirect('edit')
     }
   }
-})
+}
+router.post('/form-designer/pages/:pageId(\\d+)/edit-answer-type', editAnswerType)
+router.post('/form-designer/groups/:groupId(\\d+)/pages/:pageId(\\d+)/edit-answer-type', editAnswerType)
 
 
 /* START selection from a list of options */
 // Edit answer type settings - display
-router.get('/form-designer/pages/:pageId(\\d+)/edit-select-question', function (req, res) {
+editSelectQuestionGet = function (req, res) {
   var pageId = parseInt(req.params.pageId, 10)
   var pageIndex = pageId
   var pageData = req.session.data.pages[pageIndex]
@@ -142,9 +161,12 @@ router.get('/form-designer/pages/:pageId(\\d+)/edit-select-question', function (
     previousPageText: tempArray[0].previousPageText,
     previousPageLink: tempArray[0].previousPageLink
   })
-})
+}
+router.get('/form-designer/pages/:pageId(\\d+)/edit-select-question', editSelectQuestionGet)
+router.get('/form-designer/groups/:groupId(\\d+)/pages/:pageId(\\d+)/edit-select-question', editSelectQuestionGet)
+
 // Edit answer type settings - route to what is your question page for select from list answer type
-router.post('/form-designer/pages/:pageId(\\d+)/edit-select-question', function (req, res) {
+editSelectQuestion = function (req, res) {
   var pageId = parseInt(req.params.pageId, 10)
   var pageIndex = pageId
   var pageData = req.session.data.pages[pageIndex]
@@ -188,13 +210,15 @@ router.post('/form-designer/pages/:pageId(\\d+)/edit-select-question', function 
     const nextPageId = req.session.data.pages.length
     res.redirect('edit-settings')
   }
-})
+}
+router.post('/form-designer/pages/:pageId(\\d+)/edit-select-question', editSelectQuestion)
+router.post('/form-designer/groups/:groupId(\\d+)/pages/:pageId(\\d+)/edit-select-question', editSelectQuestion)
 /* END of selection from a list of options */
 
 
 /* START secondary answer type settings */
 // Edit answer type settings - display
-router.get('/form-designer/pages/:pageId(\\d+)/edit-settings', function (req, res) {
+editSettingsGet = function (req, res) {
   var pageId = parseInt(req.params.pageId, 10)
   var pageIndex = pageId
   var pageData = req.session.data.pages[pageIndex]
@@ -219,9 +243,12 @@ router.get('/form-designer/pages/:pageId(\\d+)/edit-settings', function (req, re
     previousPageText: tempArray[0].previousPageText,
     previousPageLink: tempArray[0].previousPageLink
   })
-})
+}
+router.get('/form-designer/pages/:pageId(\\d+)/edit-settings', editSettingsGet)
+router.get('/form-designer/groups/:groupId(\\d+)/pages/:pageId(\\d+)/edit-settings', editSettingsGet)
+
 // Edit answer type settings - route used to find correct next step - settings page > edit question page
-router.post('/form-designer/pages/:pageId(\\d+)/edit-settings', function (req, res) {
+editSettings = function (req, res) {
   var action = req.session.data.action
   // clear the action so it doesn't change the next page load
   req.session.data.action = undefined
@@ -364,7 +391,9 @@ router.post('/form-designer/pages/:pageId(\\d+)/edit-settings', function (req, r
     return res.redirect('edit')
 
   }
-})
+}
+router.post('/form-designer/pages/:pageId(\\d+)/edit-settings', editSettings) 
+router.post('/form-designer/groups/:groupId(\\d+)/pages/:pageId(\\d+)/edit-settings', editSettings) 
 /* END secondary answer type settings */
 
 
@@ -373,7 +402,7 @@ router.post('/form-designer/pages/:pageId(\\d+)/edit-settings', function (req, r
 
 /* START editing question text and hint text */
 // Edit a user-created question
-router.get('/form-designer/pages/:pageId(\\d+)/edit', function (req, res) {
+editQuestionGet = function (req, res) {
   var pageId = parseInt(req.params.pageId, 10)
   var pageIndex = pageId
   var pageData = req.session.data.pages[pageIndex]
@@ -390,18 +419,31 @@ router.get('/form-designer/pages/:pageId(\\d+)/edit', function (req, res) {
     previousPageText: tempArray[0].previousPageText,
     previousPageLink: tempArray[0].previousPageLink
   })
-})
+}
+router.get('/form-designer/pages/:pageId(\\d+)/edit', editQuestionGet)
+router.get('/form-designer/groups/:groupId(\\d+)/pages/:pageId(\\d+)/edit', editQuestionGet)
+
 // Route used to find correct next step - edit question page > answer type
-router.post('/form-designer/pages/:pageId(\\d+)/edit', function (req, res) {
+editQuestion = function (req, res) {
   var action = req.session.data.action
   // clear the action so it doesn't change the next page load
   req.session.data.action = undefined
 
-  var additionalGuidance = req.session.data['additional-guidance']
-
   var pageId = parseInt(req.params.pageId, 10)
   var pageIndex = pageId
   var pageData = req.session.data.pages[pageIndex]
+
+  var additionalGuidance = req.session.data['additional-guidance']
+
+  var repeatQ = req.session.data.groupQuestions ? req.session.data.groupQuestions : null
+
+  if (repeatQ && repeatQ == 'newQuestionRepeats') {
+    pageData['repeatQuestion'] = 'Yes'
+    pageData['minLoop'] = req.session.data.minLoop ? req.session.data.minLoop : 1
+    req.session.data.minLoop = undefined
+    pageData['maxLoop'] = req.session.data.maxLoop ? req.session.data.maxLoop : 99
+    req.session.data.maxLoop = undefined
+  }
 
   const errors = {};
 
@@ -418,8 +460,8 @@ router.post('/form-designer/pages/:pageId(\\d+)/edit', function (req, res) {
     } else {
       pageData['long-title'] = req.session.data['long-title']
     }
-    req.session.data['long-title'] = undefined
   }
+  req.session.data['long-title'] = undefined
 
   // if hint text is added, add it to pageData
   if (req.session.data['hint-text']) {
@@ -467,13 +509,15 @@ router.post('/form-designer/pages/:pageId(\\d+)/edit', function (req, res) {
   } else {
     return res.redirect(`check-question`)
   }
-})
+}
+router.post('/form-designer/pages/:pageId(\\d+)/edit', editQuestion)
+router.post('/form-designer/groups/:groupId(\\d+)/pages/:pageId(\\d+)/edit', editQuestion)
 /* END editing question text and hint text */
 
 
 /* START adding additional guidance */
 // Add additional guidance
-router.get('/form-designer/pages/:pageId(\\d+)/additional-guidance', function (req, res) {
+additionalGuidanceGet = function (req, res) {
   var pageId = parseInt(req.params.pageId, 10)
   var pageIndex = pageId
   var pageData = req.session.data.pages[pageIndex]
@@ -494,9 +538,12 @@ router.get('/form-designer/pages/:pageId(\\d+)/additional-guidance', function (r
     previousPageText: tempArray[0].previousPageText,
     previousPageLink: tempArray[0].previousPageLink
   })
-})
+}
+router.get('/form-designer/pages/:pageId(\\d+)/additional-guidance', additionalGuidanceGet)
+router.get('/form-designer/groups/:groupId(\\d+)/pages/:pageId(\\d+)/additional-guidance', additionalGuidanceGet)
+
 // Add additional guidance text route
-router.post('/form-designer/pages/:pageId(\\d+)/additional-guidance', function (req, res) {
+additionalGuidance = function (req, res) {
   var action = req.session.data.action
   // clear the action so it doesn't change the next page load
   req.session.data.action = undefined
@@ -557,7 +604,9 @@ router.post('/form-designer/pages/:pageId(\\d+)/additional-guidance', function (
   } else {
     res.redirect('check-question')
   }
-})
+}
+router.post('/form-designer/pages/:pageId(\\d+)/additional-guidance', additionalGuidance)
+router.post('/form-designer/groups/:groupId(\\d+)/pages/:pageId(\\d+)/additional-guidance', additionalGuidance)
 /* END adding additional guidance */
 
 
@@ -565,7 +614,7 @@ router.post('/form-designer/pages/:pageId(\\d+)/additional-guidance', function (
 =========================== */
 
 // Check your question - middleware
-router.use('/form-designer/pages/:pageId(\\d+)/check-question', function (req, res, next) {
+checkQuestionUse = function (req, res, next) {
 
   // remove empty pageData if there is only one object (pageIndex) in array
   const pages = req.session.data.pages.filter(element => {
@@ -581,10 +630,12 @@ router.use('/form-designer/pages/:pageId(\\d+)/check-question', function (req, r
   req.session.data.highestPageId = parseInt(pages.length - 1)
 
   next();
-})
+}
+router.use('/form-designer/pages/:pageId(\\d+)/check-question', checkQuestionUse)
+router.use('/form-designer/groups/:groupId(\\d+)/pages/:pageId(\\d+)/check-question', checkQuestionUse)
 
 // Check your question - display the page
-router.get('/form-designer/pages/:pageId(\\d+)/check-question', function (req, res) {
+checkQuestionGet = function (req, res) {
   var pageId = parseInt(req.params.pageId, 10)
   var pageIndex = pageId
   var pageData = req.session.data.pages[pageIndex]
@@ -622,10 +673,12 @@ router.get('/form-designer/pages/:pageId(\\d+)/check-question', function (req, r
     previousPageText: tempArray[0].previousPageText,
     previousPageLink: tempArray[0].previousPageLink
   })
-})
+}
+router.get('/form-designer/pages/:pageId(\\d+)/check-question', checkQuestionGet)
+router.get('/form-designer/groups/:groupId(\\d+)/pages/:pageId(\\d+)/check-question', checkQuestionGet)
 
 // Check your question - route used to find correct next step - edit question page > answer type
-router.post('/form-designer/pages/:pageId(\\d+)/check-question', function (req, res) {
+checkQuestion = function (req, res) {
   var action = req.session.data.action
   // clear the action so it doesn't change the next page load
   req.session.data.action = undefined
@@ -662,14 +715,16 @@ router.post('/form-designer/pages/:pageId(\\d+)/check-question', function (req, 
   } else {
     return res.redirect(req.path)
   }
-})
+}
+router.post('/form-designer/pages/:pageId(\\d+)/check-question', checkQuestion)
+router.post('/form-designer/groups/:groupId(\\d+)/pages/:pageId(\\d+)/check-question', checkQuestion)
 
 
 /* PREVIEW QUESTION
 =================== */
 
 // Preview question - display
-router.get('/form-designer/pages/:pageId(\\d+)/preview-question', function (req, res) {
+previewQuestionGet = function (req, res) {
   var pageId = parseInt(req.params.pageId, 10)
   var pageIndex = pageId
   var pageData = req.session.data.pages[pageIndex]
@@ -701,7 +756,9 @@ router.get('/form-designer/pages/:pageId(\\d+)/preview-question', function (req,
     previousPageText: tempArray[0].previousPageText,
     previousPageLink: tempArray[0].previousPageLink
   })
-})
+}
+router.get('/form-designer/pages/:pageId(\\d+)/preview-question', previewQuestionGet)
+router.get('/form-designer/groups/:groupId(\\d+)/pages/:pageId(\\d+)/preview-question', previewQuestionGet)
 
 
 /* SUPPORTING FUNCTIONS
