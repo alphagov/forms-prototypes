@@ -7,24 +7,22 @@ const router = govukPrototypeKit.requests.setupRouter()
 // What do you want to add? - new question or question set (group) 
 router.post('/form-designer/groups/group-or-question', function (req, res) { 
   var groupQuestions = req.session.data.groupQuestions
-  req.session.data.groupQuestions = undefined
 
-  if (groupQuestions == 'newQuestion') {
-    // add a new question
-    res.redirect(`/form-designer/pages/new`)
-  } else {
+  if (groupQuestions == 'newGroup') {
     // add a new question set (group)
     res.redirect(`/form-designer/groups/new`)
+  } else {
+    // add a new question
+    res.redirect(`/form-designer/pages/new`)
   }
 })
 
 // Create a new question set (group) - button journeys
 router.get('/form-designer/groups/new', function (req, res) {  
   var groupId = parseInt(req.params.groupId, 10)
-  var groupIndex = groupId
-  var groupData = req.session.data.groups[groupIndex]
+  var groupData = req.session.data.groups[groupId]
 
-  // remove empty pageData if there is only one object (pageIndex) in array
+  // remove empty groupData if there is only one object (groupId) in array
   const groups = req.session.data.groups.filter(element => {
     if (Object.keys(element).length > 1) {
       return true
@@ -51,20 +49,21 @@ router.get('/form-designer/groups/new', function (req, res) {
 // Edit question set (group) - display
 router.get('/form-designer/groups/:groupId(\\d+)/edit-group', function (req, res) {
   var groupId = parseInt(req.params.groupId, 10)
-  var groupIndex = groupId
-  var groupData = req.session.data.groups[groupIndex]
+  var groupData = req.session.data.groups[groupId]
+
+  var link = req.session.data.link
 
   return res.render('form-designer/groups/edit-group', {
-    groupId: groupId,
-    groupIndex: groupIndex,
+    link: link,
     groupData: groupData
   })
 })
-// Route used to find correct next step - answer type > settings page || edit question page
+// Route used to find correct next step
 router.post('/form-designer/groups/:groupId(\\d+)/edit-group', function (req, res) {
   var groupId = parseInt(req.params.groupId, 10)
-  var groupIndex = groupId
-  var groupData = req.session.data.groups[groupIndex]
+  var groupData = req.session.data.groups[groupId]
+
+  var action = req.session.data.action
 
   var errors = {};
 
@@ -97,16 +96,6 @@ router.post('/form-designer/groups/:groupId(\\d+)/edit-group', function (req, re
     }
   }
 
-  var groupOrder = req.session.data.groupOrder
-  req.session.data.groupOrder = undefined
-  // if no position chosen, then throw an error
-  if (!groupOrder || groupOrder == 'choose') {
-    errors['groupOrder'] = {
-      text: 'Choose where you want your question set to appear',
-      href: "#group-order"
-    }
-  }
-
   // Convert the errors into a list, so we can use it in the template
   const errorList = Object.values(errors)
   // If there are no errors, redirect the user to the next page
@@ -115,41 +104,53 @@ router.post('/form-designer/groups/:groupId(\\d+)/edit-group', function (req, re
   // If there are errors on the page, redisplay it with the errors
   if(containsErrors) {
     return res.render('form-designer/groups/edit-group', {
-      groupId: groupId,
-      groupIndex: groupIndex,
       groupData: groupData,
       errors,
       errorList,
       containsErrors
     })
   } else {
-    const nextGroupId = req.session.data.groups.length
+    groupData['groupName'] = groupName
+    groupData['minLoop'] = minLoop
+    groupData['maxLoop'] = maxLoop
 
-    if (!groupData) {
-      req.session.data.groups.push({
-        'groupIndex': nextGroupId
-      })
+    if (action == 'saveChanges') {
+      // add a new question
+      res.redirect(`/form-designer/groups/${groupId}/check-group`)
     } else {
-      groupData['groupName'] = groupName
-      groupData['minLoop'] = minLoop
-      groupData['maxLoop'] = maxLoop
-      groupData['groupOrder'] = groupOrder
+      // add a new question
+      res.redirect(`/form-designer/groups/${groupId}/pages/new`)
     }
-    // add a new question
-    res.redirect(`/form-designer/pages/new`)
   }
 })
 
+// Check question set (group) - display
+router.get('/form-designer/groups/:groupId(\\d+)/check-group', function (req, res) {
+  var pagesOrder = req.session.data.pagesOrder
+  var groupId = parseInt(req.params.groupId, 10)
+  var groupData = req.session.data.groups[groupId]
 
-/* Journey 1
+  return res.render('form-designer/groups/check-group', {
+    pagesOrder: pagesOrder,
+    groupData: groupData
+  })
+})
+// Route used to find next step
+router.post('/form-designer/groups/:groupId(\\d+)/check-group', function (req, res) {
+  // return to your form page
+  res.redirect(`/form-designer/clear-empty`)
+})
+
+
+/* Journey 1 still to do
 ============ */ 
 /*
-1. “Add a question” button goes to “group-or-question.html” 
-2. “Single question” radio goes to normal routes
-3. “Group of questions” radio goes to “edit-group.html” 
-4. “edit-group.html” goes to pages/new route (with new caption text)
-5. “check your question” page needs save notification and link CTA updated to cater for taking user to “check-group.html”
-6. “check-group.html” if saved should show “delete” button and list questions added to the group
+1a. “edit-question.html” has new caption text - show group name and question number
+1b. “edit-question.html” should show group the question is part of IF associated with one
+2. “check-question.html” has a way to stop adding questions, taking user to the “check-group.html” page
+3. “check-group.html” if saved should show “delete” button and list questions added to the group
+4. “groupOrder” should impact where in the “pagesOrder” a group appears - and should be changeable 
+5. show a success message once a new group has been added on the “your-questions.html” page 
 */
 
 /* Journey 2
