@@ -159,49 +159,75 @@
                   hint: {
                     text: "‘(optional)’ will be added to the end of the question text"
                   },
-                  checked: checked(namePrefix + "['questionOptional']", "questionOptional")
+                  checked: checked(pageData + "['questionOptional']", "questionOptional")
                 }
               ]
             }) }}
           {% endif %}
 
-          {% if data.groupQuestions == 'newQuestionRepeats' %}
-            {% call govukFieldset({
-              legend: {
-                text: "How many times can people answer this question?",
-                classes: "govuk-fieldset__legend--m"
-              }
-            }) %}
+          {% if data.addJourney == 'addAnother1' %}
+            {% if data.groupQuestions == 'newQuestionRepeats' %}
+              {% call govukFieldset({
+                legend: {
+                  text: "How many times can people answer this question?",
+                  classes: "govuk-fieldset__legend--m"
+                }
+              }) %}
 
-              {{ govukInput({
-                formGroup: {
-                  classes: "govuk-!-display-inline-block govuk-!-margin-right-4"
-                },
-                label: {
-                  text: "Min"
-                },
-                classes: "govuk-input--width-2",
-                id: "minimum-loop",
-                name: "minLoop",
-                value: pageData['minLoop'],
-                errorMessage: { text: errors['minLoop'].text } if errors['minLoop'].text 
-              }) }}
+                {{ govukInput({
+                  formGroup: {
+                    classes: "govuk-!-display-inline-block govuk-!-margin-right-4"
+                  },
+                  label: {
+                    text: "Min"
+                  },
+                  classes: "govuk-input--width-2",
+                  id: "minimum-loop",
+                  name: "minLoop",
+                  value: pageData['minLoop'],
+                  errorMessage: { text: errors['minLoop'].text } if errors['minLoop'].text 
+                }) }}
 
-              {{ govukInput({
-                formGroup: {
-                  classes: "govuk-!-display-inline-block"
-                },
-                label: {
-                  text: "Max"
-                },
-                classes: "govuk-input--width-3",
-                id: "maximum-loop",
-                name: "maxLoop",
-                value: pageData['maxLoop'],
-                errorMessage: { text: errors['maxLoop'].text } if errors['maxLoop'].text 
-              }) }}
+                {{ govukInput({
+                  formGroup: {
+                    classes: "govuk-!-display-inline-block"
+                  },
+                  label: {
+                    text: "Max"
+                  },
+                  classes: "govuk-input--width-3",
+                  id: "maximum-loop",
+                  name: "maxLoop",
+                  value: pageData['maxLoop'],
+                  errorMessage: { text: errors['maxLoop'].text } if errors['maxLoop'].text 
+                }) }}
 
-            {% endcall %}
+              {% endcall %}
+            {% endif %}
+          {% elif data.addJourney == 'addAnother2' %}
+            {{ govukRadios({
+              classes: "govuk-radios--inline",
+              name: "repeatQuestion",
+              fieldset: {
+                legend: {
+                  text: "Can people answer this question more than once?",
+                  classes: "govuk-fieldset__legend--m"
+                }
+              },
+              items: [
+                {
+                  value: "Yes",
+                  text: "Yes",
+                  checked: checked(namePrefix + "['repeatQuestion']", "Yes")
+                },
+                {
+                  value: "No",
+                  text: "No",
+                  checked: checked(namePrefix + "['repeatQuestion']", "No")
+                }
+              ],
+              errorMessage: { text: errors['repeatQuestion'].text } if errors['repeatQuestion'].text
+            }) }}
           {% endif %}
 
           {{ govukButton({
