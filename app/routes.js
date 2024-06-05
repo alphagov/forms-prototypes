@@ -397,7 +397,7 @@ router.post('/form-designer/your-questions', function (req, res) {
     // what action has been selected 
     if (action == 'addQuestion') {
       if (req.session.data.addJourney == 'addAnother1') {
-        // add another answer journey - pre question version (Option 2 on Mural board)
+        // add another answer journey - pre question version (Prototype 1 / Option 4 on Mural board)
         res.redirect(`/form-designer/groups/group-or-question`)
       } else {
         // add a new question
