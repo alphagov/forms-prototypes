@@ -425,18 +425,15 @@ router.get('/form-designer/groups/:groupId(\\d+)/pages/:pageId(\\d+)/edit', edit
 
 // Route used to find correct next step - edit question page > answer type
 editQuestion = function (req, res) {
-  var action = req.session.data.action
-  // clear the action so it doesn't change the next page load
-  req.session.data.action = undefined
-
   var pageId = parseInt(req.params.pageId, 10)
   var pageIndex = pageId
   var pageData = req.session.data.pages[pageIndex]
 
   var additionalGuidance = req.session.data['additional-guidance']
 
-  var repeatQ = req.session.data.groupQuestions ? req.session.data.groupQuestions : null
+  var repeatQuestion = req.session.data.repeatQuestion ? req.session.data.repeatQuestion : null
 
+  var repeatQ = req.session.data.groupQuestions ? req.session.data.groupQuestions : null
   if (repeatQ && repeatQ == 'newQuestionRepeats') {
     pageData['repeatQuestion'] = 'Yes'
     pageData['minLoop'] = req.session.data.minLoop ? req.session.data.minLoop : 1
@@ -489,6 +486,20 @@ editQuestion = function (req, res) {
   }
   req.session.data['questionOptional'] = undefined
 
+  if ((req.session.data.addJourney) && (req.session.data.addJourney == 'addAnother2')) {
+    // if no additional guidance answer, then throw an error
+    if (!repeatQuestion || !repeatQuestion.length) {
+      errors['repeatQuestion'] = {
+        text: 'Select ‘Yes’ to let people answer this question more than once',
+        href: "#repeatQuestion"
+      }
+    // otherwise add question text to pageData
+    } else {
+      pageData['repeatQuestion'] = repeatQuestion
+    }
+    req.session.data['repeatQuestion'] = undefined
+}
+
   // Convert the errors into a list, so we can use it in the template
   const errorList = Object.values(errors)
   // If there are no errors, redirect the user to the next page
@@ -505,8 +516,13 @@ editQuestion = function (req, res) {
       containsErrors
     })
   } else if (additionalGuidance == 'Yes') {
+    // if user needs to add detailed guidance go here first
     return res.redirect(`additional-guidance`)
+  } else if (repeatQuestion == 'Yes') {
+    // else if user wants to repeat question go to check if it is part of a set or single question
+    return res.redirect(`add-to-set`)
   } else {
+    // if no detailed guidance, and no repeat then go to check question page
     return res.redirect(`check-question`)
   }
 }
@@ -551,6 +567,8 @@ additionalGuidance = function (req, res) {
   var pageId = parseInt(req.params.pageId, 10)
   var pageIndex = pageId
   var pageData = req.session.data.pages[pageIndex]
+  
+  var repeatQuestion = pageData.repeatQuestion ? pageData.repeatQuestion : null
 
   const errors = {};
   const pageHeading = req.session.data['page-name']
@@ -602,12 +620,333 @@ additionalGuidance = function (req, res) {
     req.session.data.successMessage = previewing
     res.redirect('additional-guidance#preview-guidance-text')
   } else {
-    res.redirect('check-question')
+    if (repeatQuestion == 'Yes') {
+      // if user selected to repeat question go to check if it is part of a set or single question
+      return res.redirect(`add-to-set`)
+    } else {
+      // otherwise go to check question
+      res.redirect('check-question')
+    }
   }
 }
 router.post('/form-designer/pages/:pageId(\\d+)/additional-guidance', additionalGuidance)
 router.post('/form-designer/groups/:groupId(\\d+)/pages/:pageId(\\d+)/additional-guidance', additionalGuidance)
 /* END adding additional guidance */
+
+
+/* START add question to set */
+// GET add-to-set page
+addToSetGet = function (req, res) {
+  var pageId = parseInt(req.params.pageId, 10)
+  var pageIndex = pageId
+  var pageData = req.session.data.pages[pageIndex]
+
+  return res.render('form-designer/pages/add-to-set', {
+    pageId: pageId,
+    pageIndex: pageIndex,
+    pageData: pageData
+  })
+}
+router.get('/form-designer/pages/:pageId(\\d+)/add-to-set', addToSetGet)
+// POST add-to-set page
+addToSetPost = function (req, res) {
+  var { addToSet } = req.session.data
+  var pageId = parseInt(req.params.pageId, 10)
+  var pageIndex = pageId
+  var pageData = req.session.data.pages[pageIndex]
+
+  var groupId = req.session.data.groups.length
+
+  const errors = {};
+
+  // if no minimum loop has been provided, then throw an error
+  if (!addToSet || !addToSet.length) {
+    errors['addToSet'] = {
+      text: 'Select ‘Yes’ if you want to add this question to a set',
+      href: "#addToSet"
+    }
+  } else {
+    pageData['addToSet'] = req.session.data.addToSet
+  }
+  req.session.data.addToSet = undefined
+
+  // Convert the errors into a list, so we can use it in the template
+  const errorList = Object.values(errors)
+  // If there are no errors, redirect the user to the next page
+  // otherwise, show the page again with the errors set
+  const containsErrors = errorList.length > 0
+  // If there are errors on the page, redisplay it with the errors
+  if(containsErrors) {
+    return res.render('form-designer/pages/add-to-set', {
+      pageId: pageId,
+      pageIndex: pageIndex,
+      pageData: pageData,
+      errors,
+      errorList,
+      containsErrors
+    })
+  } else {
+    if (addToSet == 'Yes') {
+      if (req.session.data.groups.length > 0) {
+        // if there are existing question sets go to list page
+        res.redirect(`/form-designer/pages/${pageId}/choose-group`)
+      } else {
+        // otherwise go to add a new set
+        res.redirect(`/form-designer/pages/${pageId}/groups/${groupId}/new`)
+      }
+    } else {
+      res.redirect('add-loop')
+    }
+  }
+}
+router.post('/form-designer/pages/:pageId(\\d+)/add-to-set', addToSetPost)
+
+// GET add-loop page
+addLoopGet = function (req, res) {
+  var pageId = parseInt(req.params.pageId, 10)
+  var pageIndex = pageId
+  var pageData = req.session.data.pages[pageIndex]
+
+  return res.render('form-designer/pages/add-loop', {
+    pageId: pageId,
+    pageIndex: pageIndex,
+    pageData: pageData
+  })
+}
+router.get('/form-designer/pages/:pageId(\\d+)/add-loop', addLoopGet)
+// POST add-loop page
+addLoop = function (req, res) {
+  var { minLoop, maxLoop } = req.session.data
+  var pageId = parseInt(req.params.pageId, 10)
+  var pageIndex = pageId
+  var pageData = req.session.data.pages[pageIndex]
+
+  const errors = {};
+
+  // if no minimum loop has been provided, then throw an error
+  if (!minLoop || !minLoop.length) {
+    errors['minLoop'] = {
+      text: 'Enter the minimum number of times this question needs to be answered',
+      href: "#minimum-loop"
+    }
+  } else {
+    pageData['minLoop'] = minLoop
+  }
+  req.session.data.minLoop = undefined
+
+  // if no minimum loop has been provided, then throw an error
+  if (!maxLoop || !maxLoop.length) {
+    errors['maxLoop'] = {
+      text: 'Enter the maximum number of times this question can be answered',
+      href: "#maximum-loop"
+    }
+  } else {
+    pageData['maxLoop'] = maxLoop
+  }
+  req.session.data.maxLoop = undefined
+
+  // Convert the errors into a list, so we can use it in the template
+  const errorList = Object.values(errors)
+  // If there are no errors, redirect the user to the next page
+  // otherwise, show the page again with the errors set
+  const containsErrors = errorList.length > 0
+  // If there are errors on the page, redisplay it with the errors
+  if(containsErrors) {
+    return res.render('form-designer/pages/add-loop', {
+      pageId: pageId,
+      pageIndex: pageIndex,
+      pageData: pageData,
+      errors,
+      errorList,
+      containsErrors
+    })
+  } else {
+    res.redirect('check-question')
+  }
+}
+router.post('/form-designer/pages/:pageId(\\d+)/add-loop', addLoop)
+
+// GET - render group/choose-group page
+chooseGroup = function (req, res) {
+  var { groups, pages } = req.session.data
+  var groupId = parseInt(req.params.groupId, 10)
+  var groupData = req.session.data.groups[groupId]
+
+  var pageId = parseInt(req.params.pageId, 10)
+  var pageIndex = pageId
+  var pageData = req.session.data.pages[pageIndex]
+
+  return res.render('form-designer/groups/choose-group', {
+    pageId: pageId,
+    pageIndex: pageIndex,
+    pageData: pageData,
+    groups: groups,
+    groupData: groupData
+  })
+}
+router.get('/form-designer/pages/:pageId(\\d+)/choose-group', chooseGroup)
+// POST groups/choose-group page
+editGroupPost = function (req, res) {
+  var pageId = parseInt(req.params.pageId, 10)
+  var pageIndex = pageId
+  var pageData = req.session.data.pages[pageIndex]
+
+  var groupId = req.session.data.addToGroup
+  var groupData = req.session.data.groups[groupId]
+
+  const errors = {};
+
+  // if no set name given, then throw an error
+  if (!groupId || !groupId.length) {
+    errors['groupId'] = {
+      text: 'Select the question set to add this question to or create a new set',
+      href: "#addToGroup"
+    }
+  } else {
+    pageData['addToGroup'] = groupId
+  }
+  req.session.data.addToGroup = undefined
+
+  // Convert the errors into a list, so we can use it in the template
+  const errorList = Object.values(errors)
+  // If there are no errors, redirect the user to the next page
+  // otherwise, show the page again with the errors set
+  const containsErrors = errorList.length > 0
+  // If there are errors on the page, redisplay it with the errors
+  if(containsErrors) {
+    return res.render('form-designer/groups/choose-group', {
+      pageId: pageId,
+      pageIndex: pageIndex,
+      pageData: pageData,
+      groupData: groupData,
+      errors,
+      errorList,
+      containsErrors
+    })
+  } else {
+    res.redirect(`/form-designer/pages/${pageId}/check-question`)
+  }
+}
+router.post('/form-designer/pages/:pageId(\\d+)/choose-group', editGroupPost)
+
+
+// Create a new group
+// Create a new question set (group) - button journeys
+router.get('/form-designer/pages/:pageId(\\d+)/groups/:groupId(\\d+)/new', function (req, res) { 
+  var pageId = parseInt(req.params.pageId, 10)
+
+  var groupId = parseInt(req.params.groupId, 10)
+  var groupData = req.session.data.groups[groupId]
+
+  // remove empty groupData if there is only one object (groupId) in array
+  const groups = req.session.data.groups.filter(element => {
+    if (Object.keys(element).length > 1) {
+      return true
+    }
+    return false
+  })
+  // Save the groups
+  req.session.data.groups = groups
+
+  // reset highestGroupId to number of groups
+  req.session.data.highestGroupId = parseInt(groups.length - 1)
+
+  var nextGroupId = req.session.data.groups.length
+
+  if (!groupData) {
+    req.session.data.groups.push({
+      'groupIndex': nextGroupId
+    })
+  }
+  // add a new question set (group)
+  res.redirect(`/form-designer/pages/${pageId}/groups/${groupId}/edit-group`)
+})
+// GET - render groups/edit-group page
+editGroup = function (req, res) {
+  var groupId = parseInt(req.params.groupId, 10)
+  var groupData = req.session.data.groups[groupId]
+
+  var pageId = parseInt(req.params.pageId, 10)
+  var pageIndex = pageId
+  var pageData = req.session.data.pages[pageIndex]
+
+  return res.render('form-designer/groups/edit-group', {
+    pageId: pageId,
+    pageIndex: pageIndex,
+    pageData: pageData,
+    groupData: groupData
+  })
+}
+router.get('/form-designer/pages/:pageId(\\d+)/groups/:groupId(\\d+)/edit-group', editGroup)
+// POST groups/edit-group page
+editGroupPost = function (req, res) {
+  var { groupName, minLoop, maxLoop } = req.session.data
+  var pageId = parseInt(req.params.pageId, 10)
+  var pageIndex = pageId
+  var pageData = req.session.data.pages[pageIndex]
+
+  var groupId = parseInt(req.params.groupId, 10)
+  var groupData = req.session.data.groups[groupId]
+
+  const errors = {};
+
+  // if no set name given, then throw an error
+  if (!groupName || !groupName.length) {
+    errors['groupName'] = {
+      text: 'Give your question set a name',
+      href: "#group-name"
+    }
+  } else {
+    pageData['addToGroup'] = groupId
+    groupData['groupName'] = groupName
+  }
+  req.session.data.groupName = undefined
+
+  // if no minimum loop has been provided, then throw an error
+  if (!minLoop || !minLoop.length) {
+    errors['minLoop'] = {
+      text: 'Enter the minimum number of times this question needs to be answered',
+      href: "#minimum-loop"
+    }
+  } else {
+    groupData['minLoop'] = minLoop
+  }
+  req.session.data.minLoop = undefined
+
+  // if no minimum loop has been provided, then throw an error
+  if (!maxLoop || !maxLoop.length) {
+    errors['maxLoop'] = {
+      text: 'Enter the maximum number of times this question can be answered',
+      href: "#maximum-loop"
+    }
+  } else {
+    groupData['maxLoop'] = maxLoop
+  }
+  req.session.data.maxLoop = undefined
+
+  // Convert the errors into a list, so we can use it in the template
+  const errorList = Object.values(errors)
+  // If there are no errors, redirect the user to the next page
+  // otherwise, show the page again with the errors set
+  const containsErrors = errorList.length > 0
+  // If there are errors on the page, redisplay it with the errors
+  if(containsErrors) {
+    return res.render('form-designer/groups/edit-group', {
+      pageId: pageId,
+      pageIndex: pageIndex,
+      pageData: pageData,
+      groupData: groupData,
+      errors,
+      errorList,
+      containsErrors
+    })
+  } else {
+    res.redirect(`/form-designer/pages/${pageId}/check-question`)
+  }
+}
+router.post('/form-designer/pages/:pageId(\\d+)/groups/:groupId(\\d+)/edit-group', editGroupPost)
+
+/* END add question to set */
 
 
 /* REVIEW AND SAVE QUESTION 
