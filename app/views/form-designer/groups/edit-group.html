@@ -1,6 +1,6 @@
 {% extends "layout-govuk-forms.html" %}
 
-{% set pageName = 'Create new question set' %}
+{% set pageName = 'Create a new question set' %}
 
 {% block pageTitle %}
   {{ "Error: " if containsErrors }}{{ pageName }} - {{ data.formTitle  or '[formTitle]' }} - GOV.UK Forms
@@ -29,10 +29,10 @@
         <h1 class="govuk-heading-l">{{ pageName }}</h1>
 
         <p class="govuk-body-l">
-          Your question set can be used to get multiple pieces of information from someone filling in your form.
+          A question set lets you ask someone for multiple pieces of information related to one thing.
         </p>
         <p class="govuk-body-l">
-          It reduces the need to duplicate questions manually, while giving people more control over how many times they need to supply the information.
+          This means you do not have to create duplicate questions manually. It also gives people more control over how many times they need to supply the information.
         </p>
 
         {{ govukInput({
@@ -86,7 +86,13 @@
 
         {% endcall %}
 
-        {% if data.changelink == 'change' %}
+        {% if (data.addJourney == 'addAnother2') %}
+          {{ govukButton({
+            text: "Save and continue",
+            name: "action",
+            value: "saveGroup"
+          }) }}
+        {% elif (data.changelink == 'change') %}
           {{ govukButton({
             text: "Save and continue",
             name: "action",
