@@ -111,7 +111,7 @@
               {% else %}
 
                 {% set questionTitle =  object.page["long-title"] or "Question " + (object.page["pageIndex"]|int + 1) %}
-                {% if object.page['questionOptional'] %}
+                {% if object.page['questionOptional'] == 'questionOptional' %}
                 {% set questionTitle = questionTitle + ' (optional)' %}
                 {% endif %}
 
