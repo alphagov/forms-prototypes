@@ -71,7 +71,7 @@
         </h3>
         <ul class="govuk-list">
           <li>
-            <a {% if 'new' in nextActionURL %}role="button" draggable="false" class="govuk-button govuk-!-margin-bottom-3" data-module="govuk-button"{% else %}class="govuk-link govuk-link--no-visited-state"{% endif %} href="{{ nextActionURL }}">
+            <a {% if ('new' in nextActionURL) or ('group-or-question' in nextActionURL) %}role="button" draggable="false" class="govuk-button govuk-!-margin-bottom-3" data-module="govuk-button"{% else %}class="govuk-link govuk-link--no-visited-state"{% endif %} href="{{ nextActionURL }}">
               {{ nextActionText }}
             </a>
           </li>
@@ -322,7 +322,7 @@
       </dl>
       {% endif %}
 
-      {% if (pageData['addToSet'] == 'Yes') and (pageData['addToGroup'] != null) -%}
+      {% if (pageData['addToSet'] == 'Yes') or (pageData['addToGroup'] != null) -%}
       {% for group in data.groups -%}
       {% if group.groupIndex == pageData.addToGroup -%}
       <h2 class="govuk-heading-m">Part of a question set</h2>

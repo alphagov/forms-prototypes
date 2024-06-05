@@ -983,6 +983,11 @@ checkQuestionGet = function (req, res) {
   var nextActionText = 'Add a new question'
   var nextActionURL = `../new`
 
+  if ((req.session.data.addJourney == 'addAnother1') && (pageData.addToGroup == null)) {
+    // start from the what do you want to add - single question, repeating question or question set
+    nextActionURL = `/form-designer/groups/group-or-question`
+  }
+
   if (pageId < req.session.data.pages.length - 1) {
     nextActionText = 'Edit next question'
     nextActionURL = `../` + editNextPageId + `/check-question` 
