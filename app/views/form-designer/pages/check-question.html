@@ -233,7 +233,7 @@
             Make this question optional
           </dt>
           <dd class="govuk-summary-list__value">
-            {{ 'Yes' if (pageData['questionOptional'] and 'questionOptional' in pageData['questionOptional']) else 'No' }}
+            {{ 'Optional' if (pageData['questionOptional'] and 'questionOptional' in pageData['questionOptional']) else 'Mandatory' }}
           </dd>
           <dd class="govuk-summary-list__actions">
             <a class="govuk-link govuk-link--no-visited-state" href="edit">
@@ -241,7 +241,37 @@
             </a>
           </dd>
         </div>
-        {% if pageData['repeatQuestion'] == 'Yes' %}
+        {% if data.addJourney == 'addAnother2' %}
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+              Can be answered multiple times
+            </dt>
+            <dd class="govuk-summary-list__value">
+              {{ pageData['repeatQuestion'] }}
+            </dd>
+            <dd class="govuk-summary-list__actions">
+              <a class="govuk-link govuk-link--no-visited-state" href="edit#repeatQuestion">
+                Change <span class="govuk-visually-hidden"> Can be answered multiple times<span>
+              </a>
+            </dd>
+          </div>
+          {% if pageData['repeatQuestion'] == 'Yes' %}
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">
+                Add to a set of questions
+              </dt>
+              <dd class="govuk-summary-list__value">
+                {{ pageData['addToSet'] }}
+              </dd>
+              <dd class="govuk-summary-list__actions">
+                <a class="govuk-link govuk-link--no-visited-state" href="add-to-set#addToSet">
+                  Change <span class="govuk-visually-hidden"> Add to a set of questions<span>
+                </a>
+              </dd>
+            </div>
+          {% endif %}
+        {% endif %}
+        {% if (pageData['repeatQuestion'] == 'Yes') and (pageData['addToGroup'] == null) %}
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">
             Number of times question can be answered
@@ -292,6 +322,43 @@
       </dl>
       {% endif %}
 
+      {% if (pageData['addToSet'] == 'Yes') and (pageData['addToGroup'] != null) -%}
+      {% for group in data.groups -%}
+      {% if group.groupIndex == pageData.addToGroup -%}
+      <h2 class="govuk-heading-m">Part of a question set</h2>
+      <dl class="govuk-summary-list">
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+            Question set name
+          </dt>
+          <dd class="govuk-summary-list__value">
+            {{ group.groupName }}
+          </dd>
+          <dd class="govuk-summary-list__actions">
+            <a class="govuk-link govuk-link--no-visited-state" href="edit-group#group-name">
+              Change <span class="govuk-visually-hidden"> question set name<span>
+            </a>
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+            Number of times set can be answered
+          </dt>
+          <dd class="govuk-summary-list__value">
+            Min: {{ group['minLoop'] }}<br>
+            Max: {{ group['maxLoop'] }}
+          </dd>
+          <dd class="govuk-summary-list__actions">
+            <a class="govuk-link govuk-link--no-visited-state" href="edit-group#minimum-loop">
+              Change <span class="govuk-visually-hidden"> number of times set can be answered<span>
+            </a>
+          </dd>
+        </div>
+      </dl>
+      {%- endif %}
+      {%- endfor %}
+      {%- endif %}
+
       <input type="hidden" id="questionSaved" name="questionSaved" value="Yes" />
 
       <div class="govuk-button-group">
@@ -310,7 +377,7 @@
         }) }}
 
         {% if editingExistingQuestion === 'Yes' -%}
-          {% if pageData.addToGroup != null -%}
+          {% if (data.addJourney == 'addAnother1') and (pageData['addToGroup'] != null) -%}
             {{ govukButton({
               classes: "govuk-button--secondary",
               text:  "Finish question set",
