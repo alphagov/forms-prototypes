@@ -55,6 +55,9 @@ editAnswerTypeGet = function (req, res) {
   var pageIndex = pageId
   var pageData = req.session.data.pages[pageIndex]
 
+  var groupId = req.params.groupId ? parseInt(req.params.groupId, 10) : null
+  var groupData = req.session.data.groups[groupId]
+
   // get the previous page URL
   var previousPage = req.session.data.referer
   // now we can set the back link data (text and url)
@@ -64,6 +67,7 @@ editAnswerTypeGet = function (req, res) {
     pageId: pageId,
     pageIndex: pageIndex,
     pageData: pageData,
+    groupData: groupData,
     previousPageLink: tempArray[0].previousPageLink,
     previousPageText: tempArray[0].previousPageText
   })
@@ -149,6 +153,9 @@ editSelectQuestionGet = function (req, res) {
   var pageIndex = pageId
   var pageData = req.session.data.pages[pageIndex]
 
+  var groupId = req.params.groupId ? parseInt(req.params.groupId, 10) : null
+  var groupData = req.session.data.groups[groupId]
+
   // get the previous page URL
   var previousPage = req.session.data.referer
   // now we can set the back link data (text and url)
@@ -158,6 +165,7 @@ editSelectQuestionGet = function (req, res) {
     pageId: pageId,
     pageIndex: pageIndex,
     pageData: pageData,
+    groupData: groupData,
     previousPageText: tempArray[0].previousPageText,
     previousPageLink: tempArray[0].previousPageLink
   })
@@ -223,6 +231,9 @@ editSettingsGet = function (req, res) {
   var pageIndex = pageId
   var pageData = req.session.data.pages[pageIndex]
 
+  var groupId = req.params.groupId ? parseInt(req.params.groupId, 10) : null
+  var groupData = req.session.data.groups[groupId]
+
   // get the previous page URL
   var previousPage = req.session.data.referer
   // now we can set the back link data (text and url)
@@ -240,6 +251,7 @@ editSettingsGet = function (req, res) {
     pageId: pageId,
     pageIndex: pageIndex,
     pageData: pageData,
+    groupData: groupData,
     previousPageText: tempArray[0].previousPageText,
     previousPageLink: tempArray[0].previousPageLink
   })
@@ -407,6 +419,9 @@ editQuestionGet = function (req, res) {
   var pageIndex = pageId
   var pageData = req.session.data.pages[pageIndex]
 
+  var groupId = req.params.groupId ? parseInt(req.params.groupId, 10) : null
+  var groupData = req.session.data.groups[groupId]
+
   // get the previous page URL
   var previousPage = req.session.data.referer
   // now we can set the back link data (text and url)
@@ -416,6 +431,7 @@ editQuestionGet = function (req, res) {
     pageId: pageId,
     pageIndex: pageIndex,
     pageData: pageData,
+    groupData: groupData,
     previousPageText: tempArray[0].previousPageText,
     previousPageLink: tempArray[0].previousPageLink
   })
@@ -538,6 +554,9 @@ additionalGuidanceGet = function (req, res) {
   var pageIndex = pageId
   var pageData = req.session.data.pages[pageIndex]
 
+  var groupId = req.params.groupId ? parseInt(req.params.groupId, 10) : null
+  var groupData = req.session.data.groups[groupId]
+
   var successMessage = req.session.data.successMessage
   req.session.data.successMessage = undefined
 
@@ -550,6 +569,7 @@ additionalGuidanceGet = function (req, res) {
     pageId: pageId,
     pageIndex: pageIndex,
     pageData: pageData,
+    groupData: groupData,
     successMessage,
     previousPageText: tempArray[0].previousPageText,
     previousPageLink: tempArray[0].previousPageLink
@@ -979,6 +999,9 @@ checkQuestionGet = function (req, res) {
   var pageIndex = pageId
   var pageData = req.session.data.pages[pageIndex]
 
+  var groupId = req.params.groupId ? parseInt(req.params.groupId, 10) : null
+  var groupData = req.session.data.groups[groupId]
+
   var editNextPageId = pageId + 1
   var nextActionText = 'Add a question'
   var nextActionURL = `../new`
@@ -1014,6 +1037,7 @@ checkQuestionGet = function (req, res) {
     pageId: pageId,
     pageIndex: pageIndex,
     pageData: pageData,
+    groupData: groupData,
     successMessage,
     nextActionText,
     nextActionURL,
@@ -1081,6 +1105,9 @@ previewQuestionGet = function (req, res) {
   var pageIndex = pageId
   var pageData = req.session.data.pages[pageIndex]
 
+  var groupId = req.params.groupId ? parseInt(req.params.groupId, 10) : null
+  var groupData = req.session.data.groups[groupId]
+
   var successMessage = req.session.data.successMessage
   req.session.data.successMessage = undefined
 
@@ -1102,6 +1129,7 @@ previewQuestionGet = function (req, res) {
     pageId: pageId,
     pageIndex: pageIndex,
     pageData: pageData,
+    groupData: groupData,
     successMessage,
     nextActionText,
     nextActionURL,
