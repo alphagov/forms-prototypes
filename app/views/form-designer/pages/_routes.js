@@ -980,12 +980,16 @@ checkQuestionGet = function (req, res) {
   var pageData = req.session.data.pages[pageIndex]
 
   var editNextPageId = pageId + 1
-  var nextActionText = 'Add a new question'
+  var nextActionText = 'Add a question'
   var nextActionURL = `../new`
 
   if ((req.session.data.addJourney == 'addAnother1') && (pageData.addToGroup == null)) {
     // start from the what do you want to add - single question, repeating question or question set
     nextActionURL = `/form-designer/groups/group-or-question`
+  }
+
+  if ((req.session.data.addJourney == 'addAnother1') && (pageData.addToGroup != null)) {
+    var nextActionText = 'Add a question to this set'
   }
 
   if (pageId < req.session.data.pages.length - 1) {

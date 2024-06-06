@@ -335,23 +335,27 @@
             {{ group.groupName }}
           </dd>
           <dd class="govuk-summary-list__actions">
+            {% if (data.addJourney == 'addAnother2') %}
             <a class="govuk-link govuk-link--no-visited-state" href="edit-group#group-name">
               Change <span class="govuk-visually-hidden"> question set name<span>
             </a>
+            {% endif %}
           </dd>
         </div>
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">
-            Number of times set can be answered
+            Number of times this set can be answered
           </dt>
           <dd class="govuk-summary-list__value">
             Min: {{ group['minLoop'] }}<br>
             Max: {{ group['maxLoop'] }}
           </dd>
           <dd class="govuk-summary-list__actions">
+            {% if (data.addJourney == 'addAnother2') %}
             <a class="govuk-link govuk-link--no-visited-state" href="edit-group#minimum-loop">
-              Change <span class="govuk-visually-hidden"> number of times set can be answered<span>
+              Change <span class="govuk-visually-hidden"> number of times this set can be answered<span>
             </a>
+            {% endif %}
           </dd>
         </div>
       </dl>
