@@ -620,7 +620,7 @@ additionalGuidance = function (req, res) {
     req.session.data.successMessage = previewing
     res.redirect('additional-guidance#preview-guidance-text')
   } else {
-    if (repeatQuestion == 'Yes') {
+    if ((req.session.data.addJourney == 'addAnother2') && (repeatQuestion == 'Yes')) {
       // if user selected to repeat question go to check if it is part of a set or single question
       return res.redirect(`add-to-set`)
     } else {
