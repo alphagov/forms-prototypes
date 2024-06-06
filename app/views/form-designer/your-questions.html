@@ -84,7 +84,11 @@
                   <dd class="govuk-summary-list__value">
                     {{ object.group.groupName }}<br>
                     {% for page in object.pages -%}
-                      {{ loop.index }}. {{ page['long-title'] }}{% if not loop.last %}<br>{% endif %}
+                      {% set questionTitle = page["long-title"] or "Question " + (page["pageIndex"]|int + 1) %}
+                      {% if page['questionOptional'] == 'questionOptional' %}
+                        {% set questionTitle = questionTitle + ' (optional)' %}
+                      {% endif %}
+                      {{ loop.index }}. {{ questionTitle }}{% if not loop.last %}<br>{% endif %}
                     {%- endfor %} 
                   </dd>
                   <dd class="govuk-summary-list__actions govuk-!-padding-bottom-6">

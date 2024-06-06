@@ -76,12 +76,18 @@
           {% for object in pagesOrder %}
             {% if object.group -%}
               {% for page in object.pages -%}
+
+                {% set questionTitle = page["long-title"] or "Question " + (page["pageIndex"]|int + 1) %}
+                {% if page['questionOptional'] == 'questionOptional' %}
+                {% set questionTitle = questionTitle + ' (optional)' %}
+                {% endif %}
+
                 <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key app-summary-list__key">
                     {{ loop.index }}
                   </dt>
                   <dd class="govuk-summary-list__value">
-                    {{ page['long-title'] }}
+                    {{ questionTitle }}
                   </dd>
                   <dd class="govuk-summary-list__actions govuk-!-padding-bottom-6">
                     <div class="govuk-button-group form-action-group app-page-list__button-group">
