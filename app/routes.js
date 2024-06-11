@@ -37,7 +37,8 @@ router.use(markdown.setupPlugin(marked.parse))
 // Used for setting the pageIndex in req.session.data.pages to match the order of the pages.
 // Should be used after any operation that reorders pages.
 setPageIndexToArrayPosition = (page, index) => {
-  page.pageIndex = index
+  // page.pageIndex = index
+  page['index'] = index
   return page
 }
 
@@ -315,13 +316,21 @@ router.get('/form-designer/clear-empty', function (req, res) {
 })
 
 // Your form task list page - used to load and clear out success pageData
+/* TODO: this breaks the re-ordering buttons by overwriting the pageOrder from scratch. Need to find a way to avoid this, but still make sure we add new questions on load */
+/*
+1. Get current pagesOrder 
+2. Compare the objects in the array to see if page or group is missing
+3. If new group or page add this to pagesOrder
+4. Otherwise, if this is the first time generating the pagesOrder do the while loop
+*/
 router.use('/form-designer/your-questions', function (req, res, next) {
   var { groups, pages } = req.session.data
 
   // create new tempArray - to be combined group and page lists
-  const pagesOrder = []
+  const newPagesOrder = []
   // try a loop over the pages
   let i = 0;
+  let index = 0;
   while (i < pages.length) {
     // if “addToGroup” is not null
     if (pages[i].addToGroup != null) {
@@ -337,18 +346,19 @@ router.use('/form-designer/your-questions', function (req, res, next) {
         // increment loop count
         i++;
       }
-      // push group into “pagesOrder” array with associated pages within it
-      pagesOrder.push({ 'group': group, 'pages': groupPages })
+      // push group into “newPagesOrder” array with associated pages within it
+      newPagesOrder.push({ 'index': index, 'group': group, 'pages': groupPages })
     } else {
-      // push page into “pagesOrder” array
-      pagesOrder.push({ 'page': pages[i] })
+      // push page into “newPagesOrder” array
+      newPagesOrder.push({ 'index': index, 'page': pages[i] })
       // increment loop count
       i++;
     }
+    index++;
   }
 
   // set new “pagesOrder” array in session data so we can use it elsewhere
-  req.session.data.pagesOrder = pagesOrder
+  req.session.data.pagesOrder = newPagesOrder
 
   next();
 })
@@ -492,19 +502,22 @@ router.get('/form-designer/pages/:pageId/delete', function (req, res) {
 
 // Route used by the reordering buttons in your-questions.html
 reorder = function (req, res) {
-  const { pageId, groupId, direction } = req.params
-  const newArrayPosition = direction === 'down' ? pageId : pageId - 2
-  const { pages } = req.session.data
+  const { pageId, direction } = req.params
+  const newArrayPosition = direction === 'down' ? parseInt(pageId) + 1 : parseInt(pageId) - 1
+  const { pagesOrder } = req.session.data
 
-  if (groupId) { pageId = groupId }
-
-  var pageToMove = pages.splice(pageId - 1, 1)[0]
-  pages.splice(newArrayPosition, 0, pageToMove)
+  const pageToMove = pagesOrder.splice(pageId, 1)[0]
+  pagesOrder.splice(newArrayPosition, 0, pageToMove)
 
   // content to display in notification banners
-  var successMessage = '‘' + pageToMove['long-title'] + '’' + ' has moved ' + direction + ' to number ' + (parseInt(newArrayPosition) + 1)
+  var successMessage = ''
+  if (Object.hasOwn(pageToMove, 'group')) {
+    successMessage = '‘' + pageToMove.group.groupName + '’' + ' has moved ' + direction + ' to position ' + (parseInt(newArrayPosition) + 1)
+  } else {
+    successMessage = '‘' + pageToMove.page['long-title'] + '’' + ' has moved ' + direction + ' to number ' + (parseInt(newArrayPosition) + 1)
+  }
 
-  req.session.data.pages = pages.map(setPageIndexToArrayPosition)
+  req.session.data.pagesOrder = pagesOrder.map(setPageIndexToArrayPosition)
 
   req.session.data.successMessage = successMessage
   res.redirect('/form-designer/clear-empty')

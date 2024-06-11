@@ -139,7 +139,7 @@
           }) }}
 
           <!-- Question settings -->
-          {% if pageData['type'] != 'select' %}
+          {% if (pageData['type'] != 'select') and ((data.groupQuestions != 'newQuestionRepeats') or (pageData.repeatQuestion != 'Yes')) %}
             <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 
             {{ govukRadios({
@@ -165,7 +165,8 @@
                   },
                   checked: checked(namePrefix + "['questionOptional']", "questionOptional")
                 }
-              ]
+              ],
+              errorMessage: { text: errors['questionOptional'].text } if errors['questionOptional'].text 
             }) }}
           {% endif %}
 

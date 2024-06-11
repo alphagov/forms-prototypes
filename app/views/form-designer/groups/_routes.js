@@ -75,6 +75,8 @@ router.post('/form-designer/groups/:groupId(\\d+)/edit-group', function (req, re
       text: 'Give your question set a name',
       href: "#group-name"
     }
+  } else {
+    groupData['groupName'] = groupName
   }
 
   var minLoop = req.session.data.minLoop
@@ -85,7 +87,10 @@ router.post('/form-designer/groups/:groupId(\\d+)/edit-group', function (req, re
       text: 'Give your question set a minimum number of repeats',
       href: "#minimum-loop"
     }
+  } else {
+    groupData['minLoop'] = minLoop
   }
+  
   var maxLoop = req.session.data.maxLoop
   req.session.data.maxLoop = undefined
   // if no maximum loops given, then throw an error
@@ -94,6 +99,8 @@ router.post('/form-designer/groups/:groupId(\\d+)/edit-group', function (req, re
       text: 'Give your question set a maximum number of repeats',
       href: "#maximum-loop"
     }
+  } else {
+    groupData['maxLoop'] = maxLoop
   }
 
   // Convert the errors into a list, so we can use it in the template
@@ -110,10 +117,6 @@ router.post('/form-designer/groups/:groupId(\\d+)/edit-group', function (req, re
       containsErrors
     })
   } else {
-    groupData['groupName'] = groupName
-    groupData['minLoop'] = minLoop
-    groupData['maxLoop'] = maxLoop
-
     if (action == 'saveChanges') {
       // add a new question
       res.redirect(`/form-designer/groups/${groupId}/check-group`)

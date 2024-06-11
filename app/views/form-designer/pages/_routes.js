@@ -10,11 +10,17 @@ newPage = function (req, res) {
   var pageIndex = pageId
   var pageData = req.session.data.pages[pageIndex]
 
+  var repeatQuestion = undefined
+  if ((req.session.data.groupQuestions) && (req.session.data.groupQuestions == 'newQuestionRepeats')) {
+    repeatQuestion = 'Yes'
+  }
+
   var groupId = req.params.groupId ? parseInt(req.params.groupId, 10) : null
   
+  /* Can we change this to remove empty pageData if question isn’t marked as "questionSaved": "Yes" */
   // remove empty pageData if there is only one object (pageIndex) in array
   const pages = req.session.data.pages.filter(element => {
-    if (Object.keys(element).length > 2) {
+    if (Object.hasOwn(element, 'questionSaved')) {
       return true
     }
     return false
@@ -30,7 +36,8 @@ newPage = function (req, res) {
   if (!pageData) {
     req.session.data.pages.push({
       'pageIndex': nextPageId,
-      'addToGroup': groupId
+      'addToGroup': groupId,
+      'repeatQuestion': repeatQuestion
     })
   }
 
@@ -446,6 +453,7 @@ editQuestion = function (req, res) {
   var pageData = req.session.data.pages[pageIndex]
 
   var additionalGuidance = req.session.data['additional-guidance']
+  var { questionOptional } = req.session.data
 
   var repeatQuestion = req.session.data.repeatQuestion ? req.session.data.repeatQuestion : null
 
@@ -494,13 +502,29 @@ editQuestion = function (req, res) {
   }
   req.session.data['additional-guidance'] = undefined
 
-  // if question is made optional, add it to pageData
-  //reset if question is optional each time the form creator comes back to edit a question, to make sure if they unselect the checkbox it’ll update correctly
-  pageData['questionOptional'] = undefined
-  if (req.session.data['questionOptional']) {
-    pageData['questionOptional'] = req.session.data['questionOptional']
+  /* IF we are on Add another journey / prototype 1 then we need to hide the optional question */
+  /*
+  if (pageData['type'] != 'select') and ((data.groupQuestions != 'newQuestionRepeats') or (pageData.repeatQuestion != 'Yes')
+    don’t show optional question
+  else 
+    show optional question
+  */
+
+  if ((req.session.data.addJourney) && ((!pageData.repeatQuestion) || (pageData.repeatQuestion != 'Yes'))) {
+    // if mandatory or optional hasn’t been selecgted, then throw an error
+    if (!questionOptional || !questionOptional.length) {
+      errors['questionOptional'] = {
+        text: 'Select ‘mandatory’ if people have to answer this question',
+        href: "#questionOptional"
+      }
+    } else {
+      pageData['questionOptional'] = questionOptional
+    }
+    req.session.data['questionOptional'] = undefined
   }
-  req.session.data['questionOptional'] = undefined
+
+
+
 
   if ((req.session.data.addJourney) && (req.session.data.addJourney == 'addAnother2')) {
     // if no additional guidance answer, then throw an error
