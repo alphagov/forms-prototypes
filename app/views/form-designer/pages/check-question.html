@@ -233,7 +233,7 @@
         {% if (pageData['type'] != 'select') and ((data.groupQuestions != 'newQuestionRepeats') or (pageData.repeatQuestion != 'Yes')) %}
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">
-            Make this question optional
+            Make this mandatory or optional
           </dt>
           <dd class="govuk-summary-list__value">
             {{ 'Optional' if ((pageData['questionOptional']) and ('questionOptional' in pageData['questionOptional'])) else 'Mandatory' }}
