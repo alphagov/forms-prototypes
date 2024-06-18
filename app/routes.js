@@ -37,7 +37,7 @@ router.use(markdown.setupPlugin(marked.parse))
 // Used for setting the pageIndex in req.session.data.pages to match the order of the pages.
 // Should be used after any operation that reorders pages.
 setPageIndexToArrayPosition = (page, index) => {
-  // page.pageIndex = index
+  page.pageIndex = index
   page['index'] = index
   return page
 }
@@ -301,7 +301,7 @@ router.get('/form-designer/clear-empty', function (req, res) {
 
   // remove empty groupData if there is only one object (groupIndex) in array
   const groups = req.session.data.groups.filter(element => {
-    if (Object.keys(element).length > 2) {
+    if (Object.keys(element).length > 3) {
       return true
     }
     return false
@@ -436,9 +436,28 @@ router.post('/form-designer/your-questions', function (req, res) {
 Managing questions in a form
 ===== */
 
+// Delete user selected question
+getDeleteQuestion = function (req, res) {
+  const pageIndex = parseInt(req.params.pageId, 10)
+  const pageData = req.session.data.pages[pageIndex]
+
+  const groupIndex = parseInt(req.params.groupIndex, 10)
+  const groupData = req.session.data.groups[groupIndex]
+
+  if(!(pageIndex in req.session.data.pages)) {
+    throw Error('Page not found');
+  }
+
+  res.render('form-designer/pages/delete.html', {
+    pageData,
+    groupData
+  })
+}
+router.get('/form-designer/pages/:pageId/delete', getDeleteQuestion)
+router.get('/form-designer/groups/:groupId/pages/:pageId/delete', getDeleteQuestion)
 // Route used to delete question
-router.post('/form-designer/pages/:pageId/delete', function (req, res) {
-  const action = req.session.data
+deleteQuestion = function (req, res) {
+  const { action } = req.session.data
   const shouldDelete = req.session.data.delete
   const pageIndex = parseInt(req.params.pageId, 10)
 
@@ -480,25 +499,14 @@ router.post('/form-designer/pages/:pageId/delete', function (req, res) {
     req.session.data.pages = pages
     return res.redirect('/form-designer/clear-empty')
   } else if(action === 'delete' && shouldDelete  === 'No') {
-    return res.redirect(`/form-designer/pages/${pageIndex}/edit`)
+    return res.redirect(`./check-question`)
   } else {
     return res.redirect(req.path)
   }
-})
+}
+router.post('/form-designer/pages/:pageId/delete', deleteQuestion)
+router.post('/form-designer/groups/:groupId/pages/:pageId/delete', deleteQuestion)
 
-// Delete user selected question
-router.get('/form-designer/pages/:pageId/delete', function (req, res) {
-  const pageIndex = parseInt(req.params.pageId, 10)
-  const pageData = req.session.data.pages[pageIndex]
-
-  if(!(pageIndex in req.session.data.pages)) {
-    throw Error('Page not found');
-  }
-
-  res.render('form-designer/pages/delete.html', {
-    pageData
-  })
-})
 
 // Route used by the reordering buttons in your-questions.html
 reorder = function (req, res) {
