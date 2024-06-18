@@ -24,7 +24,7 @@ router.get('/form-designer/groups/new', function (req, res) {
 
   // remove empty groupData if there is only one object (groupId) in array
   const groups = req.session.data.groups.filter(element => {
-    if (Object.keys(element).length > 1) {
+    if (Object.keys(element).length > 3) {
       return true
     }
     return false
@@ -166,8 +166,9 @@ router.get('/form-designer/groups/:groupId(\\d+)/check-group', function (req, re
   req.session.data.pagesOrder = pagesOrder
 
   return res.render('form-designer/groups/check-group', {
-    pagesOrder: pagesOrder,
-    groupData: groupData
+    pagesOrder,
+    groupData,
+    groupId
   })
 })
 // Route used to find next step
