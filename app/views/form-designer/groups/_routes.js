@@ -177,25 +177,4 @@ router.post('/form-designer/groups/:groupId(\\d+)/check-group', function (req, r
   res.redirect(`/form-designer/clear-empty`)
 })
 
-
-/* Journey 1 still to do
-============ */ 
-/*
-1a. “edit-question.html” has new caption text - show group name and question number
-1b. “edit-question.html” should show group the question is part of IF associated with one
-2. “check-question.html” has a way to stop adding questions, taking user to the “check-group.html” page
-3. “check-group.html” if saved should show “delete” button and list questions added to the group
-4. “groupOrder” should impact where in the “pagesOrder” a group appears - and should be changeable 
-5. show a success message once a new group has been added on the “your-questions.html” page 
-*/
-
-/* Journey 2
-============ */
-/*
-1. add new radio question to “edit question” page
-2. if “yes” radio selected route to “choose-group.html” (if no groups yet take to “edit-group.html”)
-3. once saved go to “check your question” page - showing the group question associated with else only show “no” to group row
-*/
-
-
 module.exports = router
