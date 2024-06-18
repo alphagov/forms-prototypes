@@ -74,7 +74,7 @@
 
         <dl class="govuk-summary-list govuk-!-margin-bottom-9" aria-describedby="question-list">
           {% for object in pagesOrder %}
-            {% if object.group -%}
+            {% if (object.group) and (object.group.groupIndex == groupId) -%}
               {% for page in object.pages -%}
 
                 {% set questionTitle = page["long-title"] or "Question " + (page["pageIndex"]|int + 1) %}
