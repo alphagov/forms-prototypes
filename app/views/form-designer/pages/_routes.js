@@ -510,7 +510,7 @@ editQuestion = function (req, res) {
     show optional question
   */
 
-  if ((req.session.data.addJourney) && ((!pageData.repeatQuestion) || (pageData.repeatQuestion != 'Yes'))) {
+  if ((pageData.type != 'select') && (req.session.data.addJourney) && ((!pageData.repeatQuestion) || (pageData.repeatQuestion != 'Yes'))) {
     // if mandatory or optional hasn’t been selecgted, then throw an error
     if (!questionOptional || !questionOptional.length) {
       errors['questionOptional'] = {
