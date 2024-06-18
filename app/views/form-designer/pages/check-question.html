@@ -339,9 +339,13 @@
             {{ group.groupName }}
           </dd>
           <dd class="govuk-summary-list__actions">
-            {% if (data.addJourney == 'addAnother2') %}
+            {% if (data.addJourney == 'addAnother2') and (data.referrer != 'choose-group') %}
             <a class="govuk-link govuk-link--no-visited-state" href="edit-group#group-name">
               Change <span class="govuk-visually-hidden"> question set name<span>
+            </a>
+            {% else %}
+            <a class="govuk-link govuk-link--no-visited-state" href="choose-group">
+              Change <span class="govuk-visually-hidden"> question set<span>
             </a>
             {% endif %}
           </dd>
@@ -355,7 +359,7 @@
             Max: {{ group['maxLoop'] }}
           </dd>
           <dd class="govuk-summary-list__actions">
-            {% if (data.addJourney == 'addAnother2') %}
+            {% if (data.addJourney == 'addAnother2') and (data.referrer != 'choose-group') %}
             <a class="govuk-link govuk-link--no-visited-state" href="edit-group#minimum-loop">
               Change <span class="govuk-visually-hidden"> number of times this set can be answered<span>
             </a>
