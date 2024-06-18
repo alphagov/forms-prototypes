@@ -67,7 +67,7 @@
           {% endif %}
         </div>
 
-        {% if pagesOrder.length or data.pagesOrder.length %}
+        {% if (pagesOrder.length or data.pagesOrder.length) and data.pages.length > 0 %}
 
           <h2 class="govuk-heading-m govuk-!-margin-top-7 govuk-!-margin-bottom-0" id="question-list">
             Your questions
