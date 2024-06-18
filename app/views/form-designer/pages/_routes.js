@@ -692,6 +692,7 @@ addToSetGet = function (req, res) {
   })
 }
 router.get('/form-designer/pages/:pageId(\\d+)/add-to-set', addToSetGet)
+router.get('/form-designer/groups/:groupId(\\d+)/pages/:pageId(\\d+)/add-to-set', addToSetGet)
 // POST add-to-set page
 addToSetPost = function (req, res) {
   var { addToSet } = req.session.data
@@ -744,6 +745,7 @@ addToSetPost = function (req, res) {
   }
 }
 router.post('/form-designer/pages/:pageId(\\d+)/add-to-set', addToSetPost)
+router.post('/form-designer/groups/:groupId(\\d+)/pages/:pageId(\\d+)/add-to-set', addToSetPost)
 
 // GET add-loop page
 addLoopGet = function (req, res) {
@@ -928,6 +930,7 @@ editGroup = function (req, res) {
   })
 }
 router.get('/form-designer/pages/:pageId(\\d+)/groups/:groupId(\\d+)/edit-group', editGroup)
+router.get('/form-designer/groups/:groupId(\\d+)/pages/:pageId(\\d+)/edit-group', editGroup)
 // POST groups/edit-group page
 editGroupPost = function (req, res) {
   var { groupName, minLoop, maxLoop } = req.session.data
@@ -995,6 +998,7 @@ editGroupPost = function (req, res) {
   }
 }
 router.post('/form-designer/pages/:pageId(\\d+)/groups/:groupId(\\d+)/edit-group', editGroupPost)
+router.post('/form-designer/groups/:groupId(\\d+)/pages/:pageId(\\d+)/edit-group', editGroupPost)
 
 /* END add question to set */
 
