@@ -855,6 +855,10 @@ editGroupPost = function (req, res) {
   }
   req.session.data.addToGroup = undefined
 
+  // get the previous page URL
+  var previousPage = req.session.data.referer.split('/')
+  previousPage = previousPage[previousPage.length - 1]
+
   // Convert the errors into a list, so we can use it in the template
   const errorList = Object.values(errors)
   // If there are no errors, redirect the user to the next page
@@ -875,11 +879,12 @@ editGroupPost = function (req, res) {
     if (action === 'addNewGroup') {
       res.redirect(`/form-designer/groups/new`)
     } else {
-      res.redirect(`/form-designer/pages/${pageId}/check-question`)
+      res.redirect(`/form-designer/pages/${pageId}/check-question?referrer=` + previousPage )
     }
   }
 }
 router.post('/form-designer/pages/:pageId(\\d+)/choose-group', editGroupPost)
+router.post('/form-designer/groups/:groupId(\\d+)/pages/:pageId(\\d+)/choose-group', editGroupPost)
 
 
 // Create a new group
