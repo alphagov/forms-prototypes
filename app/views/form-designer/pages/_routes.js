@@ -838,10 +838,12 @@ editGroupPost = function (req, res) {
   var groupId = req.session.data.addToGroup
   var groupData = req.session.data.groups[groupId]
 
+  var action = req.session.data.action
+
   const errors = {};
 
   // if no set name given, then throw an error
-  if (!groupId || !groupId.length) {
+  if ((action != 'addNewGroup') && (!groupId || !groupId.length)) {
     errors['groupId'] = {
       text: 'Select the question set to add this question to or create a new set',
       href: "#addToGroup"
@@ -868,7 +870,11 @@ editGroupPost = function (req, res) {
       containsErrors
     })
   } else {
-    res.redirect(`/form-designer/pages/${pageId}/check-question`)
+    if (action === 'addNewGroup') {
+      res.redirect(`/form-designer/groups/new`)
+    } else {
+      res.redirect(`/form-designer/pages/${pageId}/check-question`)
+    }
   }
 }
 router.post('/form-designer/pages/:pageId(\\d+)/choose-group', editGroupPost)
