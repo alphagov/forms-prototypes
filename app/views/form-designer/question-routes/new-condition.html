@@ -1,21 +1,15 @@
 {% extends "layout-govuk-forms.html" %}
 
-{% set pageTitle = 'Add a question route' %}
+{% set pageTitle = 'Add a skip-question route' %}
 
 {% block pageTitle %}
   {{ "Error: " if containsErrors }}{{pageTitle}}: {{ data.formTitle or '[formTitle]' }} - GOV.UK Forms
 {% endblock %}
 
 {% block beforeContent %}
-  {% if previousPage and ('your-questions' in previousPage) %}
-    <a class="govuk-back-link" href="../../clear-empty" target="_parent">
-      Back to your questions
-    </a>
-  {% else %}
-    <a class="govuk-back-link" href="javascript:window.history.back()">
-      Back
-    </a>
-  {% endif %}
+  <a class="govuk-back-link" href="choose-question-route" target="_parent">
+    Back to choose the type of question you want
+  </a>
 {% endblock %}
 
 {% block content %}
