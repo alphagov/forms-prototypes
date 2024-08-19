@@ -1,0 +1,57 @@
+{% extends "layout-govuk-forms.html" %}
+
+{% set pageTitle = 'Add a repeating-questions route' %}
+
+{% block pageTitle %}
+  {{ "Error: " if containsErrors }}{{pageTitle}}: {{ data.formTitle or '[formTitle]' }} - GOV.UK Forms
+{% endblock %}
+
+{% block beforeContent %}
+  <a class="govuk-back-link" href="choose-question-route" target="_parent">
+    Back to choose the type of question you want
+  </a>
+{% endblock %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <form id="form" class="form" action="route-start" method="post" novalidate>
+
+      {% if containsErrors %}
+      {{ govukErrorSummary({
+        titleText: "There is a problem",
+        errorList: errorList
+      }) }}
+      {% endif %}
+
+      <span class="govuk-caption-l">{{ data.formTitle or '[formTitle]' }}</span>
+      <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
+
+      <p class="govuk-body">
+        This lets you group a number of questions together so people can answer these more than once, if needed.
+      </p>
+
+      <p class="govuk-body">
+        You’ll select which question the repeating route should start and end with, and how many times this route can be answered.
+      </p>
+
+      <h2 class="govuk-heading-m">What you need to create a route</h2>
+      <p class="govuk-body">
+        Before you can add a route you’ll need 2 or more questions.
+      </p>
+
+      <p class="govuk-body">
+        <a class="govuk-link" href="../your-questions">Go to your questions</a>
+      </p>
+
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block pageScripts %}
+<script type="text/javascript">
+  // call function from `assets/javascripts/application.js`
+  // removeSuccessNotification();
+</script>
+{% endblock %}
