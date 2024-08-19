@@ -28,7 +28,7 @@ router.get('/form-designer/pages/new', function (req, res) {
 
   if (action === 'addRoute') {
     // add a new question route
-    res.redirect(`/form-designer/question-routes/new-condition`)
+    res.redirect(`/form-designer/question-routes/choose-question-route`)
   } else {
 
     var nextPageId = req.session.data.pages.length
@@ -42,6 +42,50 @@ router.get('/form-designer/pages/new', function (req, res) {
     res.redirect(`/form-designer/pages/${nextPageId}/edit-answer-type`)
   }
 })
+
+
+/* ROUTE TYPE
+============= */
+
+// Edit answer type settings - route to what is your question page for select from list answer type
+router.post('/form-designer/question-routes/choose-question-route', function (req, res) {
+  var chooseRouteType = req.session.data.chooseRouteType
+  req.session.data.chooseRouteType = undefined
+
+  const errors = {}
+
+  // if no question text given, then throw an error
+  if (!chooseRouteType || !chooseRouteType.length) {
+    errors['chooseRouteType'] = {
+      text: 'Select the type of question route you want to add',
+      href: "#chooseRouteType"
+    }
+  }
+
+  // Convert the errors into a list, so we can use it in the template
+  const errorList = Object.values(errors)
+  // If there are no errors, redirect the user to the next page
+  // otherwise, show the page again with the errors set
+  const containsErrors = errorList.length > 0
+  // If there are errors on the page, redisplay it with the errors
+  if(containsErrors) {
+    return res.render('form-designer/question-routes/choose-question-route', {
+      pageId: pageId,
+      pageIndex: pageIndex,
+      pageData: pageData,
+      errors,
+      errorList,
+      containsErrors
+    })
+  } else {
+    if (chooseRouteType === 'repeating') {
+      res.redirect('new-repeat')
+    } else {
+      res.redirect('new-condition')
+    }
+  }
+})
+/* END of choose route type */
 
 
 /* ANSWER TYPE
