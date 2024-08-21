@@ -90,9 +90,14 @@ router.get('/form-designer/question-routes/new-repeat', function (req, res) {
   const pagesList = []
 
   for (let i = 0; i < pages.length; i++) {
+    var optional = ''
+    if(pages[i]['questionOptional'] == 'questionOptional') {
+      optional = ' (optional)'
+    }
+
     pagesList.push({
-      value: (pages[i]['pageIndex'] + 1) + ". " + pages[i]['long-title'],
-      text: (pages[i]['pageIndex'] + 1) + ". " + pages[i]['long-title']
+      value: (pages[i]['pageIndex'] + 1) + ". " + pages[i]['long-title'] + optional,
+      text: (pages[i]['pageIndex'] + 1) + ". " + pages[i]['long-title'] + optional
     })
   }
 
@@ -149,10 +154,15 @@ router.get('/form-designer/question-routes/repeat-route-end', function (req, res
       temp = true
     }
 
+    var optional = ''
+    if(pages[i]['questionOptional'] == 'questionOptional') {
+      optional = ' (optional)'
+    }
+
     if((temp === true) && (!repeatStart.includes(pages[i]['long-title']))) {
       pagesList.push({
-        value: (pages[i]['pageIndex'] + 1) + ". " + pages[i]['long-title'],
-        text: (pages[i]['pageIndex'] + 1) + ". " + pages[i]['long-title']
+        value: (pages[i]['pageIndex'] + 1) + ". " + pages[i]['long-title'] + optional,
+        text: (pages[i]['pageIndex'] + 1) + ". " + pages[i]['long-title'] + optional
       })
     }
   }
