@@ -315,13 +315,38 @@ router.get('/form-designer/your-questions', function (req, res) {
   // Save the pages
   req.session.data.pages = pages
 
+  // something to help us check if questions are within a repeat-route 
+  var pageCount = 0
+  var tempStart = 0
+  var tempEnd = 0
+  if (req.session.data.repeatStart) {
+    var setStart = req.session.data.repeatStart.split('. ')
+  }
+  if (req.session.data.endRepeat) {
+    var setEnd = req.session.data.endRepeat.split('. ')
+  }
+  if (setStart && setEnd) {
+    for (let i = 0; i < pages.length; i++) {
+      if (pages[i]['long-title'] == setStart[1]) {
+        tempStart = pages[i]['pageIndex']
+      }
+      if (pages[i]['long-title'] == setEnd[1]) {
+        tempEnd = pages[i]['pageIndex']
+      }
+    }
+    for (let i = tempStart; i <= tempEnd; i++) {
+      pageCount = pageCount + 1
+    }
+  }
+
   // reset highestPageId to number of pages
   req.session.data.highestPageId = parseInt(pages.length - 1)
   
   var successMessage = req.session.data.successMessage
   req.session.data.successMessage = undefined
   return res.render('form-designer/your-questions', {
-    successMessage: successMessage
+    successMessage: successMessage,
+    pageCount: pageCount
   })
 })
 
