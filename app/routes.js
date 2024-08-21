@@ -332,7 +332,6 @@ router.get('/form-designer/your-questions', function (req, res) {
   if (req.session.data.endRepeat) {
     var endRepeat = req.session.data.endRepeat.split('. ')
     var setEnd = ''
-    console.log('endRepeat 1: ' + endRepeat)
     if (endRepeat[1].includes('(optional)')) {
       endRepeat = endRepeat[1].split(' (')
       setEnd = endRepeat[0]
