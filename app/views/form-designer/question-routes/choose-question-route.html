@@ -7,15 +7,9 @@
 {% endblock %}
 
 {% block beforeContent %}
-  {% if previousPage and ('your-questions' in previousPage) %}
-    <a class="govuk-back-link" href="../../clear-empty" target="_parent">
-      Back to your questions
-    </a>
-  {% else %}
-    <a class="govuk-back-link" href="javascript:window.history.back()">
-      Back
-    </a>
-  {% endif %}
+  <a class="govuk-back-link" href="../your-questions" target="_parent">
+    Back to your questions
+  </a>
 {% endblock %}
 
 {% block content %}
@@ -39,7 +33,7 @@
 
       <ul class="govuk-list govuk-list--bullet">
         <li>
-          <strong>repeating questions</strong> - this lets someone answer a group of related questions more than once (sometimes known as ‘add another’)
+          <strong>repeat questions</strong> - this lets someone answer a group of related questions more than once (sometimes known as ‘add another’)
         </li>
         <li>
           <strong>skip questions</strong> - this sends people directly to the question or page you want by ‘skipping’ questions they do not need to answer
@@ -56,13 +50,14 @@
         items: [
           {
             value: "repeating",
-            text: "Repeating-questions route"
+            text: "Repeat-questions route"
           },
           {
             value: "skip",
             text: "Skip-questions route"
           }
-        ]
+        ],
+        errorMessage: { text: errors['chooseRouteType'].text } if errors['chooseRouteType'].text 
       }) }}
 
       {{ govukButton({

@@ -47,10 +47,9 @@ router.get('/form-designer/pages/new', function (req, res) {
 /* ROUTE TYPE
 ============= */
 
-// Edit answer type settings - route to what is your question page for select from list answer type
+// Choose question route type
 router.post('/form-designer/question-routes/choose-question-route', function (req, res) {
   var chooseRouteType = req.session.data.chooseRouteType
-  req.session.data.chooseRouteType = undefined
 
   const errors = {}
 
@@ -70,9 +69,6 @@ router.post('/form-designer/question-routes/choose-question-route', function (re
   // If there are errors on the page, redisplay it with the errors
   if(containsErrors) {
     return res.render('form-designer/question-routes/choose-question-route', {
-      pageId: pageId,
-      pageIndex: pageIndex,
-      pageData: pageData,
       errors,
       errorList,
       containsErrors
@@ -86,6 +82,116 @@ router.post('/form-designer/question-routes/choose-question-route', function (re
   }
 })
 /* END of choose route type */
+
+// Select where the repeating-route STARTS
+router.get('/form-designer/question-routes/new-repeat', function (req, res) {
+  var pages = req.session.data.pages
+
+  const pagesList = []
+
+  for (let i = 0; i < pages.length; i++) {
+    pagesList.push({
+      value: (pages[i]['pageIndex'] + 1) + ". " + pages[i]['long-title'],
+      text: (pages[i]['pageIndex'] + 1) + ". " + pages[i]['long-title']
+    })
+  }
+
+  return res.render('form-designer/question-routes/new-repeat', {
+    pagesList: pagesList
+  })
+})
+
+router.post('/form-designer/question-routes/new-repeat', function (req, res) {
+  var repeatStart = req.session.data.repeatStart
+
+  const errors = {}
+
+  // if no question text given, then throw an error
+  if (!repeatStart || !repeatStart.length) {
+    errors['repeatStart'] = {
+      text: 'Select where you want the route to start',
+      href: "#repeatStart"
+    }
+  }
+
+  // Convert the errors into a list, so we can use it in the template
+  const errorList = Object.values(errors)
+  // If there are no errors, redirect the user to the next page
+  // otherwise, show the page again with the errors set
+  const containsErrors = errorList.length > 0
+  // If there are errors on the page, redisplay it with the errors
+  if(containsErrors) {
+    return res.render('form-designer/question-routes/new-repeat', {
+      errors,
+      errorList,
+      containsErrors
+    })
+  } else {
+    res.redirect('repeat-route-end')
+  }
+})
+/* END of Select where the repeating-route STARTS */
+
+// Select where the repeating-route ENDS
+router.get('/form-designer/question-routes/repeat-route-end', function (req, res) {
+  var pages = req.session.data.pages
+  var repeatStart = req.session.data.repeatStart
+
+  const pagesList = [{
+    value: 'choose',
+    text: 'Choose end question'
+  }]
+
+  var temp = false
+  for (let i = 0; i < pages.length; i++) {
+    // only add pages[i] AFTER we find repeatStart
+    if(repeatStart.includes(pages[i]['long-title'])) {
+      temp = true
+    }
+
+    if((temp === true) && (!repeatStart.includes(pages[i]['long-title']))) {
+      pagesList.push({
+        value: (pages[i]['pageIndex'] + 1) + ". " + pages[i]['long-title'],
+        text: (pages[i]['pageIndex'] + 1) + ". " + pages[i]['long-title']
+      })
+    }
+  }
+
+  return res.render('form-designer/question-routes/repeat-route-end', {
+    pagesList: pagesList
+  })
+})
+
+router.post('/form-designer/question-routes/repeat-route-end', function (req, res) {
+  var endRepeat = req.session.data.endRepeat
+
+  const errors = {}
+
+  // if no question text given, then throw an error
+  if (!endRepeat || !endRepeat.length) {
+    errors['endRepeat'] = {
+      text: 'Select where you want the route to end',
+      href: "#endRepeat"
+    }
+  }
+
+  // Convert the errors into a list, so we can use it in the template
+  const errorList = Object.values(errors)
+  // If there are no errors, redirect the user to the next page
+  // otherwise, show the page again with the errors set
+  const containsErrors = errorList.length > 0
+  // If there are errors on the page, redisplay it with the errors
+  if(containsErrors) {
+    return res.render('form-designer/question-routes/repeat-route-end', {
+      errors,
+      errorList,
+      containsErrors
+    })
+  } else {
+    res.redirect('../your-questions')
+  }
+})
+/* END of Select where the repeating-route ENDS */
 
 
 /* ANSWER TYPE

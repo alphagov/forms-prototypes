@@ -1,9 +1,10 @@
 {% extends "layout-govuk-forms.html" %}
 
-{% set pageTitle = 'Add a repeat-questions route' %}
+{% set pageTitle = 'Select where this route ends' %}
+{% set routeType = 'Add a repeat-questions route' %}
 
 {% block pageTitle %}
-  {{ "Error: " if containsErrors }}{{pageTitle}}: {{ data.formTitle or '[formTitle]' }} - GOV.UK Forms
+  {{ "Error: " if containsErrors }}{{ pageTitle }}: {{ data.formTitle or '[formTitle]' }} - GOV.UK Forms
 {% endblock %}
 
 {% block beforeContent %}
@@ -24,36 +25,38 @@
       }) }}
       {% endif %}
 
-      <span class="govuk-caption-l">{{ data.formTitle or '[formTitle]' }}</span>
+      <span class="govuk-caption-l">{{ routeType }}: {{ data.repeatStart or 'No question selected' }}</span>
       <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
 
-      <p class="govuk-body">
-        This lets you group a number of questions together so people can answer these more than once, if needed.
-      </p>
-
-      <p class="govuk-body">
-        You’ll select which question the repeating route should start and end with.
-      </p>
+      <dl class="govuk-summary-list">
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+            Start question
+          </dt>
+          <dd class="govuk-summary-list__value">
+            “{{ data.repeatStart or 'No question selected' }}”
+          </dd>
+          <dd class="govuk-summary-list__actions">
+            <a class="govuk-link" href="new-repeat">
+              Change<span class="govuk-visually-hidden"> - Start question</span>
+            </a>
+          </dd>
+        </div>
+      </dl>
 
       {% if data.pages.length > 1 %}
-
-      {{ govukRadios({
-        name: "repeatStart",
-        fieldset: {
-          legend: {
-            text: "Which question do you want your route to start from?",
-            classes: 'govuk-fieldset__legend--m'
-          }
+      {{ govukSelect({
+        id: "endRepeat",
+        name: "endRepeat",
+        label: {
+          text: "End question",
+          classes: "govuk-label--m"
         },
-        hint: {
-          text: 'You can only add one route from each question'
-        },
-        items: pagesList,
-        errorMessage: { text: errors['repeatStart'].text } if errors['repeatStart'].text 
+        items: pagesList
       }) }}
 
       {{ govukButton({
-        text: "Continue"
+        text: "Save and continue"
       }) }}
       {% else %}
       <h2 class="govuk-heading-m">What you need to create a route</h2>
