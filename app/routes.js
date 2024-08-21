@@ -320,17 +320,32 @@ router.get('/form-designer/your-questions', function (req, res) {
   var tempStart = 0
   var tempEnd = 0
   if (req.session.data.repeatStart) {
-    var setStart = req.session.data.repeatStart.split('. ')
+    var repeatStart = req.session.data.repeatStart.split('. ')
+    var setStart = ''
+    if (repeatStart[1].includes('(optional)')) {
+      repeatStart = repeatStart[1].split(' (')
+      setStart = repeatStart[0]
+    } else {
+      setStart = repeatStart[1]
+    }
   }
   if (req.session.data.endRepeat) {
-    var setEnd = req.session.data.endRepeat.split('. ')
+    var endRepeat = req.session.data.endRepeat.split('. ')
+    var setEnd = ''
+    console.log('endRepeat 1: ' + endRepeat)
+    if (endRepeat[1].includes('(optional)')) {
+      endRepeat = endRepeat[1].split(' (')
+      setEnd = endRepeat[0]
+    } else {
+      setEnd = endRepeat[1]
+    }
   }
   if (setStart && setEnd) {
     for (let i = 0; i < pages.length; i++) {
-      if (pages[i]['long-title'] == setStart[1]) {
+      if (pages[i]['long-title'] == setStart) {
         tempStart = pages[i]['pageIndex']
       }
-      if (pages[i]['long-title'] == setEnd[1]) {
+      if (pages[i]['long-title'] == setEnd) {
         tempEnd = pages[i]['pageIndex']
       }
     }
