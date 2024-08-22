@@ -6,7 +6,11 @@
 {% endblock %}
 
 {% block beforeContent %}
+  {% if data.referer and ('add-another' in data.referer) %}
+  <a class="govuk-back-link" href="add-another?cya=true">Back</a>
+  {% else %}
   <a class="govuk-back-link" href="{{ data['pages'] | length - 1 }}">Back</a>
+  {% endif %}
 {% endblock %}
 
 {% block content %}
