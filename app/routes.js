@@ -777,6 +777,7 @@ router.get('/form-designer/preview/:pageId(\\d+)/add-another', function (req, re
 })
 
 router.post('/form-designer/preview/:pageId(\\d+)/add-another', function (req, res) {
+  var cya = req.session.data.cya
   var pageId = req.params.pageId
   var pageIndex = parseInt(pageId)
   var pageData = req.session.data.pages[pageIndex]
