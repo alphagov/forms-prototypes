@@ -805,10 +805,7 @@ router.get('/form-designer/preview/:pageId(\\d+)/remove-answer', function (req, 
 })
 
 router.post('/form-designer/preview/:pageId(\\d+)/remove-answer', function (req, res) {
-  var cya = req.session.data.cya
-  var pageId = req.params.pageId
-  var pageIndex = parseInt(pageId)
-
+  var removeAnswer = req.session.data.removeAnswer
   return res.redirect('add-another')
 })
 
