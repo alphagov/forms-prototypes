@@ -790,6 +790,27 @@ router.post('/form-designer/preview/:pageId(\\d+)/add-another', function (req, r
   }
 })
 
+router.get('/form-designer/preview/:pageId(\\d+)/remove-answer', function (req, res) {
+  var pageId = req.params.pageId
+  var pageIndex = parseInt(pageId)
+  var pageData = req.session.data.pages[pageIndex]
+  const isLastQuestionPage = pageIndex === (req.session.data.pages.length - 1)
+
+  res.render('form-designer/preview/remove-answer', {
+    pageId: pageId,
+    pageIndex: pageIndex,
+    pageData: pageData,
+    isLastQuestionPage
+  })
+})
+
+router.post('/form-designer/preview/:pageId(\\d+)/remove-answer', function (req, res) {
+  var cya = req.session.data.cya
+  var pageId = req.params.pageId
+  var pageIndex = parseInt(pageId)
+
+  return res.redirect('add-another')
+})
 
 /* =====
 Routing for setting an email steps
