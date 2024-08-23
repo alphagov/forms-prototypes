@@ -291,6 +291,15 @@ Summary card
   border-bottom: 0
 }
 
+// Add another check your answers
+.app-summary-list--no-border {
+  border: none;
+}
+
+.app-summary-list--no-border:last-child {
+  border-bottom: 1px solid #b1b4b6;
+}
+
 // Payment Link confirmation panel
 .app-panel-blue {
   background-color: #1d70b8;

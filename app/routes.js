@@ -790,6 +790,11 @@ router.post('/form-designer/preview/:pageId(\\d+)/add-another', function (req, r
   }
 })
 
+router.post('/form-designer/preview/add-another', function (req, res) {
+  // this will only be triggered if the user tries to change answer from the check your answers before submitting page
+  return res.redirect('check-answers')
+})
+
 router.get('/form-designer/preview/:pageId(\\d+)/remove-answer', function (req, res) {
   var pageId = req.params.pageId
   var pageIndex = parseInt(pageId)
