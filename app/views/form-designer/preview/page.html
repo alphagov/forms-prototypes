@@ -12,6 +12,14 @@
 
 
 {% block beforeContent %}
+  {{ govukPhaseBanner({
+    tag: {
+      text: "Draft preview",
+      classes: "govuk-tag--yellow"
+    },
+    html: 'You’re previewing the draft of this form'
+  }) }}
+  
   {% set prevPageId = pageId | int - 1 %}
   {% if data.cya %}
     <a class="govuk-back-link" href="check-answers">Back</a>
@@ -32,6 +40,16 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <form class="form" method="post" novalidate>
+
+        {% set previewHTML %}
+          <p class="govuk-notification-banner__heading">
+            This is a preview of this form. Do not enter personal information.
+          </p>
+        {% endset %}
+
+        {{ govukNotificationBanner({
+          html: previewHTML
+        }) }}
 
         {% if pageData['additional-guidance'] == 'Yes' %}
         <h1 class="govuk-heading-l">{{ pageHeading }}</h1>
