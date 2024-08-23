@@ -711,10 +711,7 @@ router.post('/form-designer/preview/:pageId(\\d+)', function (req, res) {
   const isLastQuestionPage = pageIndex === (req.session.data.pages.length - 1)
 
   // check if this is a repeat-questions route
-  console.log('endRepeat: ' + req.session.data.endRepeat)
-  console.log('currentQuestion: ' + req.session.data.pages[pageIndex]['long-title'])
   if((req.session.data.endRepeat) && (req.session.data.endRepeat.includes(req.session.data.pages[pageIndex]['long-title']))) {
-    console.log('we got it!')
     return res.redirect(`${pageIndex}/check-repeat-answers`)
     // if last question in form OR user clicked on change link from CYA, then go to CYA
   } else if(isLastQuestionPage || cya === 'true') {
