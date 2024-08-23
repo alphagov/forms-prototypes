@@ -86,6 +86,7 @@ router.post('/form-designer/question-routes/choose-question-route', function (re
 // Select where the repeating-route STARTS
 router.get('/form-designer/question-routes/new-repeat', function (req, res) {
   var pages = req.session.data.pages
+  var repeatStart = req.session.data.repeatStart
 
   const pagesList = []
 
@@ -95,9 +96,16 @@ router.get('/form-designer/question-routes/new-repeat', function (req, res) {
       optional = ' (optional)'
     }
 
+    var markChecked = ''
+    if(repeatStart && (repeatStart.includes(pages[i]['long-title']))) {
+      console.log('checked: ' + pages[i]['long-title'])
+      markChecked = 'checked'
+    }
+
     pagesList.push({
       value: (pages[i]['pageIndex'] + 1) + ". " + pages[i]['long-title'] + optional,
-      text: (pages[i]['pageIndex'] + 1) + ". " + pages[i]['long-title'] + optional
+      text: (pages[i]['pageIndex'] + 1) + ". " + pages[i]['long-title'] + optional,
+      checked: markChecked
     })
   }
 
@@ -141,6 +149,7 @@ router.post('/form-designer/question-routes/new-repeat', function (req, res) {
 router.get('/form-designer/question-routes/repeat-route-end', function (req, res) {
   var pages = req.session.data.pages
   var repeatStart = req.session.data.repeatStart
+  var endRepeat = req.session.data.endRepeat
 
   const pagesList = [{
     value: 'choose',
@@ -150,7 +159,7 @@ router.get('/form-designer/question-routes/repeat-route-end', function (req, res
   var temp = false
   for (let i = 0; i < pages.length; i++) {
     // only add pages[i] AFTER we find repeatStart
-    if(repeatStart.includes(pages[i]['long-title'])) {
+    if(repeatStart && (repeatStart.includes(pages[i]['long-title']))) {
       temp = true
     }
 
@@ -160,9 +169,16 @@ router.get('/form-designer/question-routes/repeat-route-end', function (req, res
     }
 
     if((temp === true) && (!repeatStart.includes(pages[i]['long-title']))) {
+      var markChecked = ''
+      if(endRepeat && (endRepeat.includes(pages[i]['long-title']))) {
+        console.log('selected: ' + pages[i]['long-title'])
+        markChecked = 'checked'
+      }
+      
       pagesList.push({
         value: (pages[i]['pageIndex'] + 1) + ". " + pages[i]['long-title'] + optional,
-        text: (pages[i]['pageIndex'] + 1) + ". " + pages[i]['long-title'] + optional
+        text: (pages[i]['pageIndex'] + 1) + ". " + pages[i]['long-title'] + optional,
+        selected: markChecked
       })
     }
   }
