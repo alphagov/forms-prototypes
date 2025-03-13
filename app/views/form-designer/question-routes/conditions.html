@@ -33,7 +33,7 @@
       {% set tempAnswers = [] %}
       {% set tempQuestions = [] %}
       {% for page in data.pages -%}
-        {% if (page.pageIndex|int + 1) > data.routeStartQuestion + 1 %}
+        {% if (page.pageIndex|int + 1) > data.routeStartQuestion|int + 1 %}
           {% set tempQuestions = (tempQuestions.push(page), tempQuestions) %}
         {% endif %}
         {% if (page.pageIndex|int + 1) == data.routeStartQuestion %}
