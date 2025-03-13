@@ -15,7 +15,7 @@
 {% block content %}
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <form id="form" class="form" action="route-conditions" method="post" novalidate>
+    <form id="form" class="form" action="questions-routes" method="post" novalidate>
 
       {% if containsErrors %}
       {{ govukErrorSummary({
@@ -34,7 +34,7 @@
           {% set routeStart = page['long-title'] %}
         {% endif %}
         {% if (page.pageIndex|int + 1) == data.route1End %}
-          {% set routeEnd = (page.pageIndex|int + 1) + ' ' + page['long-title'] %}
+          {% set routeEnd = (page.pageIndex|int + 1) + '. ' + page['long-title'] %}
         {% elif data.route1End === 'cya' %}
           {% set routeEnd = data.checkAnswersTitle %}
         {% endif %}
@@ -88,11 +88,24 @@
         ]
       }) }}
 
-      <h2 class="govuk-heading-m">Any other answer</h2>
+      <h2 class="govuk-heading-m">If people select any other answer</h2>
       <p class="govuk-body">
-        People who select any other answer will continue to question 5.
+        People who select any other answer will continue to [question 3] and through the rest of the form.
       </p>
       <p class="govuk-body">
+        You can change this by adding a route from [3, ‘What are the company details?’].
+      </p>
+
+      {{ govukButton({
+        text: "Add a route from [question 3]",
+        classes: "govuk-button--secondary"
+      }) }}
+
+      <p class="govuk-body">
+        <a class="govuk-link" href="./add-route-from-question">Add a route from a different question</a>
+      </p>
+
+      <p class="govuk-body govuk-!-margin-top-5">
         <a class="govuk-link" href="../your-questions">Back to your questions</a>
       </p>
 
