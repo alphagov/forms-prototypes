@@ -25,44 +25,64 @@ module.exports = {
   payments: 'no',
   pages: [
     {
+      pageIndex: '0',
+      type: 'text',
       'long-title': 'What type of animal is your pet?',
-      'short-title': 'Animal type',
       'hint-text': 'For example a bird, cat, dog.',
-      type: 'text',
-      pageIndex: '0'
+      'additional-guidance': 'No',
+      'questionSaved': 'Yes'
     },
     {
+      pageIndex: '1',
+      type: 'text',
       'long-title': 'What is the name of your pet?',
-      'short-title': 'Pet name',
-      type: 'text',
-      pageIndex: '1'
+      'additional-guidance': 'No',
+      'questionSaved': 'Yes'
     },
     {
+      pageIndex: '2',
+      type: 'text',
       'long-title': 'Where are you travelling to?',
-      'short-title': 'Destination',
       'hint-text': 'For example Lisbon, Portugal',
-      type: 'text',
-      pageIndex: '2'
+      'additional-guidance': 'No',
+      'questionSaved': 'Yes'
     },
     {
-      'long-title': 'What date do you travel?',
-      'short-title': 'Date',
-      'hint-text': 'For example 27 3 2007',
+      pageIndex: '3',
       type: 'date',
-      pageIndex: '3'
+      'long-title': 'What date do you travel?',
+      'hint-text': 'For example 27 3 2007',
+      'additional-guidance': 'No',
+      'questionSaved': 'Yes'
     },
     {
-      'long-title': 'How are you travelling?',
-      'short-title': 'Transport type',
-      'hint-text': 'For example plane, train, car.',
+      pageIndex: '4',
       type: 'text',
-      pageIndex: '4'
+      'long-title': 'How are you travelling?',
+      'hint-text': 'For example plane, train, car.',
+      'additional-guidance': 'No',
+      'questionSaved': 'Yes'
     },
     {
-      'long-title': 'How many pets do you have?',
-      'short-title': 'Number of pets',
+      pageIndex: '5',
+      type: 'select',
+      'long-title': "Which of these countries have you lived in?",
+      'item-list': [
+        "England",
+        "Wales"
+      ],
+      'listSettings': [
+        "oneOption"
+      ],
+      'additional-guidance': 'No',
+      'questionSaved': 'Yes'
+    },
+    {
+      pageIndex: '6',
       type: 'number',
-      pageIndex: '5'
+      'long-title': 'How many pets do you have?',
+      'additional-guidance': 'No',
+      'questionSaved': 'Yes'
     }
   ],
   status: 'Draft',
