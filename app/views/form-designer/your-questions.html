@@ -83,7 +83,6 @@
         {% endif %}
 
         {% if questionTitle %}
-
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key app-summary-list__key">
             {{loop.index}}
@@ -117,6 +116,31 @@
               {% endif %}
             </div>
             <a class="govuk-link govuk-link--no-visited-state" href="pages/{{ page.pageIndex | int }}/check-question">
+              Edit<span class="govuk-visually-hidden"> Question {{loop.index}}. {{questionTitle}}</span>
+            </a>
+          </dd>
+        </div>
+        {% endif %}
+        {% if page.routing %}
+        {% set skipPage = '' %}
+        {% if page.routing.skipTo == 'cya' %}
+          {% set skipPage = '“' + data.checkAnswersTitle + '”' %}
+        {% else %}
+          {% for item in data.pages %}
+            {% if (item.pageIndex|int + 1) == (page.routing.skipTo|int) %}
+              {% set skipPage -%}{{ page.routing.skipTo }}, “{{ item['long-title'] }}”{%- endset %}
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key app-summary-list__key">
+            Question {{ page["pageIndex"] | int + 1 }}’s routes
+          </dt>
+          <dd class="govuk-summary-list__value">
+            If “{{ page['long-title'] }}” is answered as “{{ page.routing.answer }}” go to {{ skipPage }}
+          </dd>
+          <dd class="govuk-summary-list__actions govuk-!-padding-bottom-6">
+            <a class="govuk-link govuk-link--no-visited-state" href="question-routes/routes-summary">
               Edit<span class="govuk-visually-hidden"> Question {{loop.index}}. {{questionTitle}}</span>
             </a>
           </dd>
