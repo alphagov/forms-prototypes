@@ -1,0 +1,98 @@
+{% extends "layout-govuk-forms.html" %}
+
+{% set pageTitle = 'Set question or page to skip to' %}
+
+{% block pageTitle %}
+  {{ "Error: " if containsErrors }}{{pageTitle}}: {{ data.formTitle or '[formTitle]' }} - GOV.UK Forms
+{% endblock %}
+
+{% block beforeContent %}
+  <a class="govuk-back-link" href="javascript:window.history.back()">
+    Back
+  </a>
+{% endblock %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <form id="form" class="form" action="secondary-skip-end" method="post" novalidate>
+
+      {% if containsErrors %}
+      {{ govukErrorSummary({
+        titleText: "There is a problem",
+        errorList: errorList
+      }) }}
+      {% endif %}
+
+      <span class="govuk-caption-l">{{ (data.suggestedQuestion or 'X') + '’s routes: for any other answer' }}</span>
+      <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
+
+      {% set routeStart = '' %}
+      {% for page in data.pages -%}
+        {% if (page.pageIndex|int + 1) == data.suggestedQuestion %}
+          {% set routeStart = page['long-title'] %}
+        {% endif %}
+      {%- endfor %}
+
+      {{ govukSummaryList({
+        rows: [
+          {
+            key: {
+              text: "Question " + (data.suggestedQuestion or 'X')
+            },
+            value: {
+              text: routeStart or 'Not answered'
+            }
+          }
+        ]
+      }) }}
+
+      <div class="govuk-form-group{% if containsErrors %} govuk-form-group--error{% endif %}">
+        <fieldset class="govuk-fieldset">
+          <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+            <h2 class="govuk-fieldset__heading">
+              Which question or page you want to skip to?
+            </h2>
+          </legend>
+          {% if containsErrors -%}
+          <p id="secondary-route-end-error" class="govuk-error-message">
+            <span class="govuk-visually-hidden">Error:</span> {{ errorList[0].text }}
+          </p>
+          {%- endif %}
+          <div id="secondary-route-end-hint" class="govuk-hint">
+            This is the next question or page that people who select any other answer will see after [question 4]. 
+          </div>
+          <div class="govuk-radios" data-module="govuk-radios">
+          {% for page in data.pages -%}
+            {% if not loop.last %}
+            <div class="govuk-radios__item">
+              <input class="govuk-radios__input" id="secondary-route-end" name="routeStartQuestion" type="radio" value="{{ page['pageIndex']|int + 1 }}">
+              <label class="govuk-label govuk-radios__label" for="secondary-route-end">
+                {{ page['pageIndex']|int + 1 }}. {{ page["long-title"] }}
+              </label>
+            </div>
+            {% endif %}
+          {%- endfor %}
+          </div>
+        </fieldset>
+      </div>
+
+      {{ govukButton({
+        text: "Save and continue"
+      }) }}
+
+      <p class="govuk-body">
+        <a class="govuk-link" href="../your-questions">Go to your questions</a>
+      </p>
+
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block pageScripts %}
+<script type="text/javascript">
+  // call function from `assets/javascripts/application.js`
+  // removeSuccessNotification();
+</script>
+{% endblock %}
