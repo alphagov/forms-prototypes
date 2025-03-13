@@ -83,4 +83,22 @@ router.get('/form-designer/question-routes/route-conditions', function (req, res
   }
 })
 
+// Create a secondary route - button journeys
+router.get('/form-designer/question-routes/questions-routes', function (req, res) {
+  var { pages } = req.session.data
+  // if button pressed
+  // get the suggested question (based on the route 1 end)
+  var startQuestion = req.session.data.suggestedQuestion
+  req.session.data.suggestedQuestion = undefined // reset the suggestedQuestion
+  // add the first part of routing to the suggested question 
+  for (let index = 0; index < pages.length; index++) {
+    const element = pages[index];
+    if ((parseInt(element.pageIndex, 10) + 1) == startQuestion) {
+      element.routing = { 'noAnswer': 'true' } // add a routing element to the question
+    }
+  }
+  // go to add a secondary route to this question
+  res.redirect(`question-to-skip-to`)
+})
+
 module.exports = router
