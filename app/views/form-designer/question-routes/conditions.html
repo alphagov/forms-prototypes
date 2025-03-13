@@ -1,0 +1,129 @@
+{% extends "layout-govuk-forms.html" %}
+
+{% set pageTitle = 'Add route 1' %}
+
+{% block pageTitle %}
+  {{ "Error: " if containsErrors }}{{pageTitle}}: {{ data.formTitle or '[formTitle]' }} - GOV.UK Forms
+{% endblock %}
+
+{% block beforeContent %}
+  <a class="govuk-back-link" href="javascript:window.history.back()">
+    Back
+  </a>
+{% endblock %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <form id="form" class="form" action="route-conditions" method="post" novalidate>
+
+      {% if containsErrors %}
+      {{ govukErrorSummary({
+        titleText: "There is a problem",
+        errorList: errorList
+      }) }}
+      {% endif %}
+
+      <span class="govuk-caption-l">
+        {{ 'Question ' + (data.routeStartQuestion or 'X') + '’s routes' }}
+      </span>
+      <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
+
+      {% set routeStart = '' %}
+      {% set tempAnswers = [] %}
+      {% set tempQuestions = [] %}
+      {% for page in data.pages -%}
+        {% if (page.pageIndex|int + 1) > data.routeStartQuestion + 1 %}
+          {% set tempQuestions = (tempQuestions.push(page), tempQuestions) %}
+        {% endif %}
+        {% if (page.pageIndex|int + 1) == data.routeStartQuestion %}
+          {% set routeStart = page['long-title'] %}
+          {% set tempAnswers = page['item-list'] %}
+        {% endif %}
+      {%- endfor %}
+
+      {{ govukSummaryList({
+        rows: [
+          {
+            key: {
+              text: "Question " + (data.routeStartQuestion or 'X')
+            },
+            value: {
+              text: routeStart or 'Not answered'
+            },
+            actions: {
+              items: [
+                {
+                  href: "new-condition",
+                  text: "Change",
+                  visuallyHiddenText: " question"
+                }
+              ]
+            }
+          }
+        ]
+      }) }}
+      
+      {% set errorMessageAnswer = '' %}
+      {% set errorMessageEnd = '' %}
+      {% for error in errorList %}
+        {% if '#route-1-answer' in error.href %}
+          {% set errorMessageAnswer = error.text %}
+        {% endif %}
+        {% if '#route-1-end' in error.href %}
+          {% set errorMessageEnd = error.text %}
+        {% endif %}
+      {% endfor %}
+
+      <div class="govuk-form-group{% if containsErrors and errorMessageAnswer %} govuk-form-group--error{% endif %}">
+        <label class="govuk-label govuk-label--s" for="route-1-answer">
+          is answered as
+        </label>
+        {% if containsErrors and errorMessageAnswer -%}
+        <p id="route-1-answer-error" class="govuk-error-message">
+          <span class="govuk-visually-hidden">Error:</span> {{ errorMessageAnswer }}
+        </p>
+        {%- endif %}
+        <select class="govuk-select" id="route-1-answer" name="route1Answer">
+          <option value="">Select an answer</option>
+          {% for answer in tempAnswers %}
+          <option value="{{ answer }}">{{ answer }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      
+      <div class="govuk-form-group{% if containsErrors and errorMessageEnd %} govuk-form-group--error{% endif %}">
+        <label class="govuk-label govuk-label--s" for="route-1-end">
+          skip the person to
+        </label>
+        {% if containsErrors and errorMessageEnd -%}
+        <p id="route-1-end-error" class="govuk-error-message">
+          <span class="govuk-visually-hidden">Error:</span> {{ errorMessageEnd }}
+        </p>
+        {%- endif %}
+        <select class="govuk-select govuk-!-width-two-thirds" id="route-1-end" name="route1End">
+          <option value="">Select a question or page</option>
+          {% for question in tempQuestions %}
+          <option value="{{ question['pageIndex'] }}">
+            {{ question['pageIndex']|int + 1 }}. {{ question['long-title'] }}
+          </option> 
+          {% endfor %}
+          <option value="cya">{{ data.checkAnswersTitle }}</option>
+        </select>
+      </div> 
+
+      {{ govukButton({
+        text: "Save and continue"
+      }) }}
+
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block pageScripts %}
+<script type="text/javascript">
+  // call function from `assets/javascripts/application.js`
+  // removeSuccessNotification();
+</script>
+{% endblock %}
