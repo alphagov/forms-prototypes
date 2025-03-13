@@ -641,17 +641,68 @@ router.get('/form-designer/pages/:pageId/view', function (req, res) {
 
 // Routing for new-tab page previews, set to a specific page
 router.post('/form-designer/preview/:pageId(\\d+)', function (req, res) {
+  // this is used to check if the user has clicked ‘change’ link on the CYA screen - we add a URL query ‘cya=true’
   var cya = req.session.data.cya
-  req.session.data.cya = undefined
+  // this clears the temporary URL query so it can be reused on another ‘change’ link
+  req.session.data.cya = undefined 
+
   var pageId = req.params.pageId
   var pageIndex = parseInt(pageId)
   const isLastQuestionPage = pageIndex === (req.session.data.pages.length - 1)
 
+  var pages = req.session.data.pages
+  var pageAnswer = req.session.data[pageIndex]
+
+  var pagesCYA = req.session.data.pagesCYA
+
+  if (!pagesCYA) {
+    pagesCYA = []
+  }
+
+  // set variable for the next page, with default
+  var nextPage = `${pageIndex + 1}`
+  // for all pages in the form 
+  for (let index = 0; index < pages.length; index++) {
+    const page = pages[index];
+    // get the current page
+    if (page.pageIndex == pageIndex) {
+      // if current page has routing attribute
+      if (page.routing) {
+        if (page.routing.answer != pageAnswer) {
+          // if the answer is being changed and doesn’t skip remove the CYA change link function to force user to go through the rest of the journey
+          cya = 'false'
+        }
+        if (page.routing.answer == pageAnswer) {
+          // override the nextPage to the one in routing
+          nextPage = page.routing.skipTo
+        }
+      }
+      // check if we are changing an answer
+      if (cya !== 'true') {
+        // check current page against pagesCYA array - if it exists don’t add it
+        var pageExists = 'false';
+        for (let andex = 0; andex < pagesCYA.length; andex++) {
+          const answeredPage = pagesCYA[andex];
+          if (answeredPage.pageIndex == page.pageIndex) {
+            pageExists = 'true' // the page exists
+          }
+        }
+        // ignore existing pages
+        if (pageExists !== 'true') {
+          // add this answered question to our check your answers page
+          pagesCYA.push(page)
+        }
+      }
+    }
+  }
+  // set the session data so we can use it
+  req.session.data.pagesCYA = pagesCYA
+
   // if last question in form OR user clicked on change link from CYA, then go to CYA
-  if(isLastQuestionPage || cya === 'true') {
+  if(isLastQuestionPage || nextPage == 'cya' || cya === 'true') {
     return res.redirect('check-answers')
   } else {
-    return res.redirect(`${pageIndex + 1}`)
+    return res.redirect(nextPage)
   }
 })
 
@@ -1024,5 +1075,8 @@ router.use('/pages', require('./views/form-designer/pages/\_routes'))
 
 /* Use the routes file in product-pages for groups and members routes */
 router.use('/product-pages', require('./views/product-pages/\_routes'))
+
+/* Use the routes file in question-routes for adding routing and branching to questions */
+router.use('/question-routes', require('./views/form-designer/question-routes/\_routes'))
 
 module.exports = router
