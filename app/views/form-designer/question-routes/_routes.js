@@ -23,20 +23,35 @@ router.get('/form-designer/question-routes/:pageId(\\d+)/new-condition', getStar
 // Create a new question route - button journey
 // this POST also creates our ‘pageId’ to use throughout the editing and creating of routes attached to it
 postStartQuestion = function (req, res) {
-  const errors = {}  
-  var pageId = parseInt(req.params.pageId, 10)
+  const errors = {}
   var routeStartQuestion = parseInt(req.session.data.routeStartQuestion, 10)
   var pageIndex = routeStartQuestion
-
-  if (pageId) {
-    pageIndex = pageId
-  }
+  var { pages } = req.session.data
 
   // If the no question to start the route has been selected, create an error to be displayed to the user
   if (!routeStartQuestion) {
     errors.routeStartQuestion = {
       text: 'Select the question you want your route to start from',
       href: "#route-start-question"
+    }
+  }
+
+  /*
+  set a temporary check variable to hold if the page exists
+  var yuppityYup = false
+  we first need to loop through the existing data.pages 
+  for (page in data.pages) 
+    check if the selected page already has a route
+    if ((page.pageIndex == pageIndex) && (page.routing))
+      yuppityYup = true
+  */
+  var yuppityYup = false 
+  for (let index = 0; index < pages.length; index++) {
+    const element = pages[index];
+    if ((parseInt(element.pageIndex, 10)) == pageIndex) {
+      if (element.routing) {
+        yuppityYup = true
+      }
     }
   }
 
@@ -48,8 +63,14 @@ postStartQuestion = function (req, res) {
   if(containsErrors) {
     res.render('form-designer/question-routes/new-condition', { errors, errorList, containsErrors })
   } else {
-    // go to add conditions to the route
-    res.redirect(`${pageIndex}/conditions`)
+    // if selected question already has a route we want to take the user to the question routes summary page
+    if (yuppityYup) {
+      // tkae user to question routes summary page
+      res.redirect(`${pageIndex}/routes-summary`)
+    } else {
+      // go to add answer and skip to conditions for the route
+      res.redirect(`${pageIndex}/conditions`)
+    }
   }
 }
 router.post('/form-designer/question-routes/route-start', postStartQuestion)
