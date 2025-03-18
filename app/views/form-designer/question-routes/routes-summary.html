@@ -1,9 +1,9 @@
 {% extends "layout-govuk-forms.html" %}
 
-{% set pageTitle = 'Question ' + (data.routeStartQuestion or 'X') + '’s routes' %}
+{% set pageTitle = 'Question ' + ((pageIndex + 1) or 'X') + '’s routes' %}
 
 {% block pageTitle %}
-  {{ "Error: " if containsErrors }}{{pageTitle}}: {{ data.formTitle or '[formTitle]' }} - GOV.UK Forms
+  {{ "Error: " if containsErrors }}{{ pageTitle }}: {{ data.formTitle or '[formTitle]' }} - GOV.UK Forms
 {% endblock %}
 
 {% block beforeContent %}
@@ -27,32 +27,43 @@
       <span class="govuk-caption-l">{{ data.formTitle or '[formTitle]' }}</span>
       <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
 
-      {% set routeStart = '' %}
       {% set routeEnd = '' %}
+      {% set routeEndText = '' %}
+      {% set countQs = 0 %}
+      {# loop to get ‘Route 1’ skip to question text to display in the summary card #}
       {% for page in data.pages -%}
-        {% if (page.pageIndex|int + 1) == data.routeStartQuestion %}
-          {% set routeStart = page['long-title'] %}
+
+        {# quick way for us to get if there are enough questions left that a for any other answer route would work or should be offered #}
+        {% if (page.pageIndex|int+1) > (pageIndex|int+1) %}
+        {% set countQs = countQs + 1 %}
         {% endif %}
-        {% if (page.pageIndex|int + 1) == data.route1End %}
-          {% set routeEnd = (page.pageIndex|int + 1) + '. ' + page['long-title'] %}
-        {% elif data.route1End === 'cya' %}
-          {% set routeEnd = data.checkAnswersTitle %}
+
+        {# set the skip to question content to an existing question from the form #}
+        {% if (page.pageIndex|int + 1) == (pageData.routing.skipTo|int + 1) %}
+          {% set routeEndText = (page.pageIndex|int + 1) + '. ' + page['long-title'] %}
+          {% set routeEnd = (page.pageIndex|int + 1) %}
+        {# set the skip to content to be check your answers default title #}
+        {% elif pageData.routing.skipTo === 'cya' %}
+          {% set routeEndText = data.checkAnswersTitle %}
+          {% set routeEnd = 'cya' %}
         {% endif %}
       {%- endfor %}
 
+      {# show the question the routes are associated with #}
       {{ govukSummaryList({
         rows: [
           {
             key: {
-              text: "Question " + (data.routeStartQuestion or 'X')
+              text: "Question " + ((pageIndex + 1) or 'X')
             },
             value: {
-              text: routeStart or 'Not answered'
+              text: pageData['long-title'] or 'Not answered'
             }
           }
         ]
       }) }}
 
+      {# show the ‘Route 1’ summary card #}
       {{ govukSummaryList({
         card: {
           title: {
@@ -74,7 +85,7 @@
               text: "If answered as"
             },
             value: {
-              text: data.route1Answer or 'Not answered'
+              text: pageData.routing.answer or 'Not answered'
             }
           },
           {
@@ -82,31 +93,143 @@
               text: "skip the person to"
             },
             value: {
-              text: routeEnd or 'Not answered'
+              text: routeEndText or 'Not answered'
             }
           }
         ]
       }) }}
 
-      <h2 class="govuk-heading-m">If people select any other answer</h2>
-      <p class="govuk-body">
-        People who select any other answer will continue to [question 3] and through the rest of the form.
-      </p>
-      <p class="govuk-body">
-        You can change this by adding a route from [3, ‘What are the company details?’].
-      </p>
+      {# show ‘Route for any other answer’ summary card if one has been added #}
+      {% if pageData.routing.secondary === 'true' %}
+
+      {# we need a way to get the question that we want to suggest to start the for any other answer route from #}
+      {% set continueTo = '' %}
+      {% set thenAfter = '0' %}
+      {% set thenAfterText = '' %}
+      {% set skipPersonTo = '' %}
+      {% for page in data.pages %}
+        {% if page.pageIndex == (pageData.pageIndex|int + 1) %}
+          {% set continueTo = (page.pageIndex|int + 1) + '. ' + page['long-title'] %}
+        {% endif %}
+        {# find the secondary route in the questions list #}
+        {% if page.routing and (page.routing.baseQuestion == (pageData.pageIndex)) %}
+          {% set thenAfter = page.pageIndex|int %}
+          {% set thenAfterText = (page.pageIndex|int + 1) + '. ' + page['long-title'] %}
+          {% if page.routing.thenSkipTo == 'cya' %}
+            {% set skipPersonTo = data.checkAnswersTitle %}
+          {% else %}
+            {% set skipPersonTo = (page.routing.thenSkipTo|int + 1) + '. ' + page['long-title'] %}
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+
+      {{ govukSummaryList({
+        card: {
+          title: {
+            text: "Route for any other answer"
+          },
+          actions: {
+            items: [
+              {
+                href: "delete-secondary-route",
+                text: "Delete",
+                visuallyHiddenText: " route for any other answer"
+              }
+            ]
+          }
+        },
+        rows: [
+          {
+            key: {
+              text: "Continue to"
+            },
+            value: {
+              text: continueTo or 'Next question'
+            }
+          },
+          {
+            key: {
+              text: "Then after"
+            },
+            value: {
+              text: thenAfterText or 'Not answered'
+            },
+            actions: {
+              items: [
+                {
+                  href: thenAfter + "/other-answer-route",
+                  text: "Change",
+                  visuallyHiddenText: " question to skip from"
+                }
+              ]
+            }
+          },
+          {
+            key: {
+              text: "skip the person to"
+            },
+            value: {
+              text: skipPersonTo or 'Not answered'
+            },
+            actions: {
+              items: [
+                {
+                  href: thenAfter + "/question-to-skip-to",
+                  text: "Change",
+                  visuallyHiddenText: " skip the person to"
+                }
+              ]
+            }
+          }
+        ]
+      }) }}
 
       {{ govukButton({
-        text: "Add a route from [question 3]",
+        text: "Delete all routes",
+        classes: "govuk-button--warning"
+      }) }}
+
+      {% else %}
+
+      {# we need a way to get the question that we want to suggest to start the for any other answer route from #}
+      {% set suggestedQuestion = '' %}
+      {% set suggestedQuestionText = '' %}
+      {% for page in data.pages %}
+        {% if (routeEnd != 'cya') or (countQs >= 2) %}
+          {% if page.pageIndex == pageData.routing.skipTo|int - 1 %}
+            {% set suggestedQuestion = (page.pageIndex|int + 1) %}
+            {% set suggestedQuestionText = (page.pageIndex|int + 1) + ', ‘' + page['long-title'] + '’' %}
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+
+      <h2 class="govuk-heading-m">If people select any other answer</h2>
+      <p class="govuk-body">
+        People who select any other answer will continue to question {{ (pageIndex + 2) or 'Y' }} and through the rest of the form.
+      </p>
+      {% if routeEnd != 'cya' %}
+      <p class="govuk-body">
+        You can change this by adding a route from {{ suggestedQuestionText or 'Z, ‘Example question’' }}.
+      </p>
+
+      {# if not the last question, and the previous question isn’t the last question #}
+
+      <input type="hidden" name="suggestedQuestion" value="{{ (suggestedQuestion|int-1) or 'Z' }}"/>
+
+      {{ govukButton({
+        text: "Add a route from question " + (suggestedQuestion|int or 'Z'),
         classes: "govuk-button--secondary"
       }) }}
 
       <p class="govuk-body">
-        <a class="govuk-link" href="./add-route-from-question">Add a route from a different question</a>
+        <a class="govuk-link" href="./other-answer-route">Add a route from a different question</a>
       </p>
+      {% endif %}
+
+      {% endif %}
 
       <p class="govuk-body govuk-!-margin-top-5">
-        <a class="govuk-link" href="../your-questions">Back to your questions</a>
+        <a class="govuk-link" href="/form-designer/your-questions">Back to your questions</a>
       </p>
 
     </form>
