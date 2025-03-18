@@ -25,31 +25,18 @@
       {% endif %}
 
       <span class="govuk-caption-l">
-        {{ 'Question ' + (data.routeStartQuestion or 'X') + '’s routes' }}
+        {{ 'Question ' + ((pageIndex + 1) or 'X') + '’s routes' }}
       </span>
       <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
-
-      {% set routeStart = '' %}
-      {% set tempAnswers = [] %}
-      {% set tempQuestions = [] %}
-      {% for page in data.pages -%}
-        {% if (page.pageIndex|int + 1) > data.routeStartQuestion|int + 1 %}
-          {% set tempQuestions = (tempQuestions.push(page), tempQuestions) %}
-        {% endif %}
-        {% if (page.pageIndex|int + 1) == data.routeStartQuestion %}
-          {% set routeStart = page['long-title'] %}
-          {% set tempAnswers = page['item-list'] %}
-        {% endif %}
-      {%- endfor %}
 
       {{ govukSummaryList({
         rows: [
           {
             key: {
-              text: "Question " + (data.routeStartQuestion or 'X')
+              text: "Question " + ((pageIndex + 1) or 'X')
             },
             value: {
-              text: routeStart or 'Not answered'
+              text: pageData['long-title'] or 'Not answered'
             },
             actions: {
               items: [
@@ -63,54 +50,83 @@
           }
         ]
       }) }}
-      
-      {% set errorMessageAnswer = '' %}
-      {% set errorMessageEnd = '' %}
-      {% for error in errorList %}
-        {% if '#route-1-answer' in error.href %}
-          {% set errorMessageAnswer = error.text %}
-        {% endif %}
-        {% if '#route-1-end' in error.href %}
-          {% set errorMessageEnd = error.text %}
+
+      {# need to get an idea of which page we are trying to skip to so we will hold it in a temporary variable to use for checking if an item in the ‘select’ list has been chosen #}
+      {% set temp = '' %}
+      {% for page in data.pages -%}
+        {% if (page.routing.skipTo) %}
+          {% set temp = page.routing.skipTo %}
         {% endif %}
       {% endfor %}
 
-      <div class="govuk-form-group{% if containsErrors and errorMessageAnswer %} govuk-form-group--error{% endif %}">
-        <label class="govuk-label govuk-label--s" for="route-1-answer">
-          is answered as
-        </label>
-        {% if containsErrors and errorMessageAnswer -%}
-        <p id="route-1-answer-error" class="govuk-error-message">
-          <span class="govuk-visually-hidden">Error:</span> {{ errorMessageAnswer }}
-        </p>
-        {%- endif %}
-        <select class="govuk-select" id="route-1-answer" name="route1Answer">
-          <option value="">Select an answer</option>
-          {% for answer in tempAnswers %}
-          <option value="{{ answer }}">{{ answer }}</option>
+      {# create a new temporary list to use in our ‘select’ component, also add the default ‘select a/an...’ #}
+      {% set tempAnswers = [{
+        value: '',
+        text: 'Select an answer'
+      }] %}
+      {% set tempQuestions = [{
+        value: '',
+        text: 'Select a question or page'
+      }] %}
+
+      {% for page in data.pages -%}
+
+        {# if this object is the current page #}
+        {% if (page.pageIndex|int) == (pageIndex) %}
+          {# add the list of possible answers to the route question to our temporary answers list #}
+          {% for item in page['item-list'] %}
+            {% set tempAnswers = (
+              tempAnswers.push({
+                value: item,
+                text: item,
+                selected: true if (page.routing.answer == item)
+              }), tempAnswers) 
+            %}
           {% endfor %}
-        </select>
-      </div>
-      
-      <div class="govuk-form-group{% if containsErrors and errorMessageEnd %} govuk-form-group--error{% endif %}">
-        <label class="govuk-label govuk-label--s" for="route-1-end">
-          skip the person to
-        </label>
-        {% if containsErrors and errorMessageEnd -%}
-        <p id="route-1-end-error" class="govuk-error-message">
-          <span class="govuk-visually-hidden">Error:</span> {{ errorMessageEnd }}
-        </p>
-        {%- endif %}
-        <select class="govuk-select govuk-!-width-two-thirds" id="route-1-end" name="route1End">
-          <option value="">Select a question or page</option>
-          {% for question in tempQuestions %}
-          <option value="{{ question['pageIndex'] }}">
-            {{ question['pageIndex']|int + 1 }}. {{ question['long-title'] }}
-          </option> 
-          {% endfor %}
-          <option value="cya">{{ data.checkAnswersTitle }}</option>
-        </select>
-      </div> 
+        {% endif %}
+
+        {# if this object is is after the route question #}
+        {% if (page.pageIndex|int) > (pageIndex + 1) %} 
+          {# add all the questions after the route question to our temporary questions list #}
+          {% set tempQuestions = (
+            tempQuestions.push({
+              value: page.pageIndex,
+              text: (page.pageIndex|int + 1) + '. ' + page['long-title'],
+              selected: true if (temp == page.pageIndex)
+            }), tempQuestions) 
+          %}
+          {# we also need to add the CYA page to the list of options #}
+          {% if loop.last %}
+            {% set tempQuestions = (
+              tempQuestions.push({
+                value: 'cya',
+                text: data.checkAnswersTitle,
+                selected: true if (temp == 'cya')
+              }), tempQuestions) 
+            %}
+          {% endif %}
+        {% endif %}
+      {%- endfor %}
+
+      {{ govukSelect({
+        id: "route-1-answer",
+        name: "route1Answer",
+        label: {
+          text: "is answered as",
+          classes: 'govuk-label--s'
+        },
+        items: tempAnswers
+      }) }}
+
+      {{ govukSelect({
+        id: "route-1-end",
+        name: "route1End",
+        label: {
+          text: "skip the person to",
+          classes: 'govuk-label--s'
+        },
+        items: tempQuestions
+      }) }}
 
       {{ govukButton({
         text: "Save and continue"
