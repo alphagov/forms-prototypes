@@ -29,7 +29,7 @@ postStartQuestion = function (req, res) {
   var { pages } = req.session.data
 
   // If the no question to start the route has been selected, create an error to be displayed to the user
-  if (!routeStartQuestion) {
+  if (!routeStartQuestion && routeStartQuestion !== 0) {
     errors.routeStartQuestion = {
       text: 'Select the question you want your route to start from',
       href: "#route-start-question"
