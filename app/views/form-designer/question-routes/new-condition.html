@@ -1,6 +1,8 @@
 {% extends "layout-govuk-forms.html" %}
 
 {% set pageTitle = 'Add a route from a question' %}
+{% set pageQuestion = 'Which question do you want to add a route from?' %}
+{% set pageHint = 'A route can only start from a question where people select one item from a list. You can only add one route from each question.' %}
 
 {% block pageTitle %}
   {{ "Error: " if containsErrors }}{{pageTitle}}: {{ data.formTitle or '[formTitle]' }} - GOV.UK Forms
@@ -37,42 +39,34 @@
         You can set up a route so if someone selects a specific answer to a question they’ll skip forward to a later question, or the end of the form.
       </p>
 
+      {% if data.pages.length >= 2 %}
+
+      {% set tempQuestions = [] %}
       {% for page in data.pages -%}
-        {% set tempQuestions = {
-          'name': page['long-title']
-        } %}
+        {% if page['type'] == 'select' and page['listSettings'].includes('oneOption') and not loop.last %}
+          {% set tempQuestions = (
+            tempQuestions.push({
+              value: page.pageIndex,
+              text: (page.pageIndex|int + 1) + '. ' + page['long-title'],
+              checked: true if data.routeStartQuestion == (page.pageIndex|int + 1)
+            }), tempQuestions) 
+          %}
+        {% endif %}
       {%- endfor %}
 
-      {% if data.pages.length >= 2 %}
-      <div class="govuk-form-group{% if containsErrors %} govuk-form-group--error{% endif %}">
-        <fieldset class="govuk-fieldset">
-          <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-            <h2 class="govuk-fieldset__heading">
-              Which question do you want to add a route from?
-            </h2>
-          </legend>
-          {% if containsErrors -%}
-          <p id="routeStartQuestion-error" class="govuk-error-message">
-            <span class="govuk-visually-hidden">Error:</span> {{ errorList[0].text }}
-          </p>
-          {%- endif %}
-          <div id="routeStartQuestion-hint" class="govuk-hint">
-            A route can only start from a question where people select one item from a list. You can only add one route from each question.
-          </div>
-          <div class="govuk-radios" data-module="govuk-radios">
-          {% for page in data.pages -%}
-            {% if page['type'] == 'select' and page['listSettings'].includes('oneOption') and not loop.last %}
-            <div class="govuk-radios__item">
-              <input class="govuk-radios__input" id="route-start-question" name="routeStartQuestion" type="radio" value="{{ page['pageIndex']|int + 1 }}">
-              <label class="govuk-label govuk-radios__label" for="route-start-question">
-                {{ page['pageIndex']|int + 1 }}. {{ page["long-title"] }}
-              </label>
-            </div>
-            {% endif %}
-          {%- endfor %}
-          </div>
-        </fieldset>
-      </div>
+      {{ govukRadios({
+          name: "routeQuestion",
+          fieldset: {
+            legend: {
+              text: pageQuestion,
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          hint: {
+            text: pageHint
+          },
+          items: tempQuestions
+      }) }}
 
       {{ govukButton({
         text: "Continue"
