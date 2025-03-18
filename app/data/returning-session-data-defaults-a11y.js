@@ -49,22 +49,6 @@ module.exports = {
     },
     {
       pageIndex: '3',
-      type: 'date',
-      'long-title': 'What date do you travel?',
-      'hint-text': 'For example 27 3 2007',
-      'additional-guidance': 'No',
-      'questionSaved': 'Yes'
-    },
-    {
-      pageIndex: '4',
-      type: 'text',
-      'long-title': 'How are you travelling?',
-      'hint-text': 'For example plane, train, car.',
-      'additional-guidance': 'No',
-      'questionSaved': 'Yes'
-    },
-    {
-      pageIndex: '5',
       type: 'select',
       'long-title': "Which of these countries have you lived in?",
       'item-list': [
@@ -74,6 +58,22 @@ module.exports = {
       'listSettings': [
         "oneOption"
       ],
+      'additional-guidance': 'No',
+      'questionSaved': 'Yes'
+    },
+    {
+      pageIndex: '4',
+      type: 'date',
+      'long-title': 'What date do you travel?',
+      'hint-text': 'For example 27 3 2007',
+      'additional-guidance': 'No',
+      'questionSaved': 'Yes'
+    },
+    {
+      pageIndex: '5',
+      type: 'text',
+      'long-title': 'How are you travelling?',
+      'hint-text': 'For example plane, train, car.',
       'additional-guidance': 'No',
       'questionSaved': 'Yes'
     },
