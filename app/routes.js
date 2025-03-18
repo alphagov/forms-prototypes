@@ -661,6 +661,7 @@ router.post('/form-designer/preview/:pageId(\\d+)', function (req, res) {
 
   // set variable for the next page, with default
   var nextPage = `${pageIndex + 1}`
+
   // for all pages in the form 
   for (let index = 0; index < pages.length; index++) {
     const page = pages[index];
@@ -675,6 +676,10 @@ router.post('/form-designer/preview/:pageId(\\d+)', function (req, res) {
         if (page.routing.answer == pageAnswer) {
           // override the nextPage to the one in routing
           nextPage = page.routing.skipTo
+        }
+        if (page.routing.thenSkipTo) {
+          // override the nextPage to the ‘Route for any other answer’
+          nextPage = page.routing.thenSkipTo
         }
       }
       // check if we are changing an answer
