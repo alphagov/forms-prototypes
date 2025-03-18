@@ -1,6 +1,8 @@
 {% extends "layout-govuk-forms.html" %}
 
 {% set pageTitle = 'Set question or page to skip to' %}
+{% set pageQuestion = 'Which question or page you want to skip to?' %}
+{% set pageHint = 'This is the next question or page that people who select any other answer will see after question ' + (routeIndex + 1) + '.' %}
 
 {% block pageTitle %}
   {{ "Error: " if containsErrors }}{{pageTitle}}: {{ data.formTitle or '[formTitle]' }} - GOV.UK Forms
@@ -24,12 +26,14 @@
       }) }}
       {% endif %}
 
-      <span class="govuk-caption-l">{{ (data.suggestedQuestion or 'X') + '’s routes: for any other answer' }}</span>
+      <span class="govuk-caption-l">
+        {{ 'Question ' + ((pageIndex + 1) or 'X') + '’s routes: for any other answer' }}
+      </span>
       <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
 
       {% set routeStart = '' %}
       {% for page in data.pages -%}
-        {% if (page.pageIndex|int + 1) == data.suggestedQuestion %}
+        {% if (page.pageIndex|int) == (routeIndex) %}
           {% set routeStart = page['long-title'] %}
         {% endif %}
       {%- endfor %}
@@ -38,7 +42,7 @@
         rows: [
           {
             key: {
-              text: "Question " + (data.suggestedQuestion or 'X')
+              text: "Question " + ((routeIndex + 1) or 'X')
             },
             value: {
               text: routeStart or 'Not answered'
@@ -47,42 +51,56 @@
         ]
       }) }}
 
-      <div class="govuk-form-group{% if containsErrors %} govuk-form-group--error{% endif %}">
-        <fieldset class="govuk-fieldset">
-          <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-            <h2 class="govuk-fieldset__heading">
-              Which question or page you want to skip to?
-            </h2>
-          </legend>
-          {% if containsErrors -%}
-          <p id="secondary-route-end-error" class="govuk-error-message">
-            <span class="govuk-visually-hidden">Error:</span> {{ errorList[0].text }}
-          </p>
-          {%- endif %}
-          <div id="secondary-route-end-hint" class="govuk-hint">
-            This is the next question or page that people who select any other answer will see after [question 4]. 
-          </div>
-          <div class="govuk-radios" data-module="govuk-radios">
-          {% for page in data.pages -%}
-            {% if not loop.last %}
-            <div class="govuk-radios__item">
-              <input class="govuk-radios__input" id="secondary-route-end" name="routeStartQuestion" type="radio" value="{{ page['pageIndex']|int + 1 }}">
-              <label class="govuk-label govuk-radios__label" for="secondary-route-end">
-                {{ page['pageIndex']|int + 1 }}. {{ page["long-title"] }}
-              </label>
-            </div>
-            {% endif %}
-          {%- endfor %}
-          </div>
-        </fieldset>
-      </div>
+      {# need to get an idea of which page we are trying to skip to so we will hold it in a temporary variable to use for checking if an item in the ‘select’ list has been chosen #}
+      {% set temp = '' %}
+      {% for page in data.pages -%}
+        {% if (page.routing.thenSkipTo) %}
+          {% set temp = page.routing.thenSkipTo %}
+        {% endif %}
+      {% endfor %}
+
+      {% set tempQuestions = [] %}
+      {% for page in data.pages -%}
+        {% if (page.pageIndex > (routeIndex + 1)) %}
+          {% set tempQuestions = (
+            tempQuestions.push({
+              value: page.pageIndex,
+              text: (page.pageIndex|int + 1) + '. ' + page['long-title'],
+              checked: true if (temp == page.pageIndex)
+            }), tempQuestions) 
+          %}
+        {% endif %}
+        {% if loop.last %}
+          {% set tempQuestions = (
+            tempQuestions.push({
+              value: 'cya',
+              text: data.checkAnswersTitle,
+              checked: true if (temp == 'cya')
+            }), tempQuestions) 
+          %}
+        {% endif %}
+      {%- endfor %}
+
+      {{ govukRadios({
+          name: "routeEnd",
+          fieldset: {
+            legend: {
+              text: pageQuestion,
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          hint: {
+            text: pageHint
+          },
+          items: tempQuestions
+      }) }}
 
       {{ govukButton({
         text: "Save and continue"
       }) }}
 
       <p class="govuk-body">
-        <a class="govuk-link" href="../your-questions">Go to your questions</a>
+        <a class="govuk-link" href="../../../your-questions">Go to your questions</a>
       </p>
 
     </form>
