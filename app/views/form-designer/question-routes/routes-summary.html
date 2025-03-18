@@ -118,7 +118,13 @@
           {% if page.routing.thenSkipTo == 'cya' %}
             {% set skipPersonTo = data.checkAnswersTitle %}
           {% else %}
-            {% set skipPersonTo = (page.routing.thenSkipTo|int + 1) + '. ' + page['long-title'] %}
+            {% for otherRoutePage in data.pages %}
+              {% if (otherRoutePage.pageIndex|int) == (page.routing.thenSkipTo|int) %}
+                {% set skipPersonTo -%}
+                  {{ otherRoutePage.pageIndex|int + 1 }}, “{{ otherRoutePage['long-title'] }}”
+                {%- endset %}
+              {% endif %}
+            {% endfor %}
           {% endif %}
         {% endif %}
       {% endfor %}

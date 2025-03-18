@@ -24,8 +24,8 @@ router.get('/form-designer/question-routes/:pageId(\\d+)/new-condition', getStar
 // this POST also creates our ‘pageId’ to use throughout the editing and creating of routes attached to it
 postStartQuestion = function (req, res) {
   const errors = {}
-  var routeStartQuestion = parseInt(req.session.data.routeStartQuestion, 10)
-  var pageIndex = routeStartQuestion
+  var routeStartQuestion = req.session.data.routeStartQuestion
+  var pageIndex = parseInt(routeStartQuestion, 10)
   var { pages } = req.session.data
 
   // If the no question to start the route has been selected, create an error to be displayed to the user

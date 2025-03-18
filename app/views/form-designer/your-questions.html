@@ -157,7 +157,7 @@
             {% for otherRoutePage in data.pages %}
               {% if (otherRoutePage.pageIndex|int) == (page.routing.thenSkipTo|int) %}
                 {% set skipPage -%}
-                  {{ otherRoutePage.routing.thenSkipTo|int + 1 }}, “{{ otherRoutePage['long-title'] }}”
+                  {{ otherRoutePage.pageIndex|int + 1 }}, “{{ otherRoutePage['long-title'] }}”
                 {%- endset %}
               {% endif %}
             {% endfor %}
