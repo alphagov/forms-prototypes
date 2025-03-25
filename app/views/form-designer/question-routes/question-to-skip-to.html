@@ -82,17 +82,18 @@
       {%- endfor %}
 
       {{ govukRadios({
-          name: "routeEnd",
-          fieldset: {
-            legend: {
-              text: pageQuestion,
-              classes: "govuk-fieldset__legend--m"
-            }
-          },
-          hint: {
-            text: pageHint
-          },
-          items: tempQuestions
+        name: "routeEnd",
+        fieldset: {
+          legend: {
+            text: pageQuestion,
+            classes: "govuk-fieldset__legend--m"
+          }
+        },
+        hint: {
+          text: pageHint
+        },
+        items: tempQuestions,
+        errorMessage: { text: errors['routeEnd'].text } if errors['routeEnd'].text
       }) }}
 
       {{ govukButton({
