@@ -49,18 +49,19 @@
       {%- endfor %}
 
       {{ govukRadios({
-          name: "routeQuestion",
-          fieldset: {
-            legend: {
-              text: pageTitle,
-              isPageHeading: true,
-              classes: "govuk-fieldset__legend--l"
-            }
-          },
-          hint: {
-            text: pageHint
-          },
-          items: tempQuestions
+        name: "routeQuestion",
+        fieldset: {
+          legend: {
+            text: pageTitle,
+            isPageHeading: true,
+            classes: "govuk-fieldset__legend--l"
+          }
+        },
+        hint: {
+          text: pageHint
+        },
+        items: tempQuestions,
+        errorMessage: { text: errors['routeQuestion'].text } if errors['routeQuestion'].text
       }) }}
 
       {{ govukButton({
