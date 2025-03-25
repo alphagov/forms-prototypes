@@ -192,7 +192,9 @@
 
       {{ govukButton({
         text: "Delete all routes",
-        classes: "govuk-button--warning"
+        classes: "govuk-button--warning",
+        name: "action",
+        value: "deleteAllRoutes"
       }) }}
 
       {% else %}
