@@ -46,7 +46,7 @@
                   visuallyHiddenText: " question"
                 }
               ]
-            }
+            } if not ((pageData) and (pageData.routing.skipTo) and (pageData.routing.answer))
           }
         ]
       }) }}
@@ -100,8 +100,7 @@
             {% set tempQuestions = (
               tempQuestions.push({
                 value: 'cya',
-                text: data.checkAnswersTitle,
-                selected: true if (temp == 'cya')
+                text: data.checkAnswersTitle
               }), tempQuestions) 
             %}
           {% endif %}
@@ -115,7 +114,9 @@
           text: "is answered as",
           classes: 'govuk-label--s'
         },
-        items: tempAnswers
+        value: data['route1Answer'],
+        items: tempAnswers,
+        errorMessage: { text: errors['route1Answer'].text } if errors['route1Answer'].text
       }) }}
 
       {{ govukSelect({
@@ -125,12 +126,24 @@
           text: "skip the person to",
           classes: 'govuk-label--s'
         },
-        items: tempQuestions
+        items: tempQuestions,
+        errorMessage: { text: errors['route1End'].text } if errors['route1End'].text
       }) }}
 
+      <div class="govuk-button-group">
       {{ govukButton({
         text: "Save and continue"
       }) }}
+      </div>
+
+      {% if (pageData) and (pageData.routing.skipTo) and (pageData.routing.answer) %}
+      {{ govukButton({
+        text: "Delete route",
+        classes: "govuk-button--warning",
+        name: "action",
+        value: "deleteRoute1"
+      }) }}
+      {% endif %}
 
     </form>
   </div>
