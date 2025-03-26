@@ -26,34 +26,11 @@ module.exports = {
   pages: [
     {
       pageIndex: '0',
-      type: 'text',
-      'long-title': 'What type of animal is your pet?',
-      'hint-text': 'For example a bird, cat, dog.',
-      'additional-guidance': 'No',
-      'questionSaved': 'Yes'
-    },
-    {
-      pageIndex: '1',
-      type: 'text',
-      'long-title': 'What is the name of your pet?',
-      'additional-guidance': 'No',
-      'questionSaved': 'Yes'
-    },
-    {
-      pageIndex: '2',
-      type: 'text',
-      'long-title': 'Where are you travelling to?',
-      'hint-text': 'For example Lisbon, Portugal',
-      'additional-guidance': 'No',
-      'questionSaved': 'Yes'
-    },
-    {
-      pageIndex: '3',
       type: 'select',
-      'long-title': "Which of these countries have you lived in?",
+      'long-title': 'Are you making a complaint or reporting an error?',
       'item-list': [
-        "England",
-        "Wales"
+        "Making a complaint",
+        "Reporting an error"
       ],
       'listSettings': [
         "oneOption"
@@ -62,25 +39,59 @@ module.exports = {
       'questionSaved': 'Yes'
     },
     {
-      pageIndex: '4',
-      type: 'date',
-      'long-title': 'What date do you travel?',
-      'hint-text': 'For example 27 3 2007',
+      pageIndex: '1',
+      type: 'select',
+      'long-title': 'What does your complaint relate to?',
+      'item-list': [
+        "Service",
+        "Access",
+        "Availability",
+        "Something else"
+      ],
+      'listSettings': [
+        "oneOption"
+      ],
       'additional-guidance': 'No',
       'questionSaved': 'Yes'
+    },
+    {
+      pageIndex: '2',
+      type: 'text',
+      input: "multi-line-input",
+      'long-title': 'Please give full details of your complaint',
+      'additional-guidance': 'No',
+      'questionSaved': 'Yes'
+    },
+    {
+      pageIndex: '3',
+      type: 'text',
+      input: "single-line-input",
+      'long-title': 'What were you trying to do when the error happend?',
+      'additional-guidance': 'No',
+      'questionSaved': 'Yes'
+    },
+    {
+      pageIndex: '4',
+      type: 'text',
+      input: "multi-line-input",
+      'long-title': 'Please tell us what happened when the error occurred',
+      'additional-guidance': 'No',
+      'questionSaved': 'Yes',
     },
     {
       pageIndex: '5',
-      type: 'text',
-      'long-title': 'How are you travelling?',
-      'hint-text': 'For example plane, train, car.',
-      'additional-guidance': 'No',
-      'questionSaved': 'Yes'
-    },
-    {
-      pageIndex: '6',
-      type: 'number',
-      'long-title': 'How many pets do you have?',
+      type: 'select',
+      'long-title': 'How would you rate your overall experience of using the service?',
+      'item-list': [
+        "Very poor",
+        "Poor",
+        "Neutral",
+        "Good",
+        "Very good"
+      ],
+      'listSettings': [
+        "oneOption"
+      ],
       'additional-guidance': 'No',
       'questionSaved': 'Yes'
     }
@@ -88,6 +99,8 @@ module.exports = {
   status: 'Draft',
   confirmationTitle: 'Your form has been submitted',
   checkAnswersTitle: 'Check your answers before submitting your form',
-  formTitle: 'Take your pet abroad',
-  isQuestionsComplete: 'no'
+  formTitle: 'Tell us about a complaint or concern',
+  isQuestionsComplete: 'no',
+  defaultUser: 'Firstname Ipsum',
+  defaultGroup: 'Departmental contact forms'
 }
