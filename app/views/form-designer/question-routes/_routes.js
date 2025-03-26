@@ -166,6 +166,8 @@ postConditions = function (req, res) {
     req.session.data.route1End = undefined
     // reset action
     req.session.data.action = undefined
+    // set a success message to declare that ‘route 1’ has been saved
+    req.session.data.successMessage = "Route 1 has been saved"
     // go to question X’s routes summary screen
     res.redirect(`routes-summary`)
   }
@@ -181,10 +183,16 @@ router.get('/form-designer/question-routes/:pageId(\\d+)/routes-summary', functi
   var pageId = parseInt(req.params.pageId, 10)
   var pageIndex = pageId
   var pageData = req.session.data.pages[pageIndex]
+
+  // get success message and then clear session data (so it doesn’t hang around)
+  var successMessage = req.session.data.successMessage
+  req.session.data.successMessage = undefined
+
   return res.render('form-designer/question-routes/routes-summary', {
     pageId: pageId,
     pageIndex: pageIndex,
-    pageData: pageData
+    pageData: pageData,
+    successMessage
   })
 })
 
@@ -365,6 +373,8 @@ router.post('/form-designer/question-routes/:pageId(\\d+)/:routeQuestion(\\d+)/s
     // reset our temporary route session data
     req.session.data.routeQuestion = undefined
     req.session.data.routeEnd = undefined
+    // set a success message to declare that ‘route for any other answer’ has been saved
+    req.session.data.successMessage = "Route for any other answer has been saved"
     // go to back to question routes summary screen
     res.redirect(`../routes-summary`)
   }
@@ -373,7 +383,7 @@ router.post('/form-designer/question-routes/:pageId(\\d+)/:routeQuestion(\\d+)/s
 
 /* Delete route journeys */
 
-// Render are you sure you want to delete ‘Route 1’
+// Render are you sure you want to delete ‘Route 1’ or all routes
 router.get('/form-designer/question-routes/:pageId(\\d+)/are-you-sure', function (req, res) {
   var pageId = parseInt(req.params.pageId, 10)
   var pageIndex = pageId
@@ -448,12 +458,12 @@ router.post('/form-designer/question-routes/:pageId(\\d+)/are-you-sure', functio
       }
 
       // if there is a secondary route we need to delete this too 
-      if (secondaryQuestion?.length) {
+      if (typeof secondaryQuestion !== 'undefined') {
         // re-loop through forms questions to find the ‘route for any other answer’ start question
         for (let secondaryIndex = 0; secondaryIndex < pages.length; secondaryIndex++) {
           const element = pages[secondaryIndex];
           // get secondaryQuestion 
-          if ((parseInt(element.pageIndex, 10)) == (parseInt(secondaryQuestion, 10))) {
+          if ((parseInt(element.pageIndex, 10)) == secondaryQuestion) {
             // delete the routing
             element.routing = undefined
           }
@@ -462,6 +472,8 @@ router.post('/form-designer/question-routes/:pageId(\\d+)/are-you-sure', functio
     }
     // reset temporary page answer
     req.session.data.deleteRoute = undefined
+    // set a success message to declare that routes have been deleted
+    req.session.data.successMessage = "Question " + (pageIndex + 1) + "’s routes have been deleted"
     // go to question X’s routes summary screen
     res.redirect(`../../your-questions`)
   } else {
@@ -541,6 +553,8 @@ router.post('/form-designer/question-routes/:pageId(\\d+)/delete-secondary-route
         }
       }
     }
+    // set a success message to declare that ‘route for any other answer’ has been deleted
+    req.session.data.successMessage = "Route for any other answer has been deleted"
     // go to question X’s routes summary screen
     res.redirect(`routes-summary`)
   } else { 

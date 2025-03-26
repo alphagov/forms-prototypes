@@ -17,6 +17,13 @@
   <div class="govuk-grid-column-two-thirds">
     <form id="form" class="form" action="questions-routes" method="post" novalidate>
 
+      {% if successMessage %}
+      {{ govukNotificationBanner({
+        type: 'success',
+        text: successMessage
+      }) }}
+      {% endif %}
+
       {% if containsErrors %}
       {{ govukErrorSummary({
         titleText: "There is a problem",
