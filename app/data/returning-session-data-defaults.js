@@ -18,11 +18,14 @@ Example usage:
 */
 
 module.exports = {
-  highestPageId: 6,
-  action: 'gogogo',
-  publish: 'GOV.UK',
-  authentication: 'email',
+  /* Dummy form settings */
+  formTitle: 'Amendment form: redundancy claim for holiday pay',
+  status: 'Draft',
+  isQuestionsComplete: 'no',
   payments: 'no',
+
+  // Form questions
+  highestPageId: 6,
   pages: [
     {
       intro: 'This is the intro',
@@ -81,9 +84,7 @@ module.exports = {
       pageIndex: '7'
     }
   ],
-  status: 'Draft',
-  confirmationTitle: 'Your form has been submitted',
-  checkAnswersTitle: 'Check your answers before submitting your form',
-  formTitle: 'Amendment form: redundancy claim for holiday pay',
-  isQuestionsComplete: 'no'
+
+  // Placeholder override
+  action: 'gogogo'
 }

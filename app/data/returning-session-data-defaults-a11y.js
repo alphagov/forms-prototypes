@@ -18,11 +18,14 @@ Example usage:
 */
 
 module.exports = {
-  highestPageId: 6,
-  action: 'gogogo',
-  publish: 'GOV.UK',
-  authentication: 'email',
+  /* Dummy form settings */
+  formTitle: 'Tell us about a complaint or concern',
+  status: 'Draft',
+  isQuestionsComplete: 'no',
   payments: 'no',
+
+  // Form questions
+  highestPageId: 6,
   pages: [
     {
       pageIndex: '0',
@@ -96,11 +99,7 @@ module.exports = {
       'questionSaved': 'Yes'
     }
   ],
-  status: 'Draft',
-  confirmationTitle: 'Your form has been submitted',
-  checkAnswersTitle: 'Check your answers before submitting your form',
-  formTitle: 'Tell us about a complaint or concern',
-  isQuestionsComplete: 'no',
-  defaultUser: 'Firstname Ipsum',
-  defaultGroup: 'Departmental contact forms'
+
+  // Placeholder override
+  action: 'gogogo'
 }
