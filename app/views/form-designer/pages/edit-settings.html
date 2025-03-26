@@ -287,16 +287,12 @@
           name: "action",
           value: "editPage"
         }) }}
-        
-        {# If we are not sure what the back link is going to don’t show the bottom link #}
-        {% if previousPageText !== 'Back' %}
+
         <p class="govuk-body">
-          <a class="govuk-link" href="{{ previousPageLink }}" target="_parent">
-            {{ previousPageText }}
+          <a class="govuk-link" href="/form-designer/clear-empty" target="_parent">
+            Back to your questions
           </a>
         </p>
-        {% endif %}
-
 
       </form>
     </div>
