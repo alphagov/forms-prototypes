@@ -90,36 +90,24 @@ router.use('/form-designer/*', function (req, res, next) {
 Create a new form
 ================= */
 
-// Middleware name your form
-router.use('/form-designer/name-your-form', function (req, res, next) {
-
+// Name your form - GET
+router.get('/form-designer/name-your-form', function (req, res) {
   // get the previous page URL
   var previousPage = req.session.data.referer
 
   // set the default back link
   var previousPageLink = `your-form`
-  var previousPageText = 'Back to create a form'
+  var previousPageText = 'Back to create your form'
 
-  if (previousPage) {
+  // if user is creating a ‘new’ form we should change the back link
+  if (previousPage?.includes('your-forms')) {
     // set the GOV.UK Forms home back link
-    if (previousPage.includes('your-forms')) {
-      previousPageLink = `your-forms`
-      previousPageText = 'Back to your forms'
-    }
+    previousPageLink = `your-forms`
+    previousPageText = 'Back to ' + (req.session.data.defaultGroup || 'your forms' )
   }
-
-  // make back link available in the view
-  req.session.data.previousPageLink = previousPageLink
-  req.session.data.previousPageText = previousPageText
-
-  next();
-})
-
-// Name your form - GET
-router.get('/form-designer/name-your-form', function (req, res) {
   return res.render('form-designer/name-your-form', {
-    previousPageText: req.session.data.previousPageText,
-    previousPageLink: req.session.data.previousPageLink
+    previousPageText,
+    previousPageLink
   })
 })
 
@@ -144,11 +132,6 @@ router.post('/form-designer/name-your-form', function (req, res) {
   if(containsErrors) {
     res.render('form-designer/name-your-form', { errors, errorList, containsErrors })
   } else {
-
-    // remove temporary back link details
-    req.session.data.previousPageLink = undefined
-    req.session.data.previousPageText = undefined
-
     // set a success message for saving
     req.session.data.successMessage = 'Your form name has been saved'
     res.redirect('your-form')
