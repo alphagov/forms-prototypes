@@ -531,24 +531,14 @@ router.post('/form-designer/pages/check-answers/edit', function (req, res) {
 
 // Route used to check What happens next (WHN) content has been added
 router.post('/form-designer/pages/confirmation/edit', function (req, res) {
-  const action = req.session.data.action
-  req.session.data.action = undefined
-
-  var pageId = parseInt(req.params.pageId, 10)
-  var pageIndex = pageId
-  var pageData = req.session.data.pages[pageIndex]
-
   const errors = {};
-  const whatHappensNext = req.session.data.confirmationNext
-
-  // content to display in notification banners
-  var saved = 'Your information about what happens next has been saved'
+  const { whatHappensNext } = req.session.data
 
   // if no selection made, then throw an error
   if (!whatHappensNext || !whatHappensNext.length) {
-    errors['confirmationNext'] = {
+    errors['whatHappensNext'] = {
       text: 'Enter some information about what happens next',
-      href: "#confirmationNext"
+      href: "#what-happens-next"
     }
   }
 
@@ -559,24 +549,10 @@ router.post('/form-designer/pages/confirmation/edit', function (req, res) {
   const containsErrors = errorList.length > 0
   // If there are errors on the page, redisplay it with the errors
   if(containsErrors) {
-    return res.render('form-designer/pages/confirmation/edit', {
-      pageId: pageId,
-      pageIndex: pageIndex,
-      pageData: pageData,
-      errors,
-      errorList,
-      containsErrors
-    })
-  } else if (action === 'update') {
-    return res.render('form-designer/pages/confirmation/edit', {
-      pageId: pageId,
-      pageIndex: pageIndex,
-      pageData: pageData,
-      successMessage: saved
-    })
+    return res.render('form-designer/pages/confirmation/edit', { errors, errorList, containsErrors })
   } else {
     // set a success message for saving
-    req.session.data.successMessage = saved
+    req.session.data.successMessage = 'Your information about what happens next has been saved'
     return res.redirect('../../your-form')
   }
 })
