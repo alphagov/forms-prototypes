@@ -8,7 +8,7 @@ testing: week commencing 31 March 2025
 
 module.exports = {
   /* Dummy form settings */
-  formTitle: 'Tell us about a complaint or concern',
+  formTitle: 'Tell us about a complaint, concern or error',
   status: 'Draft',
 
   // Form tasks
@@ -34,10 +34,11 @@ module.exports = {
     {
       pageIndex: '0',
       type: 'select',
-      'long-title': 'Are you making a complaint or reporting an error?',
+      'long-title': 'Which of these do you want to do today?',
       'item-list': [
-        "Making a complaint",
-        "Reporting an error"
+        "Make a complaint",
+        "Raise a concern",
+        "Report an error"
       ],
       'listSettings': [
         "oneOption"
@@ -48,7 +49,7 @@ module.exports = {
     {
       pageIndex: '1',
       type: 'select',
-      'long-title': 'What does your complaint relate to?',
+      'long-title': 'What does your complaint or concern relate to?',
       'item-list': [
         "Service",
         "Access",
@@ -65,7 +66,7 @@ module.exports = {
       pageIndex: '2',
       type: 'text',
       input: "multi-line-input",
-      'long-title': 'Please give full details of your complaint',
+      'long-title': 'Please give full details of your complaint or concern',
       'additional-guidance': 'No',
       'questionSaved': 'Yes'
     },
