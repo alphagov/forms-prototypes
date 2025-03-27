@@ -10,8 +10,23 @@ module.exports = {
   /* Dummy form settings */
   formTitle: 'Tell us about a complaint or concern',
   status: 'Draft',
+
+  // Form tasks
   isQuestionsComplete: 'no',
-  payments: 'no',
+  // checkAnswersDeclaration
+  isDeclarationComplete: 'no',
+  // confirmationNext
+  isConfirmationComplete: 'no',
+  // formsEmail
+  isSubmissionEmailComplete: 'no',
+  // confirmationCode
+  isConfirmationCodeComplete: 'no',
+  // privacyInformation
+  isPrivacyInformationComplete: 'no',
+  // supportDetails - emailSupport, phoneSupport, onlineSupportLink, onlineSupportText
+  isSupportDetailsComplete: 'no',
+  // makeFormLive
+  isFormLive: 'no',
 
   // Form questions
   highestPageId: 6,
@@ -87,8 +102,5 @@ module.exports = {
       'additional-guidance': 'No',
       'questionSaved': 'Yes'
     }
-  ],
-
-  // Placeholder override
-  action: 'gogogo'
+  ]
 }
