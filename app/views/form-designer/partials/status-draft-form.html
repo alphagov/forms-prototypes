@@ -67,7 +67,7 @@
 {# SET STATUS OF DECLARATION #}
 {% if data.isDeclarationComplete === 'yes' %}
     {% set declarationStatusText = 'Completed' %}
-{% elif data.isDeclarationComplete === 'no' and data.checkAnswersDeclaration != '' %}
+{% elif (data.isDeclarationComplete === 'no') and data.checkAnswersDeclaration %}
     {% set declarationStatusTag = 'govuk-tag--light-blue' %}
     {% set declarationStatusText = 'In progress' %}
 {% else %}
