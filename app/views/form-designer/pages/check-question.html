@@ -289,6 +289,24 @@
       </dl>
       {% endif %}
 
+      {% if (pageData.type === 'select') and ('oneOption' in pageData.listSettings) %}
+        <h2 class="govuk-heading-m">Routes</h2>
+        <p class="govuk-body">
+          {% if pageData.routing %}
+            This question has routes: <a class="govuk-link" href="../../question-routes/{{pageIndex}}/routes-summary">Question {{ pageIndex|int + 1 }}’s routes</a>
+          {% else %}
+            If you need people to skip some questions based on their answer to this question, you can <a class="govuk-link" href="../../question-routes/{{pageIndex}}/conditions">add a question route</a>.
+          {% endif %}
+        </p>
+        <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+      {% elif pageData.routing and (pageData.routing.noAnswer) %}
+        <h2 class="govuk-heading-m">Routes</h2>
+        <p class="govuk-body">
+            People will skip to question {{ pageData.routing.thenSkipTo|int + 1 }} after this question because of <a class="govuk-link" href="../../question-routes/{{pageData.routing.baseQuestion}}/routes-summary">Question {{ pageData.routing.baseQuestion|int + 1 }}’s routes</a>.
+        </p>
+        <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+      {% endif %}
+
       <input type="hidden" id="questionSaved" name="questionSaved" value="Yes" />
 
       <div class="govuk-button-group">
