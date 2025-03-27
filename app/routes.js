@@ -487,26 +487,17 @@ Managing additional pages in a form
 
 // Route used to check Declaration is complete - Check your answers (CYA)
 router.post('/form-designer/pages/check-answers/edit', function (req, res) {
-  const action = req.session.data.action
-  req.session.data.action = undefined
-
+  const errors = {};
   var pageId = parseInt(req.params.pageId, 10)
   var pageIndex = pageId
   var pageData = req.session.data.pages[pageIndex]
+  var { checkAnswersDeclaration, isDeclarationComplete } = req.session.data
 
-  const errors = {};
-  const complete = req.session.data.isDeclarationComplete
-  const declarationContent = req.session.data.checkAnswersDeclaration
-
-  // content to display in notification banners
-  var saved = 'Your declaration has been saved'
-  var savedAndComplete = 'Your declaration has been saved and marked as complete'
-
-  // if no selection made, then throw an error
-  if (!complete || !complete.length) {
-    errors['isDeclarationComplete'] = {
-      text: 'Select yes if you want to mark this task as complete',
-      href: "#isDeclarationComplete"
+  // if trying to mark as complete while having too many characters, then throw an error
+   if ((checkAnswersDeclaration.length > 2000) && (isDeclarationComplete == 'yes')) {
+    errors['checkAnswersDeclaration'] = {
+      text: 'The declaration cannot be longer than 2,000 characters',
+      href: "#check-answers-declaration"
     }
   }
 
@@ -516,16 +507,7 @@ router.post('/form-designer/pages/check-answers/edit', function (req, res) {
   // otherwise, show the page again with the errors set
   const containsErrors = errorList.length > 0
   // If there are errors on the page, redisplay it with the errors
-  if (action === 'update') {
-    // set a success message for saving
-    req.session.data.successMessage = saved
-    return res.render('form-designer/pages/check-answers/edit', {
-      pageId: pageId,
-      pageIndex: pageIndex,
-      pageData: pageData,
-      successMessage: saved
-    })
-  } else if(containsErrors) {
+  if(containsErrors) {
     return res.render('form-designer/pages/check-answers/edit', {
       pageId: pageId,
       pageIndex: pageIndex,
@@ -535,13 +517,14 @@ router.post('/form-designer/pages/check-answers/edit', function (req, res) {
       containsErrors
     })
   } else {
-    if(complete === 'yes') {
+    if(isDeclarationComplete === 'yes') {
       // set a success message for saving
-      req.session.data.successMessage = savedAndComplete
+      req.session.data.successMessage = 'Your declaration has been saved and marked as complete'
     } else {
       // set a success message for saving
-      req.session.data.successMessage = saved
+      req.session.data.successMessage = 'Your declaration has been saved'
     }
+    req.session.data.isDeclarationComplete = isDeclarationComplete
     return res.redirect('../../your-form')
   }
 })
