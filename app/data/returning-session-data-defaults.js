@@ -9,8 +9,6 @@ module.exports = {
   /* Dummy form settings */
   formTitle: 'Amendment form: redundancy claim for holiday pay',
   status: 'Draft',
-  isQuestionsComplete: 'no',
-  payments: 'no',
 
   // Form questions
   highestPageId: 6,
@@ -71,8 +69,5 @@ module.exports = {
       type: 'number',
       pageIndex: '7'
     }
-  ],
-
-  // Placeholder override
-  action: 'gogogo'
+  ]
 }

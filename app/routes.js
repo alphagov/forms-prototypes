@@ -187,8 +187,8 @@ router.get('/form-designer/your-form', function (req, res) {
   }
 
   return res.render('form-designer/your-form', {
-    successMessage: successMessage,
-    sections: sections
+    successMessage,
+    sections
   })
 })
 
