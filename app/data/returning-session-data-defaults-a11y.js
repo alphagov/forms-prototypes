@@ -29,7 +29,7 @@ module.exports = {
   isFormLive: 'no',
 
   // Form questions
-  highestPageId: 6,
+  highestPageId: 7,
   pages: [
     {
       pageIndex: '0',
@@ -72,6 +72,20 @@ module.exports = {
     },
     {
       pageIndex: '3',
+      type: 'select',
+      'long-title': 'Have you contacted us about this before?',
+      'item-list': [
+        "Yes",
+        "No"
+      ],
+      'listSettings': [
+        "oneOption"
+      ],
+      'additional-guidance': 'No',
+      'questionSaved': 'Yes'
+    },
+    {
+      pageIndex: '4',
       type: 'text',
       input: "single-line-input",
       'long-title': 'What were you trying to do when the error happend?',
@@ -79,7 +93,7 @@ module.exports = {
       'questionSaved': 'Yes'
     },
     {
-      pageIndex: '4',
+      pageIndex: '5',
       type: 'text',
       input: "multi-line-input",
       'long-title': 'Please tell us what happened when the error occurred',
@@ -87,7 +101,15 @@ module.exports = {
       'questionSaved': 'Yes',
     },
     {
-      pageIndex: '5',
+      pageIndex: '6',
+      type: 'text',
+      input: "multi-line-input",
+      'long-title': 'What did you do, if anything, to work around the error?',
+      'additional-guidance': 'No',
+      'questionSaved': 'Yes',
+    },
+    {
+      pageIndex: '7',
       type: 'select',
       'long-title': 'How would you rate your overall experience of using the service?',
       'item-list': [
