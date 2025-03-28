@@ -98,7 +98,7 @@ module.exports = {
       input: "multi-line-input",
       'long-title': 'Please tell us what happened when the error occurred',
       'additional-guidance': 'No',
-      'questionSaved': 'Yes',
+      'questionSaved': 'Yes'
     },
     {
       pageIndex: '6',
@@ -106,7 +106,10 @@ module.exports = {
       input: "multi-line-input",
       'long-title': 'What did you do, if anything, to work around the error?',
       'additional-guidance': 'No',
-      'questionSaved': 'Yes',
+      "questionOptional": [
+        "questionOptional"
+      ],
+      'questionSaved': 'Yes'
     },
     {
       pageIndex: '7',
