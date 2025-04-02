@@ -36,9 +36,9 @@ module.exports = {
       type: 'select',
       'long-title': 'Which of these do you want to do today?',
       'item-list': [
+        "Report an error",
         "Make a complaint",
-        "Raise a concern",
-        "Report an error"
+        "Raise a concern"
       ],
       'listSettings': [
         "oneOption"
