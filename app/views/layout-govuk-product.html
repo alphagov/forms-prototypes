@@ -1,0 +1,80 @@
+{% extends "govuk-prototype-kit/layouts/govuk-branded.html" %}
+
+{% block header %}
+  {{ govukHeader({
+    homepageUrl: "index",
+    productName: "Forms",
+    serviceUrl: "/",
+    containerClasses: "govuk-width-container",
+    navigationClasses: "govuk-header__navigation--end",
+    navigation: [
+    {
+      href: 'trial-get-started' if data.research === 'true' else "get-started",
+      text: "Get started",
+      active: true if currentPage == 'get-started'
+    },
+    {
+      href: "features",
+      text: "Features",
+      active: true if currentPage == 'features'
+    },
+    {
+      href: "support",
+      text: "Support",
+      active: true if currentPage == 'support'
+    },
+    {
+      href: 'https://admin.research.forms.service.gov.uk/' if data.research === 'true' else "sign-in",
+      text: "Sign in",
+      active: true if currentPage == 'sign-in'
+    }
+  ]
+  }) }}
+  {% if currentPage == 'index' %}
+  <div class="hero-breadcrumb-banner">
+    <div class="hero hero--breaded">
+      {{ govukBreadcrumbs({
+        items: [
+          {
+            text: "GOV.UK services",
+            href: "//www.gov.uk/service-toolkit#gov-uk-services"
+          },
+          {
+            html: "GOV.UK&nbsp;Forms",
+            href: "#main-content"
+          }
+        ],
+        classes: 'breadcrumbs-hero'
+      }) }}
+    </div>
+  </div>
+  {% endif %}
+{% endblock %}
+
+{% set formsFooterItems = [
+  {
+    href: "//www.forms.service.gov.uk/accessibility",
+    text: "Accessibility"
+  },
+  {
+    href: "//www.forms.service.gov.uk/cookies",
+    text: "Cookies"
+  },
+  {
+    href: "//www.forms.service.gov.uk/privacy",
+    text: "Privacy"
+  },
+  {
+    href: "//www.forms.service.gov.uk/terms-of-use",
+    text: "Terms of use"
+  }
+] %}
+
+{% block footer %}
+  {{ govukFooter({
+    meta: {
+      items: formsFooterItems,
+      html: 'Built by the <a href="//www.gov.uk/government/organisations/government-digital-service" class="govuk-footer__link">Government Digital Service</a>'
+    }
+  }) }}
+{% endblock %}
