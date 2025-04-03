@@ -6,6 +6,52 @@ Not all the structure of the questions will work and may cause some errors throu
 */
 
 module.exports = {
+  /* Groups */
+  groups: [
+    {
+      groupId: 0,
+      groupName: 'Licensing forms',
+      groupStatus: 'upgrade',
+      groupOwner: 'Hazal Arpalikli',
+      userAccess: ['org-admin']
+    },
+    {
+      groupId: 1,
+      groupName: 'Content team',
+      groupStatus: 'active',
+      groupOwner: 'Hannah Cooper',
+      userAccess: ['org-admin']
+    },
+    {
+      groupId: 2,
+      groupName: 'Consultations',
+      groupStatus: 'active',
+      groupOwner: 'Hazal Arpalikli',
+      userAccess: ['org-admin']
+    },
+    {
+      groupId: 3,
+      groupName: 'Your test forms',
+      groupStatus: 'trial',
+      groupOwner: 'Tom Iles',
+      userAccess: ['org-admin']
+    }
+  ],
+
+  /* User list */
+  users: [
+    {
+      userName: 'Firstname Ipsum',
+      userEmail: 'f.ipsum@gov.uk',
+      userType: 'org-admin'
+    },
+    {
+      userName: 'Lorum Secondname',
+      userEmail: 'l.secondname@gov.uk',
+      userType: 'standard'
+    }
+  ],
+
   /* Dummy form settings */
   formTitle: 'Amendment form: redundancy claim for holiday pay',
   status: 'Draft',
