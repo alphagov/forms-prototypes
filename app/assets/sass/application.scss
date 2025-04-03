@@ -218,6 +218,83 @@
   opacity: 1;
 }
 
+/* Product page metrics 
+==================== */
+.app-metrics__container {
+  margin-bottom: 30px
+}
+
+@media (min-width: 40.0625em) {
+  .app-metrics__container {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(6.25rem, 1fr));
+    gap: 30px
+  }
+}
+
+.app-metrics__big-number {
+  padding: 5px 0;
+  margin-bottom: 10px;
+  font-size: 1rem;
+  line-height: 1.25;
+  font-family: GDS Transport, arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale
+}
+
+@media (min-width: 40.0625em) {
+  .app-metrics__big-number {
+    font-size: 1.1875rem;
+    line-height: 1.3157894737
+  }
+}
+
+@media print {
+  .app-metrics__big-number {
+    font-size: 14pt;
+    line-height: 1.15
+  }
+}
+
+@media print {
+  .app-metrics__big-number {
+    font-family: sans-serif
+  }
+}
+
+@media (min-width: 40.0625em) {
+  @supports (display: grid) {
+    .app-metrics__big-number {
+      display: flex;
+      flex-flow: column nowrap;
+      justify-content: space-between
+    }
+  }
+}
+
+.app-metrics__big-number-number {
+  display: block;
+  margin-top: 5px;
+  font-size: 2rem;
+  line-height: 1.09375;
+  font-weight: 700
+}
+
+@media (min-width: 40.0625em) {
+  .app-metrics__big-number-number {
+    font-size: 3rem;
+    line-height: 1.0416666667
+  }
+}
+
+@media print {
+  .app-metrics__big-number-number {
+    font-size: 32pt;
+    line-height: 1.15
+  }
+}
+
+
 /* ========
 Summary card 
 ========= */
@@ -292,4 +369,18 @@ Summary card
 // Payment Link confirmation panel
 .app-panel-blue {
   background-color: #1d70b8;
+}
+
+/* Sign in screen
+================= */
+.app-signin-logo {
+  display: block;
+  position: relative;
+  height: 52px;
+  max-width: 52px;
+  margin-bottom: 30px;
+}
+.app-signin-heading{
+  font-weight: initial;
+  color: #2d333a;
 }
