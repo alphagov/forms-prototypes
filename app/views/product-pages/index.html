@@ -1,103 +1,198 @@
-{% extends "layout.html" %}
+{% extends "layout-govuk-product.html" %}
 
-{% set pageTitle = 'Product pages prototypes' %}
-
-{% block pageTitle %}
-{{ pageTitle }}
+{% block stylesheets %}
+  {% include "govuk-prototype-kit/includes/stylesheets.html" %}
+  <link href="/public/stylesheets/product-page.css" rel="stylesheet" type="text/css">
 {% endblock %}
 
-{% block content %}
+{% set currentPage = 'index' %}
+{% set pageTitle = 'Create online forms for GOV.UK' %}
 
-<div class="govuk-grid-row">
-  <div class="govuk-grid-column-two-thirds">
-    <span class="govuk-caption-xl">{{ serviceName }}</span>
-    <h1 class="govuk-heading-xl">{{ pageTitle }}</h1>
+{% block pageTitle %}
+  {{ pageTitle }} - {{ serviceName }}
+{% endblock %}
 
-    <p class="govuk-body-l">The product page prototypes.</p>
+{% block main %}
+  <div class="masthead">
+    <div class="hero">
+      <div class="hero__content">
+        <div class="hero__body">
 
-    <p></p>
+          <h1 class="hero__title">{{ pageTitle }}</h1>
+          <div class="hero__inline-image">
+            <img src="images/pay-top-image-5f2b3404.png" alt="Payment screen on mobile and dashboard with refund function." role="presentation">
+          </div>
 
-    <hr
-      class="govuk-section-break govuk-section-break--l govuk-section-break--visible"
-    />
+          <p class="hero__description">
+            Create an accessible online form in minutes without needing technical knowledge.
+          </p>
 
-    <h2 class="govuk-heading-m">Basic prototype</h2>
+          {{ govukButton({
+            text: "Get started",
+            href: 'trial-get-started' if data.research === 'true' else "get-started",
+            classes: 'app-button--inverted',
+            isStartButton: true
+          }) }}
 
-    <p class="govuk-body">
-      <b>
-        <a href="basic/">View the page</a>
-      </b>
-    </p>
+        </div>
 
-    <hr
-      class="govuk-section-break govuk-section-break--l govuk-section-break--visible"
-    />
+        <div class="hero__aside-image">
+          <img src="/public/images/homepage-illustration.svg" alt="" role="presentation">
+        </div>
 
-    <h2 class="govuk-heading-m">Signup prototype</h2>
+      </div>
+    </div>
+  </div>
 
-    <p class="govuk-body">
-      <b>
-        <a href="signup/">View the page</a>
-      </b>
-    </p>
+  <div class="govuk-width-container">
+    <div class="govuk-grid-row content-section govuk-!-margin-bottom-7 feature-row">
+      <div class="govuk-grid-column-one-half feature-column">
+        <div class="govuk-panel feature-panel">
+          <h2 class="govuk-heading-l">Easy to use</h2>
+          <div class="govuk-body">
+            Create online forms using a simple interface with no need for coding or design skills.
+          </div>
+        </div>
+      </div>
+      <div class="govuk-grid-column-one-half feature-column">
+        <div class="govuk-panel feature-panel">
+          <h2 class="govuk-heading-l">Free</h2>
+          <div class="govuk-body">
+            GOV.UK Forms is free to use for central government.
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <p class="govuk-body">
-      A copy of the product pages with a signup page and journey added.
-    </p>
+    <div class="govuk-grid-row govuk-!-margin-bottom-7 feature-row">
+      <div class="govuk-grid-column-one-half feature-column">
+        <div class="govuk-panel feature-panel">
+          <h2 class="govuk-heading-l">Fewer errors</h2>
+          <div class="govuk-body">
+            Form responses are automatically checked for missing answers or answers in the wrong format, so there’s less missing information and fewer errors compared to document-based forms like PDFs.
+          </div>
+        </div>
+      </div>
+      <div class="govuk-grid-column-one-half feature-column">
+        <div class="govuk-panel feature-panel">
+          <h2 class="govuk-heading-l">Faster form processing</h2>
+          <div class="govuk-body">
+            Receiving completed forms digitally, with fewer errors, means processing is faster and easier compared to document-based forms like PDFs.
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <p></p>
+    <div class="govuk-grid-row govuk-!-margin-bottom-7 feature-row">
+      <div class="govuk-grid-column-one-half feature-column">
+        <div class="govuk-panel feature-panel">
+          <h2 class="govuk-heading-l">Accessible forms</h2>
+          <div class="govuk-body">
+            GOV.UK Forms uses accessible GOV.UK templates to make it easy to meet public sector accessibility requirements.
+          </div>
+        </div>
+      </div>
+      <div class="govuk-grid-column-one-half feature-column">
+        <div class="govuk-panel feature-panel">
+          <h2 class="govuk-heading-l">See how well your forms are working</h2>
+          <div class="govuk-body">
+            Use simple metrics to see how many forms were submitted and what the completion rate was.
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <hr
-      class="govuk-section-break govuk-section-break--l govuk-section-break--visible"
-    />
+    <div class="govuk-grid-row govuk-!-margin-bottom-7 feature-row">
+      <div class="govuk-grid-column-one-half feature-column">
+        <div class="govuk-panel feature-panel">
+          <h2 class="govuk-heading-l">Secure</h2>
+          <div class="govuk-body">
+            GOV.⁠UK Forms is designed to meet the latest government cyber security standards.
+          </div>
+        </div>
+      </div>
+      <div class="govuk-grid-column-one-half feature-column">
+        <div class="govuk-panel feature-panel">
+          <h2 class="govuk-heading-l">Protects data</h2>
+          <div class="govuk-body">
+            The GOV.UK Forms platform protects user data and helps you to comply with data protection regulations.
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <h2 class="govuk-heading-m">Early access</h2>
+    <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
 
-    <p class="govuk-body">
-      <b>
-        <a href="earlyaccess/index.html">View the page</a>
-      </b>
-    </p>
+    <div class="govuk-grid-row">
+  <div class="govuk-grid-column-full">
+    <h2 class="govuk-heading-m">How GOV.UK Forms is being used</h2>
+    <div class="app-metrics">
+    <div class="app-metrics__container">
+      <div class="app-metrics__big-number">
+        <span class="app-metrics__big-number-number">58</span>
+        organisations using GOV.UK Forms
+      </div>
+      <div class="app-metrics__big-number">
+        <span class="app-metrics__big-number-number">129</span>
+        published forms
+      </div>
+      <div class="app-metrics__big-number">
+        <span class="app-metrics__big-number-number">224,192</span>
+        form submissions since September 2022
+      </div>
+    </div>
+</div>
 
-    <hr
-    class="govuk-section-break govuk-section-break--l govuk-section-break--visible"
-  />
-
-    <h2 class="govuk-heading-m">MOU</h2>
-
-    <p class="govuk-body">
-      <b>
-        <a href="mou/index.html">View the page</a>
-      </b>
-    </p>
-    <hr
-    class="govuk-section-break govuk-section-break--l govuk-section-break--visible"
-  />
-
-  <h2 class="govuk-heading-m">Group Admin</h2>
-
-    <p class="govuk-body">
-      <b>
-        <a href="group-admin/index?journey=groupAdminTasks">View the page</a>
-      </b>
-    </p>
-    <hr
-    class="govuk-section-break govuk-section-break--l govuk-section-break--visible"
-  />
-
-  <h2 class="govuk-heading-m">Organisation Admin</h2>
-
-    <p class="govuk-body">
-      <b>
-        <a href="org-admin/index?journey=orgAdminTasks">View the page</a>
-      </b>
-    </p>
-    <hr
-    class="govuk-section-break govuk-section-break--l govuk-section-break--visible"
-  />
-
+    <p>last updated: 24 Mar 2025</p>
+    <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
   </div>
 </div>
 
-{% endblock %}
+    <div class="govuk-grid-row govuk-!-margin-bottom-7">
+      <div class="govuk-grid-column-one-half feature-column">
+        <section class="content-section">
+          <h2 class="govuk-heading-m content-section__first-heading">
+            Find out more about GOV.UK Forms
+          </h2>
+          <p class="govuk-body">
+            To find out more you can read about:
+          </p>
+          <ul class="govuk-list govuk-list--bullet">
+            <li>
+              <a class="govuk-link" href="features">how GOV.UK Forms works</a>
+            </li>
+            <li>
+              <a class="govuk-link" href="//www.forms.service.gov.uk/create-good-forms">how to make a good form</a>
+            </li>
+            <li>
+              <a class="govuk-link" href="//gds.blog.gov.uk/2021/07/06/making-all-forms-on-gov-uk-accessible-easy-to-use-and-quick-to-process/">the vision to make all forms on GOV.UK accessible, easy to use and quick to process</a>
+            </li>
+            <li>
+              <a class="govuk-link" href="performance">how GOV.UK Forms is used</a>
+            </li>
+          </ul>
+        </section>
+      </div>
 
+      <div class="govuk-grid-column-one-half feature-column">
+        <section class="content-section">
+          <h2 class="govuk-heading-m content-section__first-heading">
+            The GOV.UK Forms team
+          </h2>
+          <p class="govuk-body">
+            GOV.UK Forms is built by a team at the Government Digital Service. You can:
+          </p>
+          <ul class="govuk-list govuk-list--bullet">
+            <li>
+              <a class="govuk-link" href="support">contact us</a> if you have a question or need help
+            </li>
+            <li>
+              <a class="govuk-link" href="subscribe">subscribe to our mailing list</a> to get updates about new features
+            </li>
+          </ul>
+        </section>
+      </div>
+
+    </div>
+  </div>
+{% endblock main %}
