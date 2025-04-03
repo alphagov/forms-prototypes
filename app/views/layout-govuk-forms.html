@@ -2,7 +2,7 @@
 
 {% block header %}
   {{ govukHeader({
-    homepageUrl: "/",
+    homepageUrl: homepageUrl or "/",
     productName: "Forms",
     serviceUrl: "/",
     containerClasses: "govuk-width-container",
