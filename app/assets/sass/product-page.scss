@@ -221,3 +221,8 @@ div.feature-panel {
   vertical-align: middle;
 }
 
+// override crest SVG not diplaying
+.govuk-footer__copyright-logo {
+  background-image: url("/public/images/govuk-crest.svg");
+}
+
