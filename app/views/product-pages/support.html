@@ -1,0 +1,76 @@
+{% extends "layout-govuk-product.html" %}
+
+{% set currentPage =  'support' %}
+{% set pageTitle = 'Support' %}
+{% set pageQuestion = 'What do you need help with?' %}
+
+{% block pageTitle %}
+  {{ pageTitle }} - {{ serviceName }}
+{% endblock %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+
+    <h1 class="govuk-heading-xl">{{ pageTitle }}</h1>
+    <p class="govuk-body">
+      GOV.UK Forms is a new platform for people who work in government to create online forms for GOV.UK.
+    </p>
+    {{ govukRadios({
+      name: "supportNeed",
+      fieldset: {
+        legend: {
+          text: pageQuestion,
+          classes: "govuk-fieldset__legend--m"
+        }
+      },
+      items: [
+        {
+          value: "help-using-forms",
+          text: "I work in a government service team and need help using GOV.UK Forms"
+        },
+        {
+          value: "question-about-forms",
+          text: "I work in a government service team and have a question about GOV.UK Forms"
+        },
+        {
+          value: "member-of-public-question",
+          text: "I’m a member of the public with a question about a government form or service"
+        }
+      ]
+    }) }}
+    {{ govukButton({
+      text: "Continue"
+    }) }}
+
+    <h2 class="govuk-heading-m">
+      Check our system status
+    </h2>
+    <p class="govuk-body">
+      If you have a problem with the platform, check for known issues on the <a class="govuk-link govuk-link--no-visited-state" href="//govukforms.statuspage.io/">GOV.UK Forms system status page</a>. You can subscribe to get notifications about current and future issues.
+    </p>
+
+    <h2 class="govuk-heading-m">
+      Support during working hours
+    </h2>
+    <p class="govuk-body">
+      Our working hours are 9.00am to 5.00pm on weekdays, except bank holidays.
+    </p>
+    <p class="govuk-body">
+      If you send us a query, we’ll reply within 2 working days.
+    </p>
+
+    <h2 class="govuk-heading-m">
+      24 hour monitoring
+    </h2>
+    <p class="govuk-body">
+      We use 24 hour automated monitoring to detect issues that could affect the performance or availability of the platform and forms made with it.
+    </p>
+    <p class="govuk-body">
+      If this monitoring detects a critical issue, we will investigate within 45 minutes.
+    </p>
+    
+  </div>
+</div>
+{% endblock content %}
+

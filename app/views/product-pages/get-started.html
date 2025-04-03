@@ -1,0 +1,74 @@
+{% extends "layout-govuk-product.html" %}
+
+{% set currentPage =  'get-started' %}
+{% set pageTitle = 'Get started' %}
+
+{% block pageTitle %}
+  {{ pageTitle }} - {{ serviceName }}
+{% endblock %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+
+    <h1 class="govuk-heading-xl">{{ pageTitle }}</h1>
+    <p class="govuk-body">
+      GOV.UK Forms is a new platform that makes it easy to create accessible online forms for the GOV.UK website.
+    </p>
+    <p class="govuk-body">
+      Because it’s still in the early stages of development, the <a class="govuk-link govuk-link--no-visited-state" href="features">features available are limited</a>. So it will not be suitable for creating all types of online form.
+    </p>
+
+    <h2 class="govuk-heading-l">Create an account to try it out</h2>
+    <p class="govuk-body">
+      If you’re from a central government organisation you can create an account to try GOV.UK Forms out and start making forms.
+    </p>
+    <p class="govuk-body">
+      Some departments are restricting who can create an account from their organisation. We’ll tell you if this affects you.
+    </p>
+    <p class="govuk-body">
+      You’ll need to use your government email address to create an account.
+    </p>
+
+    {{ govukButton({ 
+      text: 'Create an account',
+      href: "sign-up",
+      isStartButton: true 
+    }) }}
+
+    <h2 class="govuk-heading-l">Who can make forms live</h2>
+    <p class="govuk-body">
+      When you first create an account, you’ll be able to create and preview forms but you will not be able to make forms live.
+    </p>
+    <p class="govuk-body">
+      You’ll only be able to make forms live if:
+    </p>
+    <ul class="govuk-list govuk-list--bullet">
+      <li>
+        you’re from a central government organisation that publishes content on the GOV.UK website
+      </li>
+      <li>
+      someone from your organisation has agreed to a ‘Memorandum of Understanding’ with GOV.UK Forms
+      </li>
+      <li>
+      you’ve been given permission to make forms live from your organisation’s GOV.UK Forms admin
+      </li>
+    </ul>
+    <p class="govuk-body">
+      You’ll be able to get help with this process from your organisation’s GOV.UK Forms admin or from the GOV.UK Forms team.
+    </p>
+
+    <h2 class="govuk-heading-l">Subscribe to updates about GOV.UK Forms</h2>
+    <p class="govuk-body">
+     If GOV.UK Forms doesn’t meet your needs yet, you can <a class="govuk-link govuk-link--no-visited-state" href="subscribe">subscribe to our mailing list</a> to get updates about new features.
+    </p>
+
+    <h2 class="govuk-heading-l">Contact us</h2>
+    <p class="govuk-body">
+     If you have questions or feedback, <a class="govuk-link govuk-link--no-visited-state" href="support">contact us</a>.
+    </p>
+
+  </div>
+</div>
+{% endblock content %}
+

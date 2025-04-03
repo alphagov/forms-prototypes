@@ -1,0 +1,55 @@
+{% extends "govuk-prototype-kit/layouts/unbranded.html" %}
+
+{% set currentPage =  'sign-in' %}
+{% set pageTitle = 'Sign in to GOV.UK Forms' %}
+
+{% block pageTitle %}
+  {{ pageTitle }}
+{% endblock %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <form method="post" novalidate>
+
+      {% if containsErrors %}
+        {{ govukErrorSummary({
+          titleText: "There is a problem",
+          errorList: errorList
+        }) }}
+      {% endif %}
+
+      <img class="app-signin-logo" id="prompt-logo-center" src="//admin.forms.service.gov.uk/auth-widget-logo.svg" alt="GOV.UK Forms (production)">
+
+      <h1 class="govuk-heading-l app-signin-heading">
+        {{ pageTitle }}
+      </h1>
+
+      {{ govukRadios({
+        name: "userType",
+        fieldset: {
+          legend: {
+            text: "Choose a user type to sign in as"
+          }
+        },
+        items: [
+          {
+            value: "org-admin",
+            text: "Organisation admin"
+          },
+          {
+            value: "standard",
+            text: "Standard user"
+          }
+        ],
+        errorMessage: { text: errors['userType'].text } if errors['userType'].text
+      }) }}
+
+      {{ govukButton({
+        text: "Continue"
+      }) }}
+
+    </form>
+  </div>
+</div>
+{% endblock %}

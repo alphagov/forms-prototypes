@@ -1,0 +1,218 @@
+{% extends "layout-govuk-product.html" %}
+
+{% set currentPage =  'features' %}
+{% set pageTitle = 'How GOV.UK Forms works' %}
+
+{% block pageTitle %}
+  {{ pageTitle }} - {{ serviceName }}
+{% endblock %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+
+    <h1 class="govuk-heading-xl">{{ pageTitle }}</h1>
+    <p class="govuk-body">
+      GOV.UK Forms is a new platform that makes it easy to create accessible online forms for the GOV.UK website.
+    </p>
+
+    <h2 class="govuk-heading-l">Creating a form using GOV.UK Forms</h2>
+    <p class="govuk-body">
+      These are the steps to make a form with GOV.UK Forms.
+    </p>
+    <ol class="govuk-list govuk-list--number">
+      <li>
+        Create a form and give the form a name.
+      </li>
+      <li>
+        Add questions to your form to collect the information you need.
+      </li>
+      <li>
+        Provide privacy information, the email address you want completed forms to be sent to, and details about what will happen after a form is submitted.
+      </li>
+      <li>
+        Make the form live.
+      </li>
+      <li>
+        Publish a link to the form on GOV.UK along with any guidance people need to read before they complete the form.
+      </li>
+      <li>
+        When people submit a completed form, the information will be sent in the body of an email to the email address you specified. You can also get the information in a comma-separated values (CSV) file.
+      </li>
+    </ol>
+
+    <h2 class="govuk-heading-l">Features available now</h2>
+    <p class="govuk-body">
+      During this early phase of development, we’re focusing on the simplest and most commonly needed form features first.
+    </p>
+
+    <h3 class="govuk-heading-m">Create questions</h3>
+    <p class="govuk-body">
+      You can create questions to ask for:
+    </p>
+    <ul class="govuk-list govuk-list--bullet">
+      <li>a person’s name</li>
+      <li>an organisation’s name</li>
+      <li>a phone number</li>
+      <li>an email address</li>
+      <li>a UK or international address</li>
+      <li>a National Insurance number</li>
+      <li>a date</li>
+      <li>a number</li>
+      <li>a file</li>
+      <li>a selection of one or more answers from a list of options</li>
+      <li>a short or long text answer</li>
+    </ul>
+    <p class="govuk-body">
+      You can also:
+    </p>
+    <ul class="govuk-list govuk-list--bullet">
+      <li>add short ‘hint text’ or longer guidance to a question to help people answer it</li>
+      <li>make a question optional</li>
+      <li>let people add multiple responses to a single question (for example, to provide the names of all their household members)</li>
+    </ul>
+
+    <h3 class="govuk-heading-m">
+      Help people answer questions accurately and easily
+    </h3>
+    <p class="govuk-body">
+      When people complete a form, their responses will be validated to make sure they’re in the correct format. For example, a question asking for an email address will only accept an answer in the format of an email address.
+    </p>
+    <p class="govuk-body">
+      For questions that ask for certain types of personal information (such as a name, address or date of birth) the input field will be encoded so people can use their browser or assistive technology to answer more easily. For example, by completing the field with information saved in their browser.
+    </p>
+
+    <h3 class="govuk-heading-m">
+      Skip questions based on a response
+    </h3>
+    <p class="govuk-body">
+      With a question route, you can skip someone to a later question in your form based on their response to a question where they have to select one answer from a list.
+    </p>
+    <p class="govuk-body">
+      For example, you could ask someone a Yes/No question about something and only ask further questions about that thing if they select ‘Yes’. Anyone who answers ‘No’ will be skipped forward to the next question that’s relevant for them.
+    </p>
+
+    <h3 class="govuk-heading-m">
+      Forms use GOV.UK Design System styles, components and patterns
+    </h3>
+    <p class="govuk-body">
+      Using these tested and accessible designs means you do not have to worry about the visual and interface design of your forms. And they’ll automatically look consistent with GOV.UK.
+    </p>
+
+    <h3 class="govuk-heading-m">
+      Provide privacy information
+    </h3>
+    <p class="govuk-body">
+      To comply with the UK General Data Protection Regulation (UK GDPR), you’ll need to provide a link to privacy information for the people who’ll enter their data into your form.
+    </p>
+    <p class="govuk-body">
+      The privacy information needs to include your purposes for collecting the data, and how you'll manage the data. You may already publish this information, for example in a privacy notice or personal information charter.
+    </p>
+    <p class="govuk-body">
+      A link to the privacy information will be added to the footer of your form.
+    </p>
+
+    <h3 class="govuk-heading-m">
+      Set up how you get completed forms
+    </h3>
+    <p class="govuk-body">
+      Each form needs an email address to be set for completed forms to be sent to when they’re submitted. Data from completed forms will be sent to this email address in the body of an email.
+    </p>
+    <p class="govuk-body">
+      You can also get each completed form in a CSV file. This can make it easier to copy and paste, or import data into spreadsheets or other applications.
+    </p>
+
+    <h3 class="govuk-heading-m">
+      People can check their answers before they submit a form
+    </h3>
+    <p class="govuk-body">
+      People will be shown a summary page when they have answered all the questions in a form. They will be able to review and check their answers before they submit the form. This will help to avoid errors or missing information.
+    </p>
+
+    <h3 class="govuk-heading-m">
+      Add a declaration for people to agree to
+    </h3>
+    <p class="govuk-body">
+      You can add a declaration that people must confirm they understand and agree to before they submit their completed form.
+    </p>
+    <p class="govuk-body">
+      You might want to add a declaration if, for example, you need people to confirm they have provided accurate information, or that they understand the consequences of providing false information.
+    </p>
+
+    <h3 class="govuk-heading-m">
+      Take a payment along with a form submission
+    </h3>
+    <p class="govuk-body">
+      You can set up a page at the end of a form to take instant payments using <a class="govuk-link govuk-link--no-visited-state" href="//www.payments.service.gov.uk/">GOV⁠.⁠UK Pay</a>. You’ll need to set up a GOV.UK Pay account and a payment service provider if you don’t already have these.
+    </p>
+
+    <h3 class="govuk-heading-m">
+      Tell people what will happen next
+    </h3>
+    <p class="govuk-body">
+      Content you add about what will happen after the form is submitted will be shown:
+    </p>
+    <ul class="govuk-list govuk-list--bullet">
+      <li>on a confirmation page when someone submits a form</li>
+      <li>in an automatic email confirming that a form’s been submitted - if someone chooses to receive this</li>
+    </ul>
+    <p class="govuk-body">
+      This will help to set their expectations and avoid unnecessary contact.
+    </p>
+
+    <h3 class="govuk-heading-m">
+      Provide contact information for people to get help
+    </h3>
+    <p class="govuk-body">
+      You must provide at least one way for people to get help if they get stuck while filling in your form. It can be an email address, phone number or a link to online help.
+    </p>
+    <p class="govuk-body">
+      The contact information will be displayed at the bottom of every page of the form. This will help people to use your form successfully, and will let you know if there are any problems with your form.
+    </p>
+    <p class="govuk-body">
+      It will also be shown in an automatic email confirming that a form’s been submitted - if someone chooses to receive this.
+    </p>
+
+    <h3 class="govuk-heading-m">
+      Prepare changes to a live form in a draft
+    </h3>
+    <p class="govuk-body">
+      You can make a draft version of a live form so you can prepare changes to it. This means you can share the new draft for review before you make the changes live. It also minimises disruption to people who might be filling in the form when you update it.
+    </p>
+
+    <h3 class="govuk-heading-m">
+      See how well your forms are working
+    </h3>
+    <p class="govuk-body">
+      Use simple metrics to see how many forms were submitted in the past 7 days and what the completion rate was.
+    </p>
+
+    <h3 class="govuk-heading-m">
+      Manage who can create and edit forms
+    </h3>
+    <p class="govuk-body">
+      Your organisation can control who has access to different forms and who can make them live.
+    </p>
+
+
+    <h2 class="govuk-heading-l">
+      Updates and forthcoming features
+    </h2>
+    <p class="govuk=body">
+      When new features are released, we’ll email users of the product and update this page.
+    </p>
+    <p class="govuk=body">
+      You can also:
+    </p>
+    <ul class="govuk-list govuk-list--bullet">
+      <li>
+        <a class="govuk-link govuk-link--no-visited-state" href="forthcoming-features">read about our forthcoming features</a>
+      </li>
+      <li>
+        <a class="govuk-link govuk-link--no-visited-state" href="subscribe">join our mailing list to get updates</a>
+      </li>
+    </ul>
+
+  </div>
+</div>
+{% endblock content %}

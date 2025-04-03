@@ -1,0 +1,93 @@
+{% extends "layout-govuk-product.html" %}
+
+{% set currentPage =  'get-started' %}
+{% set pageTitle = 'Get started' %}
+
+{% block pageTitle %}
+  {{ pageTitle }}
+  -
+  {{ serviceName }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <h1 class="govuk-heading-xl">{{ pageTitle }}</h1>
+      <p class="govuk-body">
+        GOV.UK Forms is a new platform that makes it easy to create accessible online forms for GOV.UK.
+      </p>
+
+      <ol class="govuk-task-list">
+        <li class="task-list__item">
+          <h2 class="task-list__heading">
+            <span class="task-list-section-number">1.</span>
+            Check if GOV.UK Forms is right for you</h2>
+          <div class="task-list__details">
+            <p class="govuk-body">
+              You can use GOV.UK Forms if you’re from a central government organisation and need to collect information from people for a government service.
+            </p>
+            <p class="govuk-body">
+              Find out more about the
+              <a class="govuk-link" href="features">features of GOV.UK Forms</a>.
+            </p>
+          </div>
+        </li>
+
+        <li class="task-list__item">
+          <h2 class="task-list__heading">
+            <span class="task-list-section-number">2.</span>
+            Create a trial account</h2>
+          <div class="task-list__details">
+            <p class="govuk-body">
+              If you want to try it out you can create a trial account.
+            </p>
+            <p class="govuk-body">You’ll need your government email address.</p>
+            {{ govukButton({
+              text: "Create a trial account",
+              href: "https://admin.research.forms.service.gov.uk/sign-up",
+              isStartButton: true
+            }) }}
+          </div>
+        </li>
+
+        <li class="task-list__item">
+          <h2 class="task-list__heading">
+            <span class="task-list-section-number">3.</span>
+            Try it out
+          </h2>
+          <div class="task-list__details">
+            <p class="govuk-body">
+              With your trial account you can make a form to see how it works and what it can do.
+            </p>
+            <p class="govuk-body">
+              You can preview, complete and submit a test form. You can also see what an email with the completed form’s information will look like.
+            </p>
+            <p class="govuk-body">
+              You cannot make a form live with a trial account.</p>
+          </div>
+        </li>
+
+        <li class="task-list__item">
+          <h2 class="task-list__heading">
+            <span class="task-list-section-number">4.</span>
+            Get an editor account
+          </h2>
+          <div class="task-list__details">
+            <p class="govuk-body">
+              If you’ve tested GOV.UK Forms and you want to use it for your service, you can ask to upgrade to an editor account. With an editor account you can make forms live.
+            </p>
+            <p class="govuk-body">
+              You, or someone from your organisation, will need to agree to a memorandum of understanding (MOU) if your organisation is not using GOV.UK Forms already.
+            </p>
+          </div>
+        </li>
+      </ol>
+      <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+      <h2 class="govuk-heading-m">Contact us</h2>
+      <p class="govuk-body">
+        If you have questions or feedback, <a class="govuk-link govuk-link--no-visited-state" href="support">contact us</a>.
+      </p>
+    </div>
+  </div>
+{% endblock content %}
