@@ -221,12 +221,12 @@ router.post('/form-designer/question-routes/:pageId(\\d+)/questions-routes', fun
     res.redirect(`are-you-sure`)
   } else {
     // add the first part of routing to the suggested question 
-    for (let index = 0; index < pages.length; index++) {
-      const element = pages[index];
-      if ((parseInt(element.pageIndex, 10)) == suggestedQuestion) {
-        element.routing = { 'noAnswer': 'true' } // add a routing element to the question
-      }
-    }
+    // for (let index = 0; index < pages.length; index++) {
+    //   const element = pages[index];
+    //   if ((parseInt(element.pageIndex, 10)) == suggestedQuestion) {
+    //     element.routing = { 'noAnswer': 'true' } // add a routing element to the question
+    //   }
+    // }
     // reset the session data for suggestedQuestion
     req.session.data.suggestedQuestion = undefined 
     // reset action
