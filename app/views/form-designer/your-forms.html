@@ -1,15 +1,23 @@
 {% extends "layout-govuk-forms.html" %}
 
-{% set pageTitle = 'Home' %}
+{% set pageTitle = data.defaultGroup %}
 
 {% block pageTitle %}
-  {{pageTitle}} - {{serviceName}}
+  {{ pageTitle }} - {{ serviceName }}
 {% endblock %}
 
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
-      <h1 class="govuk-heading-l">{{serviceName}}</h1>
+      <span class="govuk-caption-l">Active group</span>
+      <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
+
+      <p class="govuk-body">
+        <a href="#" class="govuk-link govuk-link--no-visited-state">Change the name of this group</a>
+      </p>
+      <p class="govuk-body">
+        <a href="#" class="govuk-link govuk-link--no-visited-state">Edit members of this group</a>
+      </p>
 
       {{ govukButton({
         text: "Create a form",
@@ -19,10 +27,11 @@
 
       {% if data['formTitle'] %}
       <table class="govuk-table">
-        <caption class="govuk-table__caption govuk-table__caption--m">[departmentName] forms</caption>
+        <caption class="govuk-table__caption govuk-table__caption--m">Forms in ‘{{ pageTitle }}’</caption>
         <thead class="govuk-table__head">
           <tr class="govuk-table__row">
             <th scope="col" class="govuk-table__header">Form name</th>
+            <th scope="col" class="govuk-table__header">Created by</th>
             <th scope="col" class="govuk-table__header govuk-table__header--numeric">Status</th>
           </tr>
         </thead>
@@ -31,6 +40,9 @@
             <th scope="row" class="govuk-table__cell">
               <a class="govuk-link govuk-!-font-weight-regular" href="your-form">{{data['formTitle']}}</a>
             </th>
+            <td class="govuk-table__cell">
+              {{ data.defaultUser }}
+            </td>
             <td class="govuk-table__cell govuk-table__cell--numeric">
             {% if data['status'] %}
               {{govukTag({

@@ -2,7 +2,7 @@
 
 {% set pageTitle = 'Edit question' %}
 
-{% set answerType = pageData['type']|capitalize %}
+{% set answerType = pageData['type'] | capitalize %}
 {% if pageData['type'] === 'personName' %}
   {% set questionHint = data.personNameQuestionHint %}
   {% set hintHint = data.personNameHintHint %}
@@ -54,7 +54,8 @@
 {% endif %}
 
 {% block pageTitle %}
-  {{ "Error: " if containsErrors }}{{ pageTitle }} - GOV.UK Forms
+  {{ "Error: " if containsErrors }}{{ pageTitle }}
+  - GOV.UK Forms
 {% endblock %}
 
 {% block beforeContent %}
@@ -68,22 +69,23 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-      <form id="form" class="form" method="post" novalidate>
+      <form id="form" class="form" method="post" novalidate="novalidate">
 
-          {% if containsErrors %}
-            {{ govukErrorSummary({
+        {% if containsErrors %}
+          {{ govukErrorSummary({
               titleText: "There is a problem",
               errorList: errorList
             }) }}
-          {% endif %}
+        {% endif %}
 
-          <span class="govuk-caption-l">Question {{ pageId | int + 1 }}</span>
-          <h1 class="govuk-heading-l">{{pageTitle}}</h1>
+        <span class="govuk-caption-l">Question
+          {{ pageId | int + 1 }}</span>
+        <h1 class="govuk-heading-l">{{pageTitle}}</h1>
 
-          {% set namePrefix = "pages[" + pageIndex + "]" %}
+        {% set namePrefix = "pages[" + pageIndex + "]" %}
 
-          <!-- Long question text input -->
-          {{ govukInput({
+        <!-- Long question text input -->
+        {{ govukInput({
             label: {
               text: "Question text",
               classes: "govuk-label--m"
@@ -97,10 +99,10 @@
             errorMessage: { text: errors['long-title'].text } if errors['long-title'].text 
           }) }}
 
-          <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+        <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 
-          <!-- Hint text input -->
-          {{ govukTextarea({
+        <!-- Hint text input -->
+        {{ govukTextarea({
             label: {
               text: "Hint text (optional)",
               classes: "govuk-label--m"
@@ -113,10 +115,10 @@
             value: pageData['hint-text']
           }) }}
 
-          <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+        <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 
-          <!-- Additional guidance -->
-          {{ govukRadios({
+        <!-- Additional guidance -->
+        {{ govukRadios({
             classes: "govuk-radios--inline",
             name: "additional-guidance",
             fieldset: {
@@ -143,11 +145,11 @@
             errorMessage: { text: errors['additional-guidance'].text } if errors['additional-guidance'].text
           }) }}
 
-          <!-- Question settings -->
-          {% if pageData['type'] != 'select' %}
-            <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+        <!-- Question settings -->
+        {% if pageData['type'] != 'select' %}
+          <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 
-            {{ govukCheckboxes({
+          {{ govukCheckboxes({
               idPrefix: "questionOptional",
               name: "questionOptional",
               fieldset: {
@@ -170,22 +172,19 @@
                 }
               ]
             }) }}
-          {% endif %}
+        {% endif %}
 
-          {{ govukButton({
+        {{ govukButton({
             text: "Continue",
             name: "action",
             value: "editPage"
           }) }}
-        
-          {# If we are not sure what the back link is going to don’t show the bottom link #}
-          {% if previousPageText !== 'Back' %}
-          <p class="govuk-body">
-            <a class="govuk-link" href="{{ previousPageLink }}" target="_parent">
-              {{ previousPageText }}
-            </a>
-          </p>
-          {% endif %}
+
+        <p class="govuk-body">
+          <a class="govuk-link" href="/form-designer/clear-empty" target="_parent">
+            Back to your questions
+          </a>
+        </p>
 
       </form>
     </div>
@@ -193,8 +192,8 @@
 {% endblock %}
 
 {% block pageScripts %}
-<script type="text/javascript">
-  // call function from `assets/javascripts/application.js`
-  // removeSuccessNotification();
-</script>
+  <script type="text/javascript">
+    // call function from `assets/javascripts/application.js`
+    // removeSuccessNotification();
+  </script>
 {% endblock %}

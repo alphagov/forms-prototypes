@@ -1,73 +1,132 @@
 /*
 
-Provide default values for user session data. These are automatically added
-via the `autoStoreData` middleware. Values will only be added to the
-session if a value doesn't already exist. This may be useful for testing
-journeys where users are returning or logging in to an existing application.
-
-============================================================================
-
-Example usage:
-
-"full-name": "Sarah Philips",
-
-"options-chosen": [ "foo", "bar" ]
-
-============================================================================
+This is the latest version of return data for a dummy form to be used in testing the branching journey: 
+created 26 March 2025
+testing: week commencing 31 March 2025
 
 */
 
 module.exports = {
-  highestPageId: 6,
-  action: 'gogogo',
-  publish: 'GOV.UK',
-  authentication: 'email',
-  payments: 'no',
+  /* Dummy form settings */
+  formTitle: 'Tell us about a complaint, concern or error',
+  status: 'Draft',
+
+  // Form tasks
+  isQuestionsComplete: 'no',
+  // checkAnswersDeclaration
+  isDeclarationComplete: 'no',
+  // confirmationNext
+  isConfirmationComplete: 'no',
+  // formsEmail
+  isSubmissionEmailComplete: 'no',
+  // confirmationCode
+  isConfirmationCodeComplete: 'no',
+  // privacyInformation
+  isPrivacyInformationComplete: 'no',
+  // supportDetails - emailSupport, phoneSupport, onlineSupportLink, onlineSupportText
+  isSupportDetailsComplete: 'no',
+  // makeFormLive
+  isFormLive: 'no',
+
+  // Form questions
+  highestPageId: 7,
   pages: [
     {
-      'long-title': 'What type of animal is your pet?',
-      'short-title': 'Animal type',
-      'hint-text': 'For example a bird, cat, dog.',
+      pageIndex: '0',
+      type: 'select',
+      'long-title': 'Which of these do you want to do today?',
+      'item-list': [
+        "Report an error",
+        "Make a complaint",
+        "Raise a concern"
+      ],
+      'listSettings': [
+        "oneOption"
+      ],
+      'additional-guidance': 'No',
+      'questionSaved': 'Yes'
+    },
+    {
+      pageIndex: '1',
+      type: 'select',
+      'long-title': 'What does your complaint or concern relate to?',
+      'item-list': [
+        "Service",
+        "Access",
+        "Availability",
+        "Something else"
+      ],
+      'listSettings': [
+        "oneOption"
+      ],
+      'additional-guidance': 'No',
+      'questionSaved': 'Yes'
+    },
+    {
+      pageIndex: '2',
       type: 'text',
-      pageIndex: '0'
+      input: "multi-line-input",
+      'long-title': 'Please give full details of your complaint or concern',
+      'additional-guidance': 'No',
+      'questionSaved': 'Yes'
     },
     {
-      'long-title': 'What is the name of your pet?',
-      'short-title': 'Pet name',
+      pageIndex: '3',
+      type: 'select',
+      'long-title': 'Have you contacted us about this before?',
+      'item-list': [
+        "Yes",
+        "No"
+      ],
+      'listSettings': [
+        "oneOption"
+      ],
+      'additional-guidance': 'No',
+      'questionSaved': 'Yes'
+    },
+    {
+      pageIndex: '4',
       type: 'text',
-      pageIndex: '1'
+      input: "single-line-input",
+      'long-title': 'What were you trying to do when the error happend?',
+      'additional-guidance': 'No',
+      'questionSaved': 'Yes'
     },
     {
-      'long-title': 'Where are you travelling to?',
-      'short-title': 'Destination',
-      'hint-text': 'For example Lisbon, Portugal',
+      pageIndex: '5',
       type: 'text',
-      pageIndex: '2'
+      input: "multi-line-input",
+      'long-title': 'Please tell us what happened when the error occurred',
+      'additional-guidance': 'No',
+      'questionSaved': 'Yes'
     },
     {
-      'long-title': 'What date do you travel?',
-      'short-title': 'Date',
-      'hint-text': 'For example 27 3 2007',
-      type: 'date',
-      pageIndex: '3'
-    },
-    {
-      'long-title': 'How are you travelling?',
-      'short-title': 'Transport type',
-      'hint-text': 'For example plane, train, car.',
+      pageIndex: '6',
       type: 'text',
-      pageIndex: '4'
+      input: "multi-line-input",
+      'long-title': 'What did you do, if anything, to work around the error?',
+      'additional-guidance': 'No',
+      "questionOptional": [
+        "questionOptional"
+      ],
+      'questionSaved': 'Yes'
     },
     {
-      'long-title': 'How many pets do you have?',
-      'short-title': 'Number of pets',
-      type: 'number',
-      pageIndex: '5'
+      pageIndex: '7',
+      type: 'select',
+      'long-title': 'How would you rate your overall experience of using the service?',
+      'item-list': [
+        "Very poor",
+        "Poor",
+        "Neutral",
+        "Good",
+        "Very good"
+      ],
+      'listSettings': [
+        "oneOption"
+      ],
+      'additional-guidance': 'No',
+      'questionSaved': 'Yes'
     }
-  ],
-  status: 'Draft',
-  confirmationTitle: 'Your form has been submitted',
-  checkAnswersTitle: 'Check your answers before submitting your form',
-  formTitle: 'Take your pet abroad',
-  isQuestionsComplete: 'no'
+  ]
 }

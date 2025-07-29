@@ -18,14 +18,6 @@
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-
-      {% if successMessage %}
-      {{ govukNotificationBanner({
-        type: 'success',
-        text: successMessage
-      }) }}
-      {% endif %}
-
       <form id="form" class="form" method="post" novalidate>
 
         {% if containsErrors %}
@@ -65,20 +57,21 @@
 
         {{ govukCharacterCount({
           name: "checkAnswersDeclaration",
-          id: "checkAnswersDeclaration",
+          id: "check-answers-declaration",
           maxlength: 2000,
           value: data['checkAnswersDeclaration'],
           label: {
             text: "Enter a declaration for people to agree to (optional)",
             classes: "govuk-label--m"
-          }
+          },
+          errorMessage: { text: errors['checkAnswersDeclaration'].text } if errors['checkAnswersDeclaration'].text
         }) }}
 
         {% if data.status === 'Draft' %}
         {{ govukRadios({
-          classes: "govuk-radios",
-          idPrefix: "isDeclarationComplete",
+          idPrefix: "is-declaration-complete",
           name: "isDeclarationComplete",
+          classes: "govuk-radios",
           fieldset: {
             legend: {
               text: "Do you want to mark this task as complete?",
@@ -105,8 +98,6 @@
         }) }}
         {% endif %}
 
-        <input type="hidden" id="currentPageId" name="currentPageId" value="{{pageId}}">
-
         {{ govukButton({
           text: "Save and continue",
           name: "action",
@@ -116,11 +107,4 @@
       </form>
     </div>
   </div>
-{% endblock %}
-
-{% block pageScripts %}
-<script type="text/javascript">
-  // call function from `assets/javascripts/application.js`
-  // removeSuccessNotification();
-</script>
 {% endblock %}

@@ -1,0 +1,85 @@
+{% extends "layout-govuk-forms.html" %}
+
+{% set pageTitle = 'Which question do you want to add a route from?' %}
+{% set pageHint = 'The person will be skipped forward after they’ve answered this question' %}
+
+{% block pageTitle %}
+  {{ "Error: " if containsErrors }}{{pageTitle}}: {{ data.formTitle or '[formTitle]' }} - GOV.UK Forms
+{% endblock %}
+
+{% block beforeContent %}
+  {% if previousPage and ('your-questions' in previousPage) %}
+    <a class="govuk-back-link" href="../../clear-empty" target="_parent">
+      Back to your questions
+    </a>
+  {% else %}
+    <a class="govuk-back-link" href="javascript:window.history.back()">
+      Back
+    </a>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <form id="form" class="form" action="other-answer-route-start" method="post" novalidate>
+
+      {% if containsErrors %}
+      {{ govukErrorSummary({
+        titleText: "There is a problem",
+        errorList: errorList
+      }) }}
+      {% endif %}
+
+      <span class="govuk-caption-l">
+        {{ 'Question ' + ((pageIndex + 1) or 'X') + '’s routes: for any other answer' }}
+      </span>
+
+      {% set tempQuestions = [] %}
+      {% for page in data.pages -%}
+        {% if (page.pageIndex > (pageIndex|int)) and not loop.last %}
+          {% set tempQuestions = (
+            tempQuestions.push({
+              value: page.pageIndex,
+              text: (page.pageIndex|int + 1) + '. ' + page['long-title'],
+              checked: true if ('routing' in page)
+            }), tempQuestions) 
+          %}
+        {% endif %}
+      {%- endfor %}
+
+      {{ govukRadios({
+        name: "routeQuestion",
+        fieldset: {
+          legend: {
+            text: pageTitle,
+            isPageHeading: true,
+            classes: "govuk-fieldset__legend--l"
+          }
+        },
+        hint: {
+          text: pageHint
+        },
+        items: tempQuestions,
+        errorMessage: { text: errors['routeQuestion'].text } if errors['routeQuestion'].text
+      }) }}
+
+      {{ govukButton({
+        text: "Continue"
+      }) }}
+
+      <p class="govuk-body">
+        <a class="govuk-link" href="routes-summary">Cancel</a>
+      </p>
+
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block pageScripts %}
+<script type="text/javascript">
+  // call function from `assets/javascripts/application.js`
+  // removeSuccessNotification();
+</script>
+{% endblock %}

@@ -414,21 +414,19 @@ router.post('/form-designer/pages/:pageId(\\d+)/edit', function (req, res) {
 
   const errors = {};
 
-  if (!pageData['long-title']) {
-    const title = req.session.data['long-title']
+  var title = req.session.data['long-title']
 
-    // if no question text given, then throw an error
-    if (!title || !title.length) {
-      errors['long-title'] = {
-        text: 'Enter a question',
-        href: "#long-title"
-      }
-    // otherwise add question text to pageData
-    } else {
-      pageData['long-title'] = req.session.data['long-title']
+  // if no question text given, then throw an error
+  if (!title || !title.length) {
+    errors['long-title'] = {
+      text: 'Enter a question',
+      href: "#long-title"
     }
-    req.session.data['long-title'] = undefined
+  // otherwise add question text to pageData
+  } else {
+    pageData['long-title'] = req.session.data['long-title']
   }
+  req.session.data['long-title'] = undefined
 
   // if hint text is added, add it to pageData
   if (req.session.data['hint-text']) {

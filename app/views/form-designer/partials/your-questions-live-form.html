@@ -177,6 +177,51 @@
         <dd class="govuk-summary-list__value">{{ titleText }}</dd>
       </div>
       {% endif %}
+
+      {# now we can add any route that is based on an answer to the question above #}
+        {% if page.routing.skipTo %}
+          {% set skipPage = '' %}
+          {% if page.routing.skipTo == 'cya' %}
+            {% set skipPage = '“' + data.checkAnswersTitle + '”' %}
+          {% else %}
+            {% for item in data.pages %}
+              {% if (item.pageIndex|int) == (page.routing.skipTo|int) %}
+                {% set skipPage -%}{{ page.routing.skipTo|int + 1 }}, “{{ item['long-title'] }}”{%- endset %}
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key app-summary-list__key">
+              Routes
+            </dt>
+            <dd class="govuk-summary-list__value">
+              If the answer is “{{ page.routing.answer }}” then skip to {{ skipPage }}
+            </dd>
+          </div>
+        {% endif %}
+        {# finally we need to add routing not based on an answer if there is any #}
+        {% if page.routing.noAnswer %}
+          {% set skipPage = '' %}
+          {% if page.routing.thenSkipTo == 'cya' %}
+            {% set skipPage = '“' + data.checkAnswersTitle + '”' %}
+          {% else %}
+            {% for otherRoutePage in data.pages %}
+              {% if (otherRoutePage.pageIndex|int) == (page.routing.thenSkipTo|int) %}
+                {% set skipPage -%}
+                  {{ otherRoutePage.pageIndex|int + 1 }}, “{{ otherRoutePage['long-title'] }}”
+                {%- endset %}
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key app-summary-list__key">
+              Routes
+            </dt>
+            <dd class="govuk-summary-list__value">
+              Skip the person to {{ skipPage }}
+            </dd>
+          </div>
+        {% endif %}
     </dl>
   </div>
 </div>
