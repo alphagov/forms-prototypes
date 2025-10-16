@@ -3,10 +3,12 @@
 {% block header %}
   {{ govukHeader({
     homepageUrl: "/",
+    containerClasses: "govuk-width-container"
+  }) }}
+  {{ govukServiceNavigation({
     serviceName: data['formTitle'],
-    serviceUrl: "../your-questions",
-    containerClasses: "govuk-width-container",
-    navigationClasses: "govuk-header__navigation--end govuk-!-display-block",
+    serviceUrl: "0",
+    navigationClasses: "app-service-navigation",
     navigation: [
       {
         href: "../your-questions",
