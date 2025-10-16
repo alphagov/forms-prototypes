@@ -293,3 +293,11 @@ Summary card
 .app-panel-blue {
   background-color: #1d70b8;
 }
+
+// Service navigation
+@media (min-width: 40.0625em) {
+  .app-service-navigation li:nth-last-child(2) {
+    flex: 1 0 auto;
+    text-align: right;
+  }
+}
