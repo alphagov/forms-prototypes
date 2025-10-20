@@ -1,0 +1,565 @@
+{% extends "layout-govuk-forms.html" %}
+
+{% set pageTitle = 'Add a Welsh version of your form' %}
+
+{% block pageTitle %}
+  {{ pageTitle }}{% if data.status == 'Draft' %}: {{ data.formTitle or '[formTitle]' }}{% endif %} - {{ serviceName }}
+{% endblock %}
+
+{% block beforeContent %}
+  <a class="govuk-back-link" href="../your-form">Back to create your form</a>
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full-width">
+
+      {% if data.successMessage %}
+      {{ govukNotificationBanner({
+        type: 'success',
+        text: data.successMessage
+      }) }}
+      {% endif %}
+
+      <span class="govuk-caption-l">{{ data.formTitle or '[formTitle]' }}</span>
+      <h1 class="govuk-heading-l govuk-!-margin-bottom-2">{{ pageTitle }}</h1>
+      <dl class="govuk-!-margin-bottom-7">
+        <dt class="govuk-visually-hidden">Status</dt>
+        <dd class="govuk-!-margin-0">
+          {{ govukTag({
+            text: data['status'],
+            classes: "govuk-tag--yellow"
+          }) }}
+        </dd>
+      </dl>
+
+      <div class="govuk-button-group">
+        {{ govukButton({
+          text: "Download as a spreadsheet",
+          classes: "govuk-button--secondary",
+          name: "action",
+          value: "download"
+        }) }}
+        {% if data.pages.length %}
+        <a class="govuk-link" href="/form-designer/preview/0" rel="noopener noreferrer">
+          Preview this form
+        </a>
+        {% endif %}
+      </div>
+
+      {# FORM NAME #}
+      {% set formNameInput -%}
+      {{ govukInput({
+        formGroup: {
+          classes: "app-welsh-form-group"
+        },
+        label: {
+          text: "Enter Welsh form name",
+          classes: "govuk-visually-hidden",
+          isPageHeading: false
+        },
+        id: "welsh-form-name",
+        name: "welshFormName",
+        attributes: 'aria-describedby="englishVersion"'
+      }) }}
+      {%- endset %}
+
+      {{ govukTable({
+        caption: "Form name",
+        captionClasses: "govuk-table__caption--m",
+        classes: "app-translate-table",
+        head: [
+          {
+            text: "English content"
+          },
+          {
+            text: "Welsh content"
+          }
+        ],
+        rows: [
+          [
+            {
+              classes: "app-table-half-width",
+              text: data.formTitle or '[formTitle]',
+              attributes: 'id="englishVersion"'
+            },
+            {
+              classes: "app-table__cell-input",
+              html: formNameInput
+            }
+          ]
+        ]
+      }) }}
+
+      {# FORM QUESTIONS #}
+      {% if data.pages > 0 %}
+      {% for question in data.pages %}
+      {% set pageHeadingInput -%}
+      {{ govukInput({
+        formGroup: {
+          classes: "app-welsh-form-group"
+        },
+        label: {
+          text: "Enter Welsh page heading",
+          classes: "govuk-visually-hidden",
+          isPageHeading: false
+        },
+        id: "welsh-page-heading" + loop.index0,
+        name: "welshPageHeading" + loop.index0,
+        attributes: 'aria-describedby="englishPageHeading' + loop.index0 + '"'
+      }) }}
+      {%- endset %}
+      {% set guidanceTextInput -%}
+      {{ govukTextarea({
+        formGroup: {
+          classes: "app-welsh-form-group"
+        },
+        rows: "10",
+        label: {
+          text: "Enter Welsh guidance text",
+          classes: "govuk-visually-hidden",
+          isPageHeading: false
+        },
+        id: "welsh-guidance-text" + loop.index0,
+        name: "welshGuidanceText" + loop.index0,
+        attributes: 'aria-describedby="englishGuidanceText' + loop.index0 + '"'
+      }) }}
+      {%- endset %}
+      {% set questionTextInput -%}
+      {{ govukInput({
+        formGroup: {
+          classes: "app-welsh-form-group"
+        },
+        label: {
+          text: "Enter Welsh question text",
+          classes: "govuk-visually-hidden",
+          isPageHeading: false
+        },
+        id: "welsh-question-text" + loop.index0,
+        name: "welshQuestionText" + loop.index0,
+        attributes: 'aria-describedby="englishVersion' + loop.index0 + '"'
+      }) }}
+      {%- endset %}
+      {% set hintTextInput -%}
+      {{ govukInput({
+        formGroup: {
+          classes: "app-welsh-form-group"
+        },
+        label: {
+          text: "Enter Welsh hint text",
+          classes: "govuk-visually-hidden",
+          isPageHeading: false
+        },
+        id: "welsh-hint-text" + loop.index0,
+        name: "welshHintText" + loop.index0,
+        attributes: 'aria-describedby="englishHintText' + loop.index0 + '"'
+      }) }}
+      {%- endset %}
+
+      {{ govukTable({
+        caption: "Question " + loop.index,
+        captionClasses: "govuk-table__caption--m",
+        classes: "app-translate-table",
+        firstCellIsHeader: true,
+        head: [
+          {},
+          {
+            text: "English content"
+          },
+          {
+            text: "Welsh content"
+          }
+        ],
+        rows: [
+          [
+            {
+              classes: "app-table-one-quarter-width",
+              text: 'Page heading'
+            },
+            {
+              classes: "app-table-one-third-width",
+              text: question['page-name'],
+              attributes: 'id="englishPageHeading' + loop.index0 + '"'
+            },
+            {
+              classes: "app-table-one-third-width app-table__cell-input",
+              html: pageHeadingInput
+            }
+          ] if question['additional-guidance'],
+          [
+            {
+              classes: "app-table-one-quarter-width",
+              text: 'Guidance text'
+            },
+            {
+              classes: "app-table-one-third-width",
+              text: question['additional-guidance-text'],
+              attributes: 'id="englishGuidanceText' + loop.index0 + '"'
+            },
+            {
+              classes: "app-table-one-third-width app-table__cell-input",
+              html: guidanceTextInput
+            }
+          ] if question['additional-guidance'],
+          [
+            {
+              classes: "app-table-one-quarter-width",
+              text: 'Question text'
+            },
+            {
+              classes: "app-table-one-third-width",
+              text: question['long-title'],
+              attributes: 'id="englishQuestion' + loop.index0 + '"'
+            },
+            {
+              classes: "app-table-one-third-width app-table__cell-input",
+              html: questionTextInput
+            }
+          ],
+          [
+            {
+              classes: "app-table-one-quarter-width",
+              text: 'Hint text'
+            },
+            {
+              classes: "app-table-one-third-width",
+              text: question['hint-text'],
+              attributes: 'id="englishHintText' + loop.index0 + '"'
+            },
+            {
+              classes: "app-table-one-third-width app-table__cell-input",
+              html: hintTextInput
+            }
+          ] if question['hint-text']
+        ]
+      }) }}
+      {% endfor %}
+      {% else %}
+      <h2 class="govuk-heading-m">Form questions</h2>
+      <p class="govuk-body">No questions have been added to the form.</p>
+      {% endif %}
+
+      {# FORM DECLARATION #}
+      {% set declarationSubhead = 'Declaration for people to agree to' %}
+      {% set checkAnswersDeclarationInput -%}
+      {{ govukTextarea({
+        formGroup: {
+          classes: "app-welsh-form-group"
+        },
+        label: {
+          text: "Enter Welsh " + declarationSubhead,
+          classes: "govuk-visually-hidden",
+          isPageHeading: false
+        },
+        id: "welsh-check-answers-declaration",
+        name: "welshCheckAnswersDeclaration",
+        attributes: 'aria-describedby="englishCheckAnswersDeclaration"'
+      }) }}
+      {%- endset %}
+      {% if data.checkAnswersDeclaration and data.checkAnswersDeclaration !== '' %}
+      {{ govukTable({
+        caption: declarationSubhead,
+        captionClasses: "govuk-table__caption--m",
+        classes: "app-translate-table",
+        head: [
+          {
+            text: "English content"
+          },
+          {
+            text: "Welsh content"
+          }
+        ],
+        rows: [
+          [
+            {
+              classes: "app-table-one-third-width",
+              text: data.checkAnswersDeclaration,
+              attributes: 'id="englishCheckAnswersDeclaration"'
+            },
+            {
+              classes: "app-table-one-third-width app-table__cell-input",
+              html: checkAnswersDeclarationInput
+            }
+          ]
+        ]
+      }) }}
+      {% else %}
+      <h2 class="govuk-heading-m">{{ declarationSubhead }}</h2>
+      <p class="govuk-body">No declaration was added to the form.</p>
+      {% endif %}
+
+      {# FORM INFORMATION ABOUT WHAT HAPPENS NEXT (WHN) #}
+      {% set whnSubhead = 'Information about what happens next' %}
+      {% set confirmationNextInput -%}
+      {{ govukTextarea({
+        formGroup: {
+          classes: "app-welsh-form-group"
+        },
+        label: {
+          text: "Enter Welsh " + whnSubhead,
+          classes: "govuk-visually-hidden",
+          isPageHeading: false
+        },
+        id: "welsh-confirmation-next",
+        name: "welshConfirmationNext",
+        attributes: 'aria-describedby="englishConfirmationNext"'
+      }) }}
+      {%- endset %}
+      {% if data.confirmationNext and data.confirmationNext !== '' %}
+      {{ govukTable({
+        caption: whnSubhead,
+        captionClasses: "govuk-table__caption--m",
+        classes: "app-translate-table",
+        head: [
+          {
+            text: "English content"
+          },
+          {
+            text: "Welsh content"
+          }
+        ],
+        rows: [
+          [
+            {
+              classes: "app-table-one-third-width",
+              text: data.confirmationNext,
+              attributes: 'id="englishConfirmationNext"'
+            },
+            {
+              classes: "app-table-one-third-width app-table__cell-input",
+              html: confirmationNextInput
+            }
+          ]
+        ]
+      }) }}
+      {% else %}
+      <h2 class="govuk-heading-m">{{ whnSubhead }}</h2>
+      <p class="govuk-body">No information about what happens next was added to the form.</p>
+      {% endif %}
+
+      {# FORM PAYMENT LINK #}
+      {% set paymentLinkSubhead = 'Payment link' %}
+      {% if data.payments === 'yes' %}
+      <h2 class="govuk-heading-m">{{ paymentLinkSubhead }}</h2>
+      <p class="govuk-body">No payment link has been added to your form.</p>
+      {% endif %}
+
+      {# FORM PRIVACY LINK #}
+      {% set privacyLinkSubhead = 'Link to privacy information for this form' %}
+      {% if data.privacyInformation and data.privacyInformation !== '' %}
+      {% set privacyInformationInput -%}
+      {{ govukTextarea({
+        rows: "2",
+        formGroup: {
+          classes: "app-welsh-form-group"
+        },
+        label: {
+          text: "Enter Welsh " + privacyLinkSubhead,
+          classes: "govuk-visually-hidden",
+          isPageHeading: false
+        },
+        id: "welsh-privacy-information",
+        name: "welshPrivacyInformation",
+        attributes: 'aria-describedby="englishPrivacyInformation"'
+      }) }}
+      {%- endset %}
+      {{ govukTable({
+        caption: privacyLinkSubhead,
+        captionClasses: "govuk-table__caption--m",
+        classes: "app-translate-table",
+        head: [
+          {
+            text: "English content"
+          },
+          {
+            text: "Welsh content"
+          }
+        ],
+        rows: [
+          [
+            {
+              classes: "app-table-one-third-width",
+              text: data.privacyInformation,
+              attributes: 'id="englishPrivacyInformation"'
+            },
+            {
+              classes: "app-table-one-third-width app-table__cell-input",
+              html: privacyInformationInput
+            }
+          ]
+        ]
+      }) }}
+      {% else %}
+      <h2 class="govuk-heading-m">{{ privacyLinkSubhead }}</h2>
+      <p class="govuk-body">No contact details for support have been added to the form.</p>
+      {% endif %}
+
+      {# FORM CONTACT DETAILS FOR SUPPORT #}
+      {% set supportDetailsSubhead = 'Contact details for support' %}
+      {% if data.supportDetails %}
+      {% set emailSupportInput -%}
+      {{ govukTextarea({
+        rows: "1",
+        formGroup: {
+          classes: "app-welsh-form-group"
+        },
+        label: {
+          text: "Enter Welsh Email",
+          classes: "govuk-visually-hidden",
+          isPageHeading: false
+        },
+        id: "welsh-email-support",
+        name: "welshEmailSupport",
+        attributes: 'aria-describedby="englishEmailSupport"'
+      }) }}
+      {%- endset %}
+      {% set phoneSupportInput -%}
+      {{ govukTextarea({
+        rows: "5",
+        formGroup: {
+          classes: "app-welsh-form-group"
+        },
+        label: {
+          text: "Enter Welsh Telephone",
+          classes: "govuk-visually-hidden",
+          isPageHeading: false
+        },
+        id: "welsh-phone-support",
+        name: "welshPhoneSupport",
+        attributes: 'aria-describedby="englishPhoneSupport"'
+      }) }}
+      {%- endset %}
+      {% set onlineLinkTextInputInput -%}
+      {{ govukTextarea({
+        rows: "1",
+        formGroup: {
+          classes: "app-welsh-form-group"
+        },
+        label: {
+          text: "Enter Welsh Online link text",
+          classes: "govuk-visually-hidden",
+          isPageHeading: false
+        },
+        id: "welsh-online-link-text",
+        name: "welshOnlineLinkText",
+        attributes: 'aria-describedby="englishOnlineLinkText"'
+      }) }}
+      {%- endset %}
+      {% set onlineLinkURLInput -%}
+      {{ govukTextarea({
+        rows: "1",
+        formGroup: {
+          classes: "app-welsh-form-group"
+        },
+        label: {
+          text: "Enter Welsh Online link URL",
+          classes: "govuk-visually-hidden",
+          isPageHeading: false
+        },
+        id: "welsh-online-link-url",
+        name: "welshOnlineLinkURL",
+        attributes: 'aria-describedby="englishOnlineLinkURL"'
+      }) }}
+      {%- endset %}
+      {{ govukTable({
+        caption: supportDetailsSubhead,
+        captionClasses: "govuk-table__caption--m",
+        classes: "app-translate-table",
+        firstCellIsHeader: true,
+        head: [
+          {},
+          {
+            text: "English content"
+          },
+          {
+            text: "Welsh content"
+          }
+        ],
+        rows: [
+          [
+            {
+              text: 'Email'  
+            },
+            {
+              classes: "app-table-one-third-width",
+              text: data.emailSupport,
+              attributes: 'id="englishEmailSupport"'
+            },
+            {
+              classes: "app-table-one-third-width app-table__cell-input",
+              html: emailSupportInput
+            }
+          ] if 'email' in data.supportDetails,
+          [
+            {
+              text: 'Telephone'  
+            },
+            {
+              classes: "app-table-one-third-width",
+              text: data.phoneSupport,
+              attributes: 'id="englishPhoneSupport"'
+            },
+            {
+              classes: "app-table-one-third-width app-table__cell-input",
+              html: phoneSupportInput
+            }
+          ] if 'phone' in data.supportDetails,
+          [
+            {
+              text: 'Online link text'  
+            },
+            {
+              classes: "app-table-one-third-width",
+              text: data.onlineSupportText,
+              attributes: 'id="englishOnlineLinkText"'
+            },
+            {
+              classes: "app-table-one-third-width app-table__cell-input",
+              html: onlineLinkTextInput
+            }
+          ] if 'online' in data.supportDetails,
+          [
+            {
+              text: 'Online link URL'  
+            },
+            {
+              classes: "app-table-one-third-width",
+              text: data.onlineSupportLink,
+              attributes: 'id="englishOnlineLinkURL"'
+            },
+            {
+              classes: "app-table-one-third-width app-table__cell-input",
+              html: onlineLinkURLInput
+            }
+          ] if 'online' in data.supportDetails
+        ]
+      }) }}
+      {% else %}
+      <h2 class="govuk-heading-m">{{ supportDetailsSubhead }}</h2>
+      <p class="govuk-body">No contact details for support have been added to the form.</p>
+      {% endif %}
+
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block pageScripts %}
+<script type="text/javascript">
+
+  function copyURL() {
+    /* Create new range so we can select a node */
+    var range = document.createRange();
+
+    /* Select the contents within node id "formURL" */
+    range.selectNodeContents(document.getElementById("formURL"));
+
+    /* Copy the text from the node */
+    navigator.clipboard.writeText(range);
+  }
+
+  // call function from `assets/javascripts/application.js`
+  // removeSuccessNotification();
+
+</script>
+{% endblock %}
