@@ -301,3 +301,43 @@ Summary card
     text-align: right;
   }
 }
+
+// Welsh version translation screen
+.app-translate-table {
+  border: 2px solid #dee0e2;
+
+  .govuk-table__head {
+    background-color: #dee0e2;
+  }
+
+  .app-table-half-width {
+    width: 50%;
+  }
+
+  .app-table-one-third-width {
+    width: 37.5%;
+  }
+
+  .app-table-one-quarter-width {
+    width: 25%;
+  }
+
+  .govuk-table__header, 
+  .govuk-table__cell {
+    border: 2px solid #dee0e2;
+    padding: 5px;
+  }
+
+  .app-table__cell-input {
+    padding: 0;
+  }
+
+  .app-welsh-form-group {
+    margin: 0;
+    .govuk-input,
+    .govuk-textarea {
+      border: 0;
+      margin: 0;
+    }
+  }
+}
