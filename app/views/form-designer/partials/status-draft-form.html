@@ -357,13 +357,13 @@
     {% set welshVersionStatusTag = 'govuk-task-list__status--cannot-start-yet' %}
     {% set welshVersionStatusText = 'Optional' %}
 {% endif%}
-<h2 class="govuk-heading-m">4. Add translations to your form (optional)</h2>
+<h2 class="govuk-heading-m">4. Create a Welsh version of your form (optional)</h2>
 {{ govukTaskList({
     idPrefix: "add-welsh-version",
     items: [
         {
             title: {
-                text: "Add a link to a payment page on GOV.UK Pay"
+                text: "Add a Welsh version of your form"
             },
             href: "welsh/add-welsh-version",
             status: {
