@@ -241,6 +241,7 @@
 
       {# FORM DECLARATION #}
       {% set declarationSubhead = 'Declaration for people to agree to' %}
+      {% if data.checkAnswersDeclaration and data.checkAnswersDeclaration !== '' %}
       {% set checkAnswersDeclarationInput -%}
       {{ govukTextarea({
         formGroup: {
@@ -256,7 +257,6 @@
         attributes: 'aria-describedby="englishCheckAnswersDeclaration"'
       }) }}
       {%- endset %}
-      {% if data.checkAnswersDeclaration and data.checkAnswersDeclaration !== '' %}
       {{ govukTable({
         caption: declarationSubhead,
         captionClasses: "govuk-table__caption--m",
@@ -290,6 +290,7 @@
 
       {# FORM INFORMATION ABOUT WHAT HAPPENS NEXT (WHN) #}
       {% set whnSubhead = 'Information about what happens next' %}
+      {% if data.confirmationNext and data.confirmationNext !== '' %}
       {% set confirmationNextInput -%}
       {{ govukTextarea({
         formGroup: {
@@ -305,7 +306,6 @@
         attributes: 'aria-describedby="englishConfirmationNext"'
       }) }}
       {%- endset %}
-      {% if data.confirmationNext and data.confirmationNext !== '' %}
       {{ govukTable({
         caption: whnSubhead,
         captionClasses: "govuk-table__caption--m",
