@@ -92,7 +92,7 @@
       }) }}
 
       {# FORM QUESTIONS #}
-      {% if data.pages > 0 %}
+      {% if data.pages.length > 0 %}
       {% for question in data.pages %}
       {% set pageHeadingInput -%}
       {{ govukInput({
@@ -349,7 +349,7 @@
       {% if data.privacyInformation and data.privacyInformation !== '' %}
       {% set privacyInformationInput -%}
       {{ govukTextarea({
-        rows: "2",
+        rows: "1",
         formGroup: {
           classes: "app-welsh-form-group"
         },
@@ -496,7 +496,7 @@
             },
             {
               classes: "app-table-one-third-width",
-              text: data.phoneSupport,
+              text: data.phoneSupport | striptags(true) | escape | nl2br,
               attributes: 'id="englishPhoneSupport"'
             },
             {
@@ -538,6 +538,48 @@
       <h2 class="govuk-heading-m">{{ supportDetailsSubhead }}</h2>
       <p class="govuk-body">No contact details for support have been added to the form.</p>
       {% endif %}
+      
+      <form id="form" class="form" action="add-welsh-version" method="post">
+      {# 
+      {% if (data.isQuestionsComplete == 'yes') and 
+      (data.isDeclarationComplete == 'yes') and 
+      (data.confirmationNext and data.confirmationNext !== '') and 
+      (data.privacyInformation and data.privacyInformation !== '') and 
+      (data.supportDetails and data.supportDetails.length > 0) -%}
+        {{ govukRadios({
+          classes: "govuk-radios",
+          name: "markWelshComplete",
+          fieldset: {
+            legend: {
+              text: "Have you finished adding your Welsh version?",
+              isPageHeading: false,
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          hint: {
+            text: "Selecting ‘Yes’ will mark this task as complete. You’ll still be able to make more changes if you need to."
+          },
+          items: [
+            {
+              value: "yes",
+              text: "Yes"
+            },
+            {
+              value: "no",
+              text: "No, I’ll come back later"
+            }
+          ],
+          errorMessage: { text: errors['markWelshComplete'].text } if errors['markWelshComplete'].text
+        }) }}
+      {%- endif %} 
+      #}
+      {{ govukButton({
+        text: "Save and continue",
+        name: "action",
+        value: "continue"
+      }) }}
+      </form>
+
 
     </div>
   </div>
