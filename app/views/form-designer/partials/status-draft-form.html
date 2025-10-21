@@ -350,6 +350,30 @@
     ]
 }) }}
 
+{# SET STATUS OF WELSH VERSION #}
+{% if data.welshVersion %}
+    {% set welshVersionStatusText = 'Completed' %}
+{% else %}
+    {% set welshVersionStatusTag = 'govuk-task-list__status--cannot-start-yet' %}
+    {% set welshVersionStatusText = 'Optional' %}
+{% endif%}
+<h2 class="govuk-heading-m">4. Add translations to your form (optional)</h2>
+{{ govukTaskList({
+    idPrefix: "add-welsh-version",
+    items: [
+        {
+            title: {
+                text: "Add a link to a payment page on GOV.UK Pay"
+            },
+            href: "welsh/add-welsh-version",
+            status: {
+                text: welshVersionStatusText,
+                classes: welshVersionStatusTag if not data.welshVersion
+            }
+        }
+    ]
+}) }}
+
 {# SET STATUS OF LIVE FORM #}
 {# Refactor this logic outside of class attribute #}
 {% if data.status == 'Live' %}
@@ -373,7 +397,7 @@
 {% endset %}
 
 <h2 class="app-task-list__section">
-    4. Make your form live
+    5. Make your form live
 </h2>
 {% if data['journey'] and data['journey'] == 'groupAdminTasks' %}
 
