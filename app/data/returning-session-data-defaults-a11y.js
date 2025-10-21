@@ -22,7 +22,8 @@ module.exports = {
   action: 'gogogo',
   publish: 'GOV.UK',
   authentication: 'email',
-  payments: 'no',
+  formTitle: 'Take your pet abroad',
+  status: 'Draft',
   pages: [
     {
       'long-title': 'What type of animal is your pet?',
@@ -65,9 +66,20 @@ module.exports = {
       pageIndex: '5'
     }
   ],
-  status: 'Draft',
+  isQuestionsComplete: 'no',
+
+  checkAnswersDeclaration: '',
+  
+  confirmationNext: 'We will update your claim with the new information you provided. We aim to do this within 10 working days. After we have updated your information, we will let you know if you are due a payment. You do not need to send us any further evidence to complete your application.\n\nIf you have not had a response from us within 15 working days, contact us at: [redundancypaymentsonline@insolvency.gov.uk](mailto:redundancypaymentsonline@insolvency.gov.uk)\n\nMake sure you have told the insolvency practitioner handling your employer’s insolvency about the changes you have made to your claim information. They may need to change the information they provided the Insolvency Service.\n\nTo make another amendment to your redundancy claim, complete the relevant form from the [redundancy claim amendment forms](https://www.gov.uk/guidance/amend-a-redundancy-claim) page.',
+
+  payments: 'no',
+
+  supportDetails: [
+    'phone'
+  ],
+
+  phoneSupport: 'Phone: 020 7946 0101\n\nMonday to Friday, 9am to 5pm (except public holidays)',
+
   confirmationTitle: 'Your form has been submitted',
-  checkAnswersTitle: 'Check your answers before submitting your form',
-  formTitle: 'Take your pet abroad',
-  isQuestionsComplete: 'no'
+  checkAnswersTitle: 'Check your answers before submitting your form'
 }
