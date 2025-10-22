@@ -23,8 +23,6 @@ module.exports = {
 
   highestPageId: 0,
   action: '',
-  publish: 'GOV.UK',
-  authentication: 'email',
   payments: 'no',
   pages: [],
   status: 'Draft',

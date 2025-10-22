@@ -20,8 +20,6 @@ Example usage:
 module.exports = {
   highestPageId: 6,
   action: 'gogogo',
-  publish: 'GOV.UK',
-  authentication: 'email',
   payments: 'no',
   pages: [
     {
