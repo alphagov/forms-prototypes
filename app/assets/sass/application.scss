@@ -305,6 +305,7 @@ Summary card
 // Welsh version translation screen
 .app-translate-table {
   border: 2px solid #dee0e2;
+  height: 100%;
 
   .govuk-table__head {
     background-color: #dee0e2;
@@ -334,8 +335,10 @@ Summary card
 
   .app-welsh-form-group {
     margin: 0;
+    height: 100%;
     .govuk-input,
     .govuk-textarea {
+      min-height: 100%; // use min-height so the textarea can't be smaller than the container
       border: 0;
       margin: 0;
     }
