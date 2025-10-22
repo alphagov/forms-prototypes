@@ -13,13 +13,7 @@
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
-
-      {% if data.successMessage %}
-      {{ govukNotificationBanner({
-        type: 'success',
-        text: data.successMessage
-      }) }}
-      {% endif %}
+      <form id="form" class="form" action="add-welsh-version" method="post">
 
       <span class="govuk-caption-l">{{ data.formTitle or '[formTitle]' }}</span>
       <h1 class="govuk-heading-l govuk-!-margin-bottom-2">{{ pageTitle }}</h1>
@@ -538,8 +532,7 @@
       <h2 class="govuk-heading-m">{{ supportDetailsSubhead }}</h2>
       <p class="govuk-body">No contact details for support have been added to the form.</p>
       {% endif %}
-      
-      <form id="form" class="form" action="add-welsh-version" method="post">
+
       {# 
       {% if (data.isQuestionsComplete == 'yes') and 
       (data.isDeclarationComplete == 'yes') and 
