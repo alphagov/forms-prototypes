@@ -42,7 +42,7 @@
         }) }}
         {% if data.pages.length %}
         <a class="govuk-link" href="/form-designer/preview/0" rel="noopener noreferrer">
-          Preview this form
+          Preview this form in Welsh
         </a>
         {% endif %}
       </div>
@@ -322,7 +322,7 @@
           [
             {
               classes: "app-table-one-third-width",
-              text: data.confirmationNext,
+              text: data.confirmationNext | striptags(true) | escape | nl2br,
               attributes: 'id="englishConfirmationNext"'
             },
             {
