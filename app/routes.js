@@ -923,6 +923,22 @@ router.post('/form-designer/provide-support-details', function (req, res) {
   }
 })
 
+/* =====
+Create a Welsh version of your form (optional)
+===== */
+
+// Routing for adding Welsh version
+router.post('/form-designer/welsh/add-welsh-version', function (req, res) {
+  var { welshFormName } = req.session.data
+
+  if (welshFormName) { 
+    // set a success message for saving
+    req.session.data.successMessage = 'Your Welsh version has been saved'
+  }
+
+  return res.redirect('../your-form')
+})
+
 
 /* =====
 Make your form live
