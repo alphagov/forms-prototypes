@@ -344,3 +344,58 @@ Summary card
     }
   }
 }
+
+// DWP Language Toggle
+.dwp-language-toggle {
+  font-family: Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 1.1428571429;
+}
+
+@media print {
+  .dwp-language-toggle {
+    font-family: sans-serif;
+  }
+}
+
+@media (min-width: 40.0625em) {
+  .dwp-language-toggle {
+    font-size: 1rem;
+    line-height: 1.25;
+  }
+}
+
+@media print {
+  .dwp-language-toggle {
+    font-size: 14pt;
+    line-height: 1.2;
+  }
+}
+
+.dwp-language-toggle::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.dwp-language-toggle__list {
+  margin-top: 1em;
+  float: right;
+  text-align: right;
+}
+
+.dwp-language-toggle__list-item {
+  display: inline-block;
+}
+
+.dwp-language-toggle__list-item:first-child::after {
+  content: "";
+  display: inline-block;
+  position: relative;
+  top: 0.1875em;
+  height: 1em;
+  border-right: 1px solid #0b0c0c;
+}
