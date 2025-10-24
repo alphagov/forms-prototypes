@@ -1,0 +1,44 @@
+{% extends "govuk-prototype-kit/layouts/govuk-branded.html" %}
+
+{% block header %}
+  {{ govukHeader({
+    homepageUrl: "/",
+    containerClasses: "govuk-width-container"
+  }) }}
+  {{ govukServiceNavigation({
+    serviceName: data.welshFormName,
+    serviceUrl: "0.cy",
+    navigationClasses: "app-service-navigation",
+    navigation: [
+      {
+        href: "../your-questions",
+        text: "Your questions"
+      }
+    ]
+  }) }}
+{% endblock %}
+
+{% block footer %}
+  {{ govukFooter({
+    meta: {
+      items: [
+        {
+          href: "#",
+          text: "Get help with this form"
+        },
+        {
+          href: "#",
+          text: "Privacy"
+        },
+        {
+          href: "https://www.forms.service.gov.uk/accessibility/",
+          text: "Accessibility"
+        },
+        {
+          href: "#",
+          text: "Cookies"
+        }
+      ]
+    }
+  }) }}
+{% endblock %}
