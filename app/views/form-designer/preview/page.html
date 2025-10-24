@@ -12,6 +12,18 @@
 
 
 {% block beforeContent %}
+  <nav class="dwp-language-toggle" aria-label="Language toggle">
+    <ul class="dwp-language-toggle__list">
+      <li class="dwp-language-toggle__list-item" aria-current="true">
+        English
+      </li>
+      <li class="dwp-language-toggle__list-item">
+        <a href="{{tempURL}}.cy" hreflang="cy" lang="cy" rel="alternate" class="govuk-link" aria-label="Newid yr iaith ir Gymraeg">
+          Cymraeg
+        </a>
+      </li>
+    </ul>
+  </nav>
   {% set prevPageId = pageId | int - 1 %}
   {% if data.cya %}
     <a class="govuk-back-link" href="check-answers">Back</a>
