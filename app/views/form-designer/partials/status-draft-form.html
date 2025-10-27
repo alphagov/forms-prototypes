@@ -351,12 +351,24 @@
 }) }}
 
 {# SET STATUS OF WELSH VERSION #}
-{% if data.welshVersion %}
+{% if data.markWelshComplete and (data.markWelshComplete == 'yes') %}
     {% set welshVersionStatusText = 'Completed' %}
+{% elif data.markWelshComplete and (data.markWelshComplete == 'no') %}
+    {% set welshVersionStatusTag = 'govuk-tag--light-blue' %}
+    {% set welshVersionStatusText = 'In progress' %}
 {% else %}
     {% set welshVersionStatusTag = 'govuk-task-list__status--cannot-start-yet' %}
     {% set welshVersionStatusText = 'Optional' %}
 {% endif%}
+{% set htmlWelshVersion %}
+    {% if not (data.markWelshComplete) or (data.markWelshComplete == 'yes') %}
+        {{ welshVersionStatusText }}
+    {% else %}
+        <strong class="govuk-tag {{ welshVersionStatusTag }}">
+            {{ welshVersionStatusText }}
+        </strong>
+    {% endif %}
+{% endset %}
 <h2 class="govuk-heading-m">4. Create a Welsh version of your form (optional)</h2>
 {{ govukTaskList({
     idPrefix: "add-welsh-version",
@@ -367,8 +379,8 @@
             },
             href: "welsh/add-welsh-version",
             status: {
-                text: welshVersionStatusText,
-                classes: welshVersionStatusTag if not data.welshVersion
+                html: htmlWelshVersion,
+                classes: "govuk-task-list__status--cannot-start-yet" if not (data.markWelshComplete)
             }
         }
     ]
