@@ -202,6 +202,10 @@ router.get('/form-designer/your-form', function (req, res) {
   if (req.session.data['supportDetails']) {
     sections = sections + 1 
   }
+  // if what happens next completed = sections =+ 1 
+  if (req.session.data['markWelshComplete']) {
+    sections = sections + 1
+  }
 
   return res.render('form-designer/your-form', {
     successMessage: successMessage,
@@ -967,7 +971,7 @@ Create a Welsh version of your form (optional)
 
 // Routing for adding Welsh version
 router.post('/form-designer/welsh/add-welsh-version', function (req, res) {
-  var { welshFormName, welshPageHeading, welshGuidanceText, welshQuestionText, welshHintText, pages } = req.session.data
+  var { welshFormName, welshPageHeading, welshGuidanceText, welshQuestionText, welshHintText, pages, welshConfirmationNext, welshPaymentLink, welshPrivacyInformation, supportDetails, welshEmailSupport, welshPhoneSupport, welshOnlineLinkText, welshOnlineLinkURL } = req.session.data
 
   for (let i = 0; i < pages.length; i++) {
     // run through all the current pages added to the English form
@@ -1032,7 +1036,44 @@ router.post('/form-designer/welsh/add-welsh-version', function (req, res) {
   if (welshFormName) { 
     // set a success message for saving
     req.session.data.successMessage = 'Your Welsh version has been saved'
+    // add ‘no’ to session data
+    req.session.data.markWelshComplete = "no"
   }
+
+  /*
+  if any Welsh input has been added we need to mark the Welsh task as ‘in progress’
+  if (welshQuestionText > 0) {
+    // add ‘no’ to session data
+    // req.session.data.markWelshComplete = "no"
+  } 
+    
+  if (welshDeclaration) {
+    // add ‘no’ to session data
+    // req.session.data.markWelshComplete = "no"
+  } 
+    
+  if (welshConfirmationNext) {
+    // add ‘no’ to session data
+    // req.session.data.markWelshComplete = "no"
+  } 
+    
+  if (welshPaymentLink) {
+    // add ‘no’ to session data
+    // req.session.data.markWelshComplete = "no"
+  } 
+    
+  if (welshPrivacyLink) {
+    // add ‘no’ to session data
+    // req.session.data.markWelshComplete = "no"
+  } 
+    
+  if (supportDetails) {
+    if (welshEmailSupport || welshPhoneSupport || welshOnlineLinkText || welshOnlineLinkURL ) {
+      // add ‘no’ to session data
+      // req.session.data.markWelshComplete = "no"
+    }
+  } 
+  */
 
   return res.redirect('../your-form')
 })
