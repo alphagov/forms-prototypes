@@ -1,26 +1,28 @@
-{% extends "layout-govuk-form-preview.html" %}
+{% extends "layout-govuk-form-welsh-preview.html" %}
 {% set mainClasses = "main--draft govuk-main-wrapper--auto-spacing" %}
 
 {% if pageData['additional-guidance'] == 'Yes' %}
-  {% set pageHeading = pageData['page-name'] or 'Guidance text' %}
+  {% set pageHeading = pageData.welsh.page_heading or 'Welsh guidance text' %}
 {% endif %}
 
-{% set pageTitle = pageData['long-title'] or 'Question text' %}
+{% set pageTitle = pageData.welsh.question_text or 'Welsh question text' %}
+
 {% if pageData['questionOptional'] %}
   {% set pageTitle = pageTitle + ' (optional)' %}
 {% endif %}
 
+{% set pageHintText = pageData.welsh.hint_text %}
 
 {% block beforeContent %}
   <nav class="dwp-language-toggle" aria-label="Language toggle">
     <ul class="dwp-language-toggle__list">
-      <li class="dwp-language-toggle__list-item" aria-current="true">
-        English
-      </li>
       <li class="dwp-language-toggle__list-item">
-        <a href="{{tempURL}}.cy" hreflang="cy" lang="cy" rel="alternate" class="govuk-link" aria-label="Newid yr iaith ir Gymraeg">
-          Cymraeg
+        <a href="{{tempURL}}.en" hreflang="en" lang="en" rel="alternate" class="govuk-link" aria-label="Change the language to English">
+          English
         </a>
+      </li>
+      <li class="dwp-language-toggle__list-item" aria-current="true">
+        Cymraeg
       </li>
     </ul>
   </nav>
@@ -33,7 +35,7 @@
 {% endblock %}
 
 {% block pageTitle %}
-  {% if pageHeading %}{{ pageHeading }}{% else %}{{ pageTitle }}{% endif %} - Preview - {{ data.formTitle or '[formTitle]' }} - GOV.UK
+  {% if pageHeading %}{{ pageHeading }}{% else %}{{ pageTitle }}{% endif %} - Welsh Preview - {{ data.welshFormName or '[WelshFormTitle]' }} - GOV.UK
 {% endblock %}
 
 {% block content %}
@@ -84,7 +86,7 @@
             }) %}
 
               {% if pageData['hint-text'] %}
-              <p class="govuk-hint">{{pageData['hint-text']}}</p>
+              <p class="govuk-hint">{{ pageHintText }}</p>
               {% endif %}
 
               {% if pageData['title'] === 'yes' %}
@@ -148,7 +150,7 @@
             }) %}
 
               {% if pageData['hint-text'] %}
-              <p class="govuk-hint">{{pageData['hint-text']}}</p>
+              <p class="govuk-hint">{{ pageHintText }}</p>
               {% endif %}
 
               {{ govukInput({
@@ -181,7 +183,7 @@
               id: pageId + "-full-name",
               name: pageId + "-full-name",
               hint: {
-                text: pageData['hint-text']
+                text: pageHintText
               },
               autocomplete: "name",
               value: data[(pageId | int) + "-full-name"]
@@ -195,7 +197,7 @@
         {% if pageData['type'] === 'companyName' %}
           {{ govukInput({
             label: label,
-            hint: {text: pageData['hint-text']},
+            hint: { text: pageHintText },
             id: pageId,
             name: pageId,
             autocomplete: "organization",
@@ -206,7 +208,7 @@
         {% if pageData['type'] == 'email' %}
           {{ govukInput({
             label: label,
-            hint: { text: pageData['hint-text'] },
+            hint: { text: pageHintText },
             id: pageId,
             name: pageId,
             type: "email",
@@ -219,7 +221,7 @@
         {% if pageData['type'] == 'phone' %}
           {{ govukInput({
             label: label,
-            hint: { text: pageData['hint-text'] },
+            hint: { text: pageHintText },
             id: pageId,
             name: pageId,
             type: "tel",
@@ -232,7 +234,7 @@
         {% if pageData['type'] == 'national-insurance-number' %}
           {{ govukInput({
             label: label,
-            hint: { text: pageData['hint-text'] },
+            hint: { text: pageHintText },
             classes: "govuk-input--width-10",
             id: pageId,
             name: pageId,
@@ -252,7 +254,7 @@
           }) %}
 
           {% if pageData['hint-text'] %}
-          <p class="govuk-hint">{{pageData['hint-text']}}</p>
+          <p class="govuk-hint">{{ pageHintText }}</p>
           {% endif %}
 
           {% if ('uk-address' in pageData['input']) and not ('international-address' in pageData['input']) %}
@@ -354,7 +356,7 @@
             legend: legend
           },
           hint: {
-            text: pageData['hint-text']
+            text: pageHintText
           },
           items: [
             {
@@ -408,7 +410,7 @@
                 {% endif %}
 
                 <div id="question-{{pageId}}-hint" class="govuk-hint">
-                  {{ pageData['hint-text']}}
+                  {{ pageHintText }}
                 </div>
                 <div class="govuk-radios" data-module="govuk-radios">
                   {% for itemRaw in itemsArray %}
@@ -449,7 +451,7 @@
                 {% endif %}
 
                 <div id="question-{{pageId}}-hint" class="govuk-hint">
-                  {{ pageData['hint-text']}}
+                  {{ pageHintText }}
                 </div>
                 <div class="govuk-checkboxes" data-module="govuk-checkboxes">
                   {% if pageData['item-list'] %}
@@ -494,7 +496,7 @@
         {% if pageData['type'] == 'number' %}
           {{ govukInput({
             label: label,
-            hint: {text: pageData['hint-text']},
+            hint: { text: pageHintText },
             id: pageId,
             name: pageId,
             inputmode: "numeric",
@@ -511,7 +513,7 @@
             {# Single line text fields #}
             {{ govukInput({
               label: label,
-              hint: {text: pageData['hint-text']},
+              hint: { text: pageHintText },
               id: pageId,
               name: pageId,
               value: data[pageId | int]
@@ -525,7 +527,7 @@
             {# {% if pageData['char-limit'] == 'none' %}
               {{ govukTextarea({
               label: label,
-              hint: {text: pageData['hint-text']},
+              hint: { text: pageHintText },
               id: pageId,
               name: pageId,
               value: data[pageId | int]
@@ -539,7 +541,7 @@
               id: pageId,
               maxlength: pageData['char-limit'],
               label: label,
-              hint: {text: pageData['hint-text']},
+              hint: { text: pageHintText },
               value: data[pageId | int]
             }) }}
             {% endif %} #}
@@ -549,7 +551,7 @@
               name: pageId,
               id: pageId,
               label: label,
-              hint: {text: pageData['hint-text']},
+              hint: { text: pageHintText },
               value: data[pageId | int]
             }) }}
 

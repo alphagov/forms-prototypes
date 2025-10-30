@@ -1,0 +1,121 @@
+{% extends "layout-govuk-forms.html" %}
+
+{% set pageTitle = 'Share a preview of your draft form' %}
+
+{% block pageTitle %}
+  {{ "Error: " if containsErrors }}{{ pageTitle }}: {{ data.formTitle or '[formTitle]' }} - GOV.UK Forms
+{% endblock %}
+
+{% block beforeContent %}
+  <a class="govuk-back-link" href="your-form" target="_parent">
+    Back to create your form
+  </a>
+{% endblock %}
+
+{% set titleURL = (data.formTitle or '[formTitle]') | lower | replace(':', '') | replace('-', '') | replace(',', '') | replace(' ', '-') %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form method="post" novalidate>
+
+        {% if containsErrors %}
+        {{ govukErrorSummary({
+          titleText: "There is a problem",
+          errorList: errorList
+        }) }}
+        {% endif %}
+
+        <span class="govuk-caption-l">{{ data.formTitle or '[formTitle]' }}</span>
+        <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
+
+        <p class="govuk-body">
+          You can share a link to a preview of your draft form so people can try it out and review the content.
+        </p>
+        <p class="govuk-body">
+          You may need to share it with your organisation’s GOV.UK publishing team so they can:
+        </p>
+        <ul class="govuk-list govuk-list--bullet">
+          <li>review the content</li>
+          <li>make any necessary changes to related content on GOV.UK</li>
+        </ul>
+        <p class="govuk-body govuk-!-margin-bottom-8">
+          Anyone with the preview link can view the form - no password is needed.
+        </p>
+
+        <h2 class="govuk-heading-m">Preview link for this draft form</h2>
+        <p class="govuk-body">
+          <span id="formURL" value="https://submit.dev.forms.service.gov.uk/preview-draft/58/{{titleURL}}">https://submit.dev.forms.service.gov.uk/preview-draft/{{titleURL}}</span>
+        </p>
+        <button class="govuk-button govuk-button--secondary govuk-!-margin-bottom-8" type="button" onclick="copyURL()">
+          Copy link to clipboard
+        </button>
+
+        <input type="hidden" id="tempSharePreview" name="tempSharePreview" value="{{ data.tempSharePreview }}" />
+
+        {{ govukRadios({
+          name: "sharePreview",
+          fieldset: {
+            legend: {
+              text: "Do you want to mark this task ‘completed’?",
+              isPageHeading: false,
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          hint: {
+            text: "You’ll still be able to come back to get the preview link again if you need to."
+          },
+          items: [
+            {
+              value: "yes",
+              text: "Yes"
+            },
+            {
+              value: "no",
+              text: "No, I’ll come back later"
+            }
+          ],
+          errorMessage: { text: errors['sharePreview'].text } if errors['sharePreview'].text
+        }) }}
+
+        {{ govukButton({
+          text: "Save and continue"
+        }) }}
+
+      </form>
+    </div>
+  </div>
+{% endblock %}
+
+{% block footer %}
+  {{ govukFooter({
+    meta: {
+      items: [
+        {
+          href: "/prototype-admin/show-data",
+          text: "Show data"
+        },
+        {
+          href: "/manage-prototype/clear-data",
+          text: "Clear data"
+        }
+      ]
+    }
+  }) }}
+{% endblock %}
+
+{% block pageScripts %}
+<script type="text/javascript">
+  function copyURL() {
+    /* Create new range so we can select a node */
+    var range = document.createRange();
+
+    /* Select the contents within node id "formURL" */
+    range.selectNodeContents(document.getElementById("formURL"));
+
+    /* Copy the text from the node */
+    navigator.clipboard.writeText(range);
+
+  }
+</script>
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends "layout-govuk-forms.html" %}
+
+{% set pageTitle = 'Move this form to a different group' %}
+
+{% block pageTitle %}
+  {{ "Error: " if containsErrors }}{{ pageTitle }} - GOV.UK Forms
+{% endblock %}
+
+{% block beforeContent %}
+  <a class="govuk-back-link" href="../your-forms">Back to your forms</a>
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form class="form" method="post" novalidate>
+
+        {% if containsErrors %}
+        {{ govukErrorSummary({
+          titleText: "There is a problem",
+          errorList: errorList
+        }) }}
+        {% endif %}
+
+        <span class="govuk-caption-l">{{ data['formTitle'] or '[formTitle]' }}</span>
+        <h1 class="govuk-heading-l">{{ data['groupName'] or 'Your test forms' }}</h1>
+
+        {{ govukSummaryList({
+          classes: "govuk-summary-list--no-border",
+          rows: [
+            {
+              key: {
+                text: "Form name"
+              },
+              value: {
+                text: data['formTitle'] or '[formTitle]'
+              }
+            },
+            {
+              key: {
+                text: "Current group"
+              },
+              value: {
+                text: data['groupName'] or 'Your test group'
+              }
+            }
+          ]
+        }) }}
+
+        <p class="govuk-body">
+          We’ll send an email to members of the current group to let them know the form has moved and they may no longer have access to it.
+        </p>
+
+        {{ govukInput({
+          label: {
+          text: pageTitle,
+          classes: "govuk-label--m",
+          isPageHeading: false
+          },
+          id: "move-group",
+          name: "moveGroup",
+          value: data['moveGroup'],
+          errorMessage: { text: errors['moveGroup'].text } if errors['moveGroup'].text
+        }) }}
+
+        {{ govukButton({
+          text: "Save and continue"
+        }) }}
+
+      </form>
+    </div>
+  </div>
+{% endblock %}

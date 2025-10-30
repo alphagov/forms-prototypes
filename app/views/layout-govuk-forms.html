@@ -5,17 +5,27 @@
     homepageUrl: "/",
     productName: "Forms",
     serviceUrl: "/",
-    containerClasses: "govuk-width-container",
-    navigationClasses: "govuk-header__navigation--end",
+    containerClasses: "govuk-width-container"
+  }) }}
+  {{ govukServiceNavigation({
+  navigationClasses: "app-service-navigation",
     navigation: [
-    {
-      text: "Firstname Lastname"
-    },
-    {
-      href: "/form-designer/signon/sign-in",
-      text: "Sign out"
-    }
-  ]
+      {
+        href: "#",
+        text: "Your groups"
+      },
+      {
+        href: "#",
+        text: "Support"
+      },
+      {
+        text: "Firstname Lastname"
+      },
+      {
+        href: "/form-designer/signon/sign-in",
+        text: "Sign out"
+      }
+    ]
   }) }}
 {% endblock %}
 

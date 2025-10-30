@@ -1,1 +1,8 @@
-{"serviceName":"GOV.UK Forms"}
+{
+  "serviceName":"GOV.UK Forms",
+  "plugins": {
+    "govuk-frontend": {
+      "rebrand": true
+    }
+  }
+}

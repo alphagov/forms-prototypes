@@ -202,6 +202,10 @@ router.get('/form-designer/your-form', function (req, res) {
   if (req.session.data['supportDetails']) {
     sections = sections + 1 
   }
+  // if what happens next completed = sections =+ 1 
+  if (req.session.data['markWelshComplete']) {
+    sections = sections + 1
+  }
 
   return res.render('form-designer/your-form', {
     successMessage: successMessage,
@@ -640,40 +644,78 @@ router.get('/form-designer/pages/:pageId/view', function (req, res) {
 })
 
 // Routing for new-tab page previews, set to a specific page
-router.post('/form-designer/preview/:pageId(\\d+)', function (req, res) {
+postPreview = function (req, res) {
   var cya = req.session.data.cya
   req.session.data.cya = undefined
   var pageId = req.params.pageId
   var pageIndex = parseInt(pageId)
   const isLastQuestionPage = pageIndex === (req.session.data.pages.length - 1)
 
+  const url = req.url
+
   // if last question in form OR user clicked on change link from CYA, then go to CYA
   if(isLastQuestionPage || cya === 'true') {
-    return res.redirect('check-answers')
+    if (url.includes(".cy")) {
+      return res.redirect('check-answers.cy')
+    } else {
+      return res.redirect('check-answers')
+    }
   } else {
-    return res.redirect(`${pageIndex + 1}`)
+    if (url.includes(".cy")) {
+      return res.redirect(`${pageIndex + 1}.cy`)
+    } else {
+      return res.redirect(`${pageIndex + 1}`)
+    }
   }
-})
+}
+router.post('/form-designer/preview/:pageId(\\d+)', postPreview)
+router.post('/form-designer/preview/:pageId(\\d+).en', postPreview)
+router.post('/form-designer/preview/:pageId(\\d+).cy', postPreview)
 
 // Renders the new-tab page preview, set to a specific page
-router.get('/form-designer/preview/:pageId(\\d+)', function (req, res) {
+getPreview = function (req, res) {
   var pageId = req.params.pageId
   var pageIndex = parseInt(pageId)
   var pageData = req.session.data.pages[pageIndex]
   const isLastQuestionPage = pageIndex === (req.session.data.pages.length - 1)
 
+  const url = req.url
+  var tempURL = ""
+  if (url.endsWith(".en")) {
+    tempURL = url.slice(0, -3)
+  } else if (url.endsWith(".cy")) {
+    tempURL = url.slice(0, -3)
+  } else {
+    tempURL = url
+  }
+
   if (pageData) {
     var markdownContent = pageData['additional-guidance-text']
   }
 
-  res.render('form-designer/preview/page', {
-    pageId: pageId,
-    pageIndex: pageIndex,
-    pageData: pageData,
-    isLastQuestionPage,
-    markdownContent: markdownContent
-  })
-})
+  if (url.endsWith(".cy")) {
+    res.render('form-designer/preview/cy', {
+      pageId: pageId,
+      pageIndex: pageIndex,
+      pageData: pageData,
+      isLastQuestionPage,
+      markdownContent: markdownContent,
+      tempURL
+    })
+  } else {
+    res.render('form-designer/preview/page', {
+      pageId: pageId,
+      pageIndex: pageIndex,
+      pageData: pageData,
+      isLastQuestionPage,
+      markdownContent: markdownContent,
+      tempURL
+    })
+  }
+}
+router.get('/form-designer/preview/:pageId(\\d+)', getPreview)
+router.get('/form-designer/preview/:pageId(\\d+).en', getPreview)
+router.get('/form-designer/preview/:pageId(\\d+).cy', getPreview)
 
 
 /* =====
@@ -921,6 +963,119 @@ router.post('/form-designer/provide-support-details', function (req, res) {
     req.session.data.successMessage = 'Your contact details for support have been saved'
     res.redirect('your-form')
   }
+})
+
+/* =====
+Create a Welsh version of your form (optional)
+===== */
+
+// Routing for adding Welsh version
+router.post('/form-designer/welsh/add-welsh-version', function (req, res) {
+  var { welshFormName, welshPageHeading, welshGuidanceText, welshQuestionText, welshHintText, pages, welshConfirmationNext, welshPaymentLink, welshPrivacyInformation, supportDetails, welshEmailSupport, welshPhoneSupport, welshOnlineLinkText, welshOnlineLinkURL } = req.session.data
+
+  for (let i = 0; i < pages.length; i++) {
+    // run through all the current pages added to the English form
+
+    // run through the Welsh questions 
+    // add Welsh question to current English page
+    if (welshQuestionText) {
+      for (let a = 0; a < welshQuestionText.length; a++) {
+        let questionKey = Object.keys(welshQuestionText[a])
+        let questionNumber = parseInt(questionKey.toString().split("_").pop())
+        if (i === questionNumber) {
+          pages[i]['welsh'] = { 
+            question_text: welshQuestionText[a][questionKey]
+          }
+          break;
+        }
+      }
+    }
+
+    // run through the Welsh hint text 
+    // if current hint text key matches current English page 
+      // add Welsh hint text
+    if (welshHintText) {
+      for (let b = 0; b < welshHintText.length; b++) {
+        let hintKey = Object.keys(welshHintText[b])
+        let hintNumber = parseInt(hintKey.toString().split("_").pop())
+        // does the key match the current question (i)
+        if (i === hintNumber) {
+          pages[i]['welsh']['hint_text'] = welshHintText[b][hintKey]
+          break;
+        }
+      }
+    }
+
+    // run through the Welsh page heading
+    if (welshPageHeading) {
+      for (var c = 0; c < welshPageHeading.length; c++) {
+        var headingKey = Object.keys(welshPageHeading[c])
+        var headingNumber = parseInt(headingKey.toString().split("_").pop())
+        // does the key match the current question (i)
+        if (i === headingNumber) {
+          pages[i]['welsh']['page_heading'] = welshPageHeading[c][headingKey]
+          break;
+        }
+      }
+    }
+
+    // run through the Welsh guidance text 
+    if (welshGuidanceText) {
+      for (var d = 0; d < welshGuidanceText.length; d++) {
+        var guidanceKey = Object.keys(welshGuidanceText[d])
+        var guidanceNumber = parseInt(guidanceKey.toString().split("_").pop())
+        // does the key match the current question (i)
+        if (i === guidanceNumber) {
+          pages[i]['welsh']['guidance_text'] = welshGuidanceText[d][guidanceKey]
+          break;
+        }
+      }
+    }
+  } 
+
+  if (welshFormName) { 
+    // set a success message for saving
+    req.session.data.successMessage = 'Your Welsh version has been saved'
+    // add ‘no’ to session data
+    req.session.data.markWelshComplete = "no"
+  }
+
+  /*
+  if any Welsh input has been added we need to mark the Welsh task as ‘in progress’
+  if (welshQuestionText > 0) {
+    // add ‘no’ to session data
+    // req.session.data.markWelshComplete = "no"
+  } 
+    
+  if (welshDeclaration) {
+    // add ‘no’ to session data
+    // req.session.data.markWelshComplete = "no"
+  } 
+    
+  if (welshConfirmationNext) {
+    // add ‘no’ to session data
+    // req.session.data.markWelshComplete = "no"
+  } 
+    
+  if (welshPaymentLink) {
+    // add ‘no’ to session data
+    // req.session.data.markWelshComplete = "no"
+  } 
+    
+  if (welshPrivacyLink) {
+    // add ‘no’ to session data
+    // req.session.data.markWelshComplete = "no"
+  } 
+    
+  if (supportDetails) {
+    if (welshEmailSupport || welshPhoneSupport || welshOnlineLinkText || welshOnlineLinkURL ) {
+      // add ‘no’ to session data
+      // req.session.data.markWelshComplete = "no"
+    }
+  } 
+  */
+
+  return res.redirect('../your-form')
 })
 
 
