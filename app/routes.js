@@ -971,7 +971,7 @@ Create a Welsh version of your form (optional)
 
 // Routing for adding Welsh version
 router.post('/form-designer/welsh/add-welsh-version', function (req, res) {
-  var { welshFormName, welshPageHeading, welshGuidanceText, welshQuestionText, welshHintText, pages, welshConfirmationNext, welshPaymentLink, welshPrivacyInformation, supportDetails, welshEmailSupport, welshPhoneSupport, welshOnlineLinkText, welshOnlineLinkURL } = req.session.data
+  var { welshFormName, welshPageHeading, welshGuidanceText, welshQuestionText, welshHintText, pages, welshDeclaration, welshConfirmationNext, welshPaymentLink, welshPrivacyLink, supportDetails, welshEmailSupport, welshPhoneSupport, welshOnlineLinkText, welshOnlineLinkURL, markWelshComplete } = req.session.data
 
   for (let i = 0; i < pages.length; i++) {
     // run through all the current pages added to the English form
@@ -1031,7 +1031,25 @@ router.post('/form-designer/welsh/add-welsh-version', function (req, res) {
         }
       }
     }
-  } 
+  }
+
+  /*
+  TO clear up:
+  if any input has been completed (filled with content) and the page is saved
+  we need to check if user is trying to mark the task as complete
+    we need to check ALL fields are complete
+    if they are we can mark it as complete and return them to their form task list
+    else 
+    we need to error 
+  */
+  
+  /*
+  TO DO:
+  if all inputs are complete (have at least something in them)
+  AND
+  markWelshComplete is selected "Yes" we need to mark the task as complete
+  this should now reveal a new “Make Welsh form live” link 
+  */
 
   if (welshFormName) { 
     // set a success message for saving
@@ -1071,6 +1089,11 @@ router.post('/form-designer/welsh/add-welsh-version', function (req, res) {
       // add ‘no’ to session data
       req.session.data.markWelshComplete = "no"
     }
+  }
+
+  if (markWelshComplete == "yes") {
+    // add yes to session data
+      req.session.data.markWelshComplete = "yes"
   }
 
   return res.redirect('../your-form')
