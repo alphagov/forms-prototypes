@@ -390,7 +390,7 @@
 {# Refactor this logic outside of class attribute #}
 {% if data.status == 'Live' %}
     {% set formVersionStatusText = 'Completed' %}
-{% elif sections >= 6 %}
+{% elif sections >= 7 %}
     {% set formVersionStatusTag = 'govuk-tag--blue' %}
     {% set formVersionStatusText = 'Not started' %}
 {% else %}
@@ -439,10 +439,11 @@
             },
             href: "share-preview",
             status: {
+                text: "Completed" if data.sharePreview == "yes",
                 tag: {
-                    text: "Not started",
-                    classes: "govuk-tag--blue"
-                }
+                    text: "Not started" if data.sharePreview != "no" else "In progress",
+                    classes: "govuk-tag--blue" if data.sharePreview != "no" else "govuk-tag--light-blue"
+                } if data.sharePreview != "yes"
             }
         },
         {
@@ -454,8 +455,11 @@
             } if sections < 7,
             href: "make-your-form-live" if sections >= 7,
             status: {
-                html: htmlFormVersion,
-                classes: formVersionStatusTag if (data.status == 'Live') or (sections < 7)
+                text: formVersionStatusText if sections < 7,
+                tag: {
+                    text: formVersionStatusText,
+                    classes: formVersionStatusTag
+                } if sections >= 7
             }
         }
     ]
