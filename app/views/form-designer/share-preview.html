@@ -68,11 +68,13 @@
           items: [
             {
               value: "yes",
-              text: "Yes"
+              text: "Yes",
+              checked: checked("sharePreview", "yes")
             },
             {
               value: "no",
-              text: "No, I’ll come back later"
+              text: "No, I’ll come back later",
+              checked: checked("sharePreview", "no")
             }
           ],
           errorMessage: { text: errors['sharePreview'].text } if errors['sharePreview'].text
