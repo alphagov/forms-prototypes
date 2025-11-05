@@ -1040,42 +1040,69 @@ router.post('/form-designer/welsh/add-welsh-version', function (req, res) {
     req.session.data.markWelshComplete = "no"
   }
 
-  /*
-  if any Welsh input has been added we need to mark the Welsh task as ‘in progress’
+  // if any Welsh input has been added we need to mark the Welsh task as ‘in progress’
   if (welshQuestionText > 0) {
     // add ‘no’ to session data
-    // req.session.data.markWelshComplete = "no"
+    req.session.data.markWelshComplete = "no"
   } 
     
   if (welshDeclaration) {
     // add ‘no’ to session data
-    // req.session.data.markWelshComplete = "no"
+    req.session.data.markWelshComplete = "no"
   } 
     
   if (welshConfirmationNext) {
     // add ‘no’ to session data
-    // req.session.data.markWelshComplete = "no"
+    req.session.data.markWelshComplete = "no"
   } 
     
   if (welshPaymentLink) {
     // add ‘no’ to session data
-    // req.session.data.markWelshComplete = "no"
+    req.session.data.markWelshComplete = "no"
   } 
     
   if (welshPrivacyLink) {
     // add ‘no’ to session data
-    // req.session.data.markWelshComplete = "no"
+    req.session.data.markWelshComplete = "no"
   } 
     
   if (supportDetails) {
     if (welshEmailSupport || welshPhoneSupport || welshOnlineLinkText || welshOnlineLinkURL ) {
       // add ‘no’ to session data
-      // req.session.data.markWelshComplete = "no"
+      req.session.data.markWelshComplete = "no"
     }
-  } 
-  */
+  }
 
   return res.redirect('../your-form')
+})
+
+
+/* =====
+Share form preview
+===== */
+
+// Renders the page to share preview and mark as complete, handling validation errors
+router.post('/form-designer/share-preview', function (req, res) {
+  const errors = {};
+  const { sharePreview } = req.session.data
+
+  // If the user haven't selected yes or no
+  if (!sharePreview || !sharePreview.length) {
+    errors['sharePreview'] = {
+      text: 'Select ‘yes’ if you have shared your preview link',
+      href: "#sharePreview"
+    }
+  }
+  // Convert the errors into a list, so we can use it in the template
+  const errorList = Object.values(errors)
+  // If there are no errors, redirect the user to the next page
+  // otherwise, show the page again with the errors set
+  const containsErrors = errorList.length > 0
+  if(containsErrors) {
+    res.render('form-designer/share-preview', { errors, errorList, containsErrors })
+  } else {
+    res.redirect('your-form')
+  }
 })
 
 
