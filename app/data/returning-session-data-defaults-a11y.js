@@ -18,66 +18,91 @@ Example usage:
 */
 
 module.exports = {
-  highestPageId: 6,
-  action: 'gogogo',
-  formTitle: 'Take your pet abroad',
-  status: 'Draft',
-  pages: [
+
+  "groupName": "Account applications",
+
+  "formTitle": "Register for an account",
+  "status": "Draft",
+
+  "highestPageId": 5,
+  "pages": [
     {
-      'long-title': 'What type of animal is your pet?',
-      'short-title': 'Animal type',
-      'hint-text': 'For example a bird, cat, dog.',
-      type: 'text',
-      pageIndex: '0'
+      "pageIndex": 0,
+      "type": "personName",
+      "input": "single-field",
+      "title": "no",
+      "long-title": "What is your full name?",
+      "additional-guidance": "Yes",
+      "page-name": "How to complete this form",
+      "additional-guidance-text": "## When to use this form.\r\n\r\nThis form should be used to register for an account. Please complete a separate form for each person who needs an account.\r\n\r\n## Alternative Forms\r\n\r\nIf you need to register an account for someone under the age of 16, use the [Register an account for a child form](https://www.gov.uk/child-account). \r\n\r\n## Alternative formats\r\n\r\nIf you need a paper version of this form, please visit [Alternative registration formats](https://www.gov.uk/alternative-formats).\r\n",
+      "questionSaved": "Yes"
     },
     {
-      'long-title': 'What is the name of your pet?',
-      'short-title': 'Pet name',
-      type: 'text',
-      pageIndex: '1'
+      "pageIndex": 1,
+      "type": "date",
+      "input": "yes",
+      "long-title": "What is your date of birth?",
+      "hint-text": "For example, 20 3 2000",
+      "additional-guidance": "No",
+      "questionSaved": "Yes"
     },
     {
-      'long-title': 'Where are you travelling to?',
-      'short-title': 'Destination',
-      'hint-text': 'For example Lisbon, Portugal',
-      type: 'text',
-      pageIndex: '2'
+      "pageIndex": 2,
+      "type": "address",
+      "input": [
+        "uk-address"
+      ],
+      "long-title": "What is your address?",
+      "additional-guidance": "No",
+      "questionSaved": "Yes"
     },
     {
-      'long-title': 'What date do you travel?',
-      'short-title': 'Date',
-      'hint-text': 'For example 27 3 2007',
-      type: 'date',
-      pageIndex: '3'
+      "pageIndex": 3,
+      "type": "phone",
+      "long-title": "What is your phone number?",
+      "additional-guidance": "No",
+      "questionSaved": "Yes"
     },
     {
-      'long-title': 'How are you travelling?',
-      'short-title': 'Transport type',
-      'hint-text': 'For example plane, train, car.',
-      type: 'text',
-      pageIndex: '4'
+      "pageIndex": 4,
+      "type": "national-insurance-number",
+      "long-title": "What is your National Insurance number?",
+      "hint-text": "It’s on your National Insurance card, benefit letter, payslip or P60. For example, QQ 65 43 21 C.",
+      "additional-guidance": "No",
+      "questionSaved": "Yes"
     },
     {
-      'long-title': 'How many pets do you have?',
-      'short-title': 'Number of pets',
-      type: 'number',
-      pageIndex: '5'
+      "pageIndex": 5,
+      "type": "select",
+      "long-title": "If you live in Wales, would you like to hear from us in Welsh in future communications?",
+      "item-list": [
+        "Yes",
+        "No",
+        "Not applicable"
+      ],
+      "listSettings": [
+        "oneOption"
+      ],
+      "hint-text": "We will only use this if we contact you for more information.",
+      "additional-guidance": "No",
+      "questionSaved": "Yes"
     }
   ],
-  isQuestionsComplete: 'no',
+  "isQuestionsComplete": "no",
 
-  checkAnswersDeclaration: '',
+  "checkAnswersDeclaration": "",
   
-  confirmationNext: 'We will update your claim with the new information you provided. We aim to do this within 10 working days. After we have updated your information, we will let you know if you are due a payment. You do not need to send us any further evidence to complete your application.\n\nIf you have not had a response from us within 15 working days, contact us at: [redundancypaymentsonline@insolvency.gov.uk](mailto:redundancypaymentsonline@insolvency.gov.uk)\n\nMake sure you have told the insolvency practitioner handling your employer’s insolvency about the changes you have made to your claim information. They may need to change the information they provided the Insolvency Service.\n\nTo make another amendment to your redundancy claim, complete the relevant form from the [redundancy claim amendment forms](https://www.gov.uk/guidance/amend-a-redundancy-claim) page.',
+  "confirmationNext": "",
 
-  payments: 'no',
+  "payments": "no",
 
-  supportDetails: [
-    'phone'
+  "supportDetails": [
+    "online"
   ],
 
-  phoneSupport: 'Phone: 020 7946 0101\n\nMonday to Friday, 9am to 5pm (except public holidays)',
+  "emailSupport": "",
+  "phoneSupport": "",
 
-  confirmationTitle: 'Your form has been submitted',
-  checkAnswersTitle: 'Check your answers before submitting your form'
+  "onlineSupportLink": "https://www.gov.uk/contact-us",
+  "onlineSupportText": "Our full contact details"
 }
