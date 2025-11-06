@@ -19,6 +19,8 @@ Example usage:
 
 module.exports = {
 
+  groupName: "Account applications",
+
   // Insert values here
 
   highestPageId: 0,
