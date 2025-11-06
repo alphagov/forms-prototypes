@@ -2,6 +2,9 @@
 
 {% set pageTitle = 'Add a Welsh version of your form' %}
 
+{% set tableColumnEnglishHeader = "English content" %}
+{% set tableColumnWelshHeader = "Welsh content" %}
+
 {% block pageTitle %}
   {{ pageTitle }}{% if data.status == 'Draft' %}: {{ data.formTitle or '[formTitle]' }}{% endif %} - {{ serviceName }}
 {% endblock %}
@@ -97,184 +100,175 @@
 
         {# FORM QUESTIONS #}
         {% if data.pages.length > 0 %}
-        {% for question in data.pages %}
-        {% set questionCaption = "Question " + loop.index %}
 
         {% set pageHeadingLabel = "Enter Welsh question text" %}
-        {% set pageHeadingInput -%}
-        {{ govukTextarea({
-          rows: "1",
-          formGroup: {
-            classes: "app-welsh-form-group"
-          },
-          label: {
-            text: pageHeadingLabel,
-            classes: "govuk-visually-hidden",
-            isPageHeading: false
-          },
-          id: "welsh-page-heading-" + loop.index0,
-          name: "welshPageHeading[" + loop.index0 + "][page_heading_" + loop.index0 + "]",
-          attributes: {
-            "aria-describedby": "englishPageHeading[" + loop.index0 + "]",
-            "placeholder": pageHeadingLabel
-          },
-          value: question.welsh.page_heading
-        }) }}
-        {%- endset %}
-
         {% set guidanceTextLabel = "Enter Welsh guidance text" %}
-        {% set guidanceTextInput -%}
-        {{ govukTextarea({
-          rows: "5",
-          formGroup: {
-            classes: "app-welsh-form-group"
-          },
-          rows: "10",
-          label: {
-            text: guidanceTextLabel,
-            classes: "govuk-visually-hidden",
-            isPageHeading: false
-          },
-          id: "welsh-guidance-text-" + loop.index0,
-          name: "welshGuidanceText[" + loop.index0 + "][guidance_text_" + loop.index0 + "]",
-          attributes: {
-            "aria-describedby": "englishGuidanceText[" + loop.index0 + "]",
-            "placeholder": guidanceTextLabel
-          },
-          value: question.welsh.guidance_text
-        }) }}
-        {%- endset %}
-
         {% set questionTextLabel = "Enter Welsh question text" %}
-        {% set questionTextInput -%}
-        {{ govukTextarea({
-          rows: "1",
-          formGroup: {
-            classes: "app-welsh-form-group"
-          },
-          label: {
-            text: questionTextLabel,
-            classes: "govuk-visually-hidden",
-            isPageHeading: false
-          },
-          id: "welsh-question-text-" + loop.index0,
-          name: "welshQuestionText[" + loop.index0 + "][question_text_" + loop.index0 + "]",
-          attributes: { 
-            "aria-describedby": "englishQuestionText[" + loop.index0 + "]",
-            "placeholder": questionTextLabel
-          },
-          value: question.welsh.question_text
-        }) }}
-        {%- endset %}
-
         {% set hintTextLabel = "Enter Welsh hint text" %}
-        {% set hintTextInput -%}
-        {{ govukTextarea({
-          rows: "1",
-          formGroup: {
-            classes: "app-welsh-form-group"
-          },
-          label: {
-            text: hintTextLabel,
-            classes: "govuk-visually-hidden",
-            isPageHeading: false
-          },
-          id: "welsh-hint-text-" + loop.index0,
-          name: "welshHintText[" + loop.index0 + "][hint_text_" + loop.index0 + "]",
-          attributes: { 
-            "aria-describedby": "englishHintText[" + loop.index0 + "]",
-            "placeholder": hintTextLabel
-          },
-          value: question.welsh.hint_text
-        }) }}
-        {%- endset %}
 
-        {{ govukTable({
-          caption: "Question " + loop.index,
-          captionClasses: "govuk-table__caption--m",
-          classes: "app-translate-table",
-          firstCellIsHeader: true,
-          head: [
-            {},
-            {
-              text: "English content"
-            },
-            {
-              text: "Welsh content"
-            }
-          ],
-          rows: [
-            [
-              {
-                classes: "app-table-one-quarter-width",
-                text: 'Page heading'
-              },
-              {
-                classes: "app-table-one-third-width",
-                text: question['page-name'],
-                attributes: {
-                  id: "englishPageHeading[" + loop.index0 + "]"
-                }
-              },
-              {
-                classes: "app-table-one-third-width app-table__cell-input",
-                html: pageHeadingInput
-              }
-            ] if question['additional-guidance'],
-            [
-              {
-                classes: "app-table-one-quarter-width",
-                text: 'Guidance text'
-              },
-              {
-                classes: "app-table-one-third-width",
-                text: question['additional-guidance-text'],
-                attributes: {
-                  id: "englishGuidanceText[" + loop.index0 + "]"
-                }
-              },
-              {
-                classes: "app-table-one-third-width app-table__cell-input",
-                html: guidanceTextInput
-              }
-            ] if question['additional-guidance'],
-            [
-              {
-                classes: "app-table-one-quarter-width",
-                text: 'Question text'
-              },
-              {
-                classes: "app-table-one-third-width",
-                text: question['long-title'],
-                attributes: {
-                  id: "englishQuestionText[" + loop.index0 + "]"
-                }
-              },
-              {
-                classes: "app-table-one-third-width app-table__cell-input",
-                html: questionTextInput
-              }
-            ],
-            [
-              {
-                classes: "app-table-one-quarter-width",
-                text: 'Hint text'
-              },
-              {
-                classes: "app-table-one-third-width",
-                text: question['hint-text'],
-                attributes: {
-                  id: "englishHintText[" + loop.index0 + "]"
-                }
-              },
-              {
-                classes: "app-table-one-third-width app-table__cell-input",
-                html: hintTextInput
-              }
-            ] if question['hint-text']
-          ]
-        }) }}
+        {# TODO: ADD AN EXAMPLE SELECTION FROM A LIST AS WELL #}
+
+        {# Create HTML table #}
+        {% for question in data.pages %}
+        {% set questionCaption = "Question " + loop.index %}
+        <table class="govuk-table govuk-table--small-text-until-tablet app-translate-table">
+          <caption class="govuk-table__caption govuk-table__caption--m">{{ questionCaption }}</caption>
+          <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+              <th scope="col" class="govuk-table__header app-table-one-quarter-width"></th>
+              <th scope="col" class="govuk-table__header app-table-one-third-width">{{ tableColumnEnglishHeader }}</th>
+              <th scope="col" class="govuk-table__header app-table-one-third-width">{{ tableColumnWelshHeader }}</th>
+            </tr>
+          </thead>
+          <tbody class="govuk-table__body">
+          {% if question["additional-guidance"] and (question["additional-guidance"] == "Yes") %}
+            <tr class="govuk-table__row">
+              <th scope="row" class="govuk-table__header">Page heading</th>
+              <td class="govuk-table__cell" id="englishPageHeading[{{ loop.index0 }}]">
+                {{ question["page-name"] }}
+              </td>
+              <td class="govuk-table__cell app-table__cell-input">
+                {{ govukTextarea({
+                  rows: "1",
+                  formGroup: {
+                    classes: "app-welsh-form-group"
+                  },
+                  label: {
+                    text: pageHeadingLabel,
+                    classes: "govuk-visually-hidden",
+                    isPageHeading: false
+                  },
+                  id: "welsh-page-heading-" + loop.index0,
+                  name: "welshPageHeading[" + loop.index0 + "][page_heading_" + loop.index0 + "]",
+                  attributes: {
+                    "aria-describedby": "englishPageHeading[" + loop.index0 + "]",
+                    "placeholder": pageHeadingLabel
+                  },
+                  value: question.welsh.page_heading
+                }) }}
+              </td>
+            </tr>
+            <tr class="govuk-table__row">
+              <th scope="row" class="govuk-table__header">Guidance text</th>
+              <td class="govuk-table__cell" id="englishGuidanceText[{{ loop.index0 }}]">
+                {{ question["guidance-text"] }}
+              </td>
+              <td class="govuk-table__cell app-table__cell-input">
+                {{ govukTextarea({
+                  rows: "5",
+                  formGroup: {
+                    classes: "app-welsh-form-group"
+                  },
+                  rows: "10",
+                  label: {
+                    text: guidanceTextLabel,
+                    classes: "govuk-visually-hidden",
+                    isPageHeading: false
+                  },
+                  id: "welsh-guidance-text-" + loop.index0,
+                  name: "welshGuidanceText[" + loop.index0 + "][guidance_text_" + loop.index0 + "]",
+                  attributes: {
+                    "aria-describedby": "englishGuidanceText[" + loop.index0 + "]",
+                    "placeholder": guidanceTextLabel
+                  },
+                  value: question.welsh.guidance_text
+                }) }}
+              </td>
+            </tr>
+          {% endif %}
+            <tr class="govuk-table__row">
+              <th scope="row" class="govuk-table__header">Question text</th>
+              <td class="govuk-table__cell" id="englishQuestionText[{{ loop.index0 }}]">
+                {{ question["long-title"] }}
+              </td>
+              <td class="govuk-table__cell app-table__cell-input">
+                {{ govukTextarea({
+                  rows: "1",
+                  formGroup: {
+                    classes: "app-welsh-form-group"
+                  },
+                  label: {
+                    text: questionTextLabel,
+                    classes: "govuk-visually-hidden",
+                    isPageHeading: false
+                  },
+                  id: "welsh-question-text-" + loop.index0,
+                  name: "welshQuestionText[" + loop.index0 + "][question_text_" + loop.index0 + "]",
+                  attributes: { 
+                    "aria-describedby": "englishQuestionText[" + loop.index0 + "]",
+                    "placeholder": questionTextLabel
+                  },
+                  value: question.welsh.question_text
+                }) }}
+              </td>
+            </tr>
+          {% if question["hint-text"] %}
+            <tr class="govuk-table__row">
+              <th scope="row" class="govuk-table__header">Hint text</th>
+              <td class="govuk-table__cell" id="englishHintText[{{ loop.index0 }}]">
+                {{ question["hint-text"] }}
+              </td>
+              <td class="govuk-table__cell app-table__cell-input">
+                {{ govukTextarea({
+                  rows: "1",
+                  formGroup: {
+                    classes: "app-welsh-form-group"
+                  },
+                  label: {
+                    text: hintTextLabel,
+                    classes: "govuk-visually-hidden",
+                    isPageHeading: false
+                  },
+                  id: "welsh-hint-text-" + loop.index0,
+                  name: "welshHintText[" + loop.index0 + "][hint_text_" + loop.index0 + "]",
+                  attributes: { 
+                    "aria-describedby": "englishHintText[" + loop.index0 + "]",
+                    "placeholder": hintTextLabel
+                  },
+                  value: question.welsh.hint_text
+                }) }}
+              </td>
+            </tr>
+          {% endif %}
+          {% if question["item-list"] %}
+            {% for option in question["item-list"] %}
+            {% set selectionItemLabel = "Enter Welsh option " + loop.index %}
+            <tr class="govuk-table__row">
+            {% if loop.first %}
+              <th scope="row" rowspan="{{ question['item-list'].length }}" class="govuk-table__header">
+                List of options
+              </th>
+            {% endif %}
+              <td class="govuk-table__cell" id="englishHintText[{{ loop.index0 }}]">
+                {{ question['item-list'][loop.index0] }}
+              </td>
+              <td class="govuk-table__cell app-table__cell-input">
+                {{ govukTextarea({
+                  rows: "1",
+                  formGroup: {
+                    classes: "app-welsh-form-group"
+                  },
+                  label: {
+                    text: selectionItemLabel,
+                    classes: "govuk-visually-hidden",
+                    isPageHeading: false
+                  },
+                  id: "welsh-selection-item-" + loop.index0,
+                  name: "welshSelectionItem[" + loop.index0 + "][option_" + loop.index0 + "]",
+                  attributes: { 
+                    "aria-describedby": "englishSelectionItem[" + loop.index0 + "]",
+                    "placeholder": selectionItemLabel
+                  },
+                  value: question.welsh.option[loop.index0]
+                }) }}
+              </td>
+            </tr>
+            {% endfor %}
+          {% endif %}
+          </tbody>
+        </table>
         {% endfor %}
+
         {% else %}
         <h2 class="govuk-heading-m">Form questions</h2>
         <p class="govuk-body">No questions have been added to the form yet.</p>
