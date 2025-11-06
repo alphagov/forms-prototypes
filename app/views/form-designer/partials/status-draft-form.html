@@ -448,7 +448,7 @@
         },
         {
             title: {
-                text: "Make your form live"
+                text: "Make your form live" if data.markWelshComplete != "yes" else "Make your English form live"
             },
             hint: {
                 text: formVersionStatusHint
@@ -461,10 +461,29 @@
                     classes: formVersionStatusTag
                 } if sections >= 7
             }
-        }
+        },
+        {
+            title: {
+                text: "Make your Welsh form live"
+            },
+            href: "make-your-form-live" if sections >= 7,
+            status: {
+                text: formVersionStatusText if sections < 7,
+                tag: {
+                    text: formVersionStatusText,
+                    classes: formVersionStatusTag
+                } if sections >= 7
+            }
+        } if data.markWelshComplete == "yes"
     ]
 }) }}
 {% endif %}
+
+{# 
+if Welsh is completed
+    add new “Make your Welsh form live”
+    update existing link to “Make your English form live”
+#}
 
 
 <form id="form" class="form" action="/form-designer/delete-draft" method="post" novalidate>
