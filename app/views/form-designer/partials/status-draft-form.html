@@ -379,8 +379,12 @@
             },
             href: "welsh/add-welsh-version",
             status: {
-                html: htmlWelshVersion,
-                classes: "govuk-task-list__status--cannot-start-yet" if not (data.markWelshComplete)
+                text: welshVersionStatusText if not data.markWelshComplete or (data.markWelshComplete != 'no'),
+                classes: welshVersionStatusTag if not data.markWelshComplete or (data.markWelshComplete != 'no'),
+                tag: {
+                    text: welshVersionStatusText,
+                    classes: welshVersionStatusTag
+                } if data.markWelshComplete and (data.markWelshComplete == 'no')
             }
         }
     ]
