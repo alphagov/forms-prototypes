@@ -656,7 +656,7 @@ postPreview = function (req, res) {
   // if last question in form OR user clicked on change link from CYA, then go to CYA
   if(isLastQuestionPage || cya === 'true') {
     if (url.includes(".cy")) {
-      return res.redirect('check-answers.cy')
+      return res.redirect('cy-check-answers')
     } else {
       return res.redirect('check-answers')
     }
@@ -694,6 +694,9 @@ getPreview = function (req, res) {
   }
 
   if (url.endsWith(".cy")) {
+    if (pageData.welsh && pageData.welsh.guidance_text) {
+      var markdownContent = pageData.welsh.guidance_text
+    }
     res.render('form-designer/preview/cy', {
       pageId: pageId,
       pageIndex: pageIndex,
@@ -1066,6 +1069,8 @@ router.post('/form-designer/welsh/add-welsh-version', function (req, res) {
     if they are we can mark it as complete and return them to their form task list
     else 
     we need to error 
+  if not trying to mark as complete
+    we can set the inputs and should mark Welsh as in progress 
   */
   
   /*
