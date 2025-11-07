@@ -971,7 +971,7 @@ Create a Welsh version of your form (optional)
 
 // Routing for adding Welsh version
 router.post('/form-designer/welsh/add-welsh-version', function (req, res) {
-  var { welshFormName, welshPageHeading, welshGuidanceText, welshQuestionText, welshHintText, pages, welshDeclaration, welshConfirmationNext, welshPaymentLink, welshPrivacyLink, supportDetails, welshEmailSupport, welshPhoneSupport, welshOnlineLinkText, welshOnlineLinkURL, markWelshComplete } = req.session.data
+  var { welshFormName, welshPageHeading, welshGuidanceText, welshQuestionText, welshHintText, welshSelectionItem, pages, welshDeclaration, welshConfirmationNext, welshPaymentLink, welshPrivacyLink, supportDetails, welshEmailSupport, welshPhoneSupport, welshOnlineLinkText, welshOnlineLinkURL, markWelshComplete } = req.session.data
 
   for (let i = 0; i < pages.length; i++) {
     // run through all the current pages added to the English form
@@ -1031,6 +1031,31 @@ router.post('/form-designer/welsh/add-welsh-version', function (req, res) {
         }
       }
     }
+
+    // run through the questions item list if one exists and add to Welsh translation
+    if (pages[i]["item-list"]) {
+      if (welshSelectionItem) {
+        for (var key of Object.keys(welshSelectionItem)) {
+          let questionKey = key
+          let questionNumber = parseInt(questionKey.toString().split("_").pop())
+          if (i === questionNumber) {
+            pages[i]['welsh']['options'] = welshSelectionItem[questionKey]
+            break;
+          }
+        }
+      }
+    }
+    // need to get the specific questions list of options
+    // if (welshSelectionItem) {
+    //   for (let e = 0; e < welshSelectionItem.length; e++) {
+    //     let optionKey = Object.keys(welshSelectionItem[e])
+    //     let optionNumber = parseInt(optionKey.toString().split("_").pop())
+    //     if (i === optionNumber) {
+    //       pages[i]['welsh']['options'] = welshSelectionItem[e][optionKey]
+    //       break;
+    //     }
+    //   }
+    // }
   }
 
   /*
