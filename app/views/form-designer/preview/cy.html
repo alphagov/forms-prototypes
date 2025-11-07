@@ -1,19 +1,29 @@
 {% extends "layout-govuk-form-welsh-preview.html" %}
 {% set mainClasses = "main--draft govuk-main-wrapper--auto-spacing" %}
 
-{% if pageData['additional-guidance'] == 'Yes' %}
-  {% set pageHeading = pageData.welsh.page_heading or 'Welsh guidance text' %}
+{% if pageData["additional-guidance"] == "Yes" %}
+  {% set pageHeading = pageData.welsh.page_heading or pageData["page-name"] %}
 {% endif %}
 
-{% set pageTitle = pageData.welsh.question_text or 'Welsh question text' %}
-
-{% if pageData['questionOptional'] %}
-  {% set pageTitle = pageTitle + ' (optional)' %}
+{% set pageTitle = pageData.welsh.question_text or pageData["long-title"] %}
+{% if pageData["questionOptional"] %}
+  {% set pageTitle = pageTitle + " (dewisol)" %}
 {% endif %}
 
-{% set pageHintText = pageData.welsh.hint_text %}
+{% set pageHintText = pageData.welsh.hint_text or pageData["hint-text"] %}
+
+{% set backLinkText = "Yn ôl" %}
+{% set continueText = "Parhau" %}
+
+{% set getHelpText = "Cael help gyda’r ffurflen hon" %}
+{% set emailText = "E-bost" %}
+{% set phoneText = "Ffôn" %}
+{% set callChargesText = "Darganfyddwch am gostau galwadau" %}
+{% set onlineText = "Ar-lein" %}
+{% set opensInNewTabText = "(agor mewn tab newydd)" %}
 
 {% block beforeContent %}
+  {% if markWelshComplete and ((markWelshComplete == 'yes') or (markWelshComplete == 'no')) %}
   <nav class="dwp-language-toggle" aria-label="Language toggle">
     <ul class="dwp-language-toggle__list">
       <li class="dwp-language-toggle__list-item">
@@ -26,28 +36,29 @@
       </li>
     </ul>
   </nav>
+  {% endif %}
   {% set prevPageId = pageId | int - 1 %}
   {% if data.cya %}
-    <a class="govuk-back-link" href="check-answers">Back</a>
+    <a class="govuk-back-link" href="check-answers{% if referer and ('.cy' in referer) %}.cy{% endif %}">{{ backLinkText }}</a>
   {% elif prevPageId >= 0 %}
-    <a class="govuk-back-link" href="{{prevPageId}}">Back</a>
+    <a class="govuk-back-link" href="{{ prevPageId }}{% if referer and ('.cy' in referer) %}.cy{% endif %}">{{ backLinkText }}</a>
   {% endif %}
 {% endblock %}
 
 {% block pageTitle %}
-  {% if pageHeading %}{{ pageHeading }}{% else %}{{ pageTitle }}{% endif %} - Welsh Preview - {{ data.welshFormName or '[WelshFormTitle]' }} - GOV.UK
+  {% if pageHeading %}{{ pageHeading }}{% else %}{{ pageTitle }}{% endif %} - Welsh Preview - {{ data.welshFormName or data.formTitle }} - GOV.UK
 {% endblock %}
 
 {% block content %}
   {% set nextPageId = pageId | int + 1 %}
-  {% set isLastQuestionPage = pageId == data['highestPageId'] %}
+  {% set isLastQuestionPage = pageId == data["highestPageId"] %}
   {% set formAction = "../check-answers-page-preview-new-tab" if isLastQuestionPage else nextPageId %}
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <form class="form" method="post" novalidate>
 
-        {% if pageData['additional-guidance'] == 'Yes' %}
+        {% if pageData["additional-guidance"] == "Yes" %}
         <h1 class="govuk-heading-l">{{ pageHeading }}</h1>
         {% markdown %}{{ markdownContent }}{% endmarkdown %}
         {% endif %}
@@ -63,36 +74,36 @@
         {# The heading doubles up as the label #}
         {% set label = {
           text: pageTitle,
-          classes: "govuk-label--l" if pageData['additional-guidance'] != 'Yes' else "govuk-label--m",
-          isPageHeading: true if pageData['additional-guidance'] != 'Yes'
+          classes: "govuk-label--l" if pageData["additional-guidance"] != "Yes" else "govuk-label--m",
+          isPageHeading: true if pageData["additional-guidance"] != "Yes"
         }%}
 
         {% set legend = {
           text: pageTitle,
-          classes: "govuk-fieldset__legend--l" if pageData['additional-guidance'] != 'Yes' else "govuk-fieldset__legend--m",
-          isPageHeading: true if pageData['additional-guidance'] != 'Yes'
+          classes: "govuk-fieldset__legend--l" if pageData["additional-guidance"] != "Yes" else "govuk-fieldset__legend--m",
+          isPageHeading: true if pageData["additional-guidance"] != "Yes"
         }%}
 
         {# Full name in a single field #}
-        {% if pageData['type'] === 'personName' %}
-          {% if (pageData['input'] === 'multi-field') or (pageData['input'] === 'multi-field-plus') %}
+        {% if pageData["type"] === "personName" %}
+          {% if (pageData["input"] === "multi-field") or (pageData["input"] === "multi-field-plus") %}
 
             {% call govukFieldset({
               legend: {
                 text: pageTitle,
-                classes: "govuk-fieldset__legend--l" if pageData['additional-guidance'] != 'Yes' else "govuk-fieldset__legend--m",
-                isPageHeading: true if pageData['additional-guidance'] != 'Yes'
+                classes: "govuk-fieldset__legend--l" if pageData["additional-guidance"] != "Yes" else "govuk-fieldset__legend--m",
+                isPageHeading: true if pageData["additional-guidance"] != "Yes"
               }
             }) %}
 
-              {% if pageData['hint-text'] %}
+              {% if pageData["hint-text"] %}
               <p class="govuk-hint">{{ pageHintText }}</p>
               {% endif %}
 
-              {% if pageData['title'] === 'yes' %}
+              {% if pageData["title"] === "yes" %}
               {{ govukInput({
                 label: {
-                  html: 'Title'
+                  text: "Teitl"
                 },
                 classes: "govuk-!-width-one-quarter",
                 id: pageId + "-name-title",
@@ -104,7 +115,7 @@
 
               {{ govukInput({
                 label: {
-                  html: 'First name'
+                  text: "Enw cyntaf"
                 },
                 classes: "govuk-!-width-one-half",
                 id: pageId + "-first-name",
@@ -113,10 +124,10 @@
                 value: data[(pageId | int) + "-first-name"]
               }) }}
 
-              {% if pageData['input'] === 'multi-field-plus' %}
+              {% if pageData["input"] === "multi-field-plus" %}
               {{ govukInput({
                 label: {
-                  html: 'Middle names'
+                  text: "Enwau canol"
                 },
                 classes: "govuk-!-width-two-thirds",
                 id: pageId + "-middle-names",
@@ -128,7 +139,7 @@
 
               {{ govukInput({
                 label: {
-                  html: 'Last name'
+                  text: "Enw olaf"
                 },
                 classes: "govuk-!-width-one-half",
                 id: pageId + "-last-name",
@@ -139,23 +150,23 @@
 
             {% endcall %}
 
-          {% elif (pageData['input'] === 'single-field') and (pageData['title'] === 'yes') %}
+          {% elif (pageData["input"] === "single-field") and (pageData["title"] === "Yes") %}
 
             {% call govukFieldset({
               legend: {
                 text: pageTitle,
-                classes: "govuk-fieldset__legend--l" if pageData['additional-guidance'] != 'Yes' else "govuk-fieldset__legend--m",
-                isPageHeading: true if pageData['additional-guidance'] != 'Yes'
+                classes: "govuk-fieldset__legend--l" if pageData["additional-guidance"] != "Yes" else "govuk-fieldset__legend--m",
+                isPageHeading: true if pageData["additional-guidance"] != "Yes"
               }
             }) %}
 
-              {% if pageData['hint-text'] %}
+              {% if pageData["hint-text"] %}
               <p class="govuk-hint">{{ pageHintText }}</p>
               {% endif %}
 
               {{ govukInput({
                 label: {
-                  html: 'Title'
+                  text: "Teitl"
                 },
                 classes: "govuk-!-width-one-quarter",
                 id: pageId + "-name-title",
@@ -166,7 +177,7 @@
 
               {{ govukInput({
                 label: {
-                  html: 'Full name'
+                  text: "Enw llawn"
                 },
                 id: pageId + "-full-name",
                 name: pageId + "-full-name",
@@ -194,7 +205,7 @@
         {% endif %}
 
         {# Company or organisation’s name #}
-        {% if pageData['type'] === 'companyName' %}
+        {% if pageData["type"] === "companyName" %}
           {{ govukInput({
             label: label,
             hint: { text: pageHintText },
@@ -205,7 +216,7 @@
           }) }}
         {% endif %}
 
-        {% if pageData['type'] == 'email' %}
+        {% if pageData["type"] == "email" %}
           {{ govukInput({
             label: label,
             hint: { text: pageHintText },
@@ -218,7 +229,7 @@
           }) }}
         {% endif %}
 
-        {% if pageData['type'] == 'phone' %}
+        {% if pageData["type"] == "phone" %}
           {{ govukInput({
             label: label,
             hint: { text: pageHintText },
@@ -231,7 +242,7 @@
           }) }}
         {% endif %}
 
-        {% if pageData['type'] == 'national-insurance-number' %}
+        {% if pageData["type"] == "national-insurance-number" %}
           {{ govukInput({
             label: label,
             hint: { text: pageHintText },
@@ -243,95 +254,95 @@
           }) }}
         {% endif %}
 
-        {% if pageData['type'] == 'address' %}
+        {% if pageData["type"] == "address" %}
 
           {% call govukFieldset({
             legend: {
               text: pageTitle,
-              classes: "govuk-fieldset__legend--l" if pageData['additional-guidance'] != 'Yes' else "govuk-fieldset__legend--m",
-              isPageHeading: true if pageData['additional-guidance'] != 'Yes'
+              classes: "govuk-fieldset__legend--l" if pageData["additional-guidance"] != "Yes" else "govuk-fieldset__legend--m",
+              isPageHeading: true if pageData["additional-guidance"] != "Yes"
             }
           }) %}
 
-          {% if pageData['hint-text'] %}
+          {% if pageData["hint-text"] %}
           <p class="govuk-hint">{{ pageHintText }}</p>
           {% endif %}
 
-          {% if ('uk-address' in pageData['input']) and not ('international-address' in pageData['input']) %}
+          {% if ("uk-address" in pageData["input"]) and not ("international-address" in pageData["input"]) %}
           {{ govukInput({
             label: {
-              html: 'Address line 1'
+              text: "Llinell cyfeiriad 1"
             },
             id: pageId + "-address-line-1",
             name: pageId + "-address-line-1",
             autocomplete: "address-line1",
-            value: data[(pageId | int) + '-address-line-1']
+            value: data[(pageId | int) + "-address-line-1"]
           }) }}
 
           {{ govukInput({
             label: {
-              html: 'Address line 2 (optional)'
+              text: "Llinell cyfeiriad 2 (dewisol)"
             },
             id: pageId + "-address-line-2",
             name: pageId + "-address-line-2",
             autocomplete: "address-line2",
-            value: data[(pageId | int) + '-address-line-2']
+            value: data[(pageId | int) + "-address-line-2"]
           }) }}
 
           {{ govukInput({
             label: {
-              text: "Town or city"
+              text: "Tref neu Ddinas"
             },
             classes: "govuk-!-width-two-thirds",
             id: pageId + "-address-town",
             name: pageId + "-address-town",
             autocomplete: "address-level2",
-            value: data[(pageId | int) + '-address-town']
+            value: data[(pageId | int) + "-address-town"]
           }) }}
 
           {{ govukInput({
             label: {
-              text: "County (optional)"
+              text: "Sir (dewisol)"
             },
             classes: "govuk-!-width-two-thirds",
             id: pageId + "-address-county",
             name: pageId + "-address-county",
-            value: data[(pageId | int) + '-address-county']
+            value: data[(pageId | int) + "-address-county"]
           }) }}
 
           {{ govukInput({
             label: {
-              text: "Postcode"
+              text: "Cod post"
             },
             classes: "govuk-input--width-10",
             id: pageId + "-address-postcode",
             name: pageId + "-address-postcode",
             autocomplete: "postal-code",
-            value: data[(pageId | int) + '-address-postcode']
+            value: data[(pageId | int) + "-address-postcode"]
           }) }}
 
-          {#{% elif 'international-address' in pageData['input'] %}#}
+          {#{% elif "international-address" in pageData["input"] %}#}
           {% else %}
 
           {{ govukTextarea({
             label: {
-              text: "Street address"
+              text: "Cyfeiriad stryd"
             },
             id: pageId + "-address-street-address",
             name: pageId + "-address-street-address",
             autocomplete: "street-address",
-            value: data[(pageId | int) + '-address-street-address']
+            value: data[(pageId | int) + "-address-street-address"]
           }) }}
 
           {{ govukInput({
             label: {
-              text: "Country"
+              text: "Gwlad"
             },
             classes: "govuk-input--width-20",
             id: pageId + "-address-country-name",
             name: pageId + "-address-country-name",
             autocomplete: "country-name",
-            value: data[(pageId | int) + '-address-country-name']
+            value: data[(pageId | int) + "-address-country-name"]
           }) }}
 
           {% endif %}
@@ -341,13 +352,15 @@
         {% endif %}
 
         {# Date field #}
-        {% if pageData['type'] == 'date' %}
+        {% if pageData["type"] == "date" %}
 
-        {% set day = pageId + '-day' %}
-        {% set month = pageId + '-month' %}
-        {% set year = pageId + '-year' %}
+        {% set day = pageId + "-day" %}
+        {% set month = pageId + "-month" %}
+        {% set year = pageId + "-year" %}
 
-        {% set neValue %}{{data[pageId + '-day'] + '/' + data[pageId + '-month'] + '/' + data[pageId + '-year']}}{% endset %}
+        {% set neValue %}
+          {{ data[pageId + "-day"] + "/" + data[pageId + "-month"] + "/" + data[pageId + "-year"]}}
+        {% endset %}
 
           {{ govukDateInput({
           id: pageId,
@@ -360,22 +373,25 @@
           },
           items: [
             {
+              label: "Diwrnod",
               name: "day",
               classes: "govuk-input--width-2",
-              autocomplete: "bday-day" if pageData['input'] === 'yes',
-              value: data[pageId + '-day']
+              autocomplete: "bday-day" if pageData["input"] === "yes",
+              value: data[pageId + "-day"]
             },
             {
+              label: "Mis",
               name: "month",
               classes: "govuk-input--width-2",
-              autocomplete: "bday-month" if pageData['input'] === 'yes',
-              value: data[pageId + '-month']
+              autocomplete: "bday-month" if pageData["input"] === "yes",
+              value: data[pageId + "-month"]
             },
             {
+              label: "Blwyddyn",
               name: "year",
               classes: "govuk-input--width-4",
-              autocomplete: "bday-year" if pageData['input'] === 'yes',
-              value: data[pageId + '-year']
+              autocomplete: "bday-year" if pageData["input"] === "yes",
+              value: data[pageId + "-year"]
             }
           ]
         }) }}
@@ -383,25 +399,25 @@
         {% endif %}
 
         {#
-          For radios and checkboxes I'm using straight HTML,
-          because I'm not smart enough to loop over the array
+          For radios and checkboxes I’m using straight HTML,
+          because I’m not smart enough to loop over the array
           and build an object to stick into a macro.
         #}
 
         {# Radios #}
-        {% if pageData['type'] === 'select' %}
+        {% if pageData["type"] === "select" %}
 
-          {% if pageData['type'] === 'yesorno' %}
-            {% set itemsArray = ['Yes', 'No'] %}
+          {% if pageData.welsh and pageData.welsh.options %}
+            {% set itemsArray = pageData.welsh.options %}
           {% else %}
-            {% set itemsArray = pageData['item-list'] %}
+            {% set itemsArray = pageData["item-list"] %}
           {% endif %}
 
-          {% if pageData['listSettings'] and pageData['listSettings'].includes('oneOption') %}
+          {% if pageData["listSettings"] and pageData["listSettings"].includes("oneOption") %}
             <div class="govuk-form-group">
               <fieldset class="govuk-fieldset" aria-describedby="question-{{pageId}}-hint">
 
-                {% if not pageData['intro-text'] %}
+                {% if not pageData["intro-text"] %}
                   <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                     <h1 class="govuk-fieldset__heading">
                       {{ pageTitle }} <span class="govuk-visually-hidden">preview</span>
@@ -413,20 +429,32 @@
                   {{ pageHintText }}
                 </div>
                 <div class="govuk-radios" data-module="govuk-radios">
-                  {% for itemRaw in itemsArray %}
-                  {% set item = itemRaw | trim %}
+                  {% if pageData.welsh and pageData.welsh.options %}
+                    {% for key, option in itemsArray %}
+                    {% set option = option | trim %}
+                    <div class="govuk-radios__item">
+                      <input class="govuk-radios__input" id="{{ pageId }}-{{ option }}" name="{{ pageId }}" type="radio" value="{{ option }}" {{ checked(pageId, option) }}>
+                      <label class="govuk-label govuk-radios__label" for="{{ pageId }}-{{ option }}">
+                        {{ option }}
+                      </label>
+                    </div>
+                    {% endfor %}
+                  {% else %}
+                    {% for itemRaw in itemsArray %}
+                    {% set item = itemRaw | trim %}
                     <div class="govuk-radios__item">
                       <input class="govuk-radios__input" id="{{ pageId }}-{{ item }}" name="{{ pageId }}" type="radio" value="{{ item }}" {{ checked(pageId, item) }}>
                       <label class="govuk-label govuk-radios__label" for="{{ pageId }}-{{ item }}">
                         {{ item }}
                       </label>
                     </div>
-                  {% endfor %}
-                  {% if pageData['listSettings'].includes('noneOption')%}
+                    {% endfor %}
+                  {% endif %}
+                  {% if pageData["listSettings"].includes("noneOption")%}
                   <div class="govuk-radios__divider">or</div>
                     <div class="govuk-radios__item">
-                      <input class="govuk-radios__input" id="question-{{pageId}}-none" name="{{ pageId }}" type="radio" value="none" data-behaviour="exclusive">
-                      <label class="govuk-label govuk-radios__label" for="question-{{pageId}}-none">
+                      <input class="govuk-radios__input" id="question-{{ pageId }}-none" name="{{ pageId }}" type="radio" value="none" data-behaviour="exclusive">
+                      <label class="govuk-label govuk-radios__label" for="question-{{ pageId }}-none">
                         None of the above
                       </label>
                     </div>
@@ -437,14 +465,14 @@
           {% endif %}
 
           {# Checkboxes #}
-          {% if not pageData['listSettings'] or (pageData['listSettings'] and not pageData['listSettings'].includes('oneOption')) %}
+          {% if not pageData["listSettings"] or (pageData["listSettings"] and not pageData["listSettings"].includes("oneOption")) %}
 
-            {% set itemsArray = pageData['item-list'] %}
+            {% set itemsArray = pageData["item-list"] %}
 
             <div class="govuk-form-group">
               <fieldset class="govuk-fieldset" aria-describedby="question-{{pageId}}-hint">
 
-                {% if not pageData['intro-text'] %}
+                {% if not pageData["intro-text"] %}
                   <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                     <h1 class="govuk-fieldset__heading">{{ pageTitle }}</h1>
                   </legend>
@@ -454,21 +482,21 @@
                   {{ pageHintText }}
                 </div>
                 <div class="govuk-checkboxes" data-module="govuk-checkboxes">
-                  {% if pageData['item-list'] %}
+                  {% if pageData["item-list"] %}
                     {% for item in itemsArray %}
                     <div class="govuk-checkboxes__item">
-                      <input class="govuk-checkboxes__input" id="question-{{pageId}}-{{ item }}" name="{{ pageId }}" type="checkbox" value="{{ item }}" {{ checked(pageId, item) }}>
-                      <label class="govuk-label govuk-checkboxes__label" for="question-{{pageId}}-{{ item }}">
+                      <input class="govuk-checkboxes__input" id="question-{{ pageId }}-{{ item }}" name="{{ pageId }}" type="checkbox" value="{{ item }}" {{ checked(pageId, item) }}>
+                      <label class="govuk-label govuk-checkboxes__label" for="question-{{ pageId }}-{{ item }}">
                         {{ item }}
                       </label>
                     </div>
                     {% endfor %}
-                    {% if pageData['listSettings'].includes('noneOption')%}
+                    {% if pageData["listSettings"].includes("noneOption")%}
                     <div class="govuk-checkboxes__divider">or</div>
                     <div class="govuk-checkboxes__item">
-                      <input class="govuk-checkboxes__input" id="question-{{pageId}}-none" name="{{ pageId }}" type="checkbox" value="none" data-behaviour="exclusive">
-                      <label class="govuk-label govuk-checkboxes__label" for="question-{{pageId}}-none">
-                        None of the above
+                      <input class="govuk-checkboxes__input" id="question-{{ pageId }}-none" name="{{ pageId }}" type="checkbox" value="none" data-behaviour="exclusive">
+                      <label class="govuk-label govuk-checkboxes__label" for="question-{{ pageId }}-none">
+                        Dim un o’r uchod
                       </label>
                     </div>
                     {%endif%}
@@ -493,7 +521,7 @@
         {% endif %}
 
         {# Number fields #}
-        {% if pageData['type'] == 'number' %}
+        {% if pageData["type"] == "number" %}
           {{ govukInput({
             label: label,
             hint: { text: pageHintText },
@@ -507,8 +535,8 @@
         {% endif %}
 
         {# Text information fields #}
-        {% if pageData['type'] === 'text' %}
-          {% if pageData['input'] === 'single-line-input' %}
+        {% if pageData["type"] === "text" %}
+          {% if pageData["input"] === "single-line-input" %}
 
             {# Single line text fields #}
             {{ govukInput({
@@ -524,7 +552,7 @@
             {# Keeping the character limit options for now in case we want to test it later #}
 
             {# Textarea with character limit #}
-            {# {% if pageData['char-limit'] == 'none' %}
+            {# {% if pageData["char-limit"] == "none" %}
               {{ govukTextarea({
               label: label,
               hint: { text: pageHintText },
@@ -535,18 +563,18 @@
             {% endif %} #}
 
             {# Textarea with no character limit #}
-            {# {% if not (pageData['char-limit'] == 'none') %}
+            {# {% if not (pageData["char-limit"] == "none") %}
               {{ govukCharacterCount({
               name: pageId,
               id: pageId,
-              maxlength: pageData['char-limit'],
+              maxlength: pageData["char-limit"],
               label: label,
               hint: { text: pageHintText },
               value: data[pageId | int]
             }) }}
             {% endif %} #}
 
-            {# Textarea no, no, there's no limits #}
+            {# Textarea no, no, there’s no limits #}
             {{ govukTextarea({
               name: pageId,
               id: pageId,
@@ -559,12 +587,12 @@
         {% endif %}
 
         {# Help text #}
-        {% if pageData['help-text'] %}
+        {% if pageData["help-text"] %}
 
           {% set helpTextHtml %}
           <div class="app-prose-scope">
             {% markdown %}
-            {{ pageData['help-text'] }}
+            {{ pageData["help-text"] }}
             {% endmarkdown %}
           </div>
           {% endset -%}
@@ -576,39 +604,45 @@
         {% endif %}
 
         {{ govukButton({
-          text: "Continue",
+          text: continueText,
           attributes: {
             target: "_parent"
           }
         }) }}
 
-        {% if data['supportDetails'] %}
+        {% if data["supportDetails"] %}
           {% set supportTextHtml %}
           <div class="app-prose-scope">
-            {% if 'email' in data['supportDetails'] -%}
-            <h3 class="govuk-heading-s">Email</h3>
+            {% if "email" in data["supportDetails"] -%}
+            <h3 class="govuk-heading-s">{{ emailText }}</h3>
             <p class="govuk-body">
-              <a class="govuk-link" href="mailto:{{data['emailSupport'] or 'support@department.gov.uk' | safe}}">{{data['emailSupport'] or 'support@department.gov.uk' | safe}}</a>
+              <a class="govuk-link" href="mailto:{{ data['emailSupport'] or 'support@department.gov.uk' | safe }}">
+                {{ data["emailSupport"] or "support@department.gov.uk" | safe }}
+              </a>
             </p>
             {%- endif %}
-            {% if 'phone' in data['supportDetails'] -%}
-            <h3 class="govuk-heading-s">Phone</h3>
-            <p class="govuk-body">{{data['phoneSupport'] | striptags(true) | escape | nl2br }}</p>
+            {% if "phone" in data["supportDetails"] -%}
+            <h3 class="govuk-heading-s">{{ phoneText }}</h3>
+            <p class="govuk-body">{{ data["phoneSupport"] | striptags(true) | escape | nl2br }}</p>
             <p class="govuk-body">
-              <a class="govuk-link" href="https://www.gov.uk/call-charges" target="_blank">Find out about call charges</a>
+              <a class="govuk-link" href="https://www.gov.uk/call-charges" target="_blank">
+                {{ callChargesText }}
+              </a>
             </p>
             {%- endif %}
-            {% if 'online' in data['supportDetails'] -%}
-            <h3 class="govuk-heading-s">Online</h3>
+            {% if "online" in data["supportDetails"] -%}
+            <h3 class="govuk-heading-s">{{ onlineText }}</h3>
             <p class="govuk-body">
-              <a class="govuk-link" href="{{data['onlineSupportLink']}}" target="_blank">{{data['onlineSupportText'] | safe}} (opens in new tab)</a>
+              <a class="govuk-link" href="{{ data['onlineSupportLink'] }}" target="_blank">
+                {{ data["onlineSupportText"] | safe }} {{ opensInNewTabText }}
+              </a>
             </p>
             {%- endif %}
           </div>
           {% endset -%}
 
           {{ govukDetails({
-            summaryText: "Get help with this form",
+            summaryText: getHelpText,
             html: supportTextHtml
           }) }}
         {% endif %}
