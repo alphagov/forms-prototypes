@@ -151,7 +151,7 @@
             <tr class="govuk-table__row">
               <th scope="row" class="govuk-table__header">Guidance text</th>
               <td class="govuk-table__cell" id="englishGuidanceText[{{ loop.index0 }}]">
-                {{ question["guidance-text"] }}
+                {{ question['additional-guidance-text'] | striptags(true) | escape | nl2br }}
               </td>
               <td class="govuk-table__cell app-table__cell-input">
                 {{ govukTextarea({
@@ -254,12 +254,12 @@
                     isPageHeading: false
                   },
                   id: "welsh-selection-item-" + loop.index0,
-                  name: "welshSelectionItem[" + loop.index0 + "][option_" + loop.index0 + "]",
+                  name: "welshSelectionItem[question_" + question.pageIndex + "][option_" + loop.index0 + "]",
                   attributes: { 
                     "aria-describedby": "englishSelectionItem[" + loop.index0 + "]",
                     "placeholder": selectionItemLabel
                   },
-                  value: question.welsh.option[loop.index0]
+                  value: question.welsh.options["option_" + loop.index0]
                 }) }}
               </td>
             </tr>
@@ -551,7 +551,7 @@
         {%- endset %}
 
         {% set onlineLinkTextLabel = "Enter Welsh Online link text" %}
-        {% set onlineLinkTextInputInput -%}
+        {% set onlineLinkTextInput -%}
         {{ govukTextarea({
           rows: "1",
           formGroup: {
@@ -572,7 +572,7 @@
         }) }}
         {%- endset %}
 
-        {% set onlineLinkTextLabel = "Enter Welsh Online link URL" %}
+        {% set onlineLinkURLLabel = "Enter Welsh Online link URL" %}
         {% set onlineLinkURLInput -%}
         {{ govukTextarea({
           rows: "1",
@@ -580,7 +580,7 @@
             classes: "app-welsh-form-group"
           },
           label: {
-            text: onlineLinkTextLabel,
+            text: onlineLinkURLLabel,
             classes: "govuk-visually-hidden",
             isPageHeading: false
           },
@@ -588,7 +588,7 @@
           name: "welshOnlineLinkURL",
           attributes: {
             "aria-describedby": "englishOnlineLinkURL",
-            "placheolder": onlineLinkTextLabel
+            "placeholder": onlineLinkURLLabel
           },
           value: data.welshOnlineLinkURL
         }) }}
