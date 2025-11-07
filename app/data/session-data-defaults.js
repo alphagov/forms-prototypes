@@ -21,13 +21,9 @@ module.exports = {
 
   groupName: "Account applications",
 
-  // Insert values here
-
   highestPageId: 0,
-  action: '',
-  payments: 'no',
   pages: [],
-  status: 'Draft',
+
   confirmationTitle: 'Your form has been submitted',
   checkAnswersTitle: 'Check your answers before submitting your form',
 
