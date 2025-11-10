@@ -1,19 +1,8 @@
-/*
+/* 
 
-Provide default values for user session data. These are automatically added
-via the `autoStoreData` middleware. Values will only be added to the
-session if a value doesn't already exist. This may be useful for testing
-journeys where users are returning or logging in to an existing application.
-
-============================================================================
-
-Example usage:
-
-"full-name": "Sarah Philips",
-
-"options-chosen": [ "foo", "bar" ]
-
-============================================================================
+This is the latest version of return data for a dummy form to be used in testing Welsh translation: 
+created 7 November 2025
+testing: week commencing 10 November 2025
 
 */
 
@@ -21,9 +10,11 @@ module.exports = {
 
   "groupName": "Account applications",
 
+  /* Dummy form settings */
   "formTitle": "Register for an account",
   "status": "Draft",
 
+  // Form questions
   "highestPageId": 5,
   "pages": [
     {
@@ -88,21 +79,35 @@ module.exports = {
       "questionSaved": "Yes"
     }
   ],
+  // questions marked as complete
   "isQuestionsComplete": "no",
 
+  // check answers declaration marked as complete
+  "isDeclarationComplete": "no",
   "checkAnswersDeclaration": "",
   
+  // what happens next information marked as complete
+  "isConfirmationComplete": "no",
   "confirmationNext": "",
 
+  // payment link added 
   "payments": "no",
 
+  // submission email been added and is complete
+  "isSubmissionEmailComplete": "no",
+  // submission email confirmation code complete
+  "isConfirmationCodeComplete": "no",
+
+  // privacy link added 
+  "isPrivacyInformationComplete": "no",
+
+  // supportDetails - emailSupport, phoneSupport, onlineSupportLink, onlineSupportText
+  "isSupportDetailsComplete": "no",
   "supportDetails": [
     "online"
   ],
-
-  "emailSupport": "",
+  "emailSupport": "", 
   "phoneSupport": "",
-
-  "onlineSupportLink": "https://www.gov.uk/contact-us",
-  "onlineSupportText": "Our full contact details"
+  "onlineSupportText": "Our full contact details",
+  "onlineSupportLink": "https://www.gov.uk/contact-us"
 }
