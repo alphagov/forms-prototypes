@@ -1,9 +1,10 @@
 {% extends "layout-govuk-forms.html" %}
 
-{% set pageTitle = 'Home' %}
+{% set pageTitle = data["groupName"] or "Your test forms" %}
+{% set groupState = "Trial group" %}
 
 {% block pageTitle %}
-  {{pageTitle}} - {{serviceName}}
+  {{ pageTitle }} - {{ groupState }} {{ serviceName }}
 {% endblock %}
 
 {% block beforeContent %}
@@ -14,8 +15,8 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
 
-      <span class="govuk-caption-l">Trial group</span>
-      <h1 class="govuk-heading-l">{{ data['groupName'] or 'Your test forms' }}</h1>
+      <span class="govuk-caption-l">{{ groupState }}</span>
+      <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
 
       <ul class="govuk-list govuk-list--spaced govuk-!-margin-bottom-5">
         <li>
@@ -39,7 +40,7 @@
       {% if data['formTitle'] %}
       <table class="govuk-table">
         <caption class="govuk-table__caption govuk-table__caption--m">
-          Forms in ‘{{ data['groupName'] or 'Your test forms' }}’
+          Forms in ‘{{ data["groupName"] or "Your test forms" }}’
         </caption>
         <thead class="govuk-table__head">
           <tr class="govuk-table__row">
@@ -53,23 +54,29 @@
           <tr class="govuk-table__row">
             <th scope="row" class="govuk-table__cell">
               <a class="govuk-link govuk-!-font-weight-regular" href="your-form">
-                {{ data['formTitle'] }}
+                {{ data["formTitle"] }}
               </a>
+              {% if data.markWelshComplete and ((data.markWelshComplete == "yes") or (data.markWelshComplete == "no")) -%}
+              <br>
+              <span class="govuk-hint">
+                Welsh version: {% if data.welshFormName %}{{ data.welshFormName }}{% else %}not yet named{% endif %}
+              </span>
+              {%- endif %}
             </th>
             <td class="govuk-table__cell">
-              {{ data['formCreator'] or 'Firstname Lastname' }}
+              {{ data["formCreator"] or "Firstname Lastname" }}
             </td>
             <td class="govuk-table__cell govuk-table__cell--numeric">
-            {% if data['status'] %}
+            {% if data["status"] %}
               {{govukTag({
-                text: data['status'],
-                classes: "govuk-!-margin-bottom-0 govuk-tag--yellow" if data['status'] === 'Draft' else "govuk-!-margin-bottom-0 govuk-tag--turquoise"
+                text: data["status"],
+                classes: "govuk-!-margin-bottom-0 govuk-tag--yellow" if data["status"] === "Draft" else "govuk-!-margin-bottom-0 govuk-tag--turquoise"
               })}}
               {% endif %}
             </td>
             <td class="govuk-table__cell govuk-table__cell--numeric">
               <a class="govuk-link govuk-!-font-weight-regular" href="groups/move-form-group">
-                Change group <span class="govuk-visually-hidden"> for {{ data['formTitle'] }}</span>
+                Change group <span class="govuk-visually-hidden"> for {{ data["formTitle"] }}</span>
               </a>
             </td>
           </tr>
