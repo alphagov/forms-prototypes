@@ -331,6 +331,7 @@ Summary card
 
   .app-table__cell-input {
     padding: 0;
+    height: 100% // this needs to be here for Firefox
   }
 
   .app-welsh-form-group {
