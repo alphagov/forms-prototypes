@@ -12,7 +12,7 @@
 
 
 {% block beforeContent %}
-  {% if data.markWelshComplete and ((data.markWelshComplete == 'yes') or (data.markWelshComplete == 'no')) %}
+  {% if data.markWelshComplete and ((data.markWelshComplete == "yes") or (data.markWelshComplete == "no")) %}
   <nav class="dwp-language-toggle" aria-label="Language toggle">
     <ul class="dwp-language-toggle__list">
       <li class="dwp-language-toggle__list-item" aria-current="true">
@@ -86,7 +86,7 @@
             }) %}
 
               {% if pageData["hint-text"] %}
-              <p class="govuk-hint">{{pageData["hint-text"]}}</p>
+              <p class="govuk-hint">{{ pageData["hint-text"] }}</p>
               {% endif %}
 
               {% if pageData["title"] === "yes" %}
@@ -150,7 +150,7 @@
             }) %}
 
               {% if pageData["hint-text"] %}
-              <p class="govuk-hint">{{pageData["hint-text"]}}</p>
+              <p class="govuk-hint">{{ pageData["hint-text"] }}</p>
               {% endif %}
 
               {{ govukInput({
@@ -606,7 +606,7 @@
             <h3 class="govuk-heading-s">Online</h3>
             <p class="govuk-body">
               <a class="govuk-link" href="{{ data['onlineSupportLink'] }}" target="_blank">
-                {{data["onlineSupportText"] | safe}} (opens in new tab)
+                {{ data["onlineSupportText"] | safe }} (opens in new tab)
               </a>
             </p>
             {%- endif %}
