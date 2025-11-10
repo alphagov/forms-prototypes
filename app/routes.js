@@ -125,7 +125,12 @@ router.get('/form-designer/name-your-form', function (req, res) {
 
 // Edit form name, handling validation errors
 router.post('/form-designer/name-your-form', function (req, res) {
-  const { formTitle } = req.session.data
+  const { formTitle, status } = req.session.data
+
+  // if creating a new form add a draft status
+  if ((typeof status == "undefined") || (status == '')) {
+    req.session.data.status = "Draft"
+  }
 
   const errors = {};
   // if the formTitle is blank, then error
