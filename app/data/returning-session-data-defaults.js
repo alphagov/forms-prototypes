@@ -1,28 +1,17 @@
 /*
 
-Provide default values for user session data. These are automatically added
-via the `autoStoreData` middleware. Values will only be added to the
-session if a value doesn't already exist. This may be useful for testing
-journeys where users are returning or logging in to an existing application.
-
-============================================================================
-
-Example usage:
-
-"full-name": "Sarah Philips",
-
-"options-chosen": [ "foo", "bar" ]
-
-============================================================================
+This data is for a dummy form - it was previously used in earlier rounds of testing
+Not all the structure of the questions will work and may cause some errors throughout the prototype
 
 */
 
 module.exports = {
+  /* Dummy form settings */
+  formTitle: 'Amendment form: redundancy claim for holiday pay',
+  status: 'Draft',
+
+  // Form questions
   highestPageId: 6,
-  action: 'gogogo',
-  publish: 'GOV.UK',
-  authentication: 'email',
-  payments: 'no',
   pages: [
     {
       intro: 'This is the intro',
@@ -80,10 +69,5 @@ module.exports = {
       type: 'number',
       pageIndex: '7'
     }
-  ],
-  status: 'Draft',
-  confirmationTitle: 'Your form has been submitted',
-  checkAnswersTitle: 'Check your answers before submitting your form',
-  formTitle: 'Amendment form: redundancy claim for holiday pay',
-  isQuestionsComplete: 'no'
+  ]
 }

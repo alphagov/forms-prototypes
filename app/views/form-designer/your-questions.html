@@ -82,8 +82,8 @@
         {% set questionTitle = questionTitle + ' (optional)' %}
         {% endif %}
 
+        {# add the question row #}
         {% if questionTitle %}
-
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key app-summary-list__key">
             {{loop.index}}
@@ -121,6 +121,60 @@
             </a>
           </dd>
         </div>
+        {% endif %}
+        {# now we can add any route that is based on an answer to the question above #}
+        {% if page.routing.skipTo %}
+          {% set skipPage = '' %}
+          {% if page.routing.skipTo == 'cya' %}
+            {% set skipPage = '“' + data.checkAnswersTitle + '”' %}
+          {% else %}
+            {% for item in data.pages %}
+              {% if (item.pageIndex|int) == (page.routing.skipTo|int) %}
+                {% set skipPage -%}{{ page.routing.skipTo|int + 1 }}, “{{ item['long-title'] }}”{%- endset %}
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key app-summary-list__key">
+              Question {{ page["pageIndex"] | int + 1 }}’s routes
+            </dt>
+            <dd class="govuk-summary-list__value">
+              If “{{ page['long-title'] }}” is answered as “{{ page.routing.answer }}” go to {{ skipPage }}
+            </dd>
+            <dd class="govuk-summary-list__actions govuk-!-padding-bottom-6">
+              <a class="govuk-link govuk-link--no-visited-state" href="question-routes/{{ page['pageIndex'] }}/routes-summary">
+                Edit<span class="govuk-visually-hidden"> question {{ page["pageIndex"] | int + 1 }}’s routes</span>
+              </a>
+            </dd>
+          </div>
+        {% endif %}
+        {# finally we need to add routing not based on an answer if there is any #}
+        {% if page.routing.noAnswer %}
+          {% set skipPage = '' %}
+          {% if page.routing.thenSkipTo == 'cya' %}
+            {% set skipPage = '“' + data.checkAnswersTitle + '”' %}
+          {% else %}
+            {% for otherRoutePage in data.pages %}
+              {% if (otherRoutePage.pageIndex|int) == (page.routing.thenSkipTo|int) %}
+                {% set skipPage -%}
+                  {{ otherRoutePage.pageIndex|int + 1 }}, “{{ otherRoutePage['long-title'] }}”
+                {%- endset %}
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key app-summary-list__key">
+              Question {{ page.routing.baseQuestion | int + 1 }}’s routes
+            </dt>
+            <dd class="govuk-summary-list__value">
+              After {{ page.pageIndex|int + 1 }}, “{{ page['long-title'] }}” go to {{ skipPage }}
+            </dd>
+            <dd class="govuk-summary-list__actions govuk-!-padding-bottom-6">
+              <a class="govuk-link govuk-link--no-visited-state" href="question-routes/{{ page.routing.baseQuestion }}/routes-summary">
+                Edit<span class="govuk-visually-hidden"> question {{ page.routing.baseQuestion | int + 1 }}’s routes</span>
+              </a>
+            </dd>
+          </div>
         {% endif %}
 
         {%- endfor %}

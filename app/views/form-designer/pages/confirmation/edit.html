@@ -18,14 +18,6 @@
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-
-      {% if successMessage %}
-      {{ govukNotificationBanner({
-        type: 'success',
-        text: successMessage
-      }) }}
-      {% endif %}
-
       <form id="form" class="form" method="post" novalidate>
 
         {% if containsErrors %}
@@ -38,14 +30,8 @@
         <span class="govuk-caption-l">{{ data.formTitle or '[formTitle]' }}</span>
         <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
 
-        {#
-          Every field id is prefixed with a unique page id.
-          So we can have separate configurations for every page.
-        #}
-        {% set pagePrefix = "p" + pageId + "-" %}
-
         <p class="govuk-body">
-          Add some information to tell people what will happen after they've submitted their form, and when - so they know what to expect.
+          Add some information to tell people what will happen after they’ve submitted their form, and when - so they know what to expect.
         </p>
 
         <h2 class="govuk-heading-s">Example</h2>
@@ -58,7 +44,7 @@
         </p>
         <ul class="govuk-list govuk-list--bullet">
           <li>
-            shown to people when they've completed and submitted a form
+            shown to people when they’ve completed and submitted a form
           </li>
           <li>
             included in an email confirmation, if they choose to receive this
@@ -69,19 +55,62 @@
           The optional email confirmation will also include the contact details you provide for the form, and the date and time of submission. It will not include a copy of their answers.
         </p>
 
+        {{ govukInsetText({
+          text: "GOV.UK Forms adds a unique reference number to the confirmation page and optional email confirmation. This will also be included in submission emails sent to your processing email address."
+        }) }}
+
         {{ govukCharacterCount({
-          name: "confirmationNext",
-          id: "confirmationNext",
-          maxlength: 2000,
-          value: data['confirmationNext'],
+          id: "what-happens-next",
+          name: "whatHappensNext",
           label: {
             text: "Enter some information to tell people what will happen next",
             classes: "govuk-label--m"
           },
-          errorMessage: { text: errors['confirmationNext'].text } if errors['confirmationNext'].text
+          maxlength: 2000,
+          value: data['whatHappensNext'],
+          errorMessage: { text: errors['whatHappensNext'].text } if errors['whatHappensNext'].text
         }) }}
 
-        <input type="hidden" id="currentPageId" name="currentPageId" value="{{pageId}}">
+        {% set formatHelpHTML -%}
+          {# Links and URLs #}
+          <h3 class="govuk-heading-m">Links and URLs</h3>
+          <p class="govuk-body">
+            To add a link, use square brackets [ ] around the link text, and round brackets ( ) around the full URL. Make sure there are no spaces between the two sets of brackets. For example:
+          </p>
+          {{ govukInsetText({
+            text: "[Link text](https://www.gov.uk/link-text-url)"
+          }) }}
+          {# Bulleted lists #}
+          <h3 class="govuk-heading-m">Bulleted lists</h3>
+          <p class="govuk-body">
+            To add bullet points, start each item with * (asterisk) or - (dash). Make sure there is one space after the asterisk or dash.
+          </p>
+          <p class="govuk-body">
+            Leave one empty line before adding the first bullet point and another after the last bullet point. For example:
+          </p>
+          {{ govukInsetText({
+            html: "* First bullet point<br>
+                  * Second bullet point<br>
+                  * Third bullet point"
+          }) }}
+          {# Numbered lists #}
+          <h3 class="govuk-heading-m">Numbered lists</h3>
+          <p class="govuk-body">
+            Use numbers for each list item, followed by a full stop. Make sure there is one space after the full stop.
+          </p>
+          <p class="govuk-body">
+            Leave one empty line before adding the first list item and another after the last list item. For example:
+          </p>
+          {{ govukInsetText({
+            html: "1. First item<br>
+                  2. Second item<br>
+                  3. Third item"
+          }) }}
+        {%- endset %}
+        {{ govukDetails({
+          summaryText: "Formatting help",
+          html: formatHelpHTML
+        }) }}
 
         {{ govukButton({
           text: "Save and continue",
@@ -92,11 +121,4 @@
       </form>
     </div>
   </div>
-{% endblock %}
-
-{% block pageScripts %}
-<script type="text/javascript">
-  // call function from `assets/javascripts/application.js`
-  // removeSuccessNotification();
-</script>
 {% endblock %}

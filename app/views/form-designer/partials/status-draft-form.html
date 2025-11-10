@@ -12,7 +12,7 @@
 </dl>
 
 {% if data.pages.length %}
-<p class="govuk-body">
+<p class="govuk-body govuk-!-margin-bottom-9">
     <a class="govuk-link" href="/form-designer/preview/0" rel="noopener noreferrer">
         Preview this form
     </a>
@@ -20,11 +20,11 @@
 {% endif %}
 
 <p class="govuk-body govuk-!-margin-bottom-7">
-    You have completed {{sections}} of 9 tasks.
+    You have completed {{ sections }} of 10 tasks.
 </p>
 
 <h2 class="app-task-list__section">
-    Create your form
+    1. Create your form
 </h2>
 
 {# SET STATUS OF THE FORM TITLE #}
@@ -32,7 +32,7 @@
     {% set formNameStatusText = 'Completed' %}
 {% else %}
     {% set formNameStatusTag = 'govuk-tag--blue' %}
-    {% set formNameStatusText = 'Not yet started' %}
+    {% set formNameStatusText = 'Not started' %}
 {% endif %}
 {% set htmlFormTitle %}
     {% if data['formTitle'] %}
@@ -52,7 +52,7 @@
     {% set questionStatusText = 'In progress' %}
 {% else %}
     {% set questionStatusTag = 'govuk-tag--blue' %}
-    {% set questionStatusText = 'Not yet started' %}
+    {% set questionStatusText = 'Not started' %}
 {% endif %}
 {% set htmlAddedQuestions %}
     {% if data.isQuestionsComplete === 'yes' %}
@@ -67,12 +67,12 @@
 {# SET STATUS OF DECLARATION #}
 {% if data.isDeclarationComplete === 'yes' %}
     {% set declarationStatusText = 'Completed' %}
-{% elif data.isDeclarationComplete === 'no' and data.checkAnswersDeclaration != '' %}
+{% elif (data.isDeclarationComplete === 'no') and data.checkAnswersDeclaration %}
     {% set declarationStatusTag = 'govuk-tag--light-blue' %}
     {% set declarationStatusText = 'In progress' %}
 {% else %}
     {% set declarationStatusTag = 'govuk-tag--blue' %}
-    {% set declarationStatusText = 'Not yet started' %}
+    {% set declarationStatusText = 'Not started' %}
 {% endif%}
 {% set htmlDeclaration %}
     {% if data.isDeclarationComplete === 'yes' %}
@@ -89,7 +89,7 @@
     {% set whatHappensNextStatusText = 'Completed' %}
 {% else %}
     {% set whatHappensNextStatusTag = 'govuk-tag--blue' %}
-    {% set whatHappensNextStatusText = 'Not yet started' %}
+    {% set whatHappensNextStatusText = 'Not started' %}
 {% endif%}
 {% set htmlWhatHappensNext %}
     {% if data.confirmationNext %}
@@ -147,11 +147,11 @@
 {% if data.paymentLink %}
     {% set paymentLinkStatusText = 'Completed' %}
 {% else %}
-    {% set paymentLinkStatusTag = 'govuk-task-list__status--cannot-start-yet' %}
+    {% set paymentLinkStatusTag = 'govuk-tag--grey' %}
     {% set paymentLinkStatusText = 'Optional' %}
 {% endif%}
 
-<h3 class="govuk-heading-s">Optional tasks</h3>
+<h3 class="govuk-heading-s">Optional task</h3>
 {{ govukTaskList({
     idPrefix: "payment-link",
     items: [
@@ -161,8 +161,10 @@
             },
             href: "payment/add-payment-link",
             status: {
-                text: paymentLinkStatusText,
-                classes: paymentLinkStatusTag if not data.paymentLink
+                tag: {
+                    text: paymentLinkStatusText,
+                    classes: paymentLinkStatusTag if not data.paymentLink
+                }
             }
         }
     ]
@@ -180,7 +182,7 @@
 {% endif %}
 {% if not (data.formsEmail) %}
     {% set submissionEmailStatusTag = 'govuk-tag--blue' %}
-    {% set submissionEmailStatusText = 'Not yet started' %}
+    {% set submissionEmailStatusText = 'Not started' %}
 {% elif (data.formsEmail and (not data.confirmationCode)) or data.currentFormsEmail %}
     {% set submissionEmailStatusTag = 'govuk-tag--light-blue' %}
     {% set submissionEmailStatusText = 'In progress' %}
@@ -213,7 +215,7 @@
     {% set confirmationCodeStatusHint = '' %}
 {% elif data.formsEmail and not data.confirmationCode %}
     {% set confirmationCodeStatusTag = 'govuk-tag--blue' %}
-    {% set confirmationCodeStatusText = 'Not yet started' %}
+    {% set confirmationCodeStatusText = 'Not started' %}
 {% else %}
     {% set confirmationCodeStatusText = 'Completed' %}
 {% endif%}
@@ -228,7 +230,7 @@
 {% endset %}
 
 <h2 class="app-task-list__section">
-    Set email address for completed forms
+2. Set up how you get completed forms
 </h2>
 {{ govukTaskList({
     idPrefix: "processing-email",
@@ -261,6 +263,25 @@
     ]
 }) }}
 
+<h3 class="govuk-heading-s">Optional task</h3>
+{{ govukTaskList({
+    idPrefix: "csv-submission",
+    items: [
+        {
+            title: {
+                text: "Get completed forms as CSV files"
+            },
+            href: "#",
+            status: {
+                tag: {
+                    text: 'Optional',
+                    classes: 'govuk-tag--grey'
+                }
+            }
+        }
+    ]
+}) }}
+
 
 {# SET STATUS OF PRIVACY INFORMATION #}
 {# Refactor this logic outside of class attribute #}
@@ -268,7 +289,7 @@
     {% set privacyInformationStatusText = 'Completed' %}
 {% else %}
     {% set privacyInformationStatusTag = 'govuk-tag--blue' %}
-    {% set privacyInformationStatusText = 'Not yet started' %}
+    {% set privacyInformationStatusText = 'Not started' %}
 {% endif%}
 {% set htmlPrivacyInformation %}
     {% if data.privacyInformation %}
@@ -286,7 +307,7 @@
     {% set supportDetailsStatusText = 'Completed' %}
 {% else %}
     {% set supportDetailsStatusTag = 'govuk-tag--blue' %}
-    {% set supportDetailsStatusText = 'Not yet started' %}
+    {% set supportDetailsStatusText = 'Not started' %}
 {% endif%}
 {% set htmlSupportDetails %}
     {% if data.supportDetails %}
@@ -299,7 +320,7 @@
 {% endset %}
 
 <h2 class="app-task-list__section">
-    Provide privacy and contact details
+3. Provide privacy and contact details
 </h2>
 {{ govukTaskList({
     idPrefix: "processing-email",
@@ -331,7 +352,7 @@
     {% set formVersionStatusText = 'Completed' %}
 {% elif sections >= 6 %}
     {% set formVersionStatusTag = 'govuk-tag--blue' %}
-    {% set formVersionStatusText = 'Not yet started' %}
+    {% set formVersionStatusText = 'Not started' %}
 {% else %}
     {% set formVersionStatusTag = 'govuk-task-list__status--cannot-start-yet' %}
     {% set formVersionStatusText = 'Cannot start yet' %}
@@ -348,7 +369,7 @@
 {% endset %}
 
 <h2 class="app-task-list__section">
-    Make your form live
+4. Make your form live
 </h2>
 {% if data['journey'] and data['journey'] == 'groupAdminTasks' %}
 
@@ -370,15 +391,24 @@
 
 {% else %}
 {{ govukTaskList({
-    idPrefix: "processing-email",
+    idPrefix: "make-live",
     items: [
+        {   
+            title: {
+                text: 'Share a preview of your draft form'
+            },
+            href: '#',
+            status: {
+                html: '<strong class="govuk-tag govuk-tag--blue">Not started</strong>'
+            }
+        },
         {
             title: {
                 text: "Make your form live"
             },
             hint: {
                 text: formVersionStatusHint
-            } if sections < 6,
+            } if formVersionStatusHint !== '' and sections < 6,
             href: "make-your-form-live" if sections >= 6,
             status: {
                 html: htmlFormVersion,
@@ -393,7 +423,7 @@
 <form id="form" class="form" action="/form-designer/delete-draft" method="post" novalidate>
     {{ govukButton({
         text: "Delete draft form",
-        classes: "govuk-button--warning govuk-!-margin-top-5",
+        classes: "govuk-button--warning",
         name: "action",
         value: "deleteDraft"
     }) }}

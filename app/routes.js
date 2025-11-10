@@ -90,36 +90,24 @@ router.use('/form-designer/*', function (req, res, next) {
 Create a new form
 ================= */
 
-// Middleware name your form
-router.use('/form-designer/name-your-form', function (req, res, next) {
-
+// Name your form - GET
+router.get('/form-designer/name-your-form', function (req, res) {
   // get the previous page URL
   var previousPage = req.session.data.referer
 
   // set the default back link
   var previousPageLink = `your-form`
-  var previousPageText = 'Back to create a form'
+  var previousPageText = 'Back to create your form'
 
-  if (previousPage) {
+  // if user is creating a ‘new’ form we should change the back link
+  if (previousPage?.includes('your-forms')) {
     // set the GOV.UK Forms home back link
-    if (previousPage.includes('your-forms')) {
-      previousPageLink = `your-forms`
-      previousPageText = 'Back to your forms'
-    }
+    previousPageLink = `your-forms`
+    previousPageText = 'Back to ' + (req.session.data.defaultGroup || 'your forms' )
   }
-
-  // make back link available in the view
-  req.session.data.previousPageLink = previousPageLink
-  req.session.data.previousPageText = previousPageText
-
-  next();
-})
-
-// Name your form - GET
-router.get('/form-designer/name-your-form', function (req, res) {
   return res.render('form-designer/name-your-form', {
-    previousPageText: req.session.data.previousPageText,
-    previousPageLink: req.session.data.previousPageLink
+    previousPageText,
+    previousPageLink
   })
 })
 
@@ -144,11 +132,6 @@ router.post('/form-designer/name-your-form', function (req, res) {
   if(containsErrors) {
     res.render('form-designer/name-your-form', { errors, errorList, containsErrors })
   } else {
-
-    // remove temporary back link details
-    req.session.data.previousPageLink = undefined
-    req.session.data.previousPageText = undefined
-
     // set a success message for saving
     req.session.data.successMessage = 'Your form name has been saved'
     res.redirect('your-form')
@@ -204,8 +187,8 @@ router.get('/form-designer/your-form', function (req, res) {
   }
 
   return res.render('form-designer/your-form', {
-    successMessage: successMessage,
-    sections: sections
+    successMessage,
+    sections
   })
 })
 
@@ -504,85 +487,17 @@ Managing additional pages in a form
 
 // Route used to check Declaration is complete - Check your answers (CYA)
 router.post('/form-designer/pages/check-answers/edit', function (req, res) {
-  const action = req.session.data.action
-  req.session.data.action = undefined
-
+  const errors = {};
   var pageId = parseInt(req.params.pageId, 10)
   var pageIndex = pageId
   var pageData = req.session.data.pages[pageIndex]
+  var { checkAnswersDeclaration, isDeclarationComplete } = req.session.data
 
-  const errors = {};
-  const complete = req.session.data.isDeclarationComplete
-  const declarationContent = req.session.data.checkAnswersDeclaration
-
-  // content to display in notification banners
-  var saved = 'Your declaration has been saved'
-  var savedAndComplete = 'Your declaration has been saved and marked as complete'
-
-  // if no selection made, then throw an error
-  if (!complete || !complete.length) {
-    errors['isDeclarationComplete'] = {
-      text: 'Select yes if you want to mark this task as complete',
-      href: "#isDeclarationComplete"
-    }
-  }
-
-  // Convert the errors into a list, so we can use it in the template
-  const errorList = Object.values(errors)
-  // If there are no errors, redirect the user to the next page
-  // otherwise, show the page again with the errors set
-  const containsErrors = errorList.length > 0
-  // If there are errors on the page, redisplay it with the errors
-  if (action === 'update') {
-    // set a success message for saving
-    req.session.data.successMessage = saved
-    return res.render('form-designer/pages/check-answers/edit', {
-      pageId: pageId,
-      pageIndex: pageIndex,
-      pageData: pageData,
-      successMessage: saved
-    })
-  } else if(containsErrors) {
-    return res.render('form-designer/pages/check-answers/edit', {
-      pageId: pageId,
-      pageIndex: pageIndex,
-      pageData: pageData,
-      errors,
-      errorList,
-      containsErrors
-    })
-  } else {
-    if(complete === 'yes') {
-      // set a success message for saving
-      req.session.data.successMessage = savedAndComplete
-    } else {
-      // set a success message for saving
-      req.session.data.successMessage = saved
-    }
-    return res.redirect('../../your-form')
-  }
-})
-
-// Route used to check What happens next (WHN) content has been added
-router.post('/form-designer/pages/confirmation/edit', function (req, res) {
-  const action = req.session.data.action
-  req.session.data.action = undefined
-
-  var pageId = parseInt(req.params.pageId, 10)
-  var pageIndex = pageId
-  var pageData = req.session.data.pages[pageIndex]
-
-  const errors = {};
-  const whatHappensNext = req.session.data.confirmationNext
-
-  // content to display in notification banners
-  var saved = 'Your information about what happens next has been saved'
-
-  // if no selection made, then throw an error
-  if (!whatHappensNext || !whatHappensNext.length) {
-    errors['confirmationNext'] = {
-      text: 'Enter some information about what happens next',
-      href: "#confirmationNext"
+  // if trying to mark as complete while having too many characters, then throw an error
+   if ((checkAnswersDeclaration.length > 2000) && (isDeclarationComplete == 'yes')) {
+    errors['checkAnswersDeclaration'] = {
+      text: 'The declaration cannot be longer than 2,000 characters',
+      href: "#check-answers-declaration"
     }
   }
 
@@ -593,7 +508,7 @@ router.post('/form-designer/pages/confirmation/edit', function (req, res) {
   const containsErrors = errorList.length > 0
   // If there are errors on the page, redisplay it with the errors
   if(containsErrors) {
-    return res.render('form-designer/pages/confirmation/edit', {
+    return res.render('form-designer/pages/check-answers/edit', {
       pageId: pageId,
       pageIndex: pageIndex,
       pageData: pageData,
@@ -601,16 +516,43 @@ router.post('/form-designer/pages/confirmation/edit', function (req, res) {
       errorList,
       containsErrors
     })
-  } else if (action === 'update') {
-    return res.render('form-designer/pages/confirmation/edit', {
-      pageId: pageId,
-      pageIndex: pageIndex,
-      pageData: pageData,
-      successMessage: saved
-    })
+  } else {
+    if(isDeclarationComplete === 'yes') {
+      // set a success message for saving
+      req.session.data.successMessage = 'Your declaration has been saved and marked as complete'
+    } else {
+      // set a success message for saving
+      req.session.data.successMessage = 'Your declaration has been saved'
+    }
+    req.session.data.isDeclarationComplete = isDeclarationComplete
+    return res.redirect('../../your-form')
+  }
+})
+
+// Route used to check What happens next (WHN) content has been added
+router.post('/form-designer/pages/confirmation/edit', function (req, res) {
+  const errors = {};
+  const { whatHappensNext } = req.session.data
+
+  // if no selection made, then throw an error
+  if (!whatHappensNext || !whatHappensNext.length) {
+    errors['whatHappensNext'] = {
+      text: 'Enter some information about what happens next',
+      href: "#what-happens-next"
+    }
+  }
+
+  // Convert the errors into a list, so we can use it in the template
+  const errorList = Object.values(errors)
+  // If there are no errors, redirect the user to the next page
+  // otherwise, show the page again with the errors set
+  const containsErrors = errorList.length > 0
+  // If there are errors on the page, redisplay it with the errors
+  if(containsErrors) {
+    return res.render('form-designer/pages/confirmation/edit', { errors, errorList, containsErrors })
   } else {
     // set a success message for saving
-    req.session.data.successMessage = saved
+    req.session.data.successMessage = 'Your information about what happens next has been saved'
     return res.redirect('../../your-form')
   }
 })
@@ -641,17 +583,73 @@ router.get('/form-designer/pages/:pageId/view', function (req, res) {
 
 // Routing for new-tab page previews, set to a specific page
 router.post('/form-designer/preview/:pageId(\\d+)', function (req, res) {
+  // this is used to check if the user has clicked ‘change’ link on the CYA screen - we add a URL query ‘cya=true’
   var cya = req.session.data.cya
-  req.session.data.cya = undefined
+  // this clears the temporary URL query so it can be reused on another ‘change’ link
+  req.session.data.cya = undefined 
+
   var pageId = req.params.pageId
   var pageIndex = parseInt(pageId)
   const isLastQuestionPage = pageIndex === (req.session.data.pages.length - 1)
 
+  var pages = req.session.data.pages
+  var pageAnswer = req.session.data[pageIndex]
+
+  var pagesCYA = req.session.data.pagesCYA
+
+  if (!pagesCYA) {
+    pagesCYA = []
+  }
+
+  // set variable for the next page, with default
+  var nextPage = `${pageIndex + 1}`
+
+  // for all pages in the form 
+  for (let index = 0; index < pages.length; index++) {
+    const page = pages[index];
+    // get the current page
+    if (page.pageIndex == pageIndex) {
+      // if current page has routing attribute
+      if (page.routing) {
+        if (page.routing.answer != pageAnswer) {
+          // if the answer is being changed and doesn’t skip remove the CYA change link function to force user to go through the rest of the journey
+          cya = 'false'
+        }
+        if (page.routing.answer == pageAnswer) {
+          // override the nextPage to the one in routing
+          nextPage = page.routing.skipTo
+        }
+        if (page.routing.thenSkipTo) {
+          // override the nextPage to the ‘Route for any other answer’
+          nextPage = page.routing.thenSkipTo
+        }
+      }
+      // check if we are changing an answer
+      if (cya !== 'true') {
+        // check current page against pagesCYA array - if it exists don’t add it
+        var pageExists = 'false';
+        for (let andex = 0; andex < pagesCYA.length; andex++) {
+          const answeredPage = pagesCYA[andex];
+          if (answeredPage.pageIndex == page.pageIndex) {
+            pageExists = 'true' // the page exists
+          }
+        }
+        // ignore existing pages
+        if (pageExists !== 'true') {
+          // add this answered question to our check your answers page
+          pagesCYA.push(page)
+        }
+      }
+    }
+  }
+  // set the session data so we can use it
+  req.session.data.pagesCYA = pagesCYA
+
   // if last question in form OR user clicked on change link from CYA, then go to CYA
-  if(isLastQuestionPage || cya === 'true') {
+  if(isLastQuestionPage || nextPage == 'cya' || cya === 'true') {
     return res.redirect('check-answers')
   } else {
-    return res.redirect(`${pageIndex + 1}`)
+    return res.redirect(nextPage)
   }
 })
 
@@ -1024,5 +1022,8 @@ router.use('/pages', require('./views/form-designer/pages/\_routes'))
 
 /* Use the routes file in product-pages for groups and members routes */
 router.use('/product-pages', require('./views/product-pages/\_routes'))
+
+/* Use the routes file in question-routes for adding routing and branching to questions */
+router.use('/question-routes', require('./views/form-designer/question-routes/\_routes'))
 
 module.exports = router
