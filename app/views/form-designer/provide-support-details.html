@@ -1,10 +1,10 @@
 {% extends "layout-govuk-forms.html" %}
 
-{% set pageTitle = 'Provide contact details for support' %}
-{% set pageQuestion = 'How can people get help with filling in this form?' %}
+{% set pageTitle = "Provide contact details for support" %}
+{% set pageQuestion = "How can people get help with filling in this form?" %}
 
 {% block pageTitle %}
-  {{ "Error: " if containsErrors }}{{ pageTitle }}: {{ data.formTitle or '[formTitle]' }} - GOV.UK Forms
+  {{ "Error: " if containsErrors }}{{ pageTitle }}: {{ data.formTitle or "[formTitle]" }} - GOV.UK Forms
 {% endblock %}
 
 {% block beforeContent %}
@@ -25,7 +25,7 @@
         }) }}
         {% endif %}
 
-        <span class="govuk-caption-l">{{ data.formTitle or '[formTitle]' }}</span>
+        <span class="govuk-caption-l">{{ data.formTitle or "[formTitle]" }}</span>
         <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
 
         <p class="govuk-body">
@@ -59,9 +59,8 @@
           label: {
             text: "Enter the email address"
           },
-          value: data['emailSupport'],
-          errorMessage: {
-            text: errors['emailSupport'].text } if errors['emailSupport'].text
+          value: data.emailSupport,
+          errorMessage: { text: errors["emailSupport"].text } if errors["emailSupport"].text
         }) }}
         {% endset -%}
 
@@ -75,9 +74,8 @@
           label: {
             text: "Enter the phone number and its opening times"
           },
-          value: data['phoneSupport'],
-          errorMessage: {
-            text: errors['phoneSupport'].text } if errors['phoneSupport'].text
+          value: data.phoneSupport,
+          errorMessage: { text: errors["phoneSupport"].text } if errors["phoneSupport"].text
         }) }}
         {% endset -%}
 
@@ -93,9 +91,8 @@
           hint: {
             text: "For example, https://gov.uk/contact-form"
           },
-          value: data['onlineSupportLink'],
-          errorMessage: {
-            text: errors['onlineSupportLink'].text } if errors['onlineSupportLink'].text
+          value: data.onlineSupportLink,
+          errorMessage: { text: errors["onlineSupportLink"].text } if errors["onlineSupportLink"].text
         }) }}
         {{ govukInput({
           id: "online-support-text",
@@ -108,9 +105,8 @@
           hint: {
             text: "For example, ‘Online contact form’"
           },
-          value: data['onlineSupportText'],
-          errorMessage: {
-            text: errors['onlineSupportText'].text } if errors['onlineSupportText'].text
+          value: data.onlineSupportText,
+          errorMessage: { text: errors["onlineSupportText"].text } if errors["onlineSupportText"].text
         }) }}
         {% endset -%}
 
@@ -152,8 +148,7 @@
               checked: checked("supportDetails", "online")
             }
           ],
-          errorMessage: {
-            text: errors['supportDetails'].text } if errors['supportDetails'].text
+          errorMessage: { text: errors["supportDetails"].text } if errors["supportDetails"].text
         }) }}
 
         {{ govukButton({

@@ -1,9 +1,9 @@
 {% extends "layout-govuk-forms.html" %}
 
-{% set pageTitle = 'Are you sure you want to delete this draft?' %}
+{% set pageTitle = "Are you sure you want to delete this draft?" %}
 
 {% block pageTitle %}
-  {{ "Error: " if containsErrors }}{{pageTitle}}: {{ data.formTitle or '[formTitle]' }} - GOV.UK Forms
+  {{ "Error: " if containsErrors }}{{ pageTitle }}: {{ data.formTitle or "[formTitle]" }} - GOV.UK Forms
 {% endblock %}
 
 {% block beforeContent %}
@@ -21,7 +21,7 @@
       }) }}
     {% endif %}
 
-    <span class="govuk-caption-l">{{ data.formTitle or '[formTitle]' }}</span>
+    <span class="govuk-caption-l">{{ data.formTitle or "[formTitle]" }}</span>
     <form method="post" novalidate>
       {{ govukRadios({
         idPrefix: "deleteDraftForm",
@@ -43,7 +43,7 @@
             text: "No"
           }
         ],
-        errorMessage: { text: errors['deleteDraftForm'].text } if errors['deleteDraftForm'].text
+        errorMessage: { text: errors["deleteDraftForm"].text } if errors["deleteDraftForm"].text
       }) }}
 
       {{ govukButton({

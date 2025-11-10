@@ -1,9 +1,9 @@
 {% extends "layout-govuk-forms.html" %}
 
-{% set pageTitle = 'Share a preview of your draft form' %}
+{% set pageTitle = "Share a preview of your draft form" %}
 
 {% block pageTitle %}
-  {{ "Error: " if containsErrors }}{{ pageTitle }}: {{ data.formTitle or '[formTitle]' }} - GOV.UK Forms
+  {{ "Error: " if containsErrors }}{{ pageTitle }}: {{ data.formTitle or "[formTitle]" }} - GOV.UK Forms
 {% endblock %}
 
 {% block beforeContent %}
@@ -12,7 +12,7 @@
   </a>
 {% endblock %}
 
-{% set titleURL = (data.formTitle or '[formTitle]') | lower | replace(':', '') | replace('-', '') | replace(',', '') | replace(' ', '-') %}
+{% set titleURL = (data.formTitle or "[formTitle]") | lower | replace(":", "") | replace("-", "") | replace(",", "") | replace(" ", "-") %}
 
 {% block content %}
   <div class="govuk-grid-row">
@@ -26,7 +26,7 @@
         }) }}
         {% endif %}
 
-        <span class="govuk-caption-l">{{ data.formTitle or '[formTitle]' }}</span>
+        <span class="govuk-caption-l">{{ data.formTitle or "[formTitle]" }}</span>
         <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
 
         <p class="govuk-body">
@@ -45,7 +45,9 @@
 
         <h2 class="govuk-heading-m">Preview link for this draft form</h2>
         <p class="govuk-body">
-          <span id="formURL" value="https://submit.dev.forms.service.gov.uk/preview-draft/58/{{titleURL}}">https://submit.dev.forms.service.gov.uk/preview-draft/{{titleURL}}</span>
+          <span id="formURL" value="https://submit.dev.forms.service.gov.uk/preview-draft/58/{{ titleURL }}">
+            https://submit.dev.forms.service.gov.uk/preview-draft/{{ titleURL }}
+          </span>
         </p>
         <button class="govuk-button govuk-button--secondary govuk-!-margin-bottom-8" type="button" onclick="copyURL()">
           Copy link to clipboard
@@ -77,7 +79,7 @@
               checked: checked("sharePreview", "no")
             }
           ],
-          errorMessage: { text: errors['sharePreview'].text } if errors['sharePreview'].text
+          errorMessage: { text: errors["sharePreview"].text } if errors["sharePreview"].text
         }) }}
 
         {{ govukButton({

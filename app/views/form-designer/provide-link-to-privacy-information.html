@@ -1,9 +1,9 @@
 {% extends "layout-govuk-forms.html" %}
 
-{% set pageTitle = 'Provide a link to privacy information for this form' %}
+{% set pageTitle = "Provide a link to privacy information for this form" %}
 
 {% block pageTitle %}
-  {{ "Error: " if containsErrors }}{{ pageTitle }}: {{ data.formTitle or '[formTitle]' }} - GOV.UK Forms
+  {{ "Error: " if containsErrors }}{{ pageTitle }}: {{ data.formTitle or "[formTitle]" }} - GOV.UK Forms
 {% endblock %}
 
 {% block beforeContent %}
@@ -24,7 +24,7 @@
         }) }}
         {% endif %}
 
-        <span class="govuk-caption-l">{{ data.formTitle or '[formTitle]' }}</span>
+        <span class="govuk-caption-l">{{ data.formTitle or "[formTitle]" }}</span>
         <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
 
         <p class="govuk-body">
@@ -68,9 +68,8 @@
           hint: {
             text: "For example, https://www.gov.uk/help/privacy-notice"
           },
-          value: data['privacyInformation'],
-          errorMessage: {
-            text: errors['privacyInformation'].text } if errors['privacyInformation'].text
+          value: data.privacyInformation,
+          errorMessage: { text: errors["privacyInformation"].text } if errors["privacyInformation"].text
         }) }}
 
         {{ govukButton({

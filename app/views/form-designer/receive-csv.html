@@ -1,9 +1,9 @@
 {% extends "layout-govuk-forms.html" %}
 
-{% set pageTitle = 'Get completed forms as CSV files' %}
+{% set pageTitle = "Get completed forms as CSV files" %}
 
 {% block pageTitle %}
-  {{ "Error: " if containsErrors }}{{ pageTitle }}: {{ data.formTitle or '[formTitle]' }} - GOV.UK Forms
+  {{ "Error: " if containsErrors }}{{ pageTitle }}: {{ data.formTitle or "[formTitle]" }} - GOV.UK Forms
 {% endblock %}
 
 {% block beforeContent %}
@@ -24,7 +24,7 @@
         }) }}
         {% endif %}
 
-        <span class="govuk-caption-l">{{ data.formTitle or '[formTitle]' }}</span>
+        <span class="govuk-caption-l">{{ data.formTitle or "[formTitle]" }}</span>
         <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
 
         <p class="govuk-body">
@@ -54,7 +54,7 @@
               text: "Get CSV files"
             }
           ],
-          errorMessage: { text: errors['receiveCSV'].text } if errors['receiveCSV'].text
+          errorMessage: { text: errors["receiveCSV"].text } if errors["receiveCSV"].text
         }) }}
 
         {{ govukButton({

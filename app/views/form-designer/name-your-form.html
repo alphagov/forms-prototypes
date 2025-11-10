@@ -1,15 +1,15 @@
 {% extends "layout-govuk-forms.html" %}
 
-{% set pageTitle = 'What is the name of your form?' %}
+{% set pageTitle = "What is the name of your form?" %}
 
 {% block pageTitle %}
-  {{ "Error: " if containsErrors }}{{pageTitle}} - GOV.UK Forms
+  {{ "Error: " if containsErrors }}{{ pageTitle }} - GOV.UK Forms
 {% endblock %}
 
 {% block beforeContent %}
-  {% if data['journey'] and data['journey'] == 'groupAdminTasks' %}
+  {% if data.journey and data.journey == "groupAdminTasks" %}
     <a class="govuk-back-link" href="../product-pages/group-admin/grouplanding">Back to your group</a>
-  {% elif data['journey'] and data['journey'] == 'orgAdminTasks' %}
+  {% elif data.journey and data.journey == "orgAdminTasks" %}
     <a class="govuk-back-link" href="../product-pages/org-admin/grouplanding">Back to your group</a>
   {% else %}
     {# Back links are handled in routes.js #}
@@ -42,8 +42,8 @@
           },
           id: "form-title",
           name: "formTitle",
-          value: data['formTitle'],
-          errorMessage: { text: errors['formTitle'].text } if errors['formTitle'].text
+          value: data.formTitle,
+          errorMessage: { text: errors["formTitle"].text } if errors["formTitle"].text
         }) }}
 
         {{ govukButton({
