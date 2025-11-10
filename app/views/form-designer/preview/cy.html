@@ -23,7 +23,7 @@
 {% set opensInNewTabText = "(agor mewn tab newydd)" %}
 
 {% block beforeContent %}
-  {% if markWelshComplete and ((markWelshComplete == 'yes') or (markWelshComplete == 'no')) %}
+  {% if data.markWelshComplete and ((data.markWelshComplete == 'yes') or (data.markWelshComplete == 'no')) %}
   <nav class="dwp-language-toggle" aria-label="Language toggle">
     <ul class="dwp-language-toggle__list">
       <li class="dwp-language-toggle__list-item">
