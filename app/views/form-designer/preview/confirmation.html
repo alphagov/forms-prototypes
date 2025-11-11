@@ -2,7 +2,7 @@
 {% set mainClasses = "main--draft govuk-main-wrapper--auto-spacing" %}
 
 {% block pageTitle %}
-  {{ data['confirmationTitle'] }} - Preview - GOV.UK
+  {{ data.confirmationTitle }} - Preview - GOV.UK
 {% endblock %}
 
 {% block content %}
@@ -13,12 +13,12 @@
       {% if data.paymentLink %}
       You still need to pay
       {% else %}
-      {{ data['confirmationTitle'] }}
+      {{ data.confirmationTitle }}
       {% endif %}
       <span class="govuk-visually-hidden"> preview</span>
     {% endset %}
 
-    {% set referenceNumber = 'HDJ2123F' %}
+    {% set referenceNumber = "HDJ2123F" %}
 
     {% set referenceHTML %}
       Your reference number is<br>
@@ -28,14 +28,14 @@
     {{ govukPanel({
       titleHtml: titleHTML,
       html: referenceHTML,
-      classes: 'app-panel-blue' if data.paymentLink
+      classes: "app-panel-blue" if data.paymentLink
     }) }}
 
-    {% if data['confirmationNext'] %}
+    {% if data.confirmationNext %}
       <h2 class="govuk-heading-m">What happens next</h2>
       <div class="app-prose-scope">
       {% markdown %}
-        {{ data['confirmationNext'] | striptags(true) | escape | nl2br }}
+        {{ data.confirmationNext | striptags(true) | escape | nl2br }}
       {% endmarkdown %}
       </div>
     {% endif %}
@@ -43,7 +43,7 @@
     {% if data.paymentLink %}
       {{ govukButton({
         text: "Continue to pay",
-        href: '../payment/payment-link-example?reference=' + referenceNumber,
+        href: "../payment/payment-link-example?reference=" + referenceNumber,
         attributes: {
           target: "_parent"
         }

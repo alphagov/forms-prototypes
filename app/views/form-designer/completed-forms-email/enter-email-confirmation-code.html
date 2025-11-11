@@ -1,9 +1,9 @@
 {% extends "layout-govuk-forms.html" %}
 
-{% set pageTitle = 'Enter the confirmation code' %}
+{% set pageTitle = "Enter the confirmation code" %}
 
 {% block pageTitle %}
-  {{ "Error:" if containsErrors }}{{ pageTitle }}: {{ data.formTitle or '[formTitle]' }} - GOV.UK Forms
+  {{ "Error:" if containsErrors }}{{ pageTitle }}: {{ data.formTitle or "[formTitle]" }} - GOV.UK Forms
 {% endblock %}
 
 {% block beforeContent %}
@@ -23,9 +23,9 @@
         }) }}
       {% endif %}
 
-      <span class="govuk-caption-l">{{ data.formTitle or '[formTitle]' }}</span>
+      <span class="govuk-caption-l">{{ data.formTitle or "[formTitle]" }}</span>
       
-      {% include './partials/add-confirmation-code.html' %}
+      {% include "./partials/add-confirmation-code.html" %}
       
     </div>
   </div>

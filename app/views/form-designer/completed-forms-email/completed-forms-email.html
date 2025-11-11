@@ -1,9 +1,9 @@
 {% extends "layout-govuk-forms.html" %}
 
-{% set pageTitle = 'Email address for completed forms' %}
+{% set pageTitle = "Email address for completed forms" %}
 
 {% block pageTitle %}
-  {{ "Error:" if containsErrors }}{{ pageTitle }}: {{ data.formTitle or '[formTitle]' }} - GOV.UK Forms
+  {{ "Error:" if containsErrors }}{{ pageTitle }}: {{ data.formTitle or "[formTitle]" }} - GOV.UK Forms
 {% endblock %}
 
 {% block beforeContent %}
@@ -18,7 +18,7 @@
 
       {% if data.successMessage %}
         {{ govukNotificationBanner({
-          type: 'success',
+          type: "success",
           text: data.successMessage
         }) }}
       {% endif %}
@@ -30,7 +30,7 @@
         }) }}
       {% endif %}
 
-      <span class="govuk-caption-l">{{ data.formTitle or '[formTitle]' }}</span>
+      <span class="govuk-caption-l">{{ data.formTitle or "[formTitle]" }}</span>
       <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
 
       {% if not data.currentFormsEmail %}
@@ -40,14 +40,14 @@
       {% endif %}
 
       {% if data.formsEmail and not data.currentFormsEmail %}
-      {{govukSummaryList({
+      {{ govukSummaryList({
         rows: [
         {
           key: {
-            text:"Email" 
+            text: "Email" 
           },
           value: {
-            text: data['formsEmail'] or 'email@address.com' | safe
+            text: data.formsEmail or "email@address.com" | safe
           },
           actions: {
             items: [
@@ -69,10 +69,10 @@
         rows: [
         {
           key: {
-            text:"Current email address" 
+            text: "Current email address" 
           },
           value: {
-            text: data.currentFormsEmail or 'email@address.com' | safe
+            text: data.currentFormsEmail or "email@address.com" | safe
           },
           actions: {
             items: [
@@ -88,14 +88,14 @@
 
     <h2 class="govuk-heading-m">New email address to be confirmed</h2>
 
-    {{govukSummaryList({
+    {{ govukSummaryList({
         rows: [
         {
           key: {
-            text:"Pending email address" 
+            text: "Pending email address" 
           },
           value: {
-            text: data.formsEmail or 'email@address.com' | safe
+            text: data.formsEmail or "email@address.com" | safe
           },
           actions: {
             items: [
@@ -106,15 +106,16 @@
             }]
           }
         }]
-      })
-     }}
+      }) }}
 
     <p class="govuk-body">
       A confirmation code has been sent to {{ data.formsEmail }}.
     </p>
 
     <p class="govuk-body">
-      <a href="enter-email-confirmation-code" class="govuk-link">Enter the code to confirm the new email address</a>
+      <a href="enter-email-confirmation-code" class="govuk-link">
+        Enter the code to confirm the new email address
+      </a>
     </p>
 
     {% endif %}
@@ -124,4 +125,5 @@
     </p>
   </div>
 </div>
+
 {% endblock %}

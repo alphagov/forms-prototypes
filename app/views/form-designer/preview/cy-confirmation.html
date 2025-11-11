@@ -20,7 +20,7 @@
       {{ pageTitle }} <span class="govuk-visually-hidden"> preview</span>
     {% endset %}
 
-    {% set referenceNumber = 'HDJ2123F' %}
+    {% set referenceNumber = "HDJ2123F" %}
 
     {% set referenceHTML %}
       Rhif cyfeirnod eich ffurflen yw:<br>
@@ -30,15 +30,15 @@
     {{ govukPanel({
       titleHtml: titleHTML,
       html: referenceHTML,
-      classes: 'app-panel-blue' if data.paymentLink
+      classes: "app-panel-blue" if data.paymentLink
     }) }}
 
     <p class="govuk-body">
       Rydym wedi anfon e-bost cadarnhau atoch.
     </p>
 
-    {% if data['confirmationNext'] %}
-      <h2 class="govuk-heading-m">Beth sy'n digwydd nesaf?</h2>
+    {% if data.confirmationNext %}
+      <h2 class="govuk-heading-m">Beth sy’n digwydd nesaf?</h2>
       <div class="app-prose-scope">
       {% markdown %}
         {{ data.welshConfirmationNext or data.confirmationNext | striptags(true) | escape | nl2br }}
@@ -49,7 +49,7 @@
     {% if data.paymentLink %}
       {{ govukButton({
         text: "Parhau i dalu",
-        href: '../payment/payment-link-example?reference=' + referenceNumber,
+        href: "../payment/payment-link-example?reference=" + referenceNumber,
         attributes: {
           target: "_parent"
         }

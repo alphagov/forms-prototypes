@@ -1,9 +1,9 @@
 {% extends "layout-govuk-forms.html" %}
 
-{% set pageTitle = 'Add a link to a payment page on GOV.UK Pay' %}
+{% set pageTitle = "Add a link to a payment page on GOV.UK Pay" %}
 
 {% block pageTitle %}
-  {{ "Error: " if containsErrors }}{{ pageTitle }}: {{ data.formTitle or '[formTitle]' }} - GOV.UK Forms
+  {{ "Error: " if containsErrors }}{{ pageTitle }}: {{ data.formTitle or "[formTitle]" }} - GOV.UK Forms
 {% endblock %}
 
 {% block beforeContent %}
@@ -24,7 +24,7 @@
         }) }}
         {% endif %}
 
-        <span class="govuk-caption-l">{{ data.formTitle or '[formTitle]' }}</span>
+        <span class="govuk-caption-l">{{ data.formTitle or "[formTitle]" }}</span>
         <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
 
         <p class="govuk-body">
@@ -111,9 +111,9 @@
           hint: {
             text: "For example, https://www.gov.uk/payments/your-payment-link"
           },
-          value: data['paymentLink'],
+          value: data.paymentLink,
           errorMessage: {
-            text: errors['paymentLink'].text } if errors['paymentLink'].text
+            text: errors["paymentLink"].text } if errors["paymentLink"].text
         }) }}
 
         {{ govukButton({

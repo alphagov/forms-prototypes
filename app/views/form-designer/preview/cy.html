@@ -23,7 +23,7 @@
 {% set opensInNewTabText = "(agor mewn tab newydd)" %}
 
 {% block beforeContent %}
-  {% if data.markWelshComplete and ((data.markWelshComplete == 'yes') or (data.markWelshComplete == 'no')) %}
+  {% if data.markWelshComplete and ((data.markWelshComplete == "yes") or (data.markWelshComplete == "no")) %}
   <nav class="dwp-language-toggle" aria-label="Language toggle">
     <ul class="dwp-language-toggle__list">
       <li class="dwp-language-toggle__list-item">
@@ -51,7 +51,7 @@
 
 {% block content %}
   {% set nextPageId = pageId | int + 1 %}
-  {% set isLastQuestionPage = pageId == data["highestPageId"] %}
+  {% set isLastQuestionPage = pageId == data.highestPageId %}
   {% set formAction = "../check-answers-page-preview-new-tab" if isLastQuestionPage else nextPageId %}
 
   <div class="govuk-grid-row">
@@ -359,7 +359,7 @@
         {% set year = pageId + "-year" %}
 
         {% set neValue %}
-          {{ data[pageId + "-day"] + "/" + data[pageId + "-month"] + "/" + data[pageId + "-year"]}}
+          {{ data[pageId + "-day"] + "/" + data[pageId + "-month"] + "/" + data[pageId + "-year"] }}
         {% endset %}
 
           {{ govukDateInput({
@@ -415,7 +415,7 @@
 
           {% if pageData["listSettings"] and pageData["listSettings"].includes("oneOption") %}
             <div class="govuk-form-group">
-              <fieldset class="govuk-fieldset" aria-describedby="question-{{pageId}}-hint">
+              <fieldset class="govuk-fieldset" aria-describedby="question-{{ pageId }}-hint">
 
                 {% if not pageData["intro-text"] %}
                   <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
@@ -425,7 +425,7 @@
                   </legend>
                 {% endif %}
 
-                <div id="question-{{pageId}}-hint" class="govuk-hint">
+                <div id="question-{{ pageId }}-hint" class="govuk-hint">
                   {{ pageHintText }}
                 </div>
                 <div class="govuk-radios" data-module="govuk-radios">
@@ -478,7 +478,7 @@
                   </legend>
                 {% endif %}
 
-                <div id="question-{{pageId}}-hint" class="govuk-hint">
+                <div id="question-{{ pageId }}-hint" class="govuk-hint">
                   {{ pageHintText }}
                 </div>
                 <div class="govuk-checkboxes" data-module="govuk-checkboxes">
