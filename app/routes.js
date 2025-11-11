@@ -207,8 +207,14 @@ router.get('/form-designer/your-form', function (req, res) {
   if (req.session.data['supportDetails']) {
     sections = sections + 1 
   }
+
   // if what happens next completed = sections =+ 1 
-  if (req.session.data['markWelshComplete']) {
+  if (req.session.data.markWelshComplete && (req.session.data.markWelshComplete == "yes")) {
+    sections = sections + 1
+  }
+
+  // if share preview completed = sections =+ 1 
+  if (req.session.data.sharePreview && (req.session.data.sharePreview == "yes")) {
     sections = sections + 1
   }
 
