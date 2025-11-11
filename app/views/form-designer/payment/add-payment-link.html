@@ -1,14 +1,14 @@
 {% extends "layout-govuk-forms.html" %}
 
-{% set pageTitle = 'Add a link to a payment page on GOV.UK Pay' %}
+{% set pageTitle = "Add a link to a payment page on GOV.UK Pay" %}
 
 {% block pageTitle %}
-  {{ "Error: " if containsErrors }}{{ pageTitle }}: {{ data.formTitle or '[formTitle]' }} - GOV.UK Forms
+  {{ "Error: " if containsErrors }}{{ pageTitle }}: {{ data.formTitle or "[formTitle]" }} - GOV.UK Forms
 {% endblock %}
 
 {% block beforeContent %}
   <a class="govuk-back-link" href="../your-form" target="_parent">
-    Back to create a form
+    Back to create your form
   </a>
 {% endblock %}
 
@@ -24,83 +24,96 @@
         }) }}
         {% endif %}
 
-        <span class="govuk-caption-l">{{ data.formTitle or '[formTitle]' }}</span>
+        <span class="govuk-caption-l">{{ data.formTitle or "[formTitle]" }}</span>
         <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
 
         <p class="govuk-body">
-          You can set up a payment page (called a ‘payment link’) on GOV.UK Pay - this lets someone make a payment after submitting their form.
+          You can use <a class="govuk-link" href="https://www.payments.service.gov.uk/" target="_blank">GOV.UK Pay (opens in a new tab)</a> to set up a payment page (called a ‘payment link’).
         </p>
-        <p class="govuk-body{% if data['payment-link-content'] === 'long-content' %} govuk-!-margin-bottom-7{% endif %}">
-          You’ll first need to create your payment link using GOV.UK Pay. You can then copy and paste its URL in the box below.
+        <p class="govuk-body">
+          Once it’s set up, you can copy and paste the payment link URL into the box below. This will add a payment page to the end of your form.
         </p>
 
-        {% if data['payment-link-content'] !== 'long-content' %}
-        <p class="govuk-body govuk-!-margin-bottom-7">
-          <a class="govuk-link" href="https://www.payments.service.gov.uk/govuk-payment-pages/" target="_blank">
-            Find out how to create a GOV.UK Pay payment link (opens in a new tab)
-          </a>
+        <h2 class="govuk-heading-m">Setting up GOV.UK Pay</h2>
+        <p class="govuk-body">
+          You’ll need to set up a GOV.UK Pay account if you do not already have one.
         </p>
-        {% endif %}
+        <p class="govuk-body">
+          You’ll also need to talk to your organisation’s finance team to:
+        </p>
+        <ul class="govuk-list govuk-list--bullet">
+          <li>make sure you’re allowed to take payments in this way</li>
+          <li>set up a payment service provider (PSP)</li>
+        </ul>
 
-        {% if (data['payment-link-content'] === 'medium-content') or (data['payment-link-content'] === 'long-content') %}
-          <h2 class="govuk-heading-m">How this will work for people filling in your form</h2>
+        {{ govukInsetText({
+          text: "It could be up to several months before you’re ready to take payments. This depends on the PSP arrangements for your organisation."
+        }) }}
 
-          <p class="govuk-body">
-            Once someone's submitted their form they'll see a confirmation page showing:
-          </p>
-          <ul class="govuk-list govuk-list--bullet">
-            <li>a blue banner saying “You still need to pay”</li>
-            <li>their GOV.UK Forms reference number</li>
-            <li>a green ‘Continue to pay’ button - this will take them to GOV.UK Pay to make their payment</li>
-          </ul>
+        <h2 class="govuk-heading-m">Creating your payment link in GOV.UK Pay</h2>
+        <p class="govuk-body">
+          Once you have a GOV.UK Pay account you can start creating your payment link by selecting <strong>Add a new service</strong>.
+        </p>
+        
+        <h3 class="govuk-heading-s">Set up your payment link to use a form’s unique reference number</h3>
+        <p class="govuk-body">
+          GOV.UK Forms adds a unique 8-character reference to each form submission.
+        </p>
+        <p class="govuk-body">
+          When creating a payment link in GOV.UK Pay, you’ll be asked ‘Do your users already have a payment reference?’
+        </p>
+        <p class="govuk-body">
+          Select <strong>Yes</strong>.
+        </p>
+        <p class="govuk-body">
+          This means the form reference number will automatically be sent through to GOV.UK Pay when someone makes a payment.
+        </p>
+        <p class="govuk-body">
+          When asked to fill in the <strong>Name of payment reference</strong> field, enter ‘Form reference number’.
+        </p>
 
-          <p class="govuk-body govuk-!-margin-bottom-7">
-            These details will also be included in a confirmation email if someone chooses to receive this.
-          </p>
+        <h3 class="govuk-heading-s">How this will help people processing your forms</h3>
+        <p class="govuk-body">
+          The form reference number will be included in the form submission email sent to your processing email address.
+        </p>
+        <p class="govuk-body">
+          This can help match up form submissions with payments in GOV.UK Pay.
+        </p>
+        <p class="govuk-body">
+          <a class="govuk-link" href="https://www.payments.service.gov.uk/govuk-payment-pages/" target="_blank">Find out more about creating a GOV.UK Pay payment link (opens in a new tab)</a>
+        </p>
 
-        {% endif %}
+        <h2 class="govuk-heading-m">How this will work for people filling in your form</h2>
+        <p class="govuk-body">
+          Once someone’s submitted their form they’ll see a confirmation page showing:
+        </p>
+        <ul class="govuk-list govuk-list--bullet">
+          <li>a blue banner saying ‘You still need to pay’</li>
+          <li>their form’s unique reference number</li>
+          <li>the ‘what happens next’ information you’ve added</li>
+          <li>a green ‘Continue to pay’ button - this will take them to GOV.UK Pay to make their payment</li>
+        </ul>
+        <p class="govuk-body">
+          The reference number, payment link and ‘what happens next’ information will also be included in a confirmation email for form fillers - if they choose to receive this.
+        </p>
 
-        {% if data['payment-link-content'] === 'long-content' %}
-          <h2 class="govuk-heading-m">
-            Setting up a ‘payment link’ on GOV.UK Pay
-          </h2>
-
-          <p class="govuk-body">
-            Before you can take payments using a payment link you’ll need to:
-          </p>
-          <ul class="govuk-list govuk-list--bullet">
-            <li>set up a <a class="govuk-link" href="https://payments.service.gov.uk/" target="_blank">GOV.UK Pay (opens in a new tab)</a> account if you don't have one</li>
-            <li>talk to your local finance team to set up a payment service provider (PSP)</li>
-          </ul>
-
-          {{ govukInsetText({
-            text: "It may be up to several months before you’re ready to take payments. This depends on the PSP arrangements for your department."
-          }) }}
-
-          <p class="govuk-body govuk-!-margin-bottom-7">
-            <a class="govuk-link" href="https://www.payments.service.gov.uk/govuk-payment-pages/" target="_blank">
-              Find out how to create a GOV.UK Pay payment link (opens in a new tab)
-            </a>
-          </p>
-
-        {% endif %}
 
         <input type="hidden" id="tempPaymentLink" name="tempPaymentLink" value="{{ data.paymentLink }}" />
 
         {{ govukInput({
           label: {
-            text: "Enter the URL of your GOV.UK Pay payment link ",
+            text: "Enter the URL of your GOV.UK Pay payment link",
             classes: "govuk-label--m"
           },
           classes: "govuk-!-width-two-thirds",
           id: "payment-link",
           name: "paymentLink",
           hint: {
-            text: "For example, https://gov.uk/payments/your-payment-link"
+            text: "For example, https://www.gov.uk/payments/your-payment-link"
           },
-          value: data['paymentLink'],
+          value: data.paymentLink,
           errorMessage: {
-            text: errors['paymentLink'].text } if errors['paymentLink'].text
+            text: errors["paymentLink"].text } if errors["paymentLink"].text
         }) }}
 
         {{ govukButton({

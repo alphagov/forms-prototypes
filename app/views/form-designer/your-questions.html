@@ -1,14 +1,14 @@
 {% extends "layout-govuk-forms.html" %}
 
-{% set pageTitle = 'Add and edit your questions' %}
+{% set pageTitle = "Add and edit your questions" %}
 
 {% block pageTitle %}
-  {{ "Error: " if containsErrors }}{{ pageTitle }}: {{ data.formTitle or '[formTitle]' }} - GOV.UK Forms
+  {{ "Error: " if containsErrors }}{{ pageTitle }}: {{ data.formTitle or "[formTitle]" }} - GOV.UK Forms
 {% endblock %}
 
 {% block beforeContent %}
   <a class="govuk-back-link" href="your-form">
-    Back to {{ "your form" if data['status'] === 'Live' else "create a form" }}
+    Back to {{ "your form" if data.status === "Live" else "create your form" }}
   </a>
 {% endblock %}
 
@@ -18,7 +18,7 @@
 
     {% if data.successMessage %}
     {{ govukNotificationBanner({
-      type: 'success',
+      type: "success",
       text: data.successMessage
     }) }}
     {% endif %}
@@ -30,19 +30,19 @@
     }) }}
     {% endif %}
 
-    <span class="govuk-caption-l">{{ data.formTitle or '[formTitle]' }}</span>
+    <span class="govuk-caption-l">{{ data.formTitle or "[formTitle]" }}</span>
     <h1 class="govuk-heading-l govuk-!-margin-bottom-2">{{ pageTitle }}</h1>
     <dl class="govuk-!-margin-bottom-7">
       <dt class="govuk-visually-hidden">Status</dt>
         <dd class="govuk-!-margin-0">
             {{ govukTag({
-                text: data['status'],
-                classes: "govuk-tag--yellow" if data.status === 'Draft' else "govuk-tag--turquoise"
+                text: data.status,
+                classes: "govuk-tag--yellow" if data.status === "Draft" else "govuk-tag--turquoise"
             }) }}
         </dd>
     </dl>
 
-    {% if data.status === 'Live' %}
+    {% if data.status === "Live" %}
       {% include "./partials/your-questions-live-form.html" %}
     {% else %}
 
@@ -77,22 +77,22 @@
 
         {% for page in data.pages -%}
 
-        {% set questionTitle =  page["long-title"] or "Question " + (page["pageIndex"]|int + 1) %}
-        {% if page['questionOptional'] %}
-        {% set questionTitle = questionTitle + ' (optional)' %}
+        {% set questionTitle =  page["long-title"] or "Question " + (page.pageIndex | int + 1) %}
+        {% if page.questionOptional %}
+        {% set questionTitle = questionTitle + " (optional)" %}
         {% endif %}
 
         {% if questionTitle %}
 
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key app-summary-list__key">
-            {{loop.index}}
+            {{ loop.index }}
           </dt>
           <dd class="govuk-summary-list__value">
-            <!--Q{{page["pageIndex"] | int + 1}}.-->
-            {{questionTitle}}
-            {#{% if page['page-name'] %}<br>Guidance added{% endif %}#}
-            {#{% if page['page-name'] %}<br>Page heading: {{page['page-name']}}{% endif %}#}
+            <!--Q{{ page.pageIndex | int + 1 }}.-->
+            {{ questionTitle }}
+            {#{% if page["page-name"] %}<br>Guidance added{% endif %}#}
+            {#{% if page["page-name"] %}<br>Page heading: {{ page["page-name"] }}{% endif %}#}
           </dd>
           <dd class="govuk-summary-list__actions govuk-!-padding-bottom-6">
             <div class="govuk-button-group form-action-group app-page-list__button-group">
@@ -117,16 +117,70 @@
               {% endif %}
             </div>
             <a class="govuk-link govuk-link--no-visited-state" href="pages/{{ page.pageIndex | int }}/check-question">
-              Edit<span class="govuk-visually-hidden"> Question {{loop.index}}. {{questionTitle}}</span>
+              Edit<span class="govuk-visually-hidden"> Question {{ loop.index }}. {{ questionTitle }}</span>
             </a>
           </dd>
         </div>
+        {% endif %}
+        {# now we can add any route that is based on an answer to the question above #}
+        {% if page.routing.skipTo %}
+          {% set skipPage = "" %}
+          {% if page.routing.skipTo == "cya" %}
+            {% set skipPage = "“" + data.checkAnswersTitle + "”" %}
+          {% else %}
+            {% for item in data.pages %}
+              {% if (item.pageIndex | int) == (page.routing.skipTo | int) %}
+                {% set skipPage -%}{{ page.routing.skipTo | int + 1 }}, “{{ item["long-title"] }}”{%- endset %}
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key app-summary-list__key">
+              Question {{ page.pageIndex | int + 1 }}’s routes
+            </dt>
+            <dd class="govuk-summary-list__value">
+              If “{{ page["long-title"] }}” is answered as “{{ page.routing.answer }}” go to {{ skipPage }}
+            </dd>
+            <dd class="govuk-summary-list__actions govuk-!-padding-bottom-6">
+              <a class="govuk-link govuk-link--no-visited-state" href="question-routes/{{ page.pageIndex }}/routes-summary">
+                Edit<span class="govuk-visually-hidden"> question {{ page.pageIndex | int + 1 }}’s routes</span>
+              </a>
+            </dd>
+          </div>
+        {% endif %}
+        {# finally we need to add routing not based on an answer if there is any #}
+        {% if page.routing.noAnswer %}
+          {% set skipPage = "" %}
+          {% if page.routing.thenSkipTo == "cya" %}
+            {% set skipPage = "“" + data.checkAnswersTitle + "”" %}
+          {% else %}
+            {% for otherRoutePage in data.pages %}
+              {% if (otherRoutePage.pageIndex | int) == (page.routing.thenSkipTo | int) %}
+                {% set skipPage -%}
+                  {{ otherRoutePage.pageIndex | int + 1 }}, “{{ otherRoutePage["long-title"] }}”
+                {%- endset %}
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key app-summary-list__key">
+              Question {{ page.routing.baseQuestion | int + 1 }}’s routes
+            </dt>
+            <dd class="govuk-summary-list__value">
+              After {{ page.pageIndex | int + 1 }}, “{{ page["long-title"] }}” go to {{ skipPage }}
+            </dd>
+            <dd class="govuk-summary-list__actions govuk-!-padding-bottom-6">
+              <a class="govuk-link govuk-link--no-visited-state" href="question-routes/{{ page.routing.baseQuestion }}/routes-summary">
+                Edit<span class="govuk-visually-hidden"> question {{ page.routing.baseQuestion | int + 1 }}’s routes</span>
+              </a>
+            </dd>
+          </div>
         {% endif %}
 
         {%- endfor %}
       </dl>
 
-      {% if data.status === 'Draft' %}
+      {% if data.status === "Draft" %}
       <form id="form" class="form" action="your-questions" method="post">
         {{ govukRadios({
           classes: "govuk-radios",
@@ -152,7 +206,7 @@
               text: "No, I’ll come back later"
             }
           ],
-          errorMessage: { text: errors['isQuestionsComplete'].text } if errors['isQuestionsComplete'].text
+          errorMessage: { text: errors["isQuestionsComplete"].text } if errors["isQuestionsComplete"].text
         }) }}
         {{ govukButton({
           text: "Save and continue",

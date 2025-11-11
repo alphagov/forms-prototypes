@@ -1,12 +1,27 @@
-{% extends "layout-govuk-form-preview.html" %}
+{% extends "layout-govuk-form-welsh-preview.html" %}
 {% set mainClasses = "main--draft govuk-main-wrapper--auto-spacing" %}
 
+{% set pageTitle = "Edrychwch dros eich atebion cyn cyflwyno’ch ffurflen" %}
+
+{% set notCompletedText = "Heb ei gwblhau" %}
+{% set changeText = "Newid" %}
+
+{% set getConfirmationEmailText = "Ydych chi eisiau derbyn e-bost yn cadarnhau bod eich ffurflen wedi’i chyflwyno?" %}
+{% set confirmationEmailHintText = "Byddwn ond yn defnyddio’r cyfeiriad e-bost rydych yn ei ddarparu yma i anfon cadarnhad bod eich ffurflen wedi’i chyflwyno’n llwyddiannus. Ni fydd yn cynnwys copi o’ch atebion." %}
+{% set yesText = "Ydw" %}
+{% set noText = "Na" %}
+{% set emailInputText = "Pa gyfeiriad e-bost ydych chi eisiau i ni anfon eich cadarnhad ato?" %}
+
+{% set declarationText = "Datganiad" %}
+{% set submitText = "Cyflwyno" %}
+{% set agreeSubmitText = "Cytuno a chyflwyno" %}
+
 {% block pageTitle %}
-  {{ data.checkAnswersTitle }} - Preview - GOV.UK
+  {{ pageTitle }} - Preview - GOV.UK
 {% endblock %}
 
 {% block beforeContent %}
-  <a class="govuk-back-link" href="{{ data.pages | length - 1 }}">Back</a>
+  <a class="govuk-back-link" href="{{ data.pages | length - 1 }}">Yn ôl</a>
 {% endblock %}
 
 {% block content %}
@@ -14,15 +29,15 @@
   <div class="govuk-grid-column-two-thirds">
 
   <h1 class="govuk-heading-l">
-    {{ data.checkAnswersTitle }} <span class="govuk-visually-hidden">preview</span>
+    {{ pageTitle }} <span class="govuk-visually-hidden">preview</span>
   </h1>
 
   <dl class="govuk-summary-list">
     {% for page in data.pages -%}
 
-      {% set questionTitle = page["long-title"] or "Page " + page.pageIndex %}
+      {% set questionTitle = page.welsh.question_text or page["long-title"] or "Page " + page.pageIndex %}
       {% if page.questionOptional %}
-      {% set questionTitle = questionTitle + " (optional)" %}
+      {% set questionTitle = questionTitle + " (dewisol)" %}
       {% endif %}
 
       {% if questionTitle %}
@@ -60,14 +75,14 @@
               {{ data[loop.index0] }}
             {% endif %}
           {% else %}
-            Not completed
+            {{ notCompletedText }}
           {% endif %}
         </dd>
-        <dd class="govuk-summary-list__actions">
-            <a class="govuk-link govuk-link--no-visited-state" href="{{ loop.index0 }}?cya=true">
-              Change <span class="govuk-visually-hidden">{{ questionTitle }}<span>
-            </a>
-        </dd>
+          <dd class="govuk-summary-list__actions">
+              <a class="govuk-link govuk-link--no-visited-state" href="{{ loop.index0 }}?cya=true">
+                {{ changeText }} <span class="govuk-visually-hidden">{{ questionTitle }}<span>
+              </a>
+          </dd>
       </div>
       {% endif %}
 
@@ -76,24 +91,24 @@
   </dl>
 
     {% if data.checkAnswersDeclaration %}
-    <h2 class="govuk-heading-m">Declaration</h2>
+    <h2 class="govuk-heading-m">{{ declarationText }}</h2>
 
     <div class="app-prose-scope">
     {% markdown %}
-      {{ data.checkAnswersDeclaration | striptags(true) | escape | nl2br }}
+      {{ data.welshCheckAnswersDeclaration or data.checkAnswersDeclaration | striptags(true) | escape | nl2br }}
     {% endmarkdown %}
     </div>
 
     {% endif %}
 
     {% if data.checkAnswersDeclaration %}
-      {% set buttonText = "Agree and submit" %}
+      {% set buttonText = agreeSubmitText %}
     {% else %}
-      {% set buttonText = "Submit" %}
+      {% set buttonText = submitText %}
     {% endif %}
     {{ govukButton({
       text: buttonText,
-      href: "confirmation",
+      href: "cy-confirmation",
       attributes: {
         target: "_parent"
       }

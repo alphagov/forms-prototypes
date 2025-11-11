@@ -1,11 +1,11 @@
 {% extends "layout-govuk-forms.html" %}
 
-{% set pageTitle = 'Your form is live' %}
+{% set pageTitle = "Your form is live" %}
 
-{% set titleURL = (data.formTitle or '[formTitle]') | lower | replace(':', '') | replace('-', '') | replace(',', '') | replace(' ', '-') %}
+{% set titleURL = (data.formTitle or "[formTitle]") | lower | replace(":", "") | replace("-", "") | replace(",", "") | replace(" ", "-") %}
 
 {% block pageTitle %}
-  {{pageTitle}}: {{ data.formTitle or '[formTitle]' }} - GOV.UK Forms
+  {{ pageTitle }}: {{ data.formTitle or "[formTitle]" }} - GOV.UK Forms
 {% endblock %}
 
 {% block content %}
@@ -17,11 +17,13 @@
     }) }}
 
     <h2 class="govuk-heading-m">Form name</h2>
-    <p class="govuk-bogy">{{ data.formTitle or '[formTitle]' }}</p>
+    <p class="govuk-bogy">{{ data.formTitle or "[formTitle]" }}</p>
 
     <h2 class="govuk-heading-m">Form URL</h2>
     <p class="govuk-body">
-      <span id="formURL" value="https://forms.service.gov.uk/form/58/{{titleURL}}">https://forms.service.gov.uk/form/58/{{titleURL}}</span>
+      <span id="formURL" value="https://forms.service.gov.uk/form/58/{{ titleURL }}">
+        https://forms.service.gov.uk/form/58/{{ titleURL }}
+      </span>
     </p>
     <button class="govuk-button govuk-button--secondary" type="button" onclick="copyURL()">
       Copy URL to clipboard

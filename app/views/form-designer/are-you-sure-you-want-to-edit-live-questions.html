@@ -1,10 +1,10 @@
 {% extends "layout-govuk-forms.html" %}
 
-{% set pageTitle = 'Add and edit questions' %}
-{% set pageQuestion = 'Are you sure you want to edit the questions?' %}
+{% set pageTitle = "Add and edit questions" %}
+{% set pageQuestion = "Are you sure you want to edit the questions?" %}
 
 {% block pageTitle %}
-  {{ "Error: " if containsErrors }}{{pageTitle}} - {{pageQuestion}} - GOV.UK Forms
+  {{ "Error: " if containsErrors }}{{ pageTitle }} - {{ pageQuestion }} - GOV.UK Forms
 {% endblock %}
 
 
@@ -23,7 +23,7 @@
       }) }}
     {% endif %}
 
-    <h1 class="govuk-heading-l">{{pageTitle}}</h1>
+    <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
 
     <p class="govuk-body">
       Your form is live.
@@ -58,7 +58,7 @@
             text: "No"
           }
         ],
-        errorMessage: { text: errors['editLiveQuestions'].text } if errors['editLiveQuestions'].text
+        errorMessage: { text: errors["editLiveQuestions"].text } if errors["editLiveQuestions"].text
       }) }}
 
       {{ govukButton({

@@ -1,73 +1,113 @@
-/*
+/* 
 
-Provide default values for user session data. These are automatically added
-via the `autoStoreData` middleware. Values will only be added to the
-session if a value doesn't already exist. This may be useful for testing
-journeys where users are returning or logging in to an existing application.
-
-============================================================================
-
-Example usage:
-
-"full-name": "Sarah Philips",
-
-"options-chosen": [ "foo", "bar" ]
-
-============================================================================
+This is the latest version of return data for a dummy form to be used in testing Welsh translation: 
+created 7 November 2025
+testing: week commencing 10 November 2025
 
 */
 
 module.exports = {
-  highestPageId: 6,
-  action: 'gogogo',
-  publish: 'GOV.UK',
-  authentication: 'email',
-  payments: 'no',
-  pages: [
+
+  "groupName": "Account applications",
+
+  /* Dummy form settings */
+  "formTitle": "Register for an account",
+  "status": "Draft",
+
+  // Form questions
+  "highestPageId": 5,
+  "pages": [
     {
-      'long-title': 'What type of animal is your pet?',
-      'short-title': 'Animal type',
-      'hint-text': 'For example a bird, cat, dog.',
-      type: 'text',
-      pageIndex: '0'
+      "pageIndex": 0,
+      "type": "personName",
+      "input": "single-field",
+      "title": "no",
+      "long-title": "What is your full name?",
+      "additional-guidance": "Yes",
+      "page-name": "How to complete this form",
+      "additional-guidance-text": "## When to use this form.\r\n\r\nThis form should be used to register for an account. Please complete a separate form for each person who needs an account.\r\n\r\n## Alternative Forms\r\n\r\nIf you need to register an account for someone under the age of 16, use the [Register an account for a child form](https://www.gov.uk/child-account). \r\n\r\n## Alternative formats\r\n\r\nIf you need a paper version of this form, please visit [Alternative registration formats](https://www.gov.uk/alternative-formats).\r\n",
+      "questionSaved": "Yes"
     },
     {
-      'long-title': 'What is the name of your pet?',
-      'short-title': 'Pet name',
-      type: 'text',
-      pageIndex: '1'
+      "pageIndex": 1,
+      "type": "date",
+      "input": "yes",
+      "long-title": "What is your date of birth?",
+      "hint-text": "For example, 20 3 2000",
+      "additional-guidance": "No",
+      "questionSaved": "Yes"
     },
     {
-      'long-title': 'Where are you travelling to?',
-      'short-title': 'Destination',
-      'hint-text': 'For example Lisbon, Portugal',
-      type: 'text',
-      pageIndex: '2'
+      "pageIndex": 2,
+      "type": "address",
+      "input": [
+        "uk-address"
+      ],
+      "long-title": "What is your address?",
+      "additional-guidance": "No",
+      "questionSaved": "Yes"
     },
     {
-      'long-title': 'What date do you travel?',
-      'short-title': 'Date',
-      'hint-text': 'For example 27 3 2007',
-      type: 'date',
-      pageIndex: '3'
+      "pageIndex": 3,
+      "type": "phone",
+      "long-title": "What is your phone number?",
+      "additional-guidance": "No",
+      "questionSaved": "Yes"
     },
     {
-      'long-title': 'How are you travelling?',
-      'short-title': 'Transport type',
-      'hint-text': 'For example plane, train, car.',
-      type: 'text',
-      pageIndex: '4'
+      "pageIndex": 4,
+      "type": "national-insurance-number",
+      "long-title": "What is your National Insurance number?",
+      "hint-text": "It’s on your National Insurance card, benefit letter, payslip or P60. For example, QQ 65 43 21 C.",
+      "additional-guidance": "No",
+      "questionSaved": "Yes"
     },
     {
-      'long-title': 'How many pets do you have?',
-      'short-title': 'Number of pets',
-      type: 'number',
-      pageIndex: '5'
+      "pageIndex": 5,
+      "type": "select",
+      "long-title": "If you live in Wales, would you like to hear from us in Welsh in future communications?",
+      "item-list": [
+        "Yes",
+        "No",
+        "Not applicable"
+      ],
+      "listSettings": [
+        "oneOption"
+      ],
+      "hint-text": "We will only use this if we contact you for more information.",
+      "additional-guidance": "No",
+      "questionSaved": "Yes"
     }
   ],
-  status: 'Draft',
-  confirmationTitle: 'Your form has been submitted',
-  checkAnswersTitle: 'Check your answers before submitting your form',
-  formTitle: 'Take your pet abroad',
-  isQuestionsComplete: 'no'
+  // questions marked as complete
+  "isQuestionsComplete": "yes",
+
+  // check answers declaration marked as complete
+  "isDeclarationComplete": "no",
+  "checkAnswersDeclaration": "",
+  
+  // what happens next information marked as complete
+  "isConfirmationComplete": "no",
+  "confirmationNext": "",
+
+  // payment link added 
+  "payments": "no",
+
+  // submission email been added and is complete
+  "isSubmissionEmailComplete": "no",
+  // submission email confirmation code complete
+  "isConfirmationCodeComplete": "no",
+
+  // privacy link added 
+  "isPrivacyInformationComplete": "no",
+
+  // supportDetails - emailSupport, phoneSupport, onlineSupportLink, onlineSupportText
+  "isSupportDetailsComplete": "no",
+  "supportDetails": [
+    "online"
+  ],
+  "emailSupport": "", 
+  "phoneSupport": "",
+  "onlineSupportText": "Our full contact details",
+  "onlineSupportLink": "https://www.gov.uk/contact-us"
 }

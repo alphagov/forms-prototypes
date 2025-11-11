@@ -6,8 +6,8 @@
     containerClasses: "govuk-width-container"
   }) }}
   {{ govukServiceNavigation({
-    serviceName: data.formTitle,
-    serviceUrl: "0",
+    serviceName: data.welshFormName or data.formTitle,
+    serviceUrl: "0.cy",
     navigationClasses: "app-service-navigation",
     navigation: [
       {
@@ -24,21 +24,23 @@
       items: [
         {
           href: "#",
-          text: "Get help with this form"
-        },
-        {
-          href: "#",
-          text: "Privacy"
+          text: "Preifatrwydd"
         },
         {
           href: "https://www.forms.service.gov.uk/accessibility/",
-          text: "Accessibility"
+          text: "Datganiad hygyrchedd"
         },
         {
           href: "#",
-          text: "Cookies"
+          text: "Cwcis"
         }
       ]
+    },
+    contentLicence: {
+      html: "Mae’r holl gynnwys ar gael o dan y <a class='govuk-footer__link' href='https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/' rel='license'>Drwydded Llywodraeth Agored v3.0</a>, ac eithrio lle nodir yn wahanol"
+    }, 
+    copyright: { 
+      text: "© Hawlfraint y Goron" 
     }
   }) }}
 {% endblock %}

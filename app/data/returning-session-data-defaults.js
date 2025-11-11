@@ -1,89 +1,149 @@
 /*
 
-Provide default values for user session data. These are automatically added
-via the `autoStoreData` middleware. Values will only be added to the
-session if a value doesn't already exist. This may be useful for testing
-journeys where users are returning or logging in to an existing application.
-
-============================================================================
-
-Example usage:
-
-"full-name": "Sarah Philips",
-
-"options-chosen": [ "foo", "bar" ]
-
-============================================================================
+This is the latest version of return data for a dummy form to be used in testing the branching journey: 
+created 26 March 2025
+testing: week commencing 31 March 2025
 
 */
 
 module.exports = {
-  highestPageId: 6,
-  action: 'gogogo',
-  publish: 'GOV.UK',
-  authentication: 'email',
-  payments: 'no',
-  pages: [
+
+  "groupName": "Account applications",
+
+  /* Dummy form settings */
+  "formTitle": "Tell us about a complaint, concern or error",
+  "status": "Draft",
+
+  // Form questions
+  "highestPageId": 7,
+  "pages": [
     {
-      intro: 'This is the intro',
-      'long-title': 'What is your name?',
-      'short-title': 'Full name',
-      'hint-text': 'Enter your full name',
-      type: 'text',
-      pageIndex: '0'
+      "pageIndex": 0,
+      "type": "select",
+      "long-title": "Which of these do you want to do today?",
+      "item-list": [
+        "Report an error",
+        "Make a complaint",
+        "Raise a concern"
+      ],
+      "listSettings": [
+        "oneOption"
+      ],
+      "additional-guidance": "No",
+      "questionSaved": "Yes"
     },
     {
-      'long-title': 'What is your claim reference number?',
-      'short-title': 'Claim reference number',
-      'hint-text': 'Begins with LN',
-      type: 'text',
-      pageIndex: '1'
+      "pageIndex": 1,
+      "type": "select",
+      "long-title": "What does your complaint or concern relate to?",
+      "item-list": [
+        "Service",
+        "Access",
+        "Availability",
+        "Something else"
+      ],
+      "listSettings": [
+        "oneOption"
+      ],
+      "additional-guidance": "No",
+      "questionSaved": "Yes"
     },
     {
-      'long-title': 'What is your National Insurance number?',
-      'short-title': 'National Insurance number',
-      'hint-text': 'It’s on your National Insurance card, benefit letter, payslip or P60. For example, ‘QQ 12 34 56 C’.',
-      type: 'text',
-      pageIndex: '2'
+      "pageIndex": 2,
+      "type": "text",
+      "input": "multi-line-input",
+      "long-title": "Please give full details of your complaint or concern",
+      "additional-guidance": "No",
+      "questionSaved": "Yes"
     },
     {
-      'long-title': 'What is the name of the company?',
-      'short-title': 'Company name',
-      type: 'text',
-      pageIndex: '3'
+      "pageIndex": 3,
+      "type": "select",
+      "long-title": "Have you contacted us about this before?",
+      "item-list": [
+        "Yes",
+        "No"
+      ],
+      "listSettings": [
+        "oneOption"
+      ],
+      "additional-guidance": "No",
+      "questionSaved": "Yes"
     },
     {
-      'long-title': 'When did your leave year start?',
-      'short-title': 'Holiday start date',
-      'hint-text': 'For example 27 3 2007',
-      type: 'date',
-      pageIndex: '4'
+      "pageIndex": 4,
+      "type": "text",
+      "input": "single-line-input",
+      "long-title": "What were you trying to do when the error happend?",
+      "additional-guidance": "No",
+      "questionSaved": "Yes"
     },
     {
-      'long-title': 'How many holiday days were you entitled to for the full leave year?',
-      'short-title': 'Leave days entitled to',
-      'hint-text': 'Include bank holidays',
-      type: 'number',
-      pageIndex: '5'
+      "pageIndex": 5,
+      "type": "text",
+      "input": "multi-line-input",
+      "long-title": "Please tell us what happened when the error occurred",
+      "additional-guidance": "No",
+      "questionSaved": "Yes"
     },
     {
-      'long-title': 'How many holiday days did you take between the date your leave year started and the date you were made redundant?',
-      'short-title': 'Leave days taken',
-      'hint-text': 'Include any bank holidays that happened during this time',
-      type: 'number',
-      pageIndex: '6'
+      "pageIndex": 6,
+      "type": "text",
+      "input": "multi-line-input",
+      "long-title": "What did you do, if anything, to work around the error?",
+      "additional-guidance": "No",
+      "questionOptional": [
+        "questionOptional"
+      ],
+      "questionSaved": "Yes"
     },
     {
-      'long-title': 'How many days did you carry over from your last leave year? ',
-      'short-title': 'Days carried over from previous year',
-      'hint-text': 'If you did not carry over any days enter ‘0’',
-      type: 'number',
-      pageIndex: '7'
+      "pageIndex": 7,
+      "type": "select",
+      "long-title": "How would you rate your overall experience of using the service?",
+      "item-list": [
+        "Very poor",
+        "Poor",
+        "Neutral",
+        "Good",
+        "Very good"
+      ],
+      "listSettings": [
+        "oneOption"
+      ],
+      "additional-guidance": "No",
+      "questionSaved": "Yes"
     }
   ],
-  status: 'Draft',
-  confirmationTitle: 'Your form has been submitted',
-  checkAnswersTitle: 'Check your answers before submitting your form',
-  formTitle: 'Amendment form: redundancy claim for holiday pay',
-  isQuestionsComplete: 'no'
+  // questions marked as complete
+  "isQuestionsComplete": "no",
+
+  // check answers declaration marked as complete
+  "isDeclarationComplete": "no",
+  "checkAnswersDeclaration": "",
+  
+  // what happens next information marked as complete
+  "isConfirmationComplete": "no",
+  "confirmationNext": "",
+
+  // payment link added 
+  "payments": "no",
+
+  // submission email been added and is complete
+  "isSubmissionEmailComplete": "no",
+  // submission email confirmation code complete
+  "isConfirmationCodeComplete": "no",
+
+  // privacy link added 
+  "isPrivacyInformationComplete": "no",
+
+  // supportDetails - emailSupport, phoneSupport, onlineSupportLink, onlineSupportText
+  "isSupportDetailsComplete": "no",
+  "supportDetails": [
+    "online"
+  ],
+  "emailSupport": "",
+  "phoneSupport": "",
+  "onlineSupportText": "Our full contact details",
+  "onlineSupportLink": "https://www.gov.uk/contact-us"
 }

@@ -1,9 +1,9 @@
 {% extends "layout-govuk-forms.html" %}
 
-{% set pageTitle = 'Email address confirmed' %}
+{% set pageTitle = "Email address confirmed" %}
 
 {% block pageTitle %}
-  {{ pageTitle }}: {{ data.formTitle or '[formTitle]' }} - GOV.UK Forms
+  {{ pageTitle }}: {{ data.formTitle or "[formTitle]" }} - GOV.UK Forms
 {% endblock %}
 
 {% block beforeContent %}
@@ -18,7 +18,7 @@
       }) }}
 
       <p class="govuk-body">
-        Completed forms will be sent to {{ data.formsEmail or 'email@address.com' | safe }}.
+        Completed forms will be sent to {{ data.formsEmail or "email@address.com" | safe }}.
       </p>
 
       <p class="govuk-body">
@@ -27,6 +27,5 @@
 
     </div>
   </div>
-
 
 {% endblock %}

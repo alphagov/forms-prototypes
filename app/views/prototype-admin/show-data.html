@@ -1,7 +1,9 @@
 {% extends "layout.html" %}
 
+{% set pageTitle = "Show session data" %}
+
 {% block pageTitle %}
-  Show session data – GOV.UK Prototype Kit
+  {{ pageTitle }} – GOV.UK Prototype Kit
 {% endblock %}
 
 {% block beforeContent %}
@@ -18,7 +20,7 @@
       <form id="form" class="form" action="show-data" method="post">
         
         <h1 class="govuk-heading-xl">
-          Show session data
+          {{ pageTitle }}
         </h1>
         <dl class="govuk-summary-list govuk-!-margin-bottom-3">
           <!-- Don’t include added pages or preset session data in the list -->
@@ -26,10 +28,10 @@
             {% if ('pages' not in key) and ('Hint' not in key) and ('Title' not in key) %}
               <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">
-                  {{key}}
+                  {{ key }}
                 </dt>
                 <dd class="govuk-summary-list__value">
-                  {{obj|safe}}
+                  {{ obj | safe }}
                 </dd>
                 <dd class="govuk-summary-list__actions">
                   {{ govukButton({
@@ -59,10 +61,10 @@
                 {% if ('Hint' in key) or ('Title' in key) %}
                   <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">
-                      {{key}}
+                      {{ key }}
                     </dt>
                     <dd class="govuk-summary-list__value">
-                      {{obj|safe}}
+                      {{ obj | safe }}
                     </dd>
                   </div>
                 {% endif %}
@@ -90,16 +92,16 @@
             {% for page in data.pages %}
               <tr class="govuk-table__row">
                 <th scope="row" class="govuk-table__header">
-                  {{"Page " + page["pageIndex"]}}
+                  {{ "Page " + page["pageIndex"] }}
                 </th>
                 <td class="govuk-table__cell">
-                  {{page["long-title"]}}
+                  {{ page["long-title"] }}
                 </td>
                 <td class="govuk-table__cell">
-                  {{page["short-title"]}}
+                  {{ page["short-title"] }}
                 </td>
                 <td class="govuk-table__cell">
-                  <strong>{{page["type"]}}</strong>
+                  <strong>{{ page["type"] }}</strong>
                 </td>
               </tr>
             {% endfor %}
