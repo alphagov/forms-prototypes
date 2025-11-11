@@ -447,7 +447,7 @@
 
         {# FORM PRIVACY LINK #}
         {% set privacyInformationSubhead = "Link to privacy information for this form" %}
-        {% set privacyInformationLabel = "Enter Welsh " + privacyLinkSubhead %}
+        {% set privacyInformationLabel = "Enter Welsh " + privacyInformationSubhead %}
         {% if data.privacyInformation and data.privacyInformation !== '' %}
         {% set privacyInformationInput -%}
         {{ govukTextarea({
