@@ -80,7 +80,7 @@ module.exports = {
     }
   ],
   // questions marked as complete
-  "isQuestionsComplete": "no",
+  "isQuestionsComplete": "yes",
 
   // check answers declaration marked as complete
   "isDeclarationComplete": "no",
