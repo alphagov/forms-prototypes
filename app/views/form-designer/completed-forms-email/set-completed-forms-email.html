@@ -1,14 +1,14 @@
 {% extends "layout-govuk-forms.html" %}
 
-{% set pageTitle = 'Set the email address for completed forms' %}
+{% set pageTitle = "Set the email address for completed forms" %}
 
 {% block pageTitle %}
-  {{ "Error:" if containsErrors }}{{ pageTitle }}: {{ data.formTitle or '[formTitle]' }} - GOV.UK Forms
+  {{ "Error:" if containsErrors }}{{ pageTitle }}: {{ data.formTitle or "[formTitle]" }} - GOV.UK Forms
 {% endblock %}
 
 {% block beforeContent %}
   <a class="govuk-back-link" href="../your-form" target="_parent">
-    Back to create a form
+    Back to create your form
   </a>
 {% endblock %}
 
@@ -23,7 +23,7 @@
         }) }}
       {% endif %}
 
-      <span class="govuk-caption-l">{{ data.formTitle or '[formTitle]' }}</span>
+      <span class="govuk-caption-l">{{ data.formTitle or "[formTitle]" }}</span>
       <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
 
       <p class="govuk-body">
@@ -35,7 +35,7 @@
       </p>
 
       <p class="govuk-body">
-        The recipient will be asked to give you the code. You'll then need to enter the code to confirm the email address.
+        The recipient will be asked to give you the code. You’ll then need to enter the code to confirm the email address.
       </p>
 
       <form method="post">
@@ -47,8 +47,8 @@
           },
           id: "forms-email",
           name: "formsEmail",
-          value: data['formsEmail'],
-          errorMessage: { text: errors['formsEmail'].text } if errors['formsEmail'].text
+          value: data.formsEmail,
+          errorMessage: { text: errors["formsEmail"].text } if errors["formsEmail"].text
         }) }}
 
 
@@ -58,6 +58,4 @@
       </form>
     </div>
   </div>
-
-
 {% endblock %}

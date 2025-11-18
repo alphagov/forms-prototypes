@@ -1,0 +1,100 @@
+{% extends "layout-govuk-forms.html" %}
+
+{% set pageTitle = "Get completed forms as CSV files" %}
+
+{% block pageTitle %}
+  {{ "Error: " if containsErrors }}{{ pageTitle }}: {{ data.formTitle or "[formTitle]" }} - GOV.UK Forms
+{% endblock %}
+
+{% block beforeContent %}
+  <a class="govuk-back-link" href="your-form" target="_parent">
+    Back to create your form
+  </a>
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form method="post" novalidate>
+
+        {% if containsErrors %}
+        {{ govukErrorSummary({
+          titleText: "There is a problem",
+          errorList: errorList
+        }) }}
+        {% endif %}
+
+        <span class="govuk-caption-l">{{ data.formTitle or "[formTitle]" }}</span>
+        <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
+
+        <p class="govuk-body">
+          When a form is completed, the answers provided will be sent in the body of an email to the email address you set up.
+        </p>
+        <p class="govuk-body">
+          If you wish, you can also get the answers in a comma-separated values (CSV) file. A CSV lists all the answers in plain text, separated by commas. It can be easier to copy and paste, or import into spreadsheets or other applications.
+        </p>
+        <p class="govuk-body govuk-!-margin-bottom-8">
+          If you select this option, a CSV file will be attached to each completed form email.
+        </p>
+
+        <input type="hidden" id="tempReceiveCSV" name="tempReceiveCSV" value="{{ data.tempReceiveCSV }}" />
+
+        {{ govukCheckboxes({
+          name: "receiveCSV",
+          fieldset: {
+            legend: {
+              text: "Do you want to get completed forms as CSV files?",
+              isPageHeading: false,
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          items: [
+            {
+              value: "true",
+              text: "Get CSV files"
+            }
+          ],
+          errorMessage: { text: errors["receiveCSV"].text } if errors["receiveCSV"].text
+        }) }}
+
+        {{ govukButton({
+          text: "Save and continue"
+        }) }}
+
+      </form>
+    </div>
+  </div>
+{% endblock %}
+
+{% block footer %}
+  {{ govukFooter({
+    meta: {
+      items: [
+        {
+          href: "/prototype-admin/show-data",
+          text: "Show data"
+        },
+        {
+          href: "/manage-prototype/clear-data",
+          text: "Clear data"
+        }
+      ]
+    }
+  }) }}
+{% endblock %}
+
+{% block pageScripts %}
+<script type="text/javascript">
+  function copyURL() {
+    /* Create new range so we can select a node */
+    var range = document.createRange();
+
+    /* Select the contents within node id "formURL" */
+    range.selectNodeContents(document.getElementById("formURL"));
+
+    /* Copy the text from the node */
+    navigator.clipboard.writeText(range);
+
+  }
+</script>
+{% endblock %}

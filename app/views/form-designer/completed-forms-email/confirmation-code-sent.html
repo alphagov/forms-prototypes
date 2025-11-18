@@ -1,9 +1,9 @@
 {% extends "layout-govuk-forms.html" %}
 
-{% set pageTitle = 'Confirmation code sent' %}
+{% set pageTitle = "Confirmation code sent" %}
 
 {% block pageTitle %}
-  {{ pageTitle }}: {{ data.formTitle or '[formTitle]' }} - GOV.UK Forms
+  {{ pageTitle }}: {{ data.formTitle or "[formTitle]" }} - GOV.UK Forms
 {% endblock %}
 
 {% block beforeContent %}
@@ -19,7 +19,7 @@
 
       <p class="govuk-body">
         We’ve sent a confirmation code and your email address to 
-        {{data.formsEmail or 'email@address.com' | safe}}
+        {{ data.formsEmail or "email@address.com" | safe }}
       </p>
       
       <h2 class="govuk-heading-m">What you need to do next</h2>
@@ -38,6 +38,5 @@
 
     </div>
   </div>
-
 
 {% endblock %}
