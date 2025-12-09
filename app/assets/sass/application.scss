@@ -303,6 +303,26 @@ Summary card
 }
 
 // Welsh version translation screen
+// custom breakpoint to reorder (stack) the tables when on smaller screens
+@media (max-width: 800px) {
+  .app-table__responsive > thead th,
+  .app-table__responsive > tbody th {
+    display: none;
+  }
+  .app-table__responsive > tbody td {
+    display: block;
+  }
+  [row-header]:before {
+    content: attr(row-header);
+    display: block;
+    font-weight: 700;
+    margin-bottom: 15px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+}
+
+/* Unused */
 .app-translate-table {
   border: 2px solid #dee0e2;
   height: 100%;
